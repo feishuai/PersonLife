@@ -92,6 +92,8 @@
         </activity>
         <activity android:name="com.personlife.view.activity.personcenter.SearchFriendActivity">
         </activity>
+        <activity android:name="com.personlife.view.activity.personcenter.SearchUser">
+        </activity>
         <activity android:name="com.personlife.view.activity.home.AppSearchActivity"></activity>
         <activity android:name="com.personlife.view.activity.LoginActivity">
             <intent-filter>
