@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="@color/black2">
+    <include
+        android:id="@+id/layout_bar"
+        layout="@layout/layout_title" />
+    <View
+			android:background="@color/black2"
+			android:layout_width="match_parent"
+			android:layout_height="24.0dip" />
+    <TextView         
+        android:layout_width="match_parent"
+        android:layout_height="32dip"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"	       
+        android:textColor="@color/black"
+        android:background="@color/transparent"
+        android:text="定位"
+        android:textSize="15sp"      
+        />
+      <TextView
+        android:id="@+id/location"
+        android:layout_width="match_parent"
+        android:layout_height="32dip"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"	       
+        android:textColor="@color/black"
+        android:background="@color/white"
+        android:drawableLeft="@drawable/icon_dingwei"
+        android:text="正在定位中"
+        android:textSize="15sp"      
+        />
+      <View
+			android:background="@color/black2"
+			android:layout_width="match_parent"
+			android:layout_height="12.0dip" />
+    <TextView         
+        android:layout_width="match_parent"
+        android:layout_height="32dip"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"	       
+        android:textColor="@color/black"
+        android:background="@color/transparent"
+        android:text="全部"
+        android:textSize="15sp"      
+        />
+    
+
+</LinearLayout>

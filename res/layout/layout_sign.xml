@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="@color/black2">
+    <include
+        android:id="@+id/layout_bar"
+        layout="@layout/layout_title" />
+    <View
+			android:background="@color/black2"
+			android:layout_width="match_parent"
+			android:layout_height="24.0dip" />
+    <EditText 
+        android:id="@+id/sign"
+        android:layout_width="match_parent"
+        android:layout_height="32dip"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"	       
+        android:textColor="@color/black"
+        android:background="@color/white"
+        android:focusable="true"        
+        />
+
+</LinearLayout>

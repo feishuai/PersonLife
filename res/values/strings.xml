@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">定制生活</string>
+    <string name="title_button">一键下载</string>
+    <string name="back">返回</string>
+    <string name="cancle">取消</string>
+    <string name="save">保存</string>
+    <string name="title_activity_app_search">AppSearchActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_login">LoginActivity</string>
+
+</resources>

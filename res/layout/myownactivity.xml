@@ -1,0 +1,313 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/layout_bar"
+        layout="@layout/layout_title" />
+    
+		<View
+			android:background="@color/black2"
+			android:layout_width="match_parent"
+			android:layout_height="8.0dip" />
+	    
+		<RelativeLayout 
+		    android:id="@+id/person_touxiang"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:paddingTop="5dp"
+			android:paddingBottom="5dp"
+			android:layout_marginTop="10dp"
+			android:onClick="onclickPersonInfo">
+			<TextView										
+					android:textSize="16sp"
+					android:layout_centerInParent="true"
+					android:layout_alignParentLeft="true"					
+					android:layout_width="wrap_content"
+					android:layout_height="30dp"
+					android:paddingLeft="16dp"																			
+					android:text="头像"
+					android:textColor="@color/black" />
+				<ImageView 
+				    android:id="@+id/touxiangpicture"
+				    android:layout_width="60.0dip"
+					android:layout_height="60.0dip"
+					android:src="@drawable/head"
+					android:layout_toLeftOf="@+id/youjiantou"
+					/>
+				 <ImageView
+				     android:id="@+id/youjiantou"				     			    
+				    android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:layout_centerInParent="true"
+					android:layout_marginRight="16dp"
+					android:src="@drawable/right1"
+					/>
+		</RelativeLayout>
+		<View
+				android:background="@color/black2"
+				android:layout_width="match_parent"
+				android:layout_height="2.0dip" />
+		
+		<RelativeLayout 
+		    android:id="@+id/person_nicheng"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:paddingTop="5dp"
+			android:paddingBottom="5dp"
+			android:layout_marginTop="10dp"
+			android:onClick="onclickPersonInfo">
+			
+				<TextView										
+					android:textSize="16sp"
+					android:layout_centerInParent="true"
+					android:layout_alignParentLeft="true"					
+					android:layout_width="wrap_content"
+					android:layout_height="30dp"
+					android:paddingLeft="16dp"																			
+					android:text="昵称"
+					android:textColor="@color/black" />
+				<TextView 
+				    android:id="@+id/pernicheng"
+				    android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="小丸子"
+					android:layout_centerInParent="true"
+					android:textColor="@color/black1"
+					android:layout_toLeftOf="@+id/youjiantou1"
+					/>
+				 <ImageView
+				     android:id="@+id/youjiantou1"				     			    
+				    android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:layout_centerInParent="true"
+					android:layout_marginRight="16dp"
+					android:src="@drawable/right1"
+					/>
+		</RelativeLayout>
+		
+		<View
+			android:background="@color/black2"
+			android:layout_width="match_parent"
+			android:layout_height="2.0dip" />
+		
+		<RelativeLayout 
+		    android:id="@+id/person_sex"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:paddingTop="5dp"
+			android:paddingBottom="5dp"
+			android:layout_marginTop="10dp"
+			android:onClick="onclickPersonInfo">
+			
+				<TextView										
+					android:textSize="16sp"
+					android:layout_centerInParent="true"
+					android:layout_alignParentLeft="true"					
+					android:layout_width="wrap_content"
+					android:layout_height="30dp"
+					android:paddingLeft="16dp"																			
+					android:text="性别"
+					android:textColor="@color/black" />
+				<TextView 
+				    android:id="@+id/persex"
+				    android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="女"
+					android:layout_centerInParent="true"
+					android:textColor="@color/black1"
+					android:layout_toLeftOf="@+id/youjiantou2"
+					/>
+				 <ImageView
+				     android:id="@+id/youjiantou2"				     			    
+				    android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:layout_centerInParent="true"
+					android:layout_marginRight="16dp"
+					android:src="@drawable/right1"
+					/>
+		</RelativeLayout>
+		
+		<View
+				android:background="@color/black2"
+				android:layout_width="match_parent"
+				android:layout_height="2.0dip" />
+		
+		<RelativeLayout 
+		    android:id="@+id/person_area"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:paddingTop="5dp"
+			android:paddingBottom="5dp"
+			android:layout_marginTop="10dp"
+			android:onClick="onclickPersonInfo">
+			
+				<TextView										
+					android:textSize="16sp"
+					android:layout_centerInParent="true"
+					android:layout_alignParentLeft="true"					
+					android:layout_width="wrap_content"
+					android:layout_height="30dp"
+					android:paddingLeft="16dp"																			
+					android:text="地区"
+					android:textColor="@color/black" />
+				<TextView 
+				    android:id="@+id/perarea"
+				    android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="上海"
+					android:layout_centerInParent="true"
+					android:textColor="@color/black1"
+					android:layout_toLeftOf="@+id/youjiantou3"
+					/>
+				 <ImageView
+				     android:id="@+id/youjiantou3"				     			    
+				    android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:layout_centerInParent="true"
+					android:layout_marginRight="16dp"
+					android:src="@drawable/right1"
+					/>
+		</RelativeLayout>
+		
+		<View
+				android:background="@color/black2"
+				android:layout_width="match_parent"
+				android:layout_height="2.0dip" />
+		
+		<RelativeLayout 
+		    android:id="@+id/person_zhiye"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:paddingTop="5dp"
+			android:paddingBottom="5dp"
+			android:layout_marginTop="10dp"
+			android:onClick="onclickPersonInfo">
+			
+				<TextView										
+					android:textSize="16sp"
+					android:layout_centerInParent="true"
+					android:layout_alignParentLeft="true"					
+					android:layout_width="wrap_content"
+					android:layout_height="30dp"
+					android:paddingLeft="16dp"																			
+					android:text="职业"
+					android:textColor="@color/black" />
+				<TextView 
+				    android:id="@+id/perzhiye"
+				    android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="设计"
+					android:layout_centerInParent="true"
+					android:textColor="@color/black1"
+					android:layout_toLeftOf="@+id/youjiantou4"
+					/>
+				 <ImageView
+				     android:id="@+id/youjiantou4"				     			    
+				    android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:layout_centerInParent="true"
+					android:layout_marginRight="16dp"
+					android:src="@drawable/right1"
+					/>
+		</RelativeLayout>
+		
+		<View
+			android:background="@color/black2"
+			android:layout_width="match_parent"
+			android:layout_height="2.0dip" />
+		<RelativeLayout 
+		    android:id="@+id/person_interesting"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:paddingTop="5dp"
+			android:paddingBottom="5dp"
+			android:layout_marginTop="10dp"
+			android:onClick="onclickPersonInfo">
+			
+				<TextView										
+					android:textSize="16sp"
+					android:layout_centerInParent="true"
+					android:layout_alignParentLeft="true"					
+					android:layout_width="wrap_content"
+					android:layout_height="30dp"
+					android:paddingLeft="16dp"																			
+					android:text="兴趣爱好"
+					android:textColor="@color/black" />
+				<TextView 
+				    android:id="@+id/personinteresting"
+				    android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="兴趣爱好"
+					android:layout_centerInParent="true"
+					android:textColor="@color/black1"
+					android:layout_toLeftOf="@+id/youjiantou5"
+					/>
+				 <ImageView
+				     android:id="@+id/youjiantou5"				     			    
+				    android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:layout_centerInParent="true"
+					android:layout_marginRight="16dp"
+					android:src="@drawable/right1"
+					/>
+		</RelativeLayout>
+		
+		<View
+				android:background="@color/black2"
+				android:layout_width="match_parent"
+				android:layout_height="2.0dip" />
+		<RelativeLayout 
+		    android:id="@+id/person_sign"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:paddingTop="5dp"
+			android:paddingBottom="5dp"
+			android:layout_marginTop="10dp"
+			android:onClick="onclickPersonInfo">
+			
+				<TextView										
+					android:textSize="16sp"
+					android:layout_centerInParent="true"
+					android:layout_alignParentLeft="true"					
+					android:layout_width="wrap_content"
+					android:layout_height="30dp"
+					android:paddingLeft="16dp"																			
+					android:text="个性签名"
+					android:textColor="@color/black" />
+				<TextView 
+				    android:id="@+id/personsign"
+				    android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="我就是忧郁的个性签名"
+					android:layout_centerInParent="true"
+					android:textColor="@color/black1"
+					android:layout_toLeftOf="@+id/youjiantou6"
+					/>
+				 <ImageView
+				     android:id="@+id/youjiantou6"				     			    
+				    android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:layout_centerInParent="true"
+					android:layout_marginRight="16dp"
+					android:src="@drawable/right1"
+					/>
+		</RelativeLayout>
+		
+		<View
+				android:background="@color/black2"
+				android:layout_width="match_parent"
+				android:layout_height="2.0dip" />
+	
+
+</LinearLayout>
