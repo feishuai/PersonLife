@@ -4,7 +4,9 @@ import com.example.personlifep.R;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -24,6 +26,8 @@ public class NickName extends Activity {
 	private Button t_left;
 	private Button t_right;
 	private EditText nick;
+	private SharedPreferences pref;
+	private SharedPreferences.Editor editor;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -40,8 +44,8 @@ public class NickName extends Activity {
 		tv_title.setText("昵称");
 		t_left.setVisibility(View.VISIBLE);
 		t_right.setVisibility(View.VISIBLE);
-		Intent intent=getIntent();
-		nick.setText(intent.getStringExtra("nickname"));
+		pref = PreferenceManager.getDefaultSharedPreferences(this);
+		nick.setText(pref.getString("userName", "用户名"));
 		t_left.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -65,6 +69,10 @@ public class NickName extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				//保存昵称
+				editor=pref.edit();
+				editor.putString("userName",nick.getText().toString());
+				editor.commit();
+				finish();
 			}
 		});
 	}

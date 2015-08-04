@@ -11,6 +11,8 @@ import org.apache.http.message.BasicNameValuePair;
 
 
 
+
+
 import com.example.personlifep.R;
 import com.personlife.bean.UserInfo;
 import com.personlife.utils.Utils;
@@ -25,7 +27,9 @@ import com.personlife.view.activity.personcenter.TongzhiActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,7 +50,6 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 	private View layout;
 	private TextView username, personsign;
 	private ImageView head,sex;//头像
-	private UserInfo userInfo;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -70,18 +73,11 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 		head=(ImageView) layout.findViewById(R.id.head);
 		sex=(ImageView) layout.findViewById(R.id.iv_sex);
 		//联网获取用户信息
-		userInfo=new UserInfo();
-		userInfo.setNickname("刘刚");
-		userInfo.setSex("男");
-		userInfo.setArea("杭州");
-		userInfo.setProfession("Java工程师");
-		userInfo.setInterests("看美女");
-		userInfo.setSign("至今仍放你在心上是谓念念");
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
 		
-		
-		username.setText(userInfo.getNickname());
-		personsign.setText(userInfo.getSign());
-		if(userInfo.getSex().equals("男"))
+		username.setText(pref.getString("userName", "用户名"));
+		personsign.setText(pref.getString("signature", "个性签名"));
+		if(pref.getString("sex", "男").equals("男"))
 			sex.setImageResource(R.drawable.ic_sex_male);
 		else 
 			sex.setImageResource(R.drawable.ic_sex_female);
@@ -105,9 +101,6 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 		case R.id.view_user:
 			Intent intent=new Intent();
 			intent.setClass(getActivity(), MyownActivity.class);
-//			Bundle bundle=new Bundle();
-//			bundle.putSerializable("userinfo", userInfo);
-//			intent.putExtras(bundle);
 			startActivity(intent);		
 			break;
 		case R.id.txt_mycollection:

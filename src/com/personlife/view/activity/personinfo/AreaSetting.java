@@ -11,7 +11,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 
@@ -20,7 +22,7 @@ import android.widget.TextView;
  * @author liugang  
  * @date 2015年6月24日   
  */
-public class AreaSetting extends Activity{
+public class AreaSetting extends Activity implements OnClickListener{
 
 	private Button back;
 	private TextView t_title;
@@ -30,7 +32,9 @@ public class AreaSetting extends Activity{
 	public BDLocationListener myListener = new MyLocationListener();
 	LocationClientOption option = new LocationClientOption();
 	int i; 
-
+	
+	private ListView listView;
+	private String[] locations={"sgd","a","b","c","d","e","f"};
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -44,6 +48,7 @@ public class AreaSetting extends Activity{
 		back=(Button) findViewById(R.id.txt_left);
 		t_title=(TextView) findViewById(R.id.txt_title);
 		location=(TextView) findViewById(R.id.location);
+		listView = (ListView) findViewById(R.id.location_list);
 		back.setVisibility(View.VISIBLE);
 		t_title.setText("地区");
 		mLocationClient = new LocationClient(this);//声明LocationClient类
@@ -65,6 +70,8 @@ public class AreaSetting extends Activity{
 				
 			}
 		});
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,locations);
+		listView.setAdapter(adapter);
 	}
 	public class MyLocationListener implements BDLocationListener {
 
@@ -73,6 +80,11 @@ public class AreaSetting extends Activity{
 			// TODO Auto-generated method stub
 			location.setText(arg0.getCountry()+" "+arg0.getProvince()+" "+arg0.getCity());
 		}
+		
+	}
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
 		
 	}
 	

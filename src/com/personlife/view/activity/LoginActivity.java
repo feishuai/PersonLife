@@ -5,7 +5,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -45,11 +47,22 @@ public class LoginActivity extends Activity implements OnClickListener {
 		System.out.println(v.getId());
 		switch (v.getId()) {
 		case R.id.tv_login_login:
-			System.out.println("start");
+			
 			RequestParams params = new RequestParams();
 			params.put("phone", "1");
 			params.put("pwd", "123456");
 
+			SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(this).edit();
+			editor.putString("telephone", "18268106905");
+			editor.putString("userName", "刘刚");
+			editor.putString("headUrl", null);
+			editor.putString("signature", "执念");
+			editor.putString("sex", "男");
+			editor.putString("location", "shanghai");
+			editor.putString("job", "chengxuyuan");
+			editor.putString("hobby", "kan mei nv");
+			editor.commit();
+			
 			BaseAsyncHttp.postReq("/users/login", params,
 					new JSONObjectHttpResponseHandler() {
 

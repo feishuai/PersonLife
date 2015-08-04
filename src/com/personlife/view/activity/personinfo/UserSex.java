@@ -4,7 +4,9 @@ import com.example.personlifep.R;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -22,6 +24,8 @@ public class UserSex extends Activity {
 	private Button t_left;
 	private ImageView man_duihao;
 	private ImageView woman_duihao;
+	private SharedPreferences pref;
+	private SharedPreferences.Editor editor;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -37,8 +41,8 @@ public class UserSex extends Activity {
 		woman_duihao=(ImageView) findViewById(R.id.woman_duihao);
 		tv_title.setText("性别");
 		t_left.setVisibility(View.VISIBLE);
-		Intent intent=getIntent();
-		if(intent.getStringExtra("sex").equals("男")){
+		pref = PreferenceManager.getDefaultSharedPreferences(this);
+		if(pref.getString("sex", "男").equals("男")){
 			man_duihao.setVisibility(View.VISIBLE);
 			woman_duihao.setVisibility(View.GONE);
 		}else{
@@ -61,13 +65,19 @@ public class UserSex extends Activity {
 			man_duihao.setVisibility(View.VISIBLE);
 			woman_duihao.setVisibility(View.GONE);
 			//添加保存性别的代码
-			
+			editor=pref.edit();
+			editor.putString("sex","男");
+			editor.commit();
+			finish();
 			break;
 		case R.id.woman:
 			woman_duihao.setVisibility(View.VISIBLE);
 			man_duihao.setVisibility(View.GONE);
 			//添加保存性别的代码
-			
+			editor=pref.edit();
+			editor.putString("sex","女");
+			editor.commit();
+			finish();
 			break;
 		}		
 	}

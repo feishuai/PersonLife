@@ -14,7 +14,9 @@ import com.personlife.view.activity.personinfo.UserSex;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -39,6 +41,13 @@ public class MyownActivity extends Activity{
 		
 	}
 
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		init();
+	}
+
 	public void init(){
 		nickname=(TextView) findViewById(R.id.pernicheng);
 		sex=(TextView) findViewById(R.id.persex);
@@ -58,14 +67,14 @@ public class MyownActivity extends Activity{
 		});
 		tv_title=(TextView) findViewById(R.id.txt_title);
 		tv_title.setText("个人信息");
-//		Intent intent=getIntent();
-//		userInfo=(UserInfo) intent.getSerializableExtra("userinfo");
-//		nickname.setText(userInfo.getNickname());
-//		sex.setText(userInfo.getSex());
-//		area.setText(userInfo.getArea());
-//		profession.setText(userInfo.getProfession());
-//		interests.setText(userInfo.getInterests());
-//		sign.setText(userInfo.getSign());
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+		
+		nickname.setText(pref.getString("userName", "用户名"));
+		sex.setText(pref.getString("sex", "男"));
+		area.setText(pref.getString("location", "地区"));
+		profession.setText(pref.getString("job", "职业"));
+		interests.setText(pref.getString("hobby", "兴趣"));
+		sign.setText(pref.getString("signature", "个性签名"));
 	}
 	
 	
@@ -75,12 +84,10 @@ public class MyownActivity extends Activity{
 			Utils.start_Activity(this, MyownActivity.class);
 			break;
 		case R.id.person_nicheng :
-			Utils.start_Activity(this, NickName.class,
-					new BasicNameValuePair("nickname", userInfo.getNickname()));			
+			Utils.start_Activity(this, NickName.class);			
 			break;
 		case R.id.person_sex :
-			Utils.start_Activity(this, UserSex.class,
-					new BasicNameValuePair("sex", userInfo.getSex()));
+			Utils.start_Activity(this, UserSex.class);
 			break;
 		case R.id.person_area :
 			Utils.start_Activity(this, AreaSetting.class);
@@ -92,8 +99,7 @@ public class MyownActivity extends Activity{
 			Utils.start_Activity(this, Interests.class);
 			break;
 		case R.id.person_sign :
-			Utils.start_Activity(this, PersonalSign.class,
-					new BasicNameValuePair("sign", userInfo.getSign()));
+			Utils.start_Activity(this, PersonalSign.class);
 			break;
 		}
 	}
