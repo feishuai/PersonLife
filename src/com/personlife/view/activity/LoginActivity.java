@@ -96,6 +96,9 @@ public class LoginActivity extends Activity implements OnClickListener {
 						public void jsonFail(JSONObject resp) {
 							// TODO Auto-generated method stub
 							Log.i("login", resp.toString());
+							Toast.makeText(LoginActivity.this,
+									"fail密码错误或者用户名错误", Toast.LENGTH_LONG)
+									.show();
 						}
 					});
 

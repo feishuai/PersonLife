@@ -117,13 +117,13 @@ public class MyownActivity extends Activity implements
 					public void jsonSuccess(JSONObject resp) {
 						try {
 							if (resp.get("flag").equals(0)) {
-								Toast.makeText(MyownActivity.this,
-										"修改信息失败", Toast.LENGTH_SHORT)
-										.show();
+//								Toast.makeText(MyownActivity.this,
+//										"修改信息失败", Toast.LENGTH_SHORT)
+//										.show();
 							}else{
-								Toast.makeText(MyownActivity.this,
-										"修改信息成功", Toast.LENGTH_SHORT)
-										.show();
+//								Toast.makeText(MyownActivity.this,
+//										"修改信息成功", Toast.LENGTH_SHORT)
+//										.show();
 							}
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
@@ -168,7 +168,6 @@ public class MyownActivity extends Activity implements
 				editor = pref.edit();
 				editor.putString("islogin", "0");
 				editor.commit();
-				finish();
 				Utils.start_Activity(MyownActivity.this,LoginActivity.class);
 				ActivityCollector.finishAll();
 			}

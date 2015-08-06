@@ -27,6 +27,7 @@ import com.personlife.bean.User;
 import com.personlife.bean.UserFriend;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONObjectHttpResponseHandler;
+import com.personlife.utils.ActivityCollector;
 import com.personlife.widget.ClearEditText;
 import com.personlife.widget.MyListView;
 
@@ -38,7 +39,7 @@ import com.personlife.widget.MyListView;
 
 // 搜索
 public class SearchUser extends Activity implements OnClickListener {
-	private ImageButton cancel;
+	private Button cancel;
 	private TextView title;
 	private ClearEditText search;
 	private UserAdapter userAdapter;
@@ -49,6 +50,8 @@ public class SearchUser extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.search_user);
+		ActivityCollector.addActivity(this);
+		
 		initView();
 	}
 
@@ -57,7 +60,7 @@ public class SearchUser extends Activity implements OnClickListener {
 		users = new ArrayList<User>();
 		title=(TextView) findViewById(R.id.txt_title);
 		title.setText("添加好友");
-		cancel = (ImageButton) findViewById(R.id.imgbtn_back);
+		cancel = (Button) findViewById(R.id.txt_left);
 		cancel.setVisibility(View.VISIBLE);
 		cancel.setOnClickListener(new OnClickListener() {
 			
@@ -84,9 +87,9 @@ public class SearchUser extends Activity implements OnClickListener {
 					mListView.setAdapter(new UserAdapter(SearchUser.this, users));
 					// 添加搜索
 					RequestParams params = new RequestParams();
-					params.put("phone", search.getText().toString());
+					params.put("phone", v.getText().toString());
 					
-					BaseAsyncHttp.postReq(getApplicationContext(),"/users/view", params,
+					BaseAsyncHttp.postReq(getApplicationContext(),"/users/getinfo", params,
 							new JSONObjectHttpResponseHandler() {
 
 								@Override

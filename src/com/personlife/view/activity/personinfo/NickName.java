@@ -1,6 +1,7 @@
 package com.personlife.view.activity.personinfo;
 
 import com.example.personlifep.R;
+import com.personlife.utils.ActivityCollector;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -35,6 +36,7 @@ public class NickName extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_nickname);
+		ActivityCollector.addActivity(this);
 		init();
 	}
 

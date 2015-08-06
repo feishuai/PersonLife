@@ -17,6 +17,8 @@ import com.example.personlifep.R;
 
 
 
+import com.personlife.utils.ActivityCollector;
+
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -54,6 +56,7 @@ public class AreaSetting extends Activity implements OnClickListener{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_areasetting);
+		ActivityCollector.addActivity(this);
 		init();
 		
 	}

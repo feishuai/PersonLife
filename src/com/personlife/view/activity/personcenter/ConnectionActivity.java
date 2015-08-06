@@ -1,6 +1,7 @@
 package com.personlife.view.activity.personcenter;
 
 import com.example.personlifep.R;
+import com.personlife.utils.ActivityCollector;
 import com.personlife.utils.Utils;
 
 import android.os.Bundle;
@@ -28,6 +29,7 @@ public class ConnectionActivity extends FragmentActivity{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.connection_friends);
+		ActivityCollector.addActivity(this);
 		init();
 	}
 	public void init(){
