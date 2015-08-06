@@ -116,7 +116,7 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 		RequestParams params = new RequestParams();
 		params.put("myid", "1");
 		Log.i("personlife", "start post");
-		BaseAsyncHttp.postReq("/friend/getall", params,
+		BaseAsyncHttp.postReq(getActivity().getApplicationContext(),"/friend/getall", params,
 				new JSONObjectHttpResponseHandler() {
 
 					@Override

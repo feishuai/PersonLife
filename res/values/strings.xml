@@ -9,6 +9,6 @@
     <string name="title_activity_app_search">AppSearchActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_login">LoginActivity</string>
-
+    <string name="title_activity_comment_app">CommentAppActivity</string>
 
 </resources>

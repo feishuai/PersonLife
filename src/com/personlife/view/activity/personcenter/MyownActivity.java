@@ -101,7 +101,7 @@ public class MyownActivity extends Activity implements
 		request.put("job", pref.getString("job", null));
 		request.put("hobby", pref.getString("hobby", null));
 		request.put("signature", pref.getString("signature", null));
-		BaseAsyncHttp.postReq("/users/modify", request,
+		BaseAsyncHttp.postReq(getApplicationContext(),"/users/modify", request,
 				new JSONObjectHttpResponseHandler() {
 
 					@Override

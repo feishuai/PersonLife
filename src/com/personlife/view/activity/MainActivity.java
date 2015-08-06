@@ -70,7 +70,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 		editor=PreferenceManager.getDefaultSharedPreferences(this).edit();
 		RequestParams request = new RequestParams();
 		request.put("phone", pref.getString("telephone", null));
-		BaseAsyncHttp.postReq("/users/getinfo", request,
+		BaseAsyncHttp.postReq(getApplicationContext(),"/users/getinfo", request,
 				new JSONObjectHttpResponseHandler() {
 
 					@Override

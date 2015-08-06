@@ -110,7 +110,7 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 		}else{
 			RequestParams request = new RequestParams();
 			request.put("phone", pref.getString("telephone", null));
-			BaseAsyncHttp.postReq("/users/getinfo", request,
+			BaseAsyncHttp.postReq(getActivity().getApplicationContext(),"/users/getinfo", request,
 					new JSONObjectHttpResponseHandler() {
 
 						@Override

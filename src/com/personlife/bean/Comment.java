@@ -4,19 +4,20 @@ import java.util.Date;
 
 public class Comment {
 	private String title;
-	private int stars;
-	private String username;
-	private String content;
-	private Date createdDate;
+	private int commentstars;
+	private String usernickname;
+	private String comments;
+	private String userthumb;
+	private String created_at;
 
 	public Comment(String title, int stars, String username, String content,
-			Date createdDate) {
+			String createdDate) {
 		super();
 		this.title = title;
-		this.stars = stars;
-		this.username = username;
-		this.content = content;
-		this.createdDate = createdDate;
+		this.commentstars = stars;
+		this.usernickname = username;
+		this.comments = content;
+		this.created_at = createdDate;
 	}
 
 	public String getTitle() {
@@ -27,35 +28,43 @@ public class Comment {
 		this.title = title;
 	}
 
-	public int getStars() {
-		return stars;
+	public int getCommentstars() {
+		return commentstars;
 	}
 
-	public void setStars(int stars) {
-		this.stars = stars;
+	public void setCommentstars(int stars) {
+		this.commentstars = stars;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getUsernickname() {
+		return usernickname;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUsernickname(String username) {
+		this.usernickname = username;
 	}
 
-	public String getContent() {
-		return content;
+	public String getComments() {
+		return comments;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public void setComments(String content) {
+		this.comments = content;
 	}
 
-	public Date getCreatedDate() {
-		return createdDate;
+	public String getCreated_at() {
+		return created_at;
 	}
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
+	public String getUserthumb() {
+		return userthumb;
+	}
+
+	public void setUserthumb(String userthumb) {
+		this.userthumb = userthumb;
+	}
+
+	public void setCreated_at(String createdDate) {
+		this.created_at = createdDate;
 	}
 }

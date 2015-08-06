@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -19,7 +20,7 @@ import com.personlife.widget.HorizontialListView;
 
 public class AppDetailActivity extends Activity implements OnClickListener{
 	HorizontialListView hlvUrls,hlvLikes;
-	ImageButton mBack;
+	Button mBack;
 	ImageView mIcon;
 	TextView mTitle,mName,mSizeAndCounts,mDownload,mIntro,mLog,mMore,mTime,mNumbers;
 	RelativeLayout mComments;
@@ -37,7 +38,7 @@ public class AppDetailActivity extends Activity implements OnClickListener{
 		hlvUrls = (HorizontialListView) findViewById(R.id.hlv_detail_urls);
 		hlvLikes = (HorizontialListView) findViewById(R.id.hlv_detail_likes);
 		mTitle = (TextView) findViewById(R.id.txt_title);
-		mBack = (ImageButton) findViewById(R.id.imgbtn_back);
+		mBack = (Button) findViewById(R.id.txt_left);
 		mIcon = (ImageView) findViewById(R.id.iv_app_icon);
 		mName = (TextView) findViewById(R.id.tv_app_appname);
 		mComments = (RelativeLayout) findViewById(R.id.rl_detail_comments);
@@ -120,7 +121,7 @@ public class AppDetailActivity extends Activity implements OnClickListener{
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch(v.getId()){
-		case R.id.imgbtn_back:
+		case R.id.txt_left:
 			finish();
 			break;
 		case R.id.rl_detail_comments:
