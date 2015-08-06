@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -18,7 +19,8 @@ import android.widget.TextView;
  */
 public class ConnectionActivity extends FragmentActivity{
 
-	private ImageButton back,plus;
+	private ImageButton plus;
+	private Button back;
 	private TextView title;
 	private Fragment friend;
 	@Override
@@ -29,7 +31,7 @@ public class ConnectionActivity extends FragmentActivity{
 		init();
 	}
 	public void init(){
-		back=(ImageButton) findViewById(R.id.imgbtn_back);
+		back=(Button) findViewById(R.id.txt_left);
 		plus=(ImageButton) findViewById(R.id.imgbtn_plus);
 		title=(TextView) findViewById(R.id.txt_title);
 		title.setText("通讯录");

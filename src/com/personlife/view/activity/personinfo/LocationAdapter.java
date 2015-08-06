@@ -1,12 +1,13 @@
 package com.personlife.view.activity.personinfo;
 
+import java.util.List;
+
 import com.example.personlifep.R;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
@@ -18,7 +19,7 @@ import android.widget.TextView;
 public class LocationAdapter extends ArrayAdapter<String>{
 
 	private int resourceId;
-	public LocationAdapter(Context context, int resource, String[] objects) {
+	public LocationAdapter(Context context, int resource, List<String> objects) {
 		super(context, resource, objects);
 		// TODO Auto-generated constructor stub
 		resourceId = resource;

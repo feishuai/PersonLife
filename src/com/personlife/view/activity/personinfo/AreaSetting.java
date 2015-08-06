@@ -1,11 +1,16 @@
 package com.personlife.view.activity.personinfo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.location.LocationClientOption.LocationMode;
 import com.example.personlifep.R;
+
+
 
 
 
@@ -43,7 +48,7 @@ public class AreaSetting extends Activity implements OnClickListener{
 	int i; 
 	private SharedPreferences.Editor editor;
 	private ListView listView;
-	private String[] locations={"sgd","a","b","c","d","e","f"};
+	private List<String> locations = new ArrayList<String>();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -79,6 +84,7 @@ public class AreaSetting extends Activity implements OnClickListener{
 				
 			}
 		});
+		locations = CityData.getCityList();
 		LocationAdapter adapter = new LocationAdapter(this, R.layout.location_item,locations);
 		listView.setAdapter(adapter);
 		listView.setOnItemClickListener(new OnItemClickListener() {
@@ -87,7 +93,7 @@ public class AreaSetting extends Activity implements OnClickListener{
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
-				editor.putString("location",locations[position]);
+				editor.putString("location",locations.get(position));
 				editor.commit();
 				finish();
 			}

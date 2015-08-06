@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.personlifep.R;
@@ -21,6 +22,7 @@ import com.personlife.personinfo.carema.OnDismissListener;
 import com.personlife.personinfo.carema.OnItemClickListener;
 import com.personlife.personinfo.carema.SimpleAdapter;
 import com.personlife.personinfo.carema.ViewHolder;
+import com.personlife.utils.ActivityCollector;
 import com.personlife.utils.Utils;
 import com.personlife.view.activity.LoginActivity;
 import com.personlife.view.activity.MainActivity;
@@ -85,8 +87,9 @@ public class MyownActivity extends Activity implements
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.myownactivity);
+		ActivityCollector.addActivity(this);
 		init();
-
+		
 	}
 
 	@Override
@@ -94,6 +97,9 @@ public class MyownActivity extends Activity implements
 		// TODO Auto-generated method stub
 		super.onResume();
 		init();
+		update();
+	}
+	public void update(){
 		pref = PreferenceManager.getDefaultSharedPreferences(this);
 		RequestParams request = new RequestParams();
 		request.put("phone", pref.getString("telephone", null));
@@ -109,16 +115,31 @@ public class MyownActivity extends Activity implements
 
 					@Override
 					public void jsonSuccess(JSONObject resp) {
-
+						try {
+							if (resp.get("flag").equals(0)) {
+								Toast.makeText(MyownActivity.this,
+										"修改信息失败", Toast.LENGTH_SHORT)
+										.show();
+							}else{
+								Toast.makeText(MyownActivity.this,
+										"修改信息成功", Toast.LENGTH_SHORT)
+										.show();
+							}
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 
 					@Override
 					public void jsonFail(JSONObject resp) {
 						// TODO Auto-generated method stub
+						Toast.makeText(MyownActivity.this,
+								"Fail修改信息失败", Toast.LENGTH_SHORT)
+								.show();
 					}
 				});
 	}
-
 	public void init() {
 
 		picture = (ImageView) findViewById(R.id.touxiangpicture);
@@ -149,6 +170,7 @@ public class MyownActivity extends Activity implements
 				editor.commit();
 				finish();
 				Utils.start_Activity(MyownActivity.this,LoginActivity.class);
+				ActivityCollector.finishAll();
 			}
 		});
 		tv_title = (TextView) findViewById(R.id.txt_title);

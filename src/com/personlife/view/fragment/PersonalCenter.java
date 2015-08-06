@@ -159,32 +159,32 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 			startActivity(intent);		
 			break;
 		case R.id.txt_mycollection:
-			Utils.start_Activity(getActivity(), MyCollectionActivity.class,
-					new BasicNameValuePair("NAME", "我的收藏"));
+//			Utils.start_Activity(getActivity(), MyCollectionActivity.class,
+//					new BasicNameValuePair("NAME", "我的收藏"));
 			break;
 		case R.id.txt_connection:
 			Utils.start_Activity(getActivity(), ConnectionActivity.class,
 					new BasicNameValuePair("NAME", "通讯录"));
 			break;
 		case R.id.txt_tongzhi:
-			Utils.start_Activity(getActivity(), TongzhiActivity.class,
-					new BasicNameValuePair("NAME", "通知"));
+//			Utils.start_Activity(getActivity(), TongzhiActivity.class,
+//					new BasicNameValuePair("NAME", "通知"));
 			break;
 		case R.id.txt_yinsi_anquan:
-			Utils.start_Activity(getActivity(), SecureActivity.class,
-					new BasicNameValuePair("NAME", "隐私与安全"));
+//			Utils.start_Activity(getActivity(), SecureActivity.class,
+//					new BasicNameValuePair("NAME", "隐私与安全"));
 			break;
 		case R.id.txt_tongyongsetting:
-			Utils.start_Activity(getActivity(), SettingActivity.class,
-					new BasicNameValuePair("NAME", "通用设置"));
+//			Utils.start_Activity(getActivity(), SettingActivity.class,
+//					new BasicNameValuePair("NAME", "通用设置"));
 			break;
 		case R.id.txt_yijianfankui:
-			Utils.start_Activity(getActivity(), FeedBackActivity.class,
-					new BasicNameValuePair("NAME", "意见反馈"));
+//			Utils.start_Activity(getActivity(), FeedBackActivity.class,
+//					new BasicNameValuePair("NAME", "意见反馈"));
 			break;
 		case R.id.txt_aboutus:
-			Utils.start_Activity(getActivity(), AboutUsActivity.class,
-					new BasicNameValuePair("NAME", "关于我们"));
+//			Utils.start_Activity(getActivity(), AboutUsActivity.class,
+//					new BasicNameValuePair("NAME", "关于我们"));
 			break;
 		default:
 			break;

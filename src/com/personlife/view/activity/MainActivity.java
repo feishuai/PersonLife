@@ -10,6 +10,7 @@ import com.example.personlifep.R;
 import com.loopj.android.http.RequestParams;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONObjectHttpResponseHandler;
+import com.personlife.utils.ActivityCollector;
 import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.utils.Utils;
 import com.personlife.view.activity.home.HomeActivity;
@@ -53,6 +54,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 		super.onCreate(savedInstanceState);		
 		setContentView(R.layout.activity_main);		
 		ImageLoaderUtils.InitConfig(getApplicationContext());
+		ActivityCollector.addActivity(this);
 		initdata();
 		init();
 		
