@@ -9,7 +9,7 @@
     <include layout="@layout/layout_title" />
 
     <com.personlife.widget.ClearEditText
-        android:id="@+id/et_home_search"
+        android:id="@+id/et_comment_comment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
@@ -59,6 +59,7 @@
                 android:background="@color/greeny"
                 android:text="下载安装"
                 android:textColor="@color/white"
+                android:id="@+id/btn_comment_download"
                 android:textSize="30dp" />
         </LinearLayout>
     </LinearLayout>

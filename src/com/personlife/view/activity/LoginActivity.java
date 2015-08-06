@@ -64,7 +64,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 			RequestParams params = new RequestParams();
 			params.put("phone", username.getText().toString());
 			params.put("pwd", password.getText().toString());
-			BaseAsyncHttp.postReq("/users/login", params,
+			BaseAsyncHttp.postReq(getApplicationContext(),"/users/login", params,
 					new JSONObjectHttpResponseHandler() {
 
 						@Override

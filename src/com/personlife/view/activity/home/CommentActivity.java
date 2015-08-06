@@ -1,6 +1,14 @@
 package com.personlife.view.activity.home;
 
+import java.util.List;
+
+import com.example.personlifep.CommentAppActivity;
 import com.example.personlifep.R;
+import com.example.personlifep.R.id;
+import com.personlife.bean.Comment;
+import com.personlife.common.Utils;
+import com.personlife.utils.ImageLoaderUtils;
+import com.personlife.widget.ClearEditText;
 import com.personlife.widget.MyListView;
 
 import android.app.Activity;
@@ -9,29 +17,42 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
-public class CommentActivity extends Activity {
+public class CommentActivity extends Activity implements OnClickListener{
 	MyListView comments;
-	ImageButton mBack;
 	ImageView mIcon;
+	Button mBtnBack,download;
+	TextView mTitle;
+	ClearEditText comment;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_comment);
 		comments = (MyListView) findViewById(R.id.lv_comment_comment);
-		comments.setAdapter(mAUrls);
+		mBtnBack = (Button) findViewById(R.id.txt_left);
+		mTitle = (TextView) findViewById(R.id.txt_title);
+		comment = (ClearEditText)findViewById(R.id.et_comment_comment);
+		mBtnBack.setVisibility(View.VISIBLE);
+		mBtnBack.setOnClickListener(this);
+		comment.setOnClickListener(this);
+//		comments.setAdapter(mAComments);
+		mTitle.setText("评论列表");
 	}
-
-	private static String[] urls = new String[] {   "Text #2", "Text #3" };
-	private BaseAdapter mAUrls = new BaseAdapter() {
+	//评论列表
+	private static List<Comment> lcomments;
+	private BaseAdapter mAComments = new BaseAdapter() {
 
 		@Override
 		public int getCount() {
-			return urls.length;
+			return mAComments.getCount();
 		}
 
 		@Override
@@ -48,12 +69,33 @@ public class CommentActivity extends Activity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View retval = LayoutInflater.from(parent.getContext()).inflate(
 					R.layout.layout_item_comment, null);
-			// TextView title = (TextView) retval.findViewById(R.id.title);
-			// title.setText(dataObjects[position]);
-
+			TextView content = (TextView) retval.findViewById(R.id.tv_comment_content);
+			ImageView icon = (ImageView)retval.findViewById(R.id.iv_comment_icon);
+			TextView name = (TextView)retval.findViewById(R.id.tv_comment_name);
+			TextView time = (TextView)retval.findViewById(R.id.tv_comment_time);
+			RatingBar rates = (RatingBar)retval.findViewById(R.id.rb_comment_rating);
+			content.setText(lcomments.get(position).getComments());
+			name.setText(lcomments.get(position).getUsernickname());
+			time.setText(lcomments.get(position).getCreated_at());
+			rates.setNumStars(lcomments.get(position).getCommentstars());
+			ImageLoaderUtils.displayAppIcon(lcomments.get(position).getUserthumb(), icon);
 			return retval;
 		}
 
 	};
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch(v.getId()){
+		case R.id.txt_left:
+			finish();
+			break;
+		case R.id.btn_comment_download:
+			break;
+		case R.id.et_comment_comment:
+			Utils.start_Activity(CommentActivity.this, CommentAppActivity.class, null);
+			break;
+		}
+	}
 
 }

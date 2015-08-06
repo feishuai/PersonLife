@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <include layout="@layout/layout_title" />
+
+    <RatingBar
+        android:id="@+id/rb_comment_stars"
+        style="@style/RatingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="6dp"
+        android:paddingBottom="2dp"
+        android:numStars="5"
+        android:rating="0" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="请按星星给予评分" 
+        android:paddingBottom="6dp"/>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="6dp"
+        android:background="@color/black2" />
+
+    <EditText
+        android:id="@+id/dt_comment_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:lines="6" 
+        android:gravity="top|left"
+        android:hint="快来说说你的看法吧~"
+        android:paddingTop="8dp"
+        android:inputType="textMultiLine" >
+        <requestFocus />
+    </EditText>
+
+</LinearLayout>

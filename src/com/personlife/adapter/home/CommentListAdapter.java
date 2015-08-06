@@ -71,11 +71,11 @@ public class CommentListAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		holder.title.setText(String.format("%d��%s",position+1,mlist.get(position).getTitle()));
-		holder.stars.setProgress(mlist.get(position).getStars());
-		holder.content.setText(mlist.get(position).getContent());
-		holder.username.setText(mlist.get(position).getUsername());
-		Date createdDate = mlist.get(position).getCreatedDate();
-		holder.createdDate.setText(String.format("%d��%d��%d��", createdDate.getYear(),createdDate.getMonth(),createdDate.getDay()));
+//		holder.stars.setProgress(mlist.get(position).getStars());
+//		holder.content.setText(mlist.get(position).getContent());
+//		holder.username.setText(mlist.get(position).getUsername());
+//		Date createdDate = mlist.get(position).getCreatedDate();
+//		holder.createdDate.setText(String.format("%d��%d��%d��", createdDate.getYear(),createdDate.getMonth(),createdDate.getDay()));
 		return convertView;
 	}
 	public void setData(List<Comment> list) {

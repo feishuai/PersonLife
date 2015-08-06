@@ -86,7 +86,7 @@ public class SearchUser extends Activity implements OnClickListener {
 					RequestParams params = new RequestParams();
 					params.put("phone", search.getText().toString());
 					
-					BaseAsyncHttp.postReq("/users/view", params,
+					BaseAsyncHttp.postReq(getApplicationContext(),"/users/view", params,
 							new JSONObjectHttpResponseHandler() {
 
 								@Override
