@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Selection;
+import android.text.Spannable;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -59,7 +61,11 @@ public class NickName extends Activity {
 			public void onFocusChange(View v, boolean hasFocus) {
 			    if (hasFocus) {
 			        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-				    
+				    CharSequence text = nick.getText();
+				    if(text instanceof Spannable){
+				    	Spannable span = (Spannable) text;
+				    	Selection.setSelection(span,text.length());
+				    }
 			    }
 			}
 		});

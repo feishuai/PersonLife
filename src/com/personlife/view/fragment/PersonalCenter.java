@@ -1,5 +1,9 @@
 package com.personlife.view.fragment;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import org.apache.http.message.BasicNameValuePair;
 
 
@@ -13,9 +17,17 @@ import org.apache.http.message.BasicNameValuePair;
 
 
 
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.example.personlifep.R;
+import com.loopj.android.http.RequestParams;
 import com.personlife.bean.UserInfo;
+import com.personlife.net.BaseAsyncHttp;
+import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.Utils;
+import com.personlife.view.activity.MainActivity;
 import com.personlife.view.activity.personcenter.AboutUsActivity;
 import com.personlife.view.activity.personcenter.ConnectionActivity;
 import com.personlife.view.activity.personcenter.FeedBackActivity;
@@ -28,7 +40,11 @@ import com.personlife.view.activity.personcenter.TongzhiActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -50,6 +66,9 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 	private View layout;
 	private TextView username, personsign;
 	private ImageView head,sex;//头像
+	private SharedPreferences pref;
+	private Uri imageUri;
+	private Bitmap bitmap;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -67,20 +86,56 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 		return layout;
 	}
 
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		initViews();
+	}
+
 	private void initViews() {
 		username = (TextView) layout.findViewById(R.id.tvname);
 		personsign = (TextView) layout.findViewById(R.id.tvpersonsign);
 		head=(ImageView) layout.findViewById(R.id.head);
 		sex=(ImageView) layout.findViewById(R.id.iv_sex);
 		//联网获取用户信息
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-		
-		username.setText(pref.getString("userName", "用户名"));
-		personsign.setText(pref.getString("signature", "个性签名"));
-		if(pref.getString("sex", "男").equals("男"))
-			sex.setImageResource(R.drawable.ic_sex_male);
-		else 
-			sex.setImageResource(R.drawable.ic_sex_female);
+		pref = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+		if(pref.getString("userName", null)!=null){
+			username.setText(pref.getString("userName",null).toString());
+			personsign.setText(pref.getString("signature",null).toString());
+			if(pref.getString("sex",null).toString().equals("男"))
+				sex.setImageResource(R.drawable.ic_sex_male);
+			else 
+				sex.setImageResource(R.drawable.ic_sex_female);
+		}else{
+			RequestParams request = new RequestParams();
+			request.put("phone", pref.getString("telephone", null));
+			BaseAsyncHttp.postReq("/users/getinfo", request,
+					new JSONObjectHttpResponseHandler() {
+
+						@Override
+						public void jsonSuccess(JSONObject resp) {
+							try {
+								username.setText(resp.get("nickname").toString());
+								personsign.setText(resp.get("signature").toString());
+								if(resp.get("gender").toString().equals("男"))
+									sex.setImageResource(R.drawable.ic_sex_male);
+								else 
+									sex.setImageResource(R.drawable.ic_sex_female);
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							
+						}
+
+						@Override
+						public void jsonFail(JSONObject resp) {
+							// TODO Auto-generated method stub
+						}
+					});
+		}
+		headinit();
 	}
 
 	private void setOnListener() {
@@ -134,5 +189,27 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 		default:
 			break;
 		}
+	}
+	public void headinit(){
+		File outputImage = new File(Environment.getExternalStorageDirectory(),
+				"tempImage.jpg");
+		try {
+			if (!outputImage.exists()) {
+				outputImage.createNewFile();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		imageUri = Uri.fromFile(outputImage);
+
+		try {
+			bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver()
+					.openInputStream(imageUri));
+			head.setImageBitmap(bitmap);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 }

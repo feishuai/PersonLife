@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Selection;
+import android.text.Spannable;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
@@ -66,7 +68,11 @@ public class PersonalSign extends Activity {
 			public void onFocusChange(View v, boolean hasFocus) {
 			    if (hasFocus) {
 			        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-				    
+			        CharSequence text = signedit.getText();
+				    if(text instanceof Spannable){
+				    	Spannable span = (Spannable) text;
+				    	Selection.setSelection(span,text.length());
+				    }
 			    }
 			}
 		});

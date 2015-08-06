@@ -14,10 +14,10 @@
             style="@style/txt_titleStyle"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="10dp"
             android:background="@color/transparent"
             android:text="@string/cancle"
-            android:textSize="14sp"
+            android:textSize="18sp"
             android:visibility="gone" />
 
         <Button
@@ -29,7 +29,7 @@
             android:background="@color/transparent"
             android:drawableLeft="@drawable/icon_back"
             android:text="@string/back"
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:visibility="gone" />
 
         <ImageButton
@@ -38,7 +38,7 @@
             android:layout_height="30dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="10dp"
             android:background="@color/transparent"
             android:src="@drawable/icon_back"
             android:visibility="gone" />
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="10dp"
             android:background="@color/transparent"
             android:text="@string/title_button"
             android:textColor="@color/black"
@@ -68,11 +68,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="10dp"
             android:background="@color/transparent"
             android:text="@string/save"
             android:textColor="@color/black"
-            android:textSize="14sp"
+            android:textSize="18sp"
             android:visibility="gone" />
 
         <ImageButton
@@ -81,7 +81,7 @@
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="10dp"
             android:background="@color/transparent"
             android:src="@drawable/title_search"
             android:visibility="gone" />
@@ -92,7 +92,7 @@
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="10dp"
             android:background="@color/transparent"
             android:src="@drawable/img_plus"
             android:visibility="gone" />

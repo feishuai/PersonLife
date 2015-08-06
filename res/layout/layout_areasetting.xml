@@ -22,7 +22,8 @@
         android:paddingLeft="16dp"
         android:text="定位到的位置"
         android:textColor="@color/black"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        />
 
     <TextView
         android:id="@+id/location"
@@ -34,7 +35,9 @@
         android:paddingLeft="16dp"
         android:text="正在定位中"
         android:textColor="@color/black"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:clickable="true"
+        android:onClick="onClick"/>
 
     <View
         android:layout_width="match_parent"
