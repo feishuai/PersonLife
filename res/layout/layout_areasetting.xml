@@ -28,15 +28,15 @@
     <TextView
         android:id="@+id/location"
         android:layout_width="match_parent"
-        android:layout_height="32dip"
+        android:layout_height="40dip"
         android:background="@color/white"
         android:drawableLeft="@drawable/icon_dingwei"
         android:gravity="center_vertical"
         android:paddingLeft="16dp"
         android:text="正在定位中"
-        android:textColor="@color/black"
-        android:textSize="15sp"
         android:clickable="true"
+        android:textColor="@color/black"
+        android:textSize="18sp"      
         android:onClick="onClick"/>
 
     <View
