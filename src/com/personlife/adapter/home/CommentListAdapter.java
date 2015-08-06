@@ -56,12 +56,12 @@ public class CommentListAdapter extends BaseAdapter {
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
 					.inflate(R.layout.layout_item_comment, null);
 			holder = new ViewHolder();
-			holder.title = (TextView) convertView
-					.findViewById(R.id.tv_comment_title);
-			holder.createdDate = (TextView) convertView
-					.findViewById(R.id.tv_comment_createdDate);
-			holder.username = (TextView) convertView
-					.findViewById(R.id.tv_comment_username);
+//			holder.title = (TextView) convertView
+//					.findViewById(R.id.tv_comment_title);
+//			holder.createdDate = (TextView) convertView
+//					.findViewById(R.id.tv_comment_createdDate);
+//			holder.username = (TextView) convertView
+//					.findViewById(R.id.tv_comment_username);
 			holder.content = (TextView) convertView
 					.findViewById(R.id.tv_comment_content);
 			holder.stars = (RatingBar) convertView
