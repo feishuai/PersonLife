@@ -22,6 +22,8 @@ import com.personlife.personinfo.carema.OnItemClickListener;
 import com.personlife.personinfo.carema.SimpleAdapter;
 import com.personlife.personinfo.carema.ViewHolder;
 import com.personlife.utils.Utils;
+import com.personlife.view.activity.LoginActivity;
+import com.personlife.view.activity.MainActivity;
 import com.personlife.view.activity.personinfo.AreaSetting;
 import com.personlife.view.activity.personinfo.Interests;
 import com.personlife.view.activity.personinfo.NickName;
@@ -66,7 +68,7 @@ import android.widget.Toast;
 public class MyownActivity extends Activity implements
 		android.content.DialogInterface.OnClickListener {
 
-	private Button tv_back;
+	private Button tv_back,login_out;
 	private TextView tv_title, nickname, sex, area, profession, interests,
 			sign;
 	private ImageView picture;
@@ -76,6 +78,7 @@ public class MyownActivity extends Activity implements
 	public static final int CROP_PHOTO = 2;
 	public static final int CHOOSE_PHOTO = 3;
 	private Bitmap bitmap;
+	private SharedPreferences.Editor editor;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +129,7 @@ public class MyownActivity extends Activity implements
 		interests = (TextView) findViewById(R.id.personinteresting);
 		sign = (TextView) findViewById(R.id.personsign);
 		tv_back = (Button) findViewById(R.id.txt_left);
+		login_out = (Button) findViewById(R.id.login_out);
 		tv_back.setVisibility(View.VISIBLE);
 		tv_back.setOnClickListener(new OnClickListener() {
 
@@ -135,9 +139,21 @@ public class MyownActivity extends Activity implements
 				onBackPressed();
 			}
 		});
+		login_out.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				editor = pref.edit();
+				editor.putString("islogin", "0");
+				editor.commit();
+				finish();
+				Utils.start_Activity(MyownActivity.this,LoginActivity.class);
+			}
+		});
 		tv_title = (TextView) findViewById(R.id.txt_title);
 		tv_title.setText("个人信息");
-		SharedPreferences pref = PreferenceManager
+		pref = PreferenceManager
 				.getDefaultSharedPreferences(this);
 
 		nickname.setText(pref.getString("userName", "用户名"));

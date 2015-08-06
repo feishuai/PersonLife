@@ -34,7 +34,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 		editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
 		pref = PreferenceManager.getDefaultSharedPreferences(this);
 		if (pref.getString("islogin", "0").equals("1")) {
-			Utils.start_Activity(LoginActivity.this, MainActivity.class, null);
+			Utils.start_Activity(LoginActivity.this, MainActivity.class);
 			finish();
 		} else {
 			initViews();
@@ -110,5 +110,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 			break;
 		}
 	}
+
+
 
 }
