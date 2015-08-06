@@ -58,47 +58,50 @@
             android:label="@string/app_name" >
             
         </activity>
-        <activity android:name="com.personlife.view.activity.personcenter.MyownActivity" >
+        <activity android:name="com.personlife.view.activity.personcenter.MyownActivity" android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.personlife.view.activity.personcenter.MyCollectionActivity" >
+        <activity android:name="com.personlife.view.activity.personcenter.MyCollectionActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.personlife.view.activity.personcenter.ConnectionActivity" >
+        <activity android:name="com.personlife.view.activity.personcenter.ConnectionActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.personlife.view.activity.personcenter.TongzhiActivity" >
+        <activity android:name="com.personlife.view.activity.personcenter.TongzhiActivity" android:screenOrientation="portrait" >
         </activity>
-        <activity android:name="com.personlife.view.activity.personcenter.SecureActivity" >
+        <activity android:name="com.personlife.view.activity.personcenter.SecureActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.personlife.view.activity.personcenter.SettingActivity" >
+        <activity android:name="com.personlife.view.activity.personcenter.SettingActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.personlife.view.activity.personcenter.FeedBackActivity" >
+        <activity android:name="com.personlife.view.activity.personcenter.FeedBackActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.personlife.view.activity.personcenter.AboutUsActivity" >
+        <activity android:name="com.personlife.view.activity.personcenter.AboutUsActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.personlife.view.activity.personinfo.NickName" >
+        <activity android:name="com.personlife.view.activity.personinfo.NickName" android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.personlife.view.activity.personinfo.UserSex" >
+        <activity android:name="com.personlife.view.activity.personinfo.UserSex" android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.personlife.view.activity.personinfo.AreaSetting" >
+        <activity android:name="com.personlife.view.activity.personinfo.AreaSetting" android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.personlife.view.activity.personinfo.Profession" >
+        <activity android:name="com.personlife.view.activity.personinfo.Profession" android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.personlife.view.activity.personinfo.Interests" >
+        <activity android:name="com.personlife.view.activity.personinfo.Interests" android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.personlife.view.activity.personinfo.PersonalSign" >
+        <activity android:name="com.personlife.view.activity.personinfo.PersonalSign" android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.personlife.view.activity.home.AppListActivity" >
+        <activity android:name="com.personlife.view.activity.home.AppListActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.personlife.view.activity.home.AppDetailActivity">
+        <activity android:name="com.personlife.view.activity.home.AppDetailActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.personlife.view.activity.personcenter.SearchFriendActivity">
+        <activity android:name="com.personlife.view.activity.home.CommentActivity" android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.personlife.view.activity.home.AppSearchActivity"></activity>
-        <activity android:name="com.personlife.view.activity.LoginActivity">
+        <activity android:name="com.personlife.view.activity.personcenter.SearchFriendActivity" android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="com.personlife.view.activity.home.AppSearchActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.personlife.view.activity.LoginActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.personlife.view.activity.RegisterActivity1" android:screenOrientation="portrait"></activity>
     </application>
 </manifest>

@@ -5,23 +5,32 @@ import java.util.List;
 
 public class App {
 	private int id;
-	private String appname;
+	private String name;
 	private int stars;
-	private int dowloadcounts;
+	private int dowloadcount;
 	private String tag;
 	private String icon;
 	private String introdution;
 	private String version;
-	private Date createdDate;
+	private String size;
 	private Date updateDate;
 	private String[] urls;
 	private List<Comment> comments;
 	private String downloadUrl;
+	private List<App> likes;
+	public App(){
+	}
 	public App(String appname,int stars,String tag,int downloadcounts){
-		this.appname=appname;
+		this.name=appname;
 		this.stars = stars;
 		this.tag = tag;
-		this.dowloadcounts = downloadcounts;
+		this.dowloadcount = downloadcounts;
+	}
+	public String getSize() {
+		return size;
+	}
+	public void setSize(String size) {
+		this.size = size;
 	}
 	public int getId() {
 		return id;
@@ -29,11 +38,11 @@ public class App {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getAppname() {
-		return appname;
+	public String getName() {
+		return name;
 	}
-	public void setAppname(String appname) {
-		this.appname = appname;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public int getStars() {
 		return stars;
@@ -65,12 +74,7 @@ public class App {
 	public void setVersion(String version) {
 		this.version = version;
 	}
-	public Date getCreatedDate() {
-		return createdDate;
-	}
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
+	
 	public Date getUpdateDate() {
 		return updateDate;
 	}
@@ -95,11 +99,11 @@ public class App {
 	public void setDownloadUrl(String downloadUrl) {
 		this.downloadUrl = downloadUrl;
 	}
-	public int getDowloadcounts() {
-		return dowloadcounts;
+	public int getDowloadcount() {
+		return dowloadcount;
 	}
-	public void setDowloadcounts(int dowloadcounts) {
-		this.dowloadcounts = dowloadcounts;
+	public void setDowloadcount(int dowloadcount) {
+		this.dowloadcount = dowloadcount;
 	}
 	
 }

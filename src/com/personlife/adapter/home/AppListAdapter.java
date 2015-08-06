@@ -74,11 +74,11 @@ public class AppListAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		ImageLoaderUtils.displayAppIcon("https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/5136becf77e9cfc440849e0b694fdd6e_121_121.jpg", holder.icon);
-		holder.appname.setText(mlist.get(position).getAppname());
+		holder.appname.setText(mlist.get(position).getName());
 		holder.tag.setText(mlist.get(position).getTag());
 		holder.stars.setProgress(mlist.get(position).getStars());
 		holder.downloadcounts.setText("("
-				+ mlist.get(position).getDowloadcounts() + ")");
+				+ mlist.get(position).getDowloadcount() + ")");
 		holder.download.setOnClickListener(new OnClickListener() {
 			
 			@Override

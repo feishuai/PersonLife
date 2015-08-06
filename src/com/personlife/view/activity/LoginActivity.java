@@ -1,7 +1,5 @@
 package com.personlife.view.activity;
 
-import org.apache.http.Header;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -12,7 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.example.personlifep.R;
-import com.loopj.android.http.*;
+import com.loopj.android.http.RequestParams;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.Utils;

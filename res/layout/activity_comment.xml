@@ -1,26 +1,66 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-     >
- <LinearLayout 
-     android:layout_width="fill_parent"
-     android:layout_height="wrap_content"
-     android:gravity="center_horizontal"
-     android:orientation="vertical">
-     <RatingBar
-        android:id="@+id/ratingBar1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:layout_gravity="center_horizontal"/>
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
 
-     <TextView
-         android:id="@+id/textView1"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="请按星形给予评价" />
-     
- </LinearLayout>
-    
+    <include layout="@layout/layout_title" />
+
+    <com.personlife.widget.ClearEditText
+        android:id="@+id/et_home_search"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/search_bar_edit_selector"
+        android:focusable="false"
+        android:hint="我要评论"
+        android:singleLine="true"
+        android:textSize="15.0dp" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            android:paddingLeft="10dp" >
+
+            <com.personlife.widget.MyListView
+                android:id="@+id/lv_comment_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" 
+                android:clickable="false"/>
+        </ScrollView>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="@color/black2" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <Button
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@color/greeny"
+                android:text="下载安装"
+                android:textColor="@color/white"
+                android:textSize="30dp" />
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
