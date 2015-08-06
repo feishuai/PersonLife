@@ -1,6 +1,7 @@
 package com.personlife.view.activity.personcenter;
 
 import com.example.personlifep.R;
+import com.personlife.utils.Utils;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -42,8 +43,15 @@ public class ConnectionActivity extends FragmentActivity{
 				onBackPressed();
 			}
 		});
+		plus.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Utils.start_Activity(ConnectionActivity.this,SearchUser.class);
+			}
+		});
 		
-		//
 		friend=new Fragment_Friends();
 		getSupportFragmentManager().beginTransaction()
 		.add(R.id.friend_container, friend).show(friend).commit();

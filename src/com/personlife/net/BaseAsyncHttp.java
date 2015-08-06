@@ -1,17 +1,14 @@
 package com.personlife.net;
 
-import org.json.JSONArray;
-
 import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.BaseJsonHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 public class BaseAsyncHttp {
 	
-    public static final String HOST = "http://10.10.105.42:8080/v1";
+    public static final String HOST = "http://183.129.190.82:50001/v1";
    
 //	public static final String HOST = "http://10.10.105.180:9000/v1";
     private static AsyncHttpClient client = new AsyncHttpClient();

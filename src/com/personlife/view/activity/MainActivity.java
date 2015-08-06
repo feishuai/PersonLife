@@ -3,14 +3,24 @@ package com.personlife.view.activity;
 
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.example.personlifep.R;
+import com.loopj.android.http.RequestParams;
+import com.personlife.net.BaseAsyncHttp;
+import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ImageLoaderUtils;
+import com.personlife.utils.Utils;
 import com.personlife.view.activity.home.HomeActivity;
 import com.personlife.view.fragment.HomeFragment;
 import com.personlife.view.fragment.PersonalCenter;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -18,6 +28,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -35,12 +46,56 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 	private Fragment[] fragments;
 	private PersonalCenter personalCenter;//个人中心界面
 	private HomeFragment homefragment;
+	private SharedPreferences pref;
+	private SharedPreferences.Editor editor;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);		
 		setContentView(R.layout.activity_main);		
 		ImageLoaderUtils.InitConfig(getApplicationContext());
+		initdata();
 		init();
+		
+	}
+	
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		initdata();
+	}
+
+	public void initdata(){
+		pref = PreferenceManager.getDefaultSharedPreferences(this);
+		editor=PreferenceManager.getDefaultSharedPreferences(this).edit();
+		RequestParams request = new RequestParams();
+		request.put("phone", pref.getString("telephone", null));
+		BaseAsyncHttp.postReq("/users/getinfo", request,
+				new JSONObjectHttpResponseHandler() {
+
+					@Override
+					public void jsonSuccess(JSONObject resp) {
+						try {
+							editor.putString("userName", resp.get("nickname").toString());
+							editor.putString("headUrl", resp.get("thumb").toString());
+							editor.putString("signature", resp.get("signature").toString());
+							editor.putString("sex", resp.get("gender").toString());
+							editor.putString("location", resp.get("area").toString());
+							editor.putString("job", resp.get("job").toString());
+							editor.putString("hobby", resp.get("hobby").toString());
+							editor.commit();
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+					}
+
+					@Override
+					public void jsonFail(JSONObject resp) {
+						// TODO Auto-generated method stub
+					}
+				});
 		
 	}
 	public void init(){
@@ -120,6 +175,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		
 	}
+	
 }

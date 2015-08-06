@@ -2,25 +2,112 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
-    android:background="@color/black2">
+    android:background="@color/black2"
+    android:orientation="vertical" >
+
     <include
         android:id="@+id/layout_bar"
         layout="@layout/layout_title" />
+
     <View
-			android:background="@color/black2"
-			android:layout_width="match_parent"
-			android:layout_height="24.0dip" />
-    <EditText 
+        android:layout_width="match_parent"
+        android:layout_height="24.0dip"
+        android:background="@color/black2" />
+
+    <EditText
         android:id="@+id/profession"
         android:layout_width="match_parent"
         android:layout_height="32dip"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"	       
-        android:textColor="@color/black"
         android:background="@color/white"
+        android:gravity="center_vertical"
         android:hint="直接输入"
-        />
+        android:paddingLeft="16dp"
+        android:textColor="@color/black" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="12.0dip"
+        android:background="@color/black2" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/work_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="IT"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/work_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="会计"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/work_3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="画家"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/work_4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="工程师"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/work_5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="架构师"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/work_6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="程序员"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/work_7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="码农"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/work_8"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="司机"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/work_9"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="文学家"
+            android:layout_weight="1" />
+    </LinearLayout>
 
 </LinearLayout>
-

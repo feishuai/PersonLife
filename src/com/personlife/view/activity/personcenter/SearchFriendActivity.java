@@ -6,6 +6,7 @@ import java.util.List;
 import com.example.personlifep.R;
 import com.personlife.adapter.home.AppListAdapter;
 import com.personlife.adapter.home.ContactAdapter;
+import com.personlife.adapter.home.UserFriendAdapter;
 import com.personlife.bean.App;
 import com.personlife.bean.UserFriend;
 import com.personlife.view.activity.home.AppSearchActivity;
@@ -14,6 +15,7 @@ import com.personlife.widget.MyListView;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -31,7 +33,7 @@ import android.widget.TextView.OnEditorActionListener;
 public class SearchFriendActivity extends Activity implements OnClickListener {
 	private Button cancel;
 	private ClearEditText search;
-	private ContactAdapter userAdapter;
+	private UserFriendAdapter userAdapter;
 	private MyListView mListView;
 	private List<UserFriend> users;
 	@Override
@@ -59,7 +61,7 @@ public class SearchFriendActivity extends Activity implements OnClickListener {
 				case EditorInfo.IME_ACTION_NEXT:
 				case EditorInfo.IME_ACTION_DONE:
 					//添加搜索
-					Toast.makeText(SearchFriendActivity.this, search.getText().toString().trim(), Toast.LENGTH_SHORT).show();
+					
 					
 					break;
 				}
@@ -71,7 +73,7 @@ public class SearchFriendActivity extends Activity implements OnClickListener {
 	private void initData() {
 		// TODO Auto-generated method stub
 		users.add(new UserFriend("123","","heh"));		
-		userAdapter = new ContactAdapter(SearchFriendActivity.this, users);
+		userAdapter = new UserFriendAdapter(SearchFriendActivity.this, users);
 		mListView.setAdapter(userAdapter);
 	}
 	@Override
