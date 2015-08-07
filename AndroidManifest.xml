@@ -134,7 +134,15 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name="com.personlife.view.activity.personcenter.SearchFriendActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.personlife.view.activity.home.AppSearchActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.personlife.view.activity.personinfo.UserDetail"
             android:screenOrientation="portrait" >
         </activity>
         <activity

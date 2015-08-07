@@ -3,13 +3,20 @@ package com.personlife.view.activity.personcenter;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.tsz.afinal.FinalDb;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,8 +36,10 @@ import com.personlife.adapter.home.ContactAdapter;
 import com.personlife.bean.UserFriend;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONObjectHttpResponseHandler;
+import com.personlife.utils.FriendsUtils;
 import com.personlife.utils.SideBar;
 import com.personlife.utils.Utils;
+import com.personlife.view.activity.personinfo.UserDetail;
 
 //通讯录
 
@@ -42,8 +51,8 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 	private SideBar indexBar;
 	private TextView mDialogText;
 	private WindowManager mWindowManager;
-	private List<UserFriend> userFriends;
-
+	private SharedPreferences pref;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -67,7 +76,7 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 
 	private void initViews() {
 
-		userFriends = new ArrayList<UserFriend>();
+		FriendsUtils.userFriends = new ArrayList<UserFriend>();
 		lvContact = (ListView) layout.findViewById(R.id.lvContact);
 
 		mDialogText = (TextView) LayoutInflater.from(getActivity()).inflate(
@@ -87,7 +96,7 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 				R.layout.layout_head_friend, null);
 		lvContact.addHeaderView(layout_head);
 		lvContact.setAdapter(new ContactAdapter(getActivity(),
-				userFriends));
+				FriendsUtils.userFriends));
 	}
 
 	@Override
@@ -104,18 +113,11 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 	}
 
 	private void initData() {
-
-		// if (GloableParams.UserFriendInfos != null) {
-		// lvContact.setAdapter(new ContactAdapter(getActivity(),
-		// GloableParams.UserFriendInfos));
-		// } else {
-		// FinalDb db = FinalDb
-		// .create(getActivity(), Constants.DB_NAME, false);
-		// GloableParams.UserInfos = db.findAllByWhere(User.class, "type='N'");
 		
+		pref = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
 		RequestParams params = new RequestParams();
-		params.put("myid", "1");
-		
+		params.put("myid", pref.getString("id", "myid"));
+			
 		Log.i("personlife", "start post");
 		BaseAsyncHttp.postReq(getActivity().getApplicationContext(),"/friend/getall", params,
 				new JSONObjectHttpResponseHandler() {
@@ -126,16 +128,14 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 						JSONArray jsons = resp.optJSONArray("items");
 						for (int i = 0; i < jsons.length(); i++) {
 							UserFriend userFriend = new UserFriend();
-							userFriend.setFriendid(jsons.optJSONObject(i)
-									.optString("friendid"));
-							userFriend.setNickname(jsons.optJSONObject(i)
-									.optString("nickname"));
-							userFriend.setThumb(jsons.optJSONObject(i)
-									.optString("thumb"));
-							userFriends.add(userFriend);
+							userFriend.setPhone(jsons.optJSONObject(i).optString("phone"));
+							userFriend.setNickname(jsons.optJSONObject(i).optString("nickname"));
+							userFriend.setThumb(jsons.optJSONObject(i).optString("thumb"));
+							FriendsUtils.userFriends.add(userFriend);
+
 						}
 						lvContact.setAdapter(new ContactAdapter(getActivity(),
-								userFriends));
+								FriendsUtils.userFriends));
 					}
 
 					@Override
@@ -149,7 +149,7 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 		// getActivity().startService(intent);
 		// }
 	}
-
+	
 	private void setOnListener() {
 		lvContact.setOnItemClickListener(this);
 		layout.findViewById(R.id.layout_addfriend)
@@ -161,7 +161,7 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.layout_search:// 搜索好友及公众号
+		case R.id.layout_search:// 搜索好友
 			Utils.start_Activity(getActivity(), SearchFriendActivity.class);
 			break;
 		case R.id.layout_addfriend:// 添加好友
@@ -176,16 +176,13 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		UserFriend user = userFriends.get(arg2 - 1);
+		UserFriend user = FriendsUtils.userFriends.get(arg2 - 1);
 		if (user != null) {
-			// Intent intent = new Intent(getActivity(),
-			// FriendMsgActivity.class);
-			// intent.putExtra(Constants.NAME, user.getUserName());
-			// intent.putExtra(Constants.TYPE, ChatActivity.CHATTYPE_SINGLE);
-			// intent.putExtra(Constants.User_ID, user.getTelephone());
-			// getActivity().startActivity(intent);
-			// getActivity().overridePendingTransition(R.anim.push_left_in,
-			// R.anim.push_left_out);
+			 Intent intent = new Intent(getActivity(),UserDetail.class);
+			 intent.putExtra("phone", user.getPhone());
+			 getActivity().startActivity(intent);
+//			 getActivity().overridePendingTransition(R.anim.push_left_in,
+//			 R.anim.push_left_out);
 		}
 
 	}

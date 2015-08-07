@@ -80,6 +80,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 					@Override
 					public void jsonSuccess(JSONObject resp) {
 						try {
+							editor.putString("id", resp.get("id").toString());
 							editor.putString("userName", resp.get("nickname").toString());
 							editor.putString("headUrl", resp.get("thumb").toString());
 							editor.putString("signature", resp.get("signature").toString());

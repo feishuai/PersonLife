@@ -1,6 +1,7 @@
 package com.personlife.view.activity.personinfo;
 
 import com.example.personlifep.R;
+import com.personlife.utils.ActivityCollector;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -31,6 +32,7 @@ public class Profession extends Activity implements OnClickListener{
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_profession);
+		ActivityCollector.addActivity(this);
 		init();
 	}
 

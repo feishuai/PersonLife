@@ -6,22 +6,23 @@ package com.personlife.bean;
  */
 public class UserFriend {
 
-	private String friendid;
+	private String phone;
 	private String thumb;
 	private String nickname;
 	public UserFriend(){
 		
 	}
 	public UserFriend(String f,String t,String n){
-		this.friendid=f;
+		this.phone=f;
 		this.thumb=t;
 		this.nickname=n;
 	}
-	public String getFriendid() {
-		return friendid;
+	
+	public String getPhone() {
+		return phone;
 	}
-	public void setFriendid(String friendid) {
-		this.friendid = friendid;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 	public String getThumb() {
 		return thumb;
