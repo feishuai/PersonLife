@@ -44,7 +44,7 @@
                 	android:layout_below="@id/ib_home"
                 	android:layout_centerHorizontal="true"
                 	android:layout_marginTop="3dp"
-                	android:text="主页"
+                	android:text="我的APP"
                 	android:textColor="@color/black"
                 	android:textSize="12sp" />            	
             </RelativeLayout>
@@ -79,7 +79,7 @@
                 	android:layout_below="@id/ib_interact"
                 	android:layout_centerHorizontal="true"
                 	android:layout_marginTop="3dp"
-                	android:text="互动"
+                	android:text="圈子"
                 	android:textColor="@color/black"
                 	android:textSize="12sp" />
         </RelativeLayout>
@@ -114,7 +114,7 @@
                 android:layout_below="@id/ib_recom"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="3dp"
-                android:text="推荐"
+                android:text="发现"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
               

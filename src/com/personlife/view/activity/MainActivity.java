@@ -14,6 +14,7 @@ import com.personlife.utils.ActivityCollector;
 import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.utils.Utils;
 import com.personlife.view.activity.home.HomeActivity;
+import com.personlife.view.fragment.DiscoveryFragment;
 import com.personlife.view.fragment.HomeFragment;
 import com.personlife.view.fragment.PersonalCenter;
 
@@ -47,6 +48,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 	private Fragment[] fragments;
 	private PersonalCenter personalCenter;//个人中心界面
 	private HomeFragment homefragment;
+	private DiscoveryFragment discoveryfragment;
 	private SharedPreferences pref;
 	private SharedPreferences.Editor editor;
 	@Override
@@ -123,12 +125,14 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 		
 		personalCenter=new PersonalCenter();
 		homefragment = new HomeFragment();
-		fragments = new Fragment[] {homefragment,homefragment,homefragment,personalCenter};
+		discoveryfragment = new DiscoveryFragment();
+		fragments = new Fragment[] {homefragment,homefragment,discoveryfragment,personalCenter};
 		// 添加显示第一个fragment
 		getSupportFragmentManager().beginTransaction()
 			.add(R.id.fragment_container, personalCenter)
 			.add(R.id.fragment_container,homefragment)
-			.hide(personalCenter).show(homefragment).commit();
+			.add(R.id.fragment_container, discoveryfragment)
+			.hide(personalCenter).hide(discoveryfragment).show(homefragment).commit();
 
 	}
 
@@ -147,7 +151,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 			break;
 		case R.id.re_recommend:
 			index = 2;
-			title.setText("推荐");
+			title.setText("发现");
 			txtSearch.setVisibility(View.VISIBLE);
 			break;
 		case R.id.re_personal:

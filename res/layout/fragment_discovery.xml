@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/act_solution_1_sv"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="5dp"
+            android:background="@color/black2" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:paddingLeft="5dp"
+                android:text="新星推荐"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_discovery_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:paddingRight="5dp"
+                android:text="查看更多 >"
+                android:textSize="12dp" />
+        </RelativeLayout>
+
+        <GridView
+            android:id="@+id/gridview"
+            android:layout_width="fill_parent"
+            android:layout_height="280dp"
+            android:columnWidth="100dp"
+            android:gravity="center"
+            android:horizontalSpacing="6dp"
+            android:numColumns="3"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="10dp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="5dp"
+            android:background="@color/black2" />
+          <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="个性化推荐"
+                android:padding="5dp"
+                android:textSize="14dp" />
+
+          <com.personlife.widget.MyListView
+              android:id="@+id/lv_dicovery_recommend"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content" 
+              android:divider="@color/black1"
+              android:dividerHeight="1dp">
+          </com.personlife.widget.MyListView>
+          
+    </LinearLayout>
+
+</ScrollView>

@@ -58,7 +58,8 @@
 
         <activity
             android:name="com.personlife.view.activity.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.personlife.view.activity.personcenter.MyownActivity"
