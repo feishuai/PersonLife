@@ -128,7 +128,7 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 						JSONArray jsons = resp.optJSONArray("items");
 						for (int i = 0; i < jsons.length(); i++) {
 							UserFriend userFriend = new UserFriend();
-							userFriend.setFriendid(jsons.optJSONObject(i).optString("friendid"));
+							userFriend.setPhone(jsons.optJSONObject(i).optString("phone"));
 							userFriend.setNickname(jsons.optJSONObject(i).optString("nickname"));
 							userFriend.setThumb(jsons.optJSONObject(i).optString("thumb"));
 							FriendsUtils.userFriends.add(userFriend);
@@ -161,7 +161,7 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.layout_search:// 搜索好友及公众号
+		case R.id.layout_search:// 搜索好友
 			Utils.start_Activity(getActivity(), SearchFriendActivity.class);
 			break;
 		case R.id.layout_addfriend:// 添加好友
@@ -179,11 +179,10 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 		UserFriend user = FriendsUtils.userFriends.get(arg2 - 1);
 		if (user != null) {
 			 Intent intent = new Intent(getActivity(),UserDetail.class);
-			 intent.putExtra("nickname", user.getNickname());
-			 intent.putExtra("friendid", user.getFriendid());
+			 intent.putExtra("phone", user.getPhone());
 			 getActivity().startActivity(intent);
-			 getActivity().overridePendingTransition(R.anim.push_left_in,
-			 R.anim.push_left_out);
+//			 getActivity().overridePendingTransition(R.anim.push_left_in,
+//			 R.anim.push_left_out);
 		}
 
 	}

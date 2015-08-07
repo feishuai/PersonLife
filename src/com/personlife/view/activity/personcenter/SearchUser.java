@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -14,6 +15,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -28,6 +31,8 @@ import com.personlife.bean.UserFriend;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ActivityCollector;
+import com.personlife.utils.FriendsUtils;
+import com.personlife.view.activity.personinfo.UserDetail;
 import com.personlife.widget.ClearEditText;
 import com.personlife.widget.MyListView;
 
@@ -128,7 +133,22 @@ public class SearchUser extends Activity implements OnClickListener {
 				return false;
 			}
 		});
+		mListView.setOnItemClickListener(new OnItemClickListener() {
 
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				UserFriend user = FriendsUtils.userFriends.get(position);
+				if (user != null) {
+					 Intent intent = new Intent(SearchUser.this,UserDetail.class);
+					 intent.putExtra("phone", user.getPhone());
+					 startActivity(intent);
+//					 getActivity().overridePendingTransition(R.anim.push_left_in,
+//					 R.anim.push_left_out);
+				}
+			}
+		});
 	}
 
 
