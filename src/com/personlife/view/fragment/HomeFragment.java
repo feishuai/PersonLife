@@ -11,18 +11,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.personlifep.ClassificationActivity;
 import com.example.personlifep.R;
 import com.personlife.adapter.home.AppListAdapter;
 import com.personlife.bean.App;
-import com.personlife.utils.ListViewUtils;
+import com.personlife.utils.Utils;
 import com.personlife.view.activity.home.AppSearchActivity;
 import com.personlife.widget.ClearEditText;
 import com.personlife.widget.MyListView;
 
 public class HomeFragment extends Fragment implements OnClickListener{
 	private ClearEditText search;
+	private Button kind;
 	private Activity ctx;
 	private View layout;
 	private MyListView mLvApplist1,mLvApplist2,mLvApplist3;
@@ -52,7 +55,9 @@ public class HomeFragment extends Fragment implements OnClickListener{
 		mLvApplist2 =(MyListView)layout.findViewById(R.id.lv_app_list2);
 		mLvApplist3 =(MyListView)layout.findViewById(R.id.lv_app_list3);
 		mTvMore1 = (TextView)layout.findViewById(R.id.tv_home_more1);
+		kind = (Button)layout.findViewById(R.id.btn_home_class);
 		mTvMore1.setOnClickListener(this);
+		kind.setOnClickListener(this);
 	}
 	public void updateContent(){
 		apps.add(new App("淘宝",5,"很好",1000));
@@ -80,10 +85,12 @@ public class HomeFragment extends Fragment implements OnClickListener{
 		    startActivity(intent);
 			break;
 		case R.id.tv_home_more1:
-			System.out.println();
 			mAdapter.setData(apps);
 			mAdapter.notifyDataSetChanged();
 			mTvMore1.setVisibility(View.GONE);
+			break;
+		case R.id.btn_home_class:
+			Utils.start_Activity(getActivity(), ClassificationActivity.class, null);
 			break;
 		default:
 			break;

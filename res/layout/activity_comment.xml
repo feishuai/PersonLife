@@ -8,60 +8,59 @@
 
     <include layout="@layout/layout_title" />
 
-    <com.personlife.widget.ClearEditText
-        android:id="@+id/et_comment_comment"
+    <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/search_bar_edit_selector"
-        android:focusable="false"
-        android:hint="我要评论"
-        android:singleLine="true"
-        android:textSize="15.0dp" />
+        android:layout_height="fill_parent" >
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical" >
+        <com.personlife.widget.ClearEditText
+            android:id="@+id/et_comment_comment"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/sousuokuang"
+            android:paddingLeft="10dp"
+            android:focusable="false"
+            android:hint="我要评论"
+            android:singleLine="true"
+            android:textSize="15.0dp" />
 
         <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="8"
+            android:layout_below="@id/et_comment_comment"
+            android:layout_above="@+id/view_comment"
+            android:layout_marginTop="5dp"
             android:paddingLeft="10dp" >
 
             <com.personlife.widget.MyListView
                 android:id="@+id/lv_comment_comment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" 
-                android:clickable="false"/>
+                android:layout_height="wrap_content"
+                android:clickable="false" />
         </ScrollView>
 
         <View
+            android:id="@+id/view_comment"
             android:layout_width="fill_parent"
             android:layout_height="2dp"
+            android:layout_above="@+id/btn_comment_download"
             android:background="@color/black2" />
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical" >
-
-            <Button
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:background="@color/greeny"
-                android:text="下载安装"
-                android:textColor="@color/white"
-                android:id="@+id/btn_comment_download"
-                android:textSize="30dp" />
-        </LinearLayout>
-    </LinearLayout>
+        <Button
+            android:id="@+id/btn_comment_download"
+            android:layout_width="160dp"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/greeny"
+            android:text="下载安装"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+    </RelativeLayout>
 
 </LinearLayout>
