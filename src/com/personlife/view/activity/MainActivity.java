@@ -3,6 +3,9 @@ package com.personlife.view.activity;
 
 
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,15 +52,20 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 	private PersonalCenter personalCenter;//个人中心界面
 	private HomeFragment homefragment;
 	private DiscoveryFragment discoveryfragment;
-	private SharedPreferences pref;
-	private SharedPreferences.Editor editor;
+	private SharedPreferences pref=PreferenceManager.getDefaultSharedPreferences(this);
+	private SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(this).edit();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);		
 		setContentView(R.layout.activity_main);		
 		ImageLoaderUtils.InitConfig(getApplicationContext());
 		ActivityCollector.addActivity(this);
-		initdata();
+		if(pref.getString("password", null)!=null){
+			initdataWithPassword();
+		}else{
+			initdataWithNoPassword();
+		}
+		
 		init();
 		
 	}
@@ -66,12 +74,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		initdata();
+//		initdata();
 	}
 
-	public void initdata(){
-		pref = PreferenceManager.getDefaultSharedPreferences(this);
-		editor=PreferenceManager.getDefaultSharedPreferences(this).edit();
+	public void initdataWithPassword(){
+		
 		RequestParams request = new RequestParams();
 		request.put("phone", pref.getString("telephone", null));
 		BaseAsyncHttp.postReq(getApplicationContext(),"/users/getinfo", request,
@@ -87,7 +94,12 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 							editor.putString("sex", resp.get("gender").toString());
 							editor.putString("location", resp.get("area").toString());
 							editor.putString("job", resp.get("job").toString());
-							editor.putString("hobby", resp.get("hobby").toString());
+							String[] temp=resp.get("hobby").toString().split(" ");
+							Set<String> set = new HashSet<String>();
+							for(int i=0;i<temp.length;i++){
+								set.add(temp[i]);
+							}
+							editor.putStringSet("hobby", set);
 							editor.commit();
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
@@ -101,6 +113,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 						// TODO Auto-generated method stub
 					}
 				});
+		
+	}
+	public void initdataWithNoPassword(){
 		
 	}
 	public void init(){
