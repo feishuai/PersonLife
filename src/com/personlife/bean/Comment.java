@@ -9,7 +9,10 @@ public class Comment {
 	private String comments;
 	private String userthumb;
 	private String created_at;
-
+	
+	public Comment(){
+		
+	}
 	public Comment(String title, int stars, String username, String content,
 			String createdDate) {
 		super();

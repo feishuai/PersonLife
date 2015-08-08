@@ -3,6 +3,7 @@
 
     <!-- 白色 -->
     <color name="white">#ffffff</color>
+ 
     <!-- 透明 -->
     <color name="transparent">#00000000</color>
     <color name="transparent2">#50000000</color>
@@ -109,5 +110,6 @@
     <color name="card_shadow">#D4D4D4</color>
     <color name="black_overlay">#60000000</color>
     <color name="white_overlay">#40FFFFFF</color>
+    <color name="yellow">#17C5F0</color>
 
 </resources>

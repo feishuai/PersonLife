@@ -2,28 +2,55 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/act_solution_1_sv"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-     >
+    android:layout_height="fill_parent" >
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" 
-        android:background="@color/white">
+        android:background="@color/white"
+        android:orientation="vertical" >
 
         <com.personlife.widget.ClearEditText
-                    android:id="@+id/et_home_search"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/search_bar_edit_selector"
-                    android:drawableLeft="@drawable/search_bar_icon_normal"
-                    android:focusable="false"
-                    android:hint="搜索"
-                    android:singleLine="true"
-                    android:textSize="15.0dp" />
+            android:id="@+id/et_home_search"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/sousuokuang"
+            android:drawableLeft="@drawable/sousuoyemian"
+            android:focusable="false"
+            android:hint="搜索"
+            android:singleLine="true"
+            android:paddingLeft="10dp"
+            android:textSize="15.0dp" />
+        <RelativeLayout 
+            android:layout_width="fill_parent"
+            android:background="@color/black2"
+            android:layout_height="50dp">
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:textSize="18dp"
+                android:textColor="@color/black"
+                android:text="今日推荐" />
+
+            <Button
+                android:id="@+id/btn_home_class"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/xuanzefenlei"
+                android:textSize="16dp"
+                android:gravity="center"
+                android:layout_marginRight="5dp"
+                android:text="选择分类  " />
+        </RelativeLayout>
+
         <LinearLayout
             android:id="@+id/ll_home_ll1"
             android:layout_width="fill_parent"
@@ -38,8 +65,8 @@
                     android:id="@+id/tv_home_catalog1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:text="早餐" />
+                    android:text="早餐"
+                    android:textSize="15dp" />
 
                 <ImageButton
                     android:id="@+id/imageButton1"
@@ -62,9 +89,9 @@
 
                 <TextView
                     android:id="@+id/textView10"
+                    style="@style/home_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/home_text"
                     android:text="我的" />
 
                 <LinearLayout
@@ -76,11 +103,12 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:src="@drawable/default_app_icon" />
-                    <ImageButton 
+
+                    <ImageButton
                         android:id="@+id/ib_home_plus1"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/jiahao"/>
+                        android:src="@drawable/jiahao" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -91,23 +119,25 @@
 
             <TextView
                 android:id="@+id/textView11"
+                style="@style/home_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/home_text"
                 android:text="推荐" />
 
             <com.personlife.widget.MyListView
                 android:id="@+id/lv_app_list1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
             <TextView
-                    android:id="@+id/tv_home_more1"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    style="@style/home_text"
-                    android:gravity="center"
-                    android:text="查看更多" />
+                android:id="@+id/tv_home_more1"
+                style="@style/home_text"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="查看更多" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/ll_home_ll2"
             android:layout_width="fill_parent"
@@ -120,11 +150,10 @@
 
                 <TextView
                     android:id="@+id/tv_home_catalog2"
+                    style="@style/home_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/home_text"
                     android:text="出行" />
-
             </RelativeLayout>
 
             <View
@@ -139,9 +168,9 @@
 
                 <TextView
                     android:id="@+id/textView5"
+                    style="@style/home_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/home_text"
                     android:text="我的" />
 
                 <LinearLayout
@@ -163,9 +192,9 @@
 
             <TextView
                 android:id="@+id/textView6"
+                style="@style/home_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/home_text"
                 android:text="推荐" />
 
             <com.personlife.widget.MyListView
@@ -173,6 +202,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/ll_home_ll3"
             android:layout_width="fill_parent"
@@ -185,11 +215,10 @@
 
                 <TextView
                     android:id="@+id/tv_home_catalog3"
+                    style="@style/home_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/home_text"
                     android:text="娱乐" />
-
             </RelativeLayout>
 
             <View
@@ -204,9 +233,9 @@
 
                 <TextView
                     android:id="@+id/textView8"
+                    style="@style/home_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/home_text"
                     android:text="我的" />
 
                 <LinearLayout
@@ -228,9 +257,9 @@
 
             <TextView
                 android:id="@+id/textView9"
+                style="@style/home_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/home_text"
                 android:text="推荐" />
 
             <com.personlife.widget.MyListView
