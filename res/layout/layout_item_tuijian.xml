@@ -5,7 +5,7 @@
     android:background="@color/white" >
 
     <ImageView
-        android:id="@+id/iv_download_icon"
+        android:id="@+id/iv_tuijian_icon"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:padding="10dp"
@@ -15,12 +15,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/iv_download_icon"
+        android:layout_toRightOf="@+id/iv_tuijian_icon"
         android:orientation="vertical"
         android:paddingLeft="4dp" >
 
         <TextView
-            android:id="@+id/tv_download_name"
+            android:id="@+id/tv_tuijian_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="怪物闹钟"
@@ -28,23 +28,22 @@
             android:textSize="16dp" />
 
         <TextView
-            android:id="@+id/tv_download_status"
+            android:id="@+id/tv_tuijian_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="未安装"
+            android:text="17万下载  23.32M"
             android:textSize="14dp" />
 
         <TextView
-            android:id="@+id/tv_download_status1"
+            android:id="@+id/tv_tuijian_intro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="未安装"
-            android:visibility="gone"
+            android:text="网易云音乐来了"
             android:textSize="14dp" />
     </LinearLayout>
 
     <Button
-        android:id="@+id/btn_download_download"
+        android:id="@+id/btn_tuijian_tuijian"
         android:layout_width="80dp"
         android:layout_height="40dp"
         android:layout_alignParentRight="true"
@@ -54,15 +53,5 @@
         android:gravity="center"
         android:text="下载"
         android:textColor="@color/white" />
-
-    <ImageView
-        android:id="@+id/iv_download_stop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="15dp"
-        android:layout_toLeftOf="@+id/btn_download_download"
-        android:visibility="gone"
-        android:src="@drawable/shanchu" />
 
 </RelativeLayout>

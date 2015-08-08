@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.example.personlifep.CommentAppActivity;
 import com.example.personlifep.R;
 import com.personlife.bean.Comment;
 import com.personlife.common.Utils;

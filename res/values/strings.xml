@@ -28,5 +28,6 @@
 
     <string name="title_activity_guess">GuessActivity</string>
     <string name="title_activity_classification">ClassificationActivity</string>
+    <string name="title_activity_recommend">RecommendActivity</string>
 
 </resources>

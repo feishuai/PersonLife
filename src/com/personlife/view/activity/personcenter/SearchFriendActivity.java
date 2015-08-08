@@ -5,9 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.example.personlifep.R;
-import com.personlife.adapter.home.AppListAdapter;
-import com.personlife.adapter.home.ContactAdapter;
-import com.personlife.adapter.home.UserFriendAdapter;
+import com.personlife.adapter.AppListAdapter;
+import com.personlife.adapter.ContactAdapter;
+import com.personlife.adapter.UserFriendAdapter;
 import com.personlife.bean.App;
 import com.personlife.bean.UserFriend;
 import com.personlife.utils.ActivityCollector;

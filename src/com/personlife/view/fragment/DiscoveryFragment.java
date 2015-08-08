@@ -30,10 +30,10 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.SimpleAdapter;
 
-import com.example.personlifep.GuessActivity;
 import com.example.personlifep.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.personlife.utils.Utils;
+import com.personlife.view.activity.discovery.GuessActivity;
 import com.personlife.widget.JazzyViewPager;
 import com.personlife.widget.JazzyViewPager.TransitionEffect;
 import com.personlife.widget.MyListView;

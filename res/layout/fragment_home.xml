@@ -2,7 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/act_solution_1_sv"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent" 
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -19,13 +20,14 @@
             android:drawableLeft="@drawable/sousuoyemian"
             android:focusable="false"
             android:hint="搜索"
-            android:singleLine="true"
             android:paddingLeft="10dp"
+            android:singleLine="true"
             android:textSize="15.0dp" />
-        <RelativeLayout 
+
+        <RelativeLayout
             android:layout_width="fill_parent"
-            android:background="@color/black2"
-            android:layout_height="50dp">
+            android:layout_height="50dp"
+            android:background="@color/black2" >
 
             <TextView
                 android:id="@+id/textView1"
@@ -34,9 +36,9 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="5dp"
-                android:textSize="18dp"
+                android:text="今日推荐"
                 android:textColor="@color/black"
-                android:text="今日推荐" />
+                android:textSize="18dp" />
 
             <Button
                 android:id="@+id/btn_home_class"
@@ -44,229 +46,18 @@
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:background="@drawable/xuanzefenlei"
-                android:textSize="16dp"
-                android:gravity="center"
                 android:layout_marginRight="5dp"
-                android:text="选择分类  " />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_home_ll1"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-                <TextView
-                    android:id="@+id/tv_home_catalog1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="早餐"
-                    android:textSize="15dp" />
-
-                <ImageButton
-                    android:id="@+id/imageButton1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:src="@drawable/gantan" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/blue" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/textView10"
-                    style="@style/home_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="我的" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-
-                    <ImageView
-                        android:id="@+id/imageView1"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/default_app_icon" />
-
-                    <ImageButton
-                        android:id="@+id/ib_home_plus1"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/jiahao" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/blue" />
-
-            <TextView
-                android:id="@+id/textView11"
-                style="@style/home_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="推荐" />
-
-            <com.personlife.widget.MyListView
-                android:id="@+id/lv_app_list1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/tv_home_more1"
-                style="@style/home_text"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:background="@drawable/xuanzefenlei"
                 android:gravity="center"
-                android:text="查看更多" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_home_ll2"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-                <TextView
-                    android:id="@+id/tv_home_catalog2"
-                    style="@style/home_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="出行" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/blue" />
-
-            <LinearLayout
+                android:text="选择分类  "
+                android:textSize="16dp" />
+        </RelativeLayout>
+         <com.personlife.widget.MyListView
+                android:id="@+id/lv_home_kinds"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/textView5"
-                    style="@style/home_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="我的" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-
-                    <ImageView
-                        android:id="@+id/imageView3"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/default_app_icon" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/blue" />
-
-            <TextView
-                android:id="@+id/textView6"
-                style="@style/home_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="推荐" />
-
-            <com.personlife.widget.MyListView
-                android:id="@+id/lv_app_list2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_home_ll3"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-                <TextView
-                    android:id="@+id/tv_home_catalog3"
-                    style="@style/home_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="娱乐" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/blue" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/textView8"
-                    style="@style/home_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="我的" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
-
-                    <ImageView
-                        android:id="@+id/imageView5"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/default_app_icon" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/blue" />
-
-            <TextView
-                android:id="@+id/textView9"
-                style="@style/home_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="推荐" />
-
-            <com.personlife.widget.MyListView
-                android:id="@+id/lv_app_list3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" >
+            </com.personlife.widget.MyListView>
     </LinearLayout>
-
 </ScrollView>

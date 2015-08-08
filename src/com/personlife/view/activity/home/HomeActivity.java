@@ -11,7 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.personlifep.R;
-import com.personlife.adapter.home.AppListAdapter;
+import com.personlife.adapter.AppListAdapter;
 import com.personlife.bean.App;
 import com.personlife.widget.MyListView;
 
@@ -24,10 +24,10 @@ public class HomeActivity extends Activity implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_home);
-		mLvApplist1 =(MyListView)findViewById(R.id.lv_app_list1);
-		mLvApplist2 =(MyListView)findViewById(R.id.lv_app_list2);
-		mLvApplist3 =(MyListView)findViewById(R.id.lv_app_list3);
-		mTvMore1 = (TextView)findViewById(R.id.tv_home_more1);
+//		mLvApplist1 =(MyListView)findViewById(R.id.lv_app_list1);
+//		mLvApplist2 =(MyListView)findViewById(R.id.lv_app_list2);
+//		mLvApplist3 =(MyListView)findViewById(R.id.lv_app_list3);
+//		mTvMore1 = (TextView)findViewById(R.id.tv_home_more1);
 		apps.add(new App("淘宝",5,"很好",1000));
 		apps.add(new App("天猫",5,"很好",9999));
 		apps.add(new App("搜狐",1,"一般",10));
@@ -45,11 +45,7 @@ public class HomeActivity extends Activity implements OnClickListener{
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch(v.getId()){
-		case R.id.tv_home_more1:
-			System.out.println();
-			mAdapter.setData(apps);
-			mAdapter.notifyDataSetChanged();
-			break;
+		
 		default:
 			break;
 		}

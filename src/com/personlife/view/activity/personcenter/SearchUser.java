@@ -24,8 +24,8 @@ import android.widget.TextView.OnEditorActionListener;
 
 import com.example.personlifep.R;
 import com.loopj.android.http.RequestParams;
-import com.personlife.adapter.home.ContactAdapter;
-import com.personlife.adapter.home.UserAdapter;
+import com.personlife.adapter.ContactAdapter;
+import com.personlife.adapter.UserAdapter;
 import com.personlife.bean.User;
 import com.personlife.bean.UserFriend;
 import com.personlife.net.BaseAsyncHttp;
