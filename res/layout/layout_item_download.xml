@@ -5,43 +5,46 @@
     android:background="@color/white" >
 
     <ImageView
-        android:id="@+id/iv_recommend_icon"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:id="@+id/iv_download_icon"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:padding="10dp"
         android:src="@drawable/default_app_icon" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/iv_recommend_icon"
+        android:layout_toRightOf="@+id/iv_download_icon"
         android:orientation="vertical"
         android:layout_centerVertical="true"
         android:paddingLeft="4dp" >
 
         <TextView
-            android:id="@+id/tv_recommend_content"
+            android:id="@+id/tv_download_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:textSize="18dp"
-            android:text="标题" />
+            android:textSize="16dp"
+            android:text="怪物闹钟" />
 
         <TextView
-            android:id="@+id/tv_recommend_content1"
+            android:id="@+id/tv_download_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
-            android:text="内容" />
+            android:textSize="14dp"
+            android:text="未安装" />
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <Button
+        android:id="@+id/btn_download_download"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:paddingRight="10dp"
-        android:src="@drawable/right" />
-
+        android:background="@drawable/backgroud_download"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:layout_marginRight="20dp"
+        android:text="下载" />
+    
 </RelativeLayout>

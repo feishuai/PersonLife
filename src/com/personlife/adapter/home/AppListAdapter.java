@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.personlifep.R;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.personlife.bean.App;
 import com.personlife.utils.Constants;
 import com.personlife.utils.ImageLoaderUtils;

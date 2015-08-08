@@ -11,6 +11,18 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
+        <com.personlife.widget.JazzyViewPager
+            android:id="@+id/index_product_images_container"
+            android:layout_width="match_parent"
+            android:layout_height="125dp"
+            android:background="@color/white" />
+        <LinearLayout
+                android:id="@+id/index_product_images_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal" />
+
         <View
             android:layout_width="fill_parent"
             android:layout_height="5dp"
@@ -56,22 +68,22 @@
             android:layout_width="fill_parent"
             android:layout_height="5dp"
             android:background="@color/black2" />
-          <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="个性化推荐"
-                android:padding="5dp"
-                android:textSize="14dp" />
 
-          <com.personlife.widget.MyListView
-              android:id="@+id/lv_dicovery_recommend"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content" 
-              android:divider="@color/black1"
-              android:dividerHeight="1dp">
-          </com.personlife.widget.MyListView>
-          
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="个性化推荐"
+            android:textSize="14dp" />
+
+        <com.personlife.widget.MyListView
+            android:id="@+id/lv_dicovery_recommend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/black1"
+            android:dividerHeight="1dp" >
+        </com.personlife.widget.MyListView>
     </LinearLayout>
 
 </ScrollView>

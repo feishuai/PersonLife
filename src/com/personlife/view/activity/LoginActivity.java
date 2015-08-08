@@ -30,6 +30,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+//		Utils.start_Activity(LoginActivity.this,MainActivity.class);
 		editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
 		pref = PreferenceManager.getDefaultSharedPreferences(this);
 		if (pref.getString("islogin", "0").equals("1")) {
@@ -58,7 +59,6 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 		switch (v.getId()) {
 		case R.id.tv_login_login:
-
 			RequestParams params = new RequestParams();
 			params.put("phone", username.getText().toString());
 			params.put("pwd", password.getText().toString());
