@@ -102,7 +102,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 			break;
 		case R.id.tv_login_register:
-
+			
 			break;
 		case R.id.tv_login_retrieve:
 
