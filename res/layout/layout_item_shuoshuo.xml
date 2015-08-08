@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+     >
+
+    <com.personlife.widget.CircleImageView
+        android:id="@+id/iv_shuoshuo_icon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/touxiang" />
+
+    <TextView
+        android:id="@+id/tv_shuoshuo_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/iv_shuoshuo_icon"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/iv_shuoshuo_icon"
+        android:textSize="16dp"
+        android:textColor="@color/black"
+        android:layout_marginTop="10dp"
+        android:text="小王子与玫瑰" />
+
+    <TextView
+        android:id="@+id/tv_shuoshuo_beforetime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tv_shuoshuo_name"
+        android:layout_below="@+id/tv_shuoshuo_name"
+        android:textSize="12dp"
+        android:text="12分钟前" />
+
+    <TextView
+        android:id="@+id/tv_shuoshuo_status"
+        android:layout_width="40dp"
+        android:layout_height="18dp"
+        android:layout_alignLeft="@+id/iv_shuoshuo_icon"
+        android:layout_below="@+id/iv_shuoshuo_icon"
+        android:layout_marginTop="14dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="14dp"
+        android:gravity="center"
+        android:background="@drawable/backgroud_download"
+        android:text="分享" />
+
+    <TextView
+        android:id="@+id/tv_shuoshuo_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tv_shuoshuo_status"
+        android:layout_alignBottom="@+id/tv_shuoshuo_status"
+        android:layout_alignLeft="@+id/tv_shuoshuo_status"
+        android:text="           我今天收藏了一些app，感觉还不错哦~"
+        android:textColor="@color/black"
+        android:textSize="16dp" />
+
+    <com.personlife.widget.HorizontialListView
+        android:id="@+id/hlv_shuoshuo_apps"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_alignLeft="@+id/tv_shuoshuo_content"
+        android:layout_below="@+id/tv_shuoshuo_content"
+        android:layout_marginTop="10dp" >
+    </com.personlife.widget.HorizontialListView>
+
+</RelativeLayout>

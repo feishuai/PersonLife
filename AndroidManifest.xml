@@ -166,6 +166,10 @@
             android:name=".CommentAppActivity"
             android:label="@string/title_activity_comment_app" >
         </activity>
+        <activity
+            android:name=".GuessActivity"
+            android:label="@string/title_activity_guess" >
+        </activity>
     </application>
 
 </manifest>
