@@ -2,8 +2,10 @@ package com.personlife.view.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -22,20 +24,23 @@ import com.example.personlifep.R;
 import com.loopj.android.http.RequestParams;
 import com.personlife.common.DES;
 import com.personlife.common.Utils;
+import com.personlife.utils.ActivityCollector;
 import com.personlife.utils.Constants;
 
 //注册
 public class RegisterActivity1 extends Activity implements OnClickListener {
 	private TextView txt_title;
-	private ImageView imgbtn_back;
-	private Button btn_register, btn_send;
-	private EditText et_usertel, et_password, et_code;
+	private Button btn_nextstep, btn_send,back;
+	private EditText et_usertel, et_code;
 	private MyCount mc;
+	private SharedPreferences.Editor editor;
+	private SharedPreferences pref;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		setContentView(R.layout.activity_register);
+		setContentView(R.layout.activity_register1);
 		super.onCreate(savedInstanceState);
+		ActivityCollector.addActivity(this);
 		initControl();
 		setListener();
 	}
@@ -43,137 +48,152 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 	protected void initControl() {
 		txt_title = (TextView) findViewById(R.id.txt_title);
 		txt_title.setText("注册");
-		imgbtn_back = (ImageView) findViewById(R.id.imgbtn_back);
-		imgbtn_back.setVisibility(View.VISIBLE);
+		back = (Button) findViewById(R.id.txt_left);
+		back.setVisibility(View.VISIBLE);
 		btn_send = (Button) findViewById(R.id.btn_send);
-		btn_register = (Button) findViewById(R.id.btn_register);
+		btn_send.setBackgroundDrawable(getResources().getDrawable(
+				R.drawable.btn_enable_green));
+		btn_send.setTextColor(0xFFD0EFC6);
+		btn_send.setEnabled(false);
+		btn_nextstep = (Button) findViewById(R.id.btn_nextstep);
+		btn_nextstep.setBackgroundDrawable(getResources().getDrawable(
+				R.drawable.btn_enable_green));
+		btn_nextstep.setTextColor(0xFFD0EFC6);
+		btn_nextstep.setEnabled(false);
 		et_usertel = (EditText) findViewById(R.id.et_usertel);
-		et_password = (EditText) findViewById(R.id.et_password);
 		et_code = (EditText) findViewById(R.id.et_code);
+		editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+		pref = PreferenceManager.getDefaultSharedPreferences(this);
 	}
 
 	protected void setListener() {
-		imgbtn_back.setOnClickListener(this);
+		back.setOnClickListener(this);
 		btn_send.setOnClickListener(this);
-		btn_register.setOnClickListener(this);
+		btn_nextstep.setOnClickListener(this);
 		et_usertel.addTextChangedListener(new TelTextChange());
-		et_password.addTextChangedListener(new TextChange());
+		et_code.addTextChangedListener(new TextChange());
 	}
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.imgbtn_back:
-			Utils.finish(RegisterActivity1.this);
+		case R.id.txt_left:
+			onBackPressed();
+			finish();
 			break;
 		case R.id.btn_send:
 			if (mc == null) {
 				mc = new MyCount(60000, 1000); // 第一参数是总的时间，第二个是间隔时间
 			}
 			mc.start();
-//			getCode();
+			getCode();
 			break;
-		case R.id.btn_register:
-			getRegister();
+		case R.id.btn_nextstep:
+//			getRegister();
+			Utils.start_Activity(RegisterActivity1.this,RegisterActivity2.class);
+			editor.putString("telephone", et_usertel.getText().toString());
+			editor.putString("password", null);
+			editor.commit();
+			
+			finish();
 			break;
 		default:
 			break;
 		}
 	}
 
-	private void getRegister() {
-		final String name = et_usertel.getText().toString();
-		final String pwd = et_password.getText().toString();
-		String code = et_code.getText().toString();
-		if (TextUtils.isEmpty(code)) {
-			Utils.showLongToast(RegisterActivity1.this, "请填写手机号码，并获取验证码！");
-			return;
-		}
-		if (TextUtils.isEmpty(name) || TextUtils.isEmpty(pwd)
-				|| TextUtils.isEmpty(code)) {
-			Utils.showLongToast(RegisterActivity1.this, "请填写核心信息！");
-			return;
-		}
-//		getLoadingDialog("正在注册...  ").show();
-		btn_register.setEnabled(false);
-		btn_send.setEnabled(false);
-		RequestParams params = new RequestParams();
-		params.put("username", name);
-		params.put("password", DES.md5Pwd(pwd));
-		// params.put("checkCode", code);
-//		netClient.post(Constants.RegistURL, params, new BaseJsonRes() {
+//	private void getRegister() {
+//		final String name = et_usertel.getText().toString();
+//		String code = et_code.getText().toString();
+//		if (TextUtils.isEmpty(code)) {
+//			Utils.showLongToast(RegisterActivity1.this, "请填写手机号码，并获取验证码！");
+//			return;
+//		}
+//		if (TextUtils.isEmpty(name) || TextUtils.isEmpty(pwd)
+//				|| TextUtils.isEmpty(code)) {
+//			Utils.showLongToast(RegisterActivity1.this, "请填写核心信息！");
+//			return;
+//		}
+////		getLoadingDialog("正在注册...  ").show();
+//		btn_nextstep.setEnabled(false);
+//		btn_send.setEnabled(false);
+//		RequestParams params = new RequestParams();
+//		params.put("username", name);
+//		params.put("password", DES.md5Pwd(pwd));
+//		// params.put("checkCode", code);
+////		netClient.post(Constants.RegistURL, params, new BaseJsonRes() {
+////
+////			@Override
+////			public void onMySuccess(String data) {
+////				Utils.putValue(RegisterActivity.this, Constants.UserInfo, data);
+////				Utils.putValue(RegisterActivity.this, Constants.NAME, name);
+////				Utils.putValue(RegisterActivity.this, Constants.PWD,
+////						DES.md5Pwd(pwd));
+////				Utils.putBooleanValue(RegisterActivity.this,
+////						Constants.LoginState, true);
+////				getChatserive(name, DES.md5Pwd(pwd));
+////			}
+////
+////			@Override
+////			public void onMyFailure() {
+////				getLoadingDialog("").dismiss();
+////				btn_register.setEnabled(true);
+////				btn_send.setEnabled(true);
+////			}
+////		});
+//	}
+
+//	private void getChatserive(final String userName, final String password) {
+//		EMChatManager.getInstance().login(userName, password, new EMCallBack() {// 回调
+//					@Override
+//					public void onSuccess() {
+//						runOnUiThread(new Runnable() {
+//							public void run() {
+//								Utils.putBooleanValue(RegisterActivity1.this,
+//										Constants.LoginState, true);
+//								Utils.putValue(RegisterActivity1.this,
+//										Constants.User_ID, userName);
+//								Utils.putValue(RegisterActivity1.this,
+//										Constants.PWD, password);
+//								Log.d("main", "登陆聊天服务器成功！");
+//								// 加载群组和会话
+//								EMGroupManager.getInstance().loadAllGroups();
+//								EMChatManager.getInstance()
+//										.loadAllConversations();
+////								getLoadingDialog("正在登录...").dismiss();
+//								Utils.showLongToast(RegisterActivity1.this,
+//										"注册成功！");
+//								Intent intent = new Intent(
+//										RegisterActivity1.this,
+//										MainActivity.class);
+//								startActivity(intent);
+//								overridePendingTransition(R.anim.push_up_in,
+//										R.anim.push_up_out);
+//								finish();
+//							}
+//						});
+//					}
 //
-//			@Override
-//			public void onMySuccess(String data) {
-//				Utils.putValue(RegisterActivity.this, Constants.UserInfo, data);
-//				Utils.putValue(RegisterActivity.this, Constants.NAME, name);
-//				Utils.putValue(RegisterActivity.this, Constants.PWD,
-//						DES.md5Pwd(pwd));
-//				Utils.putBooleanValue(RegisterActivity.this,
-//						Constants.LoginState, true);
-//				getChatserive(name, DES.md5Pwd(pwd));
-//			}
+//					@Override
+//					public void onProgress(int progress, String status) {
 //
-//			@Override
-//			public void onMyFailure() {
-//				getLoadingDialog("").dismiss();
-//				btn_register.setEnabled(true);
-//				btn_send.setEnabled(true);
-//			}
-//		});
-	}
+//					}
+//
+//					@Override
+//					public void onError(int code, String message) {
+//						Log.d("main", "登陆聊天服务器失败！");
+//						runOnUiThread(new Runnable() {
+//							public void run() {
+////								getLoadingDialog("正在注册...").dismiss();
+//								Utils.showLongToast(RegisterActivity1.this,
+//										"注册失败！");
+//							}
+//						});
+//					}
+//				});
+//	}
 
-	private void getChatserive(final String userName, final String password) {
-		EMChatManager.getInstance().login(userName, password, new EMCallBack() {// 回调
-					@Override
-					public void onSuccess() {
-						runOnUiThread(new Runnable() {
-							public void run() {
-								Utils.putBooleanValue(RegisterActivity1.this,
-										Constants.LoginState, true);
-								Utils.putValue(RegisterActivity1.this,
-										Constants.User_ID, userName);
-								Utils.putValue(RegisterActivity1.this,
-										Constants.PWD, password);
-								Log.d("main", "登陆聊天服务器成功！");
-								// 加载群组和会话
-								EMGroupManager.getInstance().loadAllGroups();
-								EMChatManager.getInstance()
-										.loadAllConversations();
-//								getLoadingDialog("正在登录...").dismiss();
-								Utils.showLongToast(RegisterActivity1.this,
-										"注册成功！");
-								Intent intent = new Intent(
-										RegisterActivity1.this,
-										MainActivity.class);
-								startActivity(intent);
-								overridePendingTransition(R.anim.push_up_in,
-										R.anim.push_up_out);
-								finish();
-							}
-						});
-					}
-
-					@Override
-					public void onProgress(int progress, String status) {
-
-					}
-
-					@Override
-					public void onError(int code, String message) {
-						Log.d("main", "登陆聊天服务器失败！");
-						runOnUiThread(new Runnable() {
-							public void run() {
-//								getLoadingDialog("正在注册...").dismiss();
-								Utils.showLongToast(RegisterActivity1.this,
-										"注册失败！");
-							}
-						});
-					}
-				});
-	}
-
-//	private void getCode() {
+	private void getCode() {
 //		String phone = et_usertel.getText().toString();
 //		RequestParams params = new RequestParams();
 //		params.put("telephone", phone);
@@ -205,7 +225,7 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 //						}
 //					}
 //				});
-//	}
+	}
 
 	// 手机号 EditText监听器
 	class TelTextChange implements TextWatcher {
@@ -231,6 +251,7 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 							R.drawable.btn_bg_green));
 					btn_send.setTextColor(0xFFFFFFFF);
 					btn_send.setEnabled(true);
+					
 				} else {
 					et_usertel.requestFocus();
 					Utils.showLongToast(getApplicationContext(), "请输入正确的手机号码！");
@@ -261,20 +282,20 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 		@Override
 		public void onTextChanged(CharSequence cs, int start, int before,
 				int count) {
-			boolean Sign1 = et_code.getText().length() > 0;
+			boolean Sign1 = et_code.getText().length() == 4;
 			boolean Sign2 = et_usertel.getText().length() > 0;
-			boolean Sign3 = et_password.getText().length() > 0;
+			
 
-			if (Sign1 & Sign2 & Sign3) {
-				btn_register.setBackgroundDrawable(getResources().getDrawable(
-						R.drawable.btn_bg_green));
-				btn_register.setTextColor(0xFFFFFFFF);
-				btn_register.setEnabled(true);
-			} else {
-				btn_register.setBackgroundDrawable(getResources().getDrawable(
+			if (Sign1 & Sign2 ) {
+				btn_nextstep.setBackgroundDrawable(getResources().getDrawable(
 						R.drawable.btn_enable_green));
-				btn_register.setTextColor(0xFFD0EFC6);
-				btn_register.setEnabled(false);
+				btn_nextstep.setTextColor(0xFFFFFFFF);
+				btn_nextstep.setEnabled(true);
+			} else {
+				btn_nextstep.setBackgroundDrawable(getResources().getDrawable(
+						R.drawable.btn_enable_green));
+				btn_nextstep.setTextColor(0xFFD0EFC6);
+				btn_nextstep.setEnabled(false);
 			}
 		}
 	}
@@ -298,10 +319,10 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 		}
 	}
 
-	private void initUserList() {
-		Intent intent = new Intent(RegisterActivity1.this, MainActivity.class);
-		startActivity(intent);
-		overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
-		finish();
-	}
+//	private void initUserList() {
+//		Intent intent = new Intent(RegisterActivity1.this, MainActivity.class);
+//		startActivity(intent);
+//		overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+//		finish();
+//	}
 }

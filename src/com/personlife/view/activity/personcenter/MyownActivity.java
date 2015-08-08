@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -108,7 +111,21 @@ public class MyownActivity extends Activity implements
 		request.put("gender", pref.getString("sex", null));
 		request.put("area", pref.getString("location", null));
 		request.put("job", pref.getString("job", null));
-		request.put("hobby", pref.getString("hobby", null));
+		StringBuffer sb = new StringBuffer();
+		sb.append("");
+		Set<String> set = new HashSet<String>();
+		set=pref.getStringSet("hobby", null);
+//		Iterator it = set.iterator();
+		if(set!=null){
+			for (String str : set) {  
+				sb.append(str+" ");
+			}  
+//			while (it.hasNext()) {  
+//				  String str = (String) it.next();  
+//				  sb.append(str+" "); 
+//				}  
+		}
+		request.put("hobby",sb.toString() );
 		request.put("signature", pref.getString("signature", null));
 		BaseAsyncHttp.postReq(getApplicationContext(),"/users/modify", request,
 				new JSONObjectHttpResponseHandler() {
@@ -181,7 +198,21 @@ public class MyownActivity extends Activity implements
 		sex.setText(pref.getString("sex", "男"));
 		area.setText(pref.getString("location", "地区"));
 		profession.setText(pref.getString("job", "职业"));
-		interests.setText(pref.getString("hobby", "兴趣"));
+		StringBuffer sb = new StringBuffer();
+		sb.append("");
+		Set<String> set = new HashSet<String>();		
+		set=pref.getStringSet("hobby", null);
+//		Iterator it = set.iterator();
+		if(set!=null){
+			for (String str : set) {  
+				sb.append(str+" ");
+			}  
+//			while (it.hasNext()) {  
+//				  String str = (String) it.next();  
+//				  sb.append(str+" "); 
+//				}  
+		}
+		interests.setText(sb.toString());
 		sign.setText(pref.getString("signature", "个性签名"));
 		File outputImage = new File(Environment.getExternalStorageDirectory(),
 				"tempImage.jpg");

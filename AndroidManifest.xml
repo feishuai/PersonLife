@@ -146,6 +146,14 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name="com.personlife.view.activity.RegisterActivity2"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.personlife.view.activity.RegisterActivity3"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.personlife.view.activity.LoginActivity"
             android:screenOrientation="portrait" >
             <intent-filter>

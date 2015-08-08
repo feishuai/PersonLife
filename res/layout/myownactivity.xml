@@ -230,11 +230,14 @@
 
         <TextView
             android:id="@+id/personinteresting"
-            android:layout_width="wrap_content"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_toLeftOf="@+id/youjiantou5"
             android:text="兴趣爱好"
+            android:gravity="right"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:textColor="@color/black1" />
 
         <ImageView
