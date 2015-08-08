@@ -13,7 +13,6 @@
             android:layout_gravity="center"
             android:background="@color/windows_color"
             android:orientation="vertical" >
-           "
             <ListView
                 android:id="@+id/lvContact"
                 android:layout_width="match_parent"

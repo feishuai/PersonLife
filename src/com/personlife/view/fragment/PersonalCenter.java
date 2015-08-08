@@ -7,17 +7,6 @@ import java.io.IOException;
 import org.apache.http.message.BasicNameValuePair;
 
 
-
-
-
-
-
-
-
-
-
-
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,6 +24,7 @@ import com.personlife.view.activity.personcenter.MyCollectionActivity;
 import com.personlife.view.activity.personcenter.MyownActivity;
 import com.personlife.view.activity.personcenter.SecureActivity;
 import com.personlife.view.activity.personcenter.SettingActivity;
+import com.personlife.view.activity.personcenter.TaskList;
 import com.personlife.view.activity.personcenter.TongzhiActivity;
 
 import android.app.Activity;
@@ -147,6 +137,7 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 		layout.findViewById(R.id.txt_tongyongsetting).setOnClickListener(this);
 		layout.findViewById(R.id.txt_yijianfankui).setOnClickListener(this);
 		layout.findViewById(R.id.txt_aboutus).setOnClickListener(this);
+		layout.findViewById(R.id.txt_downloadlist).setOnClickListener(this);
 	}
 
 
@@ -157,6 +148,9 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 			Intent intent=new Intent();
 			intent.setClass(getActivity(), MyownActivity.class);
 			startActivity(intent);		
+			break;
+		case R.id.txt_downloadlist:
+			Utils.start_Activity(getActivity(), TaskList.class);
 			break;
 		case R.id.txt_mycollection:
 //			Utils.start_Activity(getActivity(), MyCollectionActivity.class,
