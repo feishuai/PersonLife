@@ -1,10 +1,10 @@
 package com.personlife.view.activity.personcenter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -17,28 +17,30 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.personlifep.R;
 import com.personlife.bean.App;
+import com.personlife.utils.SystemUtils;
 
-/**  
- *   
- * @author liugang  
- * @date 2015年8月7日   
+/**
+ * 
+ * @author liugang
+ * @date 2015年8月7日
  */
-public class TabAppList extends Fragment implements OnClickListener{
+public class TabAppList extends Fragment implements OnClickListener {
 
 	private Activity ctx;
 	private View layout;
 	private ListView listView;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		if (layout == null) {
 			ctx = this.getActivity();
-			layout = ctx.getLayoutInflater().inflate(R.layout.fragment_task,null);
+			layout = ctx.getLayoutInflater().inflate(R.layout.fragment_task,
+					null);
 			initViews();
 			initData();
 			setOnListener();
@@ -50,25 +52,26 @@ public class TabAppList extends Fragment implements OnClickListener{
 		}
 		return layout;
 	}
-	public void initViews(){
+
+	public void initViews() {
 		listView = (ListView) layout.findViewById(R.id.listview_tasklist);
 	}
-	public void initData(){
-		List<App>mList = new ArrayList<App>();
-		mList.add(new App());
-		mList.add(new App());
-		mList.add(new App());
-		listView.setAdapter( new TabAppListAdapter(getActivity(), mList));
+
+	public void initData() {
+		listView.setAdapter(new TabAppListAdapter(getActivity(), SystemUtils
+				.getAppsNoSystom(getActivity())));
 	}
-	public void setOnListener(){
-		
+
+	public void setOnListener() {
+
 	}
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	public class TabAppListAdapter extends BaseAdapter {
 
 		private Context context;
@@ -116,8 +119,11 @@ public class TabAppList extends Fragment implements OnClickListener{
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			
-			//设置控件属性
+
+			holder.appname.setText(mlist.get(position).getName());
+			holder.icon.setImageDrawable((mlist.get(position).getAppIcon()));
+			holder.status.setText("已安装");
+			// 设置控件属性
 			holder.download.setText("打开");
 			holder.download.setBackgroundResource(R.drawable.yibananniu);
 			holder.download.setTextColor(R.color.black);
@@ -126,9 +132,8 @@ public class TabAppList extends Fragment implements OnClickListener{
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					Toast.makeText(context, "downloading", Toast.LENGTH_SHORT)
-							.show();
-					;
+					Log.i("package", mlist.get(position).getPackageName());
+					SystemUtils.startApp(getActivity(), mlist.get(position).getPackageName());
 				}
 			});
 			// ImageLoader.getInstance().displayImage(mlist.get(position).getBitmap(),holder.icon);

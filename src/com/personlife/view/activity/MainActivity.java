@@ -63,7 +63,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 		setContentView(R.layout.activity_main);		
 		ImageLoaderUtils.InitConfig(getApplicationContext());
 		ActivityCollector.addActivity(this);
-		if(pref.getString("password", null)!=null){
+		pref = PreferenceManager.getDefaultSharedPreferences(this);
+		editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+		if(pref.getString("password", "")!=null){
 			initdataWithPassword();
 		}else{
 			initdataWithNoPassword();
