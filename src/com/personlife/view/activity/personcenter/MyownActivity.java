@@ -115,15 +115,12 @@ public class MyownActivity extends Activity implements
 		sb.append("");
 		Set<String> set = new HashSet<String>();
 		set=pref.getStringSet("hobby", null);
-//		Iterator it = set.iterator();
+
 		if(set!=null){
 			for (String str : set) {  
 				sb.append(str+" ");
 			}  
-//			while (it.hasNext()) {  
-//				  String str = (String) it.next();  
-//				  sb.append(str+" "); 
-//				}  
+
 		}
 		request.put("hobby",sb.toString() );
 		request.put("signature", pref.getString("signature", null));
@@ -134,13 +131,13 @@ public class MyownActivity extends Activity implements
 					public void jsonSuccess(JSONObject resp) {
 						try {
 							if (resp.get("flag").equals(0)) {
-//								Toast.makeText(MyownActivity.this,
-//										"修改信息失败", Toast.LENGTH_SHORT)
-//										.show();
+								Toast.makeText(MyownActivity.this,
+										"修改信息失败", Toast.LENGTH_SHORT)
+										.show();
 							}else{
-//								Toast.makeText(MyownActivity.this,
-//										"修改信息成功", Toast.LENGTH_SHORT)
-//										.show();
+								Toast.makeText(MyownActivity.this,
+										"修改信息成功", Toast.LENGTH_SHORT)
+										.show();
 							}
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block

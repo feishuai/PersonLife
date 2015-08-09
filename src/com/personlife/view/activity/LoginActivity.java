@@ -30,7 +30,6 @@ public class LoginActivity extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-//		Utils.start_Activity(LoginActivity.this,MainActivity.class);
 		editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
 		pref = PreferenceManager.getDefaultSharedPreferences(this);
 		if (pref.getString("islogin", "0").equals("1")) {
@@ -71,10 +70,8 @@ public class LoginActivity extends Activity implements OnClickListener {
 							try {
 								if (resp.get("flag").equals(1)) {
 									editor.putString("islogin", "1");
-									editor.putString("telephone", username
-											.getText().toString());
-									editor.putString("password", password
-											.getText().toString());
+									editor.putString("telephone", username.getText().toString());									
+									editor.putString("password", password.getText().toString());
 									editor.commit();
 									Utils.start_Activity(LoginActivity.this,MainActivity.class);
 									finish();
