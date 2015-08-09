@@ -54,7 +54,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 	private PersonalCenter personalCenter;//个人中心界面
 	private HomeFragment homefragment;
 	private DiscoveryFragment discoveryfragment;
+
 	private CircleFragment circlefragment;
+
 	private SharedPreferences pref;
 	private SharedPreferences.Editor editor;
 	@Override
@@ -94,7 +96,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 						try {
 							editor.putString("id", resp.get("id").toString());
 							editor.putString("userName", resp.get("nickname").toString());
-							editor.putString("headUrl", resp.get("thumb").toString());
+							editor.putString("headKey", resp.get("thumb").toString());
 							editor.putString("signature", resp.get("signature").toString());
 							editor.putString("sex", resp.get("gender").toString());
 							editor.putString("location", resp.get("area").toString());

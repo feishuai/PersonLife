@@ -91,15 +91,15 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 		//联网获取用户信息
 		pref = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
 		if(pref.getString("userName", null)!=null){
-			username.setText(pref.getString("userName",null).toString());
-			personsign.setText(pref.getString("signature",null).toString());
-			if(pref.getString("sex",null).toString().equals("男"))
+			username.setText(pref.getString("userName",null));
+			personsign.setText(pref.getString("signature",null));
+			if(pref.getString("sex","男").equals("男"))
 				sex.setImageResource(R.drawable.ic_sex_male);
 			else 
 				sex.setImageResource(R.drawable.ic_sex_female);
 		}else{
 			RequestParams request = new RequestParams();
-			request.put("phone", pref.getString("telephone", null));
+			request.put("phone", pref.getString("telephone", ""));
 			BaseAsyncHttp.postReq(getActivity().getApplicationContext(),"/users/getinfo", request,
 					new JSONObjectHttpResponseHandler() {
 
@@ -150,7 +150,7 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 			startActivity(intent);		
 			break;
 		case R.id.txt_downloadlist:
-			Utils.start_Activity(getActivity(), TaskList.class);
+//			Utils.start_Activity(getActivity(), TaskList.class);
 			break;
 		case R.id.txt_mycollection:
 //			Utils.start_Activity(getActivity(), MyCollectionActivity.class,
