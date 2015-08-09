@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="5dp" >
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="2dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="8dp"
+            android:background="@color/yellow" />
+
+        <TextView
+            android:id="@+id/tv_home_kind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignTop="@id/view1"
+            android:layout_marginLeft="10dp"
+            android:text="清晨"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/tv_home_counts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tv_home_kind"
+            android:layout_marginTop="5dp"
+            android:background="@color/gray1"
+            android:text="我的（1）"
+            android:textSize="12dp" />
+
+        <Button
+            android:id="@+id/btn_home_more"
+            style="@style/button"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:text="查看" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        android:background="@color/black2" />
+
+    <com.personlife.widget.HorizontialListView
+        android:id="@+id/hlv_home_apps"
+        android:layout_width="80dp"
+        android:layout_height="80dp" >
+    </com.personlife.widget.HorizontialListView>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@color/gray1"
+        android:text="推荐给您"
+        android:layout_marginLeft="5dp"
+        android:textSize="12dp" />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="2dip"
+        android:background="@color/black2" />
+
+    <com.personlife.widget.MyListView
+        android:id="@+id/lv_home_apps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </com.personlife.widget.MyListView>
+
+</LinearLayout>

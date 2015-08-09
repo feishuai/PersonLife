@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.example.personlifep.R;
 import com.example.personlifep.R.id;
 import com.example.personlifep.R.layout;
-import com.personlife.adapter.home.AppListAdapter;
+import com.personlife.adapter.AppListAdapter;
 import com.personlife.bean.App;
 import com.personlife.widget.ClearEditText;
 import com.personlife.widget.MyListView;

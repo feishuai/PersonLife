@@ -9,6 +9,7 @@ import java.util.Set;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.baidu.mapapi.map.Circle;
 import com.example.personlifep.R;
 import com.loopj.android.http.RequestParams;
 import com.personlife.net.BaseAsyncHttp;
@@ -17,6 +18,7 @@ import com.personlife.utils.ActivityCollector;
 import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.utils.Utils;
 import com.personlife.view.activity.home.HomeActivity;
+import com.personlife.view.fragment.CircleFragment;
 import com.personlife.view.fragment.DiscoveryFragment;
 import com.personlife.view.fragment.HomeFragment;
 import com.personlife.view.fragment.PersonalCenter;
@@ -52,6 +54,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 	private PersonalCenter personalCenter;//个人中心界面
 	private HomeFragment homefragment;
 	private DiscoveryFragment discoveryfragment;
+
+	private CircleFragment circlefragment;
+
 	private SharedPreferences pref;
 	private SharedPreferences.Editor editor;
 	@Override
@@ -144,13 +149,15 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 		personalCenter=new PersonalCenter();
 		homefragment = new HomeFragment();
 		discoveryfragment = new DiscoveryFragment();
-		fragments = new Fragment[] {homefragment,homefragment,discoveryfragment,personalCenter};
+		circlefragment = new CircleFragment();
+		fragments = new Fragment[] {homefragment,circlefragment,discoveryfragment,personalCenter};
 		// 添加显示第一个fragment
 		getSupportFragmentManager().beginTransaction()
 			.add(R.id.fragment_container, personalCenter)
 			.add(R.id.fragment_container,homefragment)
 			.add(R.id.fragment_container, discoveryfragment)
-			.hide(personalCenter).hide(discoveryfragment).show(homefragment).commit();
+			.add(R.id.fragment_container, circlefragment)
+			.hide(personalCenter).hide(discoveryfragment).hide(circlefragment).show(homefragment).commit();
 
 	}
 
@@ -159,13 +166,13 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 		txtSearch.setVisibility(View.GONE);
 		switch (view.getId()) {
 		case R.id.re_home:
-			title.setText("定制生活");
+			title.setText("我的APP");
 			downloadButton.setVisibility(View.VISIBLE);
 			index = 0;			
 			break;
 		case R.id.re_interact:
 			index = 1;
-			title.setText("互动");
+			title.setText("朋友圈");
 			break;
 		case R.id.re_recommend:
 			index = 2;

@@ -32,7 +32,7 @@ import android.widget.TextView;
 
 import com.example.personlifep.R;
 import com.loopj.android.http.RequestParams;
-import com.personlife.adapter.home.ContactAdapter;
+import com.personlife.adapter.ContactAdapter;
 import com.personlife.bean.UserFriend;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONObjectHttpResponseHandler;

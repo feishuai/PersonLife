@@ -87,7 +87,13 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-
+	<style name="button">
+	    <item name="android:height">30dp</item>
+	    <item name="android:width">80dp</item>
+	    <item name="android:background">@drawable/yibanxiazai</item>
+	    <item name="android:gravity">center</item>
+	    <item name="android:textSize">20dp</item>
+	</style>
     <declare-styleable name="JazzyViewPager">
         <attr name="style">
             <enum name="standard" value="0" />
@@ -144,5 +150,5 @@
         <attr name="border_color" format="color" />
         <attr name="border_overlay" format="boolean" />
     </declare-styleable>
-
+	
 </resources>

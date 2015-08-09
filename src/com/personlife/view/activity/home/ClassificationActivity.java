@@ -1,4 +1,4 @@
-package com.example.personlifep;
+package com.personlife.view.activity.home;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +18,11 @@ import android.widget.GridView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.example.personlifep.R;
+import com.example.personlifep.R.color;
+import com.example.personlifep.R.drawable;
+import com.example.personlifep.R.id;
+import com.example.personlifep.R.layout;
 import com.personlife.utils.Utils;
 
 public class ClassificationActivity extends Activity implements OnClickListener {

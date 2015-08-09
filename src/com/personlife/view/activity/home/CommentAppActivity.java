@@ -1,5 +1,8 @@
-package com.example.personlifep;
+package com.personlife.view.activity.home;
 
+import com.example.personlifep.R;
+import com.example.personlifep.R.id;
+import com.example.personlifep.R.layout;
 import com.personlife.widget.ClearEditText;
 import com.personlife.widget.MyListView;
 

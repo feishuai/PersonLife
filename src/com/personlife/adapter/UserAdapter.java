@@ -1,4 +1,4 @@
-package com.personlife.adapter.home;
+package com.personlife.adapter;
 
 import java.util.Collections;
 import java.util.List;
