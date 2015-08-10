@@ -75,6 +75,19 @@
             android:textSize="18sp"
             android:visibility="gone" />
 
+        <Button
+            android:id="@+id/btn_title_right"
+            android:layout_width="80dip"
+            android:layout_height="36dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:text="@string/save"
+            android:textColor="@color/white"
+            android:background="@drawable/yibanxiazai"
+            android:textSize="18sp"
+            android:visibility="gone" />
+
         <ImageButton
             android:id="@+id/img_right"
             android:layout_width="40dp"
@@ -100,7 +113,7 @@
 
     <View
         android:layout_width="fill_parent"
-        android:layout_height="1.0dip"
+        android:layout_height="2dp"
         android:background="@color/black2" />
 
 </LinearLayout>

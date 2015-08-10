@@ -150,7 +150,7 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 			startActivity(intent);		
 			break;
 		case R.id.txt_downloadlist:
-//			Utils.start_Activity(getActivity(), TaskList.class);
+			Utils.start_Activity(getActivity(), TaskList.class);
 			break;
 		case R.id.txt_mycollection:
 //			Utils.start_Activity(getActivity(), MyCollectionActivity.class,

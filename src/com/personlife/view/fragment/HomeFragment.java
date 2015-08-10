@@ -14,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.personlifep.R;
@@ -199,7 +200,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 			MyListView lvapps;
 		}
 	}
-	private static String[] urls = new String[] { "Text #1","Text #1"};
+	private static String[] urls = new String[] { "Text #1","Text #1","Text #1","Text #1"};
 	private BaseAdapter mALikes = new BaseAdapter() {
 
 		@Override
@@ -221,9 +222,10 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View retval = LayoutInflater.from(parent.getContext()).inflate(
 					R.layout.layout_item_like, null);
-//			TextView title = (TextView) retval.findViewById(R.id.title);
-//			title.setText(dataObjects[position]);
-
+			ImageView appicon = (ImageView)retval.findViewById(R.id.iv_item_icon);
+			TextView appname = (TextView) retval
+					.findViewById(R.id.tv_item_name);
+			appname.setVisibility(View.GONE);
 			return retval;
 		}
 

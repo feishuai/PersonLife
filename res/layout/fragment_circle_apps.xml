@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="6dp"
+        android:background="@color/black2" />
+
+    <ScrollView
+        android:id="@+id/act_solution_2_sv"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/white" >
+
+        <com.personlife.widget.MyListView
+            android:id="@+id/lv_circle_apps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:divider="@color/black2"
+            android:dividerHeight="6dp" />
+    </ScrollView>
+
+</LinearLayout>

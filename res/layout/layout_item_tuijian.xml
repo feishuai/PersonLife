@@ -52,6 +52,7 @@
         android:background="@drawable/backgroud_download"
         android:gravity="center"
         android:text="下载"
+        android:textSize="20dp"
         android:textColor="@color/white" />
 
 </RelativeLayout>

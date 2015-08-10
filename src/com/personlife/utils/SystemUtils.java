@@ -5,11 +5,10 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -83,15 +82,24 @@ public class SystemUtils {
 	}
 
 	public static void startApp(Context context, String packageName) {
-		if(packageName==null || packageName==""){
+		if (packageName == null || packageName == "") {
 			Toast.makeText(context, "这个应用程序无法正常启动", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		Intent i = context.getPackageManager().getLaunchIntentForPackage(packageName);
+		Intent i = context.getPackageManager().getLaunchIntentForPackage(
+				packageName);
 		// 如果该程序不可启动（像系统自带的包，有很多是没有入口的）会返回NULL
 		if (i != null)
 			context.startActivity(i);
 		else
 			Toast.makeText(context, "这个应用程序无法启动", Toast.LENGTH_SHORT).show();
+	}
+
+	public static void installApp(Context context, String filePath) {
+		Intent i = new Intent(Intent.ACTION_VIEW);
+		i.setDataAndType(Uri.parse("file://" + filePath),
+				"application/vnd.android.package-archive");
+		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(i);
 	}
 }

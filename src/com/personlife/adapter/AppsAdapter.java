@@ -66,11 +66,7 @@ public class AppsAdapter extends BaseAdapter {
 		}
 		// ImageLoaderUtils.displayAppIcon("https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/5136becf77e9cfc440849e0b694fdd6e_121_121.jpg",
 		// holder.icon);
-		// holder.appname.setText(mlist.get(position).getName());
-		// holder.tag.setText(mlist.get(position).getTag());
-		// holder.stars.setProgress(mlist.get(position).getStars());
-		// holder.downloadcounts.setText("("
-		// + mlist.get(position).getDowloadcount() + ")");
+	
 		holder.download.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -84,24 +80,7 @@ public class AppsAdapter extends BaseAdapter {
 				;
 			}
 		});
-		// ImageLoader.getInstance().displayImage(mlist.get(position).getBitmap(),holder.icon);
-//		convertView.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				// Toast.makeText(context,
-//				// "app's id is"+mlist.get(position).getId(),
-//				// Toast.LENGTH_SHORT).show();;
-//				Log.i("adapter", "app's id is "
-//						+ mlist.get(position).getId());
-//				Intent intent = new Intent(context, AppDetailActivity.class);
-//				intent.putExtra(Constants.AppId, mlist.get(position)
-//						.getId());
-//				context.startActivity(intent);
-//
-//			}
-//		});
+
 		return convertView;
 	}
 

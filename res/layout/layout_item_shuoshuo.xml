@@ -42,7 +42,7 @@
         android:layout_height="18dp"
         android:layout_alignLeft="@+id/iv_shuoshuo_icon"
         android:layout_below="@+id/iv_shuoshuo_icon"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:textSize="14dp"
         android:gravity="center"
@@ -64,9 +64,10 @@
         android:id="@+id/hlv_shuoshuo_apps"
         android:layout_width="wrap_content"
         android:layout_height="80dp"
+        android:background="@drawable/fenxiangbg"
         android:layout_alignLeft="@+id/tv_shuoshuo_content"
         android:layout_below="@+id/tv_shuoshuo_content"
-        android:layout_marginTop="10dp" >
+        android:layout_marginTop="2dp" >
     </com.personlife.widget.HorizontialListView>
 
 </RelativeLayout>

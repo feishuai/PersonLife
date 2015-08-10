@@ -33,6 +33,7 @@ import android.widget.SimpleAdapter;
 import com.example.personlifep.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.personlife.utils.Utils;
+import com.personlife.view.activity.circle.CircleActivity;
 import com.personlife.view.activity.discovery.GuessActivity;
 import com.personlife.widget.JazzyViewPager;
 import com.personlife.widget.JazzyViewPager.TransitionEffect;
@@ -311,6 +312,7 @@ public class DiscoveryFragment extends Fragment implements OnClickListener {
 			// 在本例中arg2=arg3
 			HashMap<String, Object> item = (HashMap<String, Object>) arg0
 					.getItemAtPosition(arg2);
+			Utils.start_Activity(getActivity(), CircleActivity.class, null);
 			// 显示所选Item的ItemText
 			// setTitle((String)item.get("ItemText"));
 		}

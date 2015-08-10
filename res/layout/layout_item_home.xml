@@ -41,13 +41,16 @@
 
         <Button
             android:id="@+id/btn_home_more"
-            style="@style/button"
             android:layout_width="80dp"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:text="查看" />
+            android:layout_marginRight="15dp"
+            android:background="@drawable/backgroud_download"
+            android:gravity="center"
+            android:text="查看"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
     </RelativeLayout>
 
     <View
@@ -57,7 +60,7 @@
 
     <com.personlife.widget.HorizontialListView
         android:id="@+id/hlv_home_apps"
-        android:layout_width="80dp"
+        android:layout_width="wrap_content"
         android:layout_height="80dp" >
     </com.personlife.widget.HorizontialListView>
 
@@ -65,11 +68,12 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
         android:background="@color/gray1"
         android:text="推荐给您"
-        android:layout_marginLeft="5dp"
         android:textSize="12dp" />
+
     <View
         android:layout_width="fill_parent"
         android:layout_height="2dip"

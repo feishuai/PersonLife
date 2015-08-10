@@ -1,0 +1,59 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <include layout="@layout/layout_title" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <View
+            android:id="@+id/view_top"
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="@color/black2" />
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/view_alldownload"
+            android:layout_below="@+id/view_top"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="10dp" >
+
+            <com.personlife.widget.MyListView
+                android:id="@+id/lv_alldownload_apps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@color/black2"
+                android:dividerHeight="2dp"
+                android:clickable="false" />
+        </ScrollView>
+
+        <View
+            android:id="@+id/view_alldownload"
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:layout_above="@+id/btn_alldownload_download"
+            android:background="@color/black2" />
+
+        <Button
+            android:id="@+id/btn_alldownload_download"
+            android:layout_width="160dp"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/bg"
+            android:text="一键下载"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+    </RelativeLayout>
+
+</LinearLayout>

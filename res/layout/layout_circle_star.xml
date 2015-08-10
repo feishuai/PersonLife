@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    android:background="@drawable/back3" >
+
+    <com.personlife.widget.CircleImageView
+        android:id="@+id/iv_circle_staricon"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/star5" />
+
+    <TextView
+        android:id="@+id/tv_circle_starname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/iv_circle_staricon"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/iv_circle_staricon"
+        android:maxLength="10"
+        android:singleLine="true"
+        android:text="李宇春"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/tv_circle_signature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tv_circle_starname"
+        android:layout_below="@+id/tv_circle_starname"
+        android:drawableLeft="@drawable/signature1"
+        android:singleLine="true"
+        android:text="我更新了我的APP列表"
+        android:textSize="14dp" />
+
+    <Button
+        android:id="@+id/btn_circle_addattention"
+        android:layout_width="140dp"
+        android:layout_height="36dp"
+        android:layout_alignBottom="@+id/iv_circle_staricon"
+        android:layout_alignLeft="@+id/tv_circle_signature"
+        android:background="@drawable/bg_addfriend"
+        android:gravity="right|center_vertical|end"
+        android:text="添加关注     "
+        android:textSize="16dp"
+        android:textColor="@color/white" />
+
+    <ImageView
+        android:id="@+id/iv_circle_dianzan"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignBottom="@+id/iv_circle_staricon"
+        android:layout_marginLeft="160dp"
+        android:layout_toRightOf="@+id/iv_circle_staricon"
+        android:src="@drawable/dianzancircle" />
+
+    <TextView
+        android:id="@+id/tv_circle_dianzancounts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/iv_circle_staricon"
+        android:layout_marginLeft="4dp"
+        android:layout_marginBottom="10dp"
+        android:layout_toRightOf="@+id/iv_circle_dianzan"
+        android:maxLength="8"
+        android:text="(2000)"
+        android:textSize="12dp" />
+
+    <ImageView
+        android:id="@+id/iv_circle_fenxiang"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignBottom="@+id/iv_circle_staricon"
+        android:layout_marginLeft="60dp"
+        android:layout_toRightOf="@+id/iv_circle_staricon"
+        android:visibility="gone"
+        android:src="@drawable/fenxiangcircle" />
+
+    <TextView
+        android:id="@+id/tv_circle_fenxiangcounts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/iv_circle_staricon"
+        android:layout_marginLeft="4dp"
+        android:layout_marginBottom="10dp"
+        android:layout_toRightOf="@+id/iv_circle_fenxiang"
+        android:maxLength="8"
+        android:text="(2000)"
+        android:visibility="gone"
+        android:textSize="12dp" />
+
+</RelativeLayout>

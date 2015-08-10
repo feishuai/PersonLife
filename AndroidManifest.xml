@@ -184,6 +184,14 @@
             android:name="com.personlife.view.activity.home.RecommendActivity"
             android:label="@string/title_activity_recommend" >
         </activity>
+        <activity
+            android:name="com.personlife.view.activity.circle.CircleActivity"
+            android:label="@string/title_activity_circle" >
+        </activity>
+        <activity
+            android:name="com.personlife.view.activity.home.AllDownloadActivity"
+            android:label="@string/title_activity_all_download" >
+        </activity>
     </application>
 
 </manifest>

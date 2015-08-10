@@ -17,6 +17,7 @@ import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ActivityCollector;
 import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.utils.Utils;
+import com.personlife.view.activity.home.AllDownloadActivity;
 import com.personlife.view.activity.home.HomeActivity;
 import com.personlife.view.fragment.CircleFragment;
 import com.personlife.view.fragment.DiscoveryFragment;
@@ -25,6 +26,7 @@ import com.personlife.view.fragment.PersonalCenter;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -67,7 +69,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 		ActivityCollector.addActivity(this);
 		pref = PreferenceManager.getDefaultSharedPreferences(this);
 		editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-		if(pref.getString("password", "")!=null){
+		if(pref.getString("password", "")!=""){
 			initdataWithPassword();
 		}else{
 			initdataWithNoPassword();
@@ -127,6 +129,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 	}
 	public void init(){
 		title=(TextView) findViewById(R.id.txt_title);
+		title.setText("我的APP");
 		tabButtons=new ImageView[4];
 		tabButtons[0]=(ImageView) findViewById(R.id.ib_home);
 		tabButtons[1]=(ImageView) findViewById(R.id.ib_interact);
@@ -143,6 +146,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 		
 		downloadButton=(Button) findViewById(R.id.txt_download);
 		downloadButton.setVisibility(View.VISIBLE);//主页的一键下载按钮显示
+		downloadButton.setOnClickListener(this);
+		Drawable xiazai = getResources().getDrawable(R.drawable.xiazai);
+		/// 这一步必须要做,否则不会显示.
+		xiazai.setBounds(0, 0, xiazai.getMinimumWidth(), xiazai.getMinimumHeight());
+		downloadButton.setCompoundDrawables(xiazai,null,null,null);
 		
 		txtSearch=(ImageButton) findViewById(R.id.img_right);//推荐里的搜索按钮
 		
@@ -206,6 +214,10 @@ public class MainActivity extends FragmentActivity implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
+		switch(v.getId()){
+		case R.id.txt_download:
+			Utils.start_Activity(MainActivity.this, AllDownloadActivity.class, null);
+		}
 	}
 	
 }

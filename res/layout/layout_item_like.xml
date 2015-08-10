@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:padding="10dp"
+    android:padding="5dp"
     android:orientation="vertical" >
 
     <ImageView
@@ -11,7 +11,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/default_backgroud" />
+        android:src="@drawable/default_app_icon" />
 
     <TextView
         android:id="@+id/tv_item_name"
