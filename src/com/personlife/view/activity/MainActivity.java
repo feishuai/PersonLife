@@ -67,9 +67,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		setContentView(R.layout.activity_main);
 		ImageLoaderUtils.InitConfig(getApplicationContext());
 		ActivityCollector.addActivity(this);
+
 		Intent intent = getIntent();
 		telphone = intent.getStringExtra("telphone");
 		if (PersonInfoLocal.getPersonPassword(this, telphone).length() != 0) {
+
 			initdataWithPassword();
 			
 		} else {

@@ -3,6 +3,8 @@ package com.personlife.bean;
 import java.util.Date;
 import java.util.List;
 
+import android.graphics.drawable.Drawable;
+
 public class App {
 	private int id;
 	private String name;
@@ -18,6 +20,20 @@ public class App {
 	private List<Comment> comments;
 	private String downloadUrl;
 	private List<App> likes;
+	private Drawable appIcon;
+	private String packageName;
+	public List<App> getLikes() {
+		return likes;
+	}
+	public void setLikes(List<App> likes) {
+		this.likes = likes;
+	}
+	public Drawable getAppIcon() {
+		return appIcon;
+	}
+	public void setAppIcon(Drawable appIcon) {
+		this.appIcon = appIcon;
+	}
 	public App(){
 	}
 	public App(String appname,int stars,String tag,int downloadcounts){
@@ -105,5 +121,10 @@ public class App {
 	public void setDowloadcount(int dowloadcount) {
 		this.dowloadcount = dowloadcount;
 	}
-	
+	public String getPackageName() {  
+        return packageName;  
+    }  
+    public void setPackageName(String packageName) {  
+        this.packageName = packageName;
+    }
 }
