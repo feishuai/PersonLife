@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.provider.Telephony;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,18 +37,20 @@ import com.personlife.personinfo.carema.OnDismissListener;
 import com.personlife.personinfo.carema.OnItemClickListener;
 import com.personlife.personinfo.carema.SimpleAdapter;
 import com.personlife.utils.ActivityCollector;
+import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.UpLoadHeadImage;
 import com.personlife.utils.Utils;
 import com.personlife.view.activity.personcenter.MyownActivity;
+
 /**
  * 
  * @author liugang
  * @date 2015年8月8日
  */
 public class RegisterActivity2 extends Activity implements
-		android.content.DialogInterface.OnClickListener ,OnClickListener{
+		android.content.DialogInterface.OnClickListener, OnClickListener {
 
-	private Button back,nextstep;
+	private Button back, nextstep;
 	private ImageView re_picture;
 	private EditText nickname;
 	private TextView tv_title;
@@ -56,15 +59,17 @@ public class RegisterActivity2 extends Activity implements
 	public static final int TAKE_PHOTO = 1;
 	public static final int CROP_PHOTO = 2;
 	public static final int CHOOSE_PHOTO = 3;
-	private SharedPreferences.Editor editor;
-	private SharedPreferences pref;
-	private String returnPath;
+	private String returnPath, telphone;
+	private int flag = 0;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register2);
 		ActivityCollector.addActivity(this);
+		Intent intent = getIntent();
+		telphone = intent.getStringExtra("telphone");
 		init();
 	}
 
@@ -74,7 +79,7 @@ public class RegisterActivity2 extends Activity implements
 
 	}
 
-	public void init(){
+	public void init() {
 		back = (Button) findViewById(R.id.txt_left);
 		back.setVisibility(View.VISIBLE);
 		back.setOnClickListener(this);
@@ -85,10 +90,9 @@ public class RegisterActivity2 extends Activity implements
 		re_picture.setOnClickListener(this);
 		tv_title = (TextView) findViewById(R.id.txt_title);
 		tv_title.setText("设置个人资料");
-		editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-		pref = PreferenceManager.getDefaultSharedPreferences(this);
+
 		File outputImage = new File(Environment.getExternalStorageDirectory(),
-				"tempImage.jpg");
+				telphone + ".jpg");
 		try {
 			if (outputImage.exists()) {
 				outputImage.delete();
@@ -98,48 +102,41 @@ public class RegisterActivity2 extends Activity implements
 			e.printStackTrace();
 		}
 		imageUri = Uri.fromFile(outputImage);
-
-		try {
-			bitmap = BitmapFactory.decodeStream(getContentResolver()
-					.openInputStream(imageUri));
-			re_picture.setImageBitmap(bitmap);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		re_picture.setImageResource(R.drawable.register_touxiang);
 	}
 
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		switch(v.getId()){
+		switch (v.getId()) {
 		case R.id.txt_left:
 			onBackPressed();
 			break;
 		case R.id.register2_nextstep:
-			if(nickname.getText().toString().length()!=0){
-				editor.putString("userName", nickname.getText().toString());
-				editor.putString("headUrl", imageUri.toString());				
-				Utils.start_Activity(RegisterActivity2.this,RegisterActivity3.class);
-				returnPath=UpLoadHeadImage.uploadImg();
-				editor.putString("headKey", returnPath);
-				editor.commit();
-				finish();
-			}else{
-				Toast.makeText(this, "请输入昵称", Toast.LENGTH_SHORT).show();
-			}
-			
+			 if(nickname.getText().toString().length()==0){
+				 Toast.makeText(this, "请输入昵称", Toast.LENGTH_SHORT).show();
+			 }else if(flag==0){
+				 Toast.makeText(this, "请设置头像", Toast.LENGTH_SHORT).show();
+			 }else{
+				 returnPath=UpLoadHeadImage.uploadImg(telphone);
+				 PersonInfoLocal.storeRegisterNickName(RegisterActivity2.this, telphone,
+						 nickname.getText().toString(), imageUri.toString(),"http://7xkbeq.com1.z0.glb.clouddn.com"+returnPath);
+				 Intent intent = new Intent(RegisterActivity2.this,RegisterActivity3.class);
+				 intent.putExtra("telphone", telphone);
+				 startActivity(intent);
+				 finish();
+				 
+			 }			 
 			break;
 		case R.id.register2_touxiang:
 			showDialog();
 			break;
 		}
 	}
+
 	private void showDialog() {
 		Holder holder;
 		holder = new ListHolder();
-
 		OnClickListener clickListener = new OnClickListener() {
 
 			@Override
@@ -232,8 +229,9 @@ public class RegisterActivity2 extends Activity implements
 					Bitmap smallBitmap = zoomBitmap(bitmap, 60, 60);
 					bitmap.recycle();
 					savePhotoToSDCard(Environment.getExternalStorageDirectory()
-							.toString(), "tempImage.jpg", smallBitmap);
+							.toString(), telphone+".jpg", smallBitmap);
 					re_picture.setImageBitmap(smallBitmap);
+					flag=1;
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -249,8 +247,8 @@ public class RegisterActivity2 extends Activity implements
 					Bitmap smallBitmap = zoomBitmap(photo, 120, 120);
 					photo.recycle();
 					re_picture.setImageBitmap(smallBitmap);
-					savePhotoToSDCard(Environment.getExternalStorageDirectory()
-							.toString(), "tempImage.jpg", smallBitmap);
+					flag=1;
+					savePhotoToSDCard(Environment.getExternalStorageDirectory().toString(), telphone+".jpg", smallBitmap);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -299,8 +297,8 @@ public class RegisterActivity2 extends Activity implements
 				e.printStackTrace();
 			} finally {
 				try {
-					fileOutputStream.close();					
-					
+					fileOutputStream.close();
+
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

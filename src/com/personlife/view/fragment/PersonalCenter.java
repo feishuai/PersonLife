@@ -15,6 +15,7 @@ import com.loopj.android.http.RequestParams;
 import com.personlife.bean.UserInfo;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONObjectHttpResponseHandler;
+import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.Utils;
 import com.personlife.view.activity.MainActivity;
 import com.personlife.view.activity.personcenter.AboutUsActivity;
@@ -56,9 +57,14 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 	private View layout;
 	private TextView username, personsign;
 	private ImageView head,sex;//头像
-	private SharedPreferences pref;
 	private Uri imageUri;
 	private Bitmap bitmap;
+	private String telphone,headuri;
+	public PersonalCenter(String tel) {
+		// TODO Auto-generated constructor stub
+		super();
+		telphone=tel;
+	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -89,17 +95,28 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 		head=(ImageView) layout.findViewById(R.id.head);
 		sex=(ImageView) layout.findViewById(R.id.iv_sex);
 		//联网获取用户信息
-		pref = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-		if(pref.getString("userName", null)!=null){
-			username.setText(pref.getString("userName",null));
-			personsign.setText(pref.getString("signature",null));
-			if(pref.getString("sex","男").equals("男"))
+		
+		if(PersonInfoLocal.getNcikName(getActivity(), telphone).length()!=0){
+			headuri=PersonInfoLocal.getHeadUri(getActivity(), telphone);
+			username.setText(PersonInfoLocal.getNcikName(getActivity(), telphone));
+			personsign.setText(PersonInfoLocal.getSignature(getActivity(), telphone));
+			if(PersonInfoLocal.getSex(getActivity(), telphone).equals("男"))
 				sex.setImageResource(R.drawable.ic_sex_male);
 			else 
 				sex.setImageResource(R.drawable.ic_sex_female);
+			Bitmap photo;
+			try {
+				photo = BitmapFactory
+						.decodeStream(getActivity().getContentResolver().openInputStream(Uri.parse(headuri)));
+				head.setImageBitmap(photo);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}else{
 			RequestParams request = new RequestParams();
-			request.put("phone", pref.getString("telephone", ""));
+			request.put("phone", telphone);
 			BaseAsyncHttp.postReq(getActivity().getApplicationContext(),"/users/getinfo", request,
 					new JSONObjectHttpResponseHandler() {
 
@@ -112,6 +129,17 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 									sex.setImageResource(R.drawable.ic_sex_male);
 								else 
 									sex.setImageResource(R.drawable.ic_sex_female);
+								Bitmap photo;
+								try {
+									photo = BitmapFactory
+											.decodeStream(getActivity().getContentResolver().openInputStream(Uri.parse(Environment.getExternalStorageDirectory()
+													.getPath() + "/" + telphone + ".jpg")));
+									head.setImageBitmap(photo);
+									photo.recycle();
+								} catch (FileNotFoundException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
 							} catch (JSONException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -145,12 +173,13 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.view_user:
-			Intent intent=new Intent();
-			intent.setClass(getActivity(), MyownActivity.class);
-			startActivity(intent);		
+			Intent intent=new Intent(getActivity(), MyownActivity.class);
+			intent.putExtra("telphone", telphone);
+			startActivity(intent);
+	
 			break;
 		case R.id.txt_downloadlist:
-//			Utils.start_Activity(getActivity(), TaskList.class);
+			Utils.start_Activity(getActivity(), TaskList.class);
 			break;
 		case R.id.txt_mycollection:
 //			Utils.start_Activity(getActivity(), MyCollectionActivity.class,
@@ -186,7 +215,7 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 	}
 	public void headinit(){
 		File outputImage = new File(Environment.getExternalStorageDirectory(),
-				"tempImage.jpg");
+				telphone+".jpg");
 		try {
 			if (!outputImage.exists()) {
 				outputImage.createNewFile();

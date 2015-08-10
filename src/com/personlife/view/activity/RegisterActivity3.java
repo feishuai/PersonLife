@@ -6,8 +6,10 @@ import java.util.Set;
 import com.example.personlifep.R;
 import com.personlife.common.Utils;
 import com.personlife.utils.ActivityCollector;
+import com.personlife.utils.PersonInfoLocal;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -28,14 +30,15 @@ public class RegisterActivity3 extends Activity implements OnClickListener {
 	private TextView tv_title;
 	private Button[] re_interests = new Button[12];
 	private boolean[] flag = new boolean[12];
-	private SharedPreferences pref;
-	private SharedPreferences.Editor editor;
+	private String telphone;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register3);
 		ActivityCollector.addActivity(this);
+		Intent intent=getIntent();
+		telphone = intent.getStringExtra("telphone");
 		init();
 	}
 
@@ -44,9 +47,7 @@ public class RegisterActivity3 extends Activity implements OnClickListener {
 		back.setVisibility(View.VISIBLE);
 		back.setOnClickListener(this);
 		tv_title = (TextView) findViewById(R.id.txt_title);
-		tv_title.setText("完善个人信息");
-		pref = PreferenceManager.getDefaultSharedPreferences(this);
-		
+		tv_title.setText("完善个人信息");				
 		nextstep = (Button) findViewById(R.id.register3_nextstep);
 		nextstep.setOnClickListener(this);
 		int[] r = { R.id.re_interest_1, R.id.re_interest_2, R.id.re_interest_3,
@@ -166,15 +167,13 @@ public class RegisterActivity3 extends Activity implements OnClickListener {
 			}
 			break;
 		case R.id.register3_nextstep:
-			editor = pref.edit();
 			Set<String> set=new HashSet<String>();
 			for(int i=0;i<12;i++){
 				if(flag[i]==true){
 					set.add(re_interests[i].getText().toString());
 				}
 			}
-			editor.putStringSet("hobby", set);
-			editor.commit();
+			PersonInfoLocal.storeRegisterHobbys(this, telphone, set);
 			Utils.start_Activity(this, MainActivity.class);
 			finish();
 			ActivityCollector.finishAll();

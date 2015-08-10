@@ -2,6 +2,7 @@ package com.personlife.view.activity.personinfo;
 
 import com.example.personlifep.R;
 import com.personlife.utils.ActivityCollector;
+import com.personlife.utils.PersonInfoLocal;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -29,14 +30,15 @@ public class NickName extends Activity {
 	private Button t_left;
 	private Button t_right;
 	private EditText nick;
-	private SharedPreferences pref;
-	private SharedPreferences.Editor editor;
+	private String telphone;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_nickname);
 		ActivityCollector.addActivity(this);
+		Intent intent=getIntent();
+		telphone=intent.getStringExtra("telphone");
 		init();
 	}
 
@@ -48,8 +50,8 @@ public class NickName extends Activity {
 		tv_title.setText("昵称");
 		t_left.setVisibility(View.VISIBLE);
 		t_right.setVisibility(View.VISIBLE);
-		pref = PreferenceManager.getDefaultSharedPreferences(this);
-		nick.setText(pref.getString("userName", "用户名"));
+		
+		nick.setText(PersonInfoLocal.getNcikName(this, telphone));
 		t_left.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -78,9 +80,8 @@ public class NickName extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				//保存昵称
-				editor=pref.edit();
-				editor.putString("userName",nick.getText().toString());
-				editor.commit();
+				PersonInfoLocal.storeNickname(NickName.this, telphone, nick.getText().toString());
+				
 				finish();
 			}
 		});

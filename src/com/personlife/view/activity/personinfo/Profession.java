@@ -2,8 +2,10 @@ package com.personlife.view.activity.personinfo;
 
 import com.example.personlifep.R;
 import com.personlife.utils.ActivityCollector;
+import com.personlife.utils.PersonInfoLocal;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -25,14 +27,16 @@ public class Profession extends Activity implements OnClickListener{
 	private TextView title,work;
 	private Button back,finish;
 	private Button[] jobs = new Button[9];
-	private SharedPreferences pref;
-	private SharedPreferences.Editor editor;
+
+	private String telphone;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_profession);
 		ActivityCollector.addActivity(this);
+		Intent intent=getIntent();
+		telphone=intent.getStringExtra("telphone");
 		init();
 	}
 
@@ -50,8 +54,7 @@ public class Profession extends Activity implements OnClickListener{
 		title.setText("职业");
 		back.setVisibility(View.VISIBLE);
 		finish.setVisibility(View.VISIBLE);
-		pref = PreferenceManager.getDefaultSharedPreferences(this);
-		work.setText(pref.getString("job", "职业"));
+		work.setText(PersonInfoLocal.getJob(this, telphone));
 		back.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -65,9 +68,7 @@ public class Profession extends Activity implements OnClickListener{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				editor=pref.edit();
-				editor.putString("job",work.getText().toString());
-				editor.commit();
+				PersonInfoLocal.storeJob(Profession.this, telphone, work.getText().toString());
 				finish();
 			}
 		});
@@ -91,57 +92,41 @@ public class Profession extends Activity implements OnClickListener{
 		// TODO Auto-generated method stub
 		switch(v.getId()){
 		case R.id.work_1:
-			editor=pref.edit();
-			editor.putString("job",jobs[0].getText().toString());
-			editor.commit();
+			PersonInfoLocal.storeJob(Profession.this, telphone,jobs[0].getText().toString());
+			
 			finish();
 			break;
 		case R.id.work_2:
-			editor=pref.edit();
-			editor.putString("job",jobs[1].getText().toString());
-			editor.commit();
+			PersonInfoLocal.storeJob(Profession.this, telphone,jobs[1].getText().toString());
+			
 			finish();
 			break;
 		case R.id.work_3:
-			editor=pref.edit();
-			editor.putString("job",jobs[2].getText().toString());
-			editor.commit();
+			PersonInfoLocal.storeJob(Profession.this, telphone,jobs[2].getText().toString());
 			finish();
 			break;
 		case R.id.work_4:
-			editor=pref.edit();
-			editor.putString("job",jobs[3].getText().toString());
-			editor.commit();
+			PersonInfoLocal.storeJob(Profession.this, telphone,jobs[3].getText().toString());
 			finish();
 			break;
 		case R.id.work_5:
-			editor=pref.edit();
-			editor.putString("job",jobs[4].getText().toString());
-			editor.commit();
+			PersonInfoLocal.storeJob(Profession.this, telphone,jobs[4].getText().toString());
 			finish();
 			break;
 		case R.id.work_6:
-			editor=pref.edit();
-			editor.putString("job",jobs[5].getText().toString());
-			editor.commit();
+			PersonInfoLocal.storeJob(Profession.this, telphone,jobs[5].getText().toString());
 			finish();
 			break;
 		case R.id.work_7:
-			editor=pref.edit();
-			editor.putString("job",jobs[6].getText().toString());
-			editor.commit();
+			PersonInfoLocal.storeJob(Profession.this, telphone,jobs[6].getText().toString());
 			finish();
 			break;
 		case R.id.work_8:
-			editor=pref.edit();
-			editor.putString("job",jobs[7].getText().toString());
-			editor.commit();
+			PersonInfoLocal.storeJob(Profession.this, telphone,jobs[7].getText().toString());
 			finish();
 			break;
 		case R.id.work_9:
-			editor=pref.edit();
-			editor.putString("job",jobs[8].getText().toString());
-			editor.commit();
+			PersonInfoLocal.storeJob(Profession.this, telphone,jobs[8].getText().toString());
 			finish();
 			break;
 			default:break;

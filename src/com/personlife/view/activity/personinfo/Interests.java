@@ -5,8 +5,10 @@ import java.util.Set;
 
 import com.example.personlifep.R;
 import com.personlife.utils.ActivityCollector;
+import com.personlife.utils.PersonInfoLocal;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -25,17 +27,18 @@ public class Interests extends Activity implements OnClickListener{
 
 	private TextView title;
 	private Button back, finish;
-	private SharedPreferences pref;
-	private SharedPreferences.Editor editor;
 	private Button[] hobbys = new Button[12];
 	private boolean[] flag = new boolean[12];
 	private Set<String> set;
+	private String telphone;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_interests);
 		ActivityCollector.addActivity(this);
+		Intent intent=getIntent();
+		telphone=intent.getStringExtra("telphone");
 		init();
 	}
 
@@ -46,11 +49,11 @@ public class Interests extends Activity implements OnClickListener{
 		title.setText("兴趣爱好");
 		back.setVisibility(View.VISIBLE);
 		finish.setVisibility(View.VISIBLE);
-		pref = PreferenceManager.getDefaultSharedPreferences(this);
+		
 		StringBuffer sb = new StringBuffer();
 		sb.append("");
 		set = new HashSet<String>();		
-		set=pref.getStringSet("hobby", null);
+		set=PersonInfoLocal.getHobbys(this, telphone);
 		if(set!=null){
 			for (String str : set) {  
 				sb.append(str+" ");
@@ -130,14 +133,15 @@ public class Interests extends Activity implements OnClickListener{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				editor = pref.edit();
+				Set<String> temp=new HashSet<String>();
+				temp.add("");
 				for(int i=0;i<12;i++){
 					if(flag[i]==true){
-						set.add(hobbys[i].getText().toString());
+						temp.add(hobbys[i].getText().toString());
 					}
 				}
-				editor.putStringSet("hobby", set);
-				editor.commit();
+				PersonInfoLocal.storeRegisterHobbys(Interests.this, telphone, temp);
+				
 				finish();
 			}
 		});

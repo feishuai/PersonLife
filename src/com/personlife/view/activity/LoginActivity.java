@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -18,6 +19,7 @@ import com.example.personlifep.R;
 import com.loopj.android.http.RequestParams;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONObjectHttpResponseHandler;
+import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.Utils;
 
 public class LoginActivity extends Activity implements OnClickListener {
@@ -33,7 +35,9 @@ public class LoginActivity extends Activity implements OnClickListener {
 		editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
 		pref = PreferenceManager.getDefaultSharedPreferences(this);
 		if (pref.getString("islogin", "0").equals("1")) {
-			Utils.start_Activity(LoginActivity.this, MainActivity.class);
+			Intent intent=new Intent(LoginActivity.this, MainActivity.class);
+			intent.putExtra("telphone", pref.getString("telphone", ""));
+			startActivity(intent);
 			finish();
 		} else {
 			initViews();
@@ -70,10 +74,13 @@ public class LoginActivity extends Activity implements OnClickListener {
 							try {
 								if (resp.get("flag").equals(1)) {
 									editor.putString("islogin", "1");
-									editor.putString("telephone", username.getText().toString());									
-									editor.putString("password", password.getText().toString());
+									editor.putString("telphone", username.getText().toString());
 									editor.commit();
-									Utils.start_Activity(LoginActivity.this,MainActivity.class);
+									PersonInfoLocal.storeLoginTelAndPass(LoginActivity.this, username.getText().toString(),
+											password.getText().toString());
+									Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+									intent.putExtra("telphone", username.getText().toString());
+									startActivity(intent);
 									finish();
 								} else {
 									Toast.makeText(LoginActivity.this,
