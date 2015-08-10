@@ -18,8 +18,10 @@ import com.example.personlifep.R;
 
 
 import com.personlife.utils.ActivityCollector;
+import com.personlife.utils.PersonInfoLocal;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -48,15 +50,17 @@ public class AreaSetting extends Activity implements OnClickListener{
 	public BDLocationListener myListener = new MyLocationListener();
 	LocationClientOption option = new LocationClientOption();
 	int i; 
-	private SharedPreferences.Editor editor;
 	private ListView listView;
 	private List<String> locations = new ArrayList<String>();
+	private String telphone;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_areasetting);
 		ActivityCollector.addActivity(this);
+		Intent intent=getIntent();
+		telphone=intent.getStringExtra("telphone");
 		init();
 		
 	}
@@ -76,7 +80,6 @@ public class AreaSetting extends Activity implements OnClickListener{
 	    mLocationClient.setLocOption(option);
 	    mLocationClient.start();
 	    i=mLocationClient.requestLocation();
-	    editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
 		back.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -96,8 +99,8 @@ public class AreaSetting extends Activity implements OnClickListener{
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
-				editor.putString("location",locations.get(position));
-				editor.commit();
+				PersonInfoLocal.storeLocation(AreaSetting.this, telphone, locations.get(position));
+				
 				finish();
 			}
 		});
@@ -116,9 +119,9 @@ public class AreaSetting extends Activity implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		String temp = location.getText().toString().substring(3);		
-		editor.putString("location",temp);
-		editor.commit();
+		String temp = location.getText().toString().substring(3);
+		PersonInfoLocal.storeLocation(AreaSetting.this, telphone, temp);
+		
 		finish();
 	}
 	

@@ -2,6 +2,7 @@ package com.personlife.view.activity.personinfo;
 
 import com.example.personlifep.R;
 import com.personlife.utils.ActivityCollector;
+import com.personlife.utils.PersonInfoLocal;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -26,14 +27,15 @@ public class PersonalSign extends Activity {
 	private TextView title,signedit;
 	private Button cancle,save;
 
-	private SharedPreferences pref;
-	private SharedPreferences.Editor editor;
+	private String telphone;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_sign);
 		ActivityCollector.addActivity(this);
+		Intent intent=getIntent();
+		telphone=intent.getStringExtra("telphone");
 		init();
 	}
 	public void init(){
@@ -44,8 +46,7 @@ public class PersonalSign extends Activity {
 		title.setText("个性签名");
 		cancle.setVisibility(View.VISIBLE);
 		save.setVisibility(View.VISIBLE);
-		pref = PreferenceManager.getDefaultSharedPreferences(this);
-		signedit.setText(pref.getString("signature", "个性签名"));
+		signedit.setText(PersonInfoLocal.getSignature(this, telphone));
 		cancle.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -59,9 +60,8 @@ public class PersonalSign extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				editor=pref.edit();
-				editor.putString("signature",signedit.getText().toString());
-				editor.commit();
+				PersonInfoLocal.storeSignature(PersonalSign.this, telphone, signedit.getText().toString());
+				
 				finish();
 			}
 		});

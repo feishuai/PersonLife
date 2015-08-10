@@ -1,7 +1,9 @@
 package com.personlife.view.activity.personinfo;
 
 import com.example.personlifep.R;
+import com.loopj.android.http.PersistentCookieStore;
 import com.personlife.utils.ActivityCollector;
+import com.personlife.utils.PersonInfoLocal;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -25,14 +27,15 @@ public class UserSex extends Activity {
 	private Button t_left;
 	private ImageView man_duihao;
 	private ImageView woman_duihao;
-	private SharedPreferences pref;
-	private SharedPreferences.Editor editor;
+	private String telphone;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_sex);
 		ActivityCollector.addActivity(this);
+		Intent intent=getIntent();
+		telphone=intent.getStringExtra("telphone");
 		init();
 	}
 
@@ -43,8 +46,8 @@ public class UserSex extends Activity {
 		woman_duihao=(ImageView) findViewById(R.id.woman_duihao);
 		tv_title.setText("性别");
 		t_left.setVisibility(View.VISIBLE);
-		pref = PreferenceManager.getDefaultSharedPreferences(this);
-		if(pref.getString("sex", "男").equals("男")){
+		
+		if(PersonInfoLocal.getSex(this, telphone).equals("男")){
 			man_duihao.setVisibility(View.VISIBLE);
 			woman_duihao.setVisibility(View.GONE);
 		}else{
@@ -67,18 +70,14 @@ public class UserSex extends Activity {
 			man_duihao.setVisibility(View.VISIBLE);
 			woman_duihao.setVisibility(View.GONE);
 			//添加保存性别的代码
-			editor=pref.edit();
-			editor.putString("sex","男");
-			editor.commit();
+			PersonInfoLocal.storeSex(this, telphone, "男");
 			finish();
 			break;
 		case R.id.woman:
 			woman_duihao.setVisibility(View.VISIBLE);
 			man_duihao.setVisibility(View.GONE);
 			//添加保存性别的代码
-			editor=pref.edit();
-			editor.putString("sex","女");
-			editor.commit();
+			PersonInfoLocal.storeSex(this, telphone, "女");
 			finish();
 			break;
 		}		

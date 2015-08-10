@@ -24,10 +24,10 @@ import com.qiniu.util.Auth;
 public class UpLoadHeadImage {
 	private static String result=null;
 
-	public static String uploadImg() {
+	public static String uploadImg(String telphone) {
 		UploadManager uploadManager = new UploadManager();
 		File data = new File(Environment.getExternalStorageDirectory(),
-				"tempImage.jpg");
+				telphone+".jpg");
 		String key = null;
 		String accessKey = "6dnAU0jREe7QO0nD1ujr6CizVZ87HGhivNS1W9hR";
 		String secretKey = "RYuzaeIJDvFb8KOa9OSlsmlVs7j9A6oFbzwjh9Z0";

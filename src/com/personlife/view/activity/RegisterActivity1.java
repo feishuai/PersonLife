@@ -26,6 +26,7 @@ import com.personlife.common.DES;
 import com.personlife.common.Utils;
 import com.personlife.utils.ActivityCollector;
 import com.personlife.utils.Constants;
+import com.personlife.utils.PersonInfoLocal;
 
 //注册
 public class RegisterActivity1 extends Activity implements OnClickListener {
@@ -33,8 +34,6 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 	private Button btn_nextstep, btn_send,back;
 	private EditText et_usertel, et_code;
 	private MyCount mc;
-	private SharedPreferences.Editor editor;
-	private SharedPreferences pref;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -62,8 +61,6 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 		btn_nextstep.setEnabled(false);
 		et_usertel = (EditText) findViewById(R.id.et_usertel);
 		et_code = (EditText) findViewById(R.id.et_code);
-		editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-		pref = PreferenceManager.getDefaultSharedPreferences(this);
 	}
 
 	protected void setListener() {
@@ -90,11 +87,11 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 			break;
 		case R.id.btn_nextstep:
 //			getRegister();
-			Utils.start_Activity(RegisterActivity1.this,RegisterActivity2.class);
-			editor.putString("telephone", et_usertel.getText().toString());
-			editor.putString("password", null);
-			editor.commit();
-			
+			PersonInfoLocal.storeRegisterTel(this, et_usertel.getText().toString());
+			Intent intent = new Intent(RegisterActivity1.this,RegisterActivity2.class);
+			intent.putExtra("telphone", et_usertel.getText().toString());
+			startActivity(intent);
+						
 			finish();
 			break;
 		default:

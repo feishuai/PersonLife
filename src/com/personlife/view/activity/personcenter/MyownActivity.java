@@ -26,9 +26,12 @@ import com.personlife.personinfo.carema.OnItemClickListener;
 import com.personlife.personinfo.carema.SimpleAdapter;
 import com.personlife.personinfo.carema.ViewHolder;
 import com.personlife.utils.ActivityCollector;
+import com.personlife.utils.PersonInfoLocal;
+import com.personlife.utils.UpLoadHeadImage;
 import com.personlife.utils.Utils;
 import com.personlife.view.activity.LoginActivity;
 import com.personlife.view.activity.MainActivity;
+import com.personlife.view.activity.RegisterActivity2;
 import com.personlife.view.activity.personinfo.AreaSetting;
 import com.personlife.view.activity.personinfo.Interests;
 import com.personlife.view.activity.personinfo.NickName;
@@ -78,19 +81,20 @@ public class MyownActivity extends Activity implements
 			sign;
 	private ImageView picture;
 	private Uri imageUri;
-	private SharedPreferences pref;
 	public static final int TAKE_PHOTO = 1;
 	public static final int CROP_PHOTO = 2;
 	public static final int CHOOSE_PHOTO = 3;
 	private Bitmap bitmap;
-	private SharedPreferences.Editor editor;
 
+	private String telphone;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.myownactivity);
 		ActivityCollector.addActivity(this);
+		Intent intent=getIntent();
+		telphone=intent.getStringExtra("telphone");
 		init();
 		
 	}
@@ -103,18 +107,18 @@ public class MyownActivity extends Activity implements
 		update();
 	}
 	public void update(){
-		pref = PreferenceManager.getDefaultSharedPreferences(this);
+		
 		RequestParams request = new RequestParams();
-		request.put("phone", pref.getString("telephone", null));
-		request.put("nickname", pref.getString("userName", null));
-		request.put("thumb", pref.getString("headUrl", null));
-		request.put("gender", pref.getString("sex", null));
-		request.put("area", pref.getString("location", null));
-		request.put("job", pref.getString("job", null));
+		request.put("phone", telphone);
+		request.put("nickname", PersonInfoLocal.getNcikName(MyownActivity.this, telphone));
+		request.put("thumb", PersonInfoLocal.getHeadKey(MyownActivity.this, telphone));
+		request.put("gender", PersonInfoLocal.getSex(MyownActivity.this, telphone));
+		request.put("area", PersonInfoLocal.getLocation(MyownActivity.this, telphone));
+		request.put("job", PersonInfoLocal.getJob(MyownActivity.this, telphone));
 		StringBuffer sb = new StringBuffer();
 		sb.append("");
 		Set<String> set = new HashSet<String>();
-		set=pref.getStringSet("hobby", null);
+		set=PersonInfoLocal.getHobbys(MyownActivity.this, telphone);
 
 		if(set!=null){
 			for (String str : set) {  
@@ -123,7 +127,7 @@ public class MyownActivity extends Activity implements
 
 		}
 		request.put("hobby",sb.toString() );
-		request.put("signature", pref.getString("signature", null));
+		request.put("signature", PersonInfoLocal.getSignature(MyownActivity.this, telphone));
 		BaseAsyncHttp.postReq(getApplicationContext(),"/users/modify", request,
 				new JSONObjectHttpResponseHandler() {
 
@@ -179,7 +183,7 @@ public class MyownActivity extends Activity implements
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				editor = pref.edit();
+				SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MyownActivity.this).edit();
 				editor.putString("islogin", "0");
 				editor.commit();
 				Utils.start_Activity(MyownActivity.this,LoginActivity.class);
@@ -188,17 +192,15 @@ public class MyownActivity extends Activity implements
 		});
 		tv_title = (TextView) findViewById(R.id.txt_title);
 		tv_title.setText("个人信息");
-		pref = PreferenceManager
-				.getDefaultSharedPreferences(this);
-
-		nickname.setText(pref.getString("userName", "用户名"));
-		sex.setText(pref.getString("sex", "男"));
-		area.setText(pref.getString("location", "地区"));
-		profession.setText(pref.getString("job", "职业"));
+		
+		nickname.setText(PersonInfoLocal.getNcikName(this, telphone));
+		sex.setText(PersonInfoLocal.getSex(this, telphone));
+		area.setText(PersonInfoLocal.getLocation(this, telphone));
+		profession.setText(PersonInfoLocal.getJob(this, telphone));
 		StringBuffer sb = new StringBuffer();
 		sb.append("");
 		Set<String> set = new HashSet<String>();		
-		set=pref.getStringSet("hobby", null);
+		set=PersonInfoLocal.getHobbys(MyownActivity.this, telphone);
 //		Iterator it = set.iterator();
 		if(set!=null){
 			for (String str : set) {  
@@ -210,22 +212,17 @@ public class MyownActivity extends Activity implements
 //				}  
 		}
 		interests.setText(sb.toString());
-		sign.setText(pref.getString("signature", "个性签名"));
+		sign.setText(PersonInfoLocal.getSignature(MyownActivity.this, telphone));
 		File outputImage = new File(Environment.getExternalStorageDirectory(),
-				"tempImage.jpg");
-		try {
-			if (!outputImage.exists()) {
-				outputImage.createNewFile();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+				telphone+".jpg");
+		
 		imageUri = Uri.fromFile(outputImage);
 
 		try {
 			bitmap = BitmapFactory.decodeStream(getContentResolver()
 					.openInputStream(imageUri));
 			picture.setImageBitmap(bitmap);
+			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -239,22 +236,35 @@ public class MyownActivity extends Activity implements
 			showDialog();
 			break;
 		case R.id.person_nicheng:
-			Utils.start_Activity(this, NickName.class);
+			Intent intent1 =new Intent(this, NickName.class);
+			intent1.putExtra("telphone", telphone);
+			startActivity(intent1);
 			break;
 		case R.id.person_sex:
-			Utils.start_Activity(this, UserSex.class);
+			Intent intent2 =new Intent(this, UserSex.class);
+			intent2.putExtra("telphone", telphone);
+			startActivity(intent2);
 			break;
 		case R.id.person_area:
-			Utils.start_Activity(this, AreaSetting.class);
+			Intent intent3 =new Intent(this, AreaSetting.class);
+			intent3.putExtra("telphone", telphone);
+			startActivity(intent3);
 			break;
 		case R.id.person_zhiye:
-			Utils.start_Activity(this, Profession.class);
+			Intent intent4 =new Intent(this, Profession.class);
+			intent4.putExtra("telphone", telphone);
+			startActivity(intent4);
+
 			break;
 		case R.id.person_interesting:
-			Utils.start_Activity(this, Interests.class);
+			Intent intent5 =new Intent(this, Interests.class);
+			intent5.putExtra("telphone", telphone);
+			startActivity(intent5);
 			break;
 		case R.id.person_sign:
-			Utils.start_Activity(this, PersonalSign.class);
+			Intent intent6 =new Intent(this, PersonalSign.class);
+			intent6.putExtra("telphone", telphone);
+			startActivity(intent6);
 			break;
 		}
 	}
@@ -361,8 +371,11 @@ public class MyownActivity extends Activity implements
 					Bitmap smallBitmap = zoomBitmap(bitmap, 60, 60);
 					bitmap.recycle();
 					savePhotoToSDCard(Environment.getExternalStorageDirectory()
-							.toString(), "tempImage.jpg", smallBitmap);
+							.toString(), telphone+".jpg", smallBitmap);
 					picture.setImageBitmap(smallBitmap);
+					String returnPath=UpLoadHeadImage.uploadImg(telphone);
+					 PersonInfoLocal.storeHeadkey(this, telphone,
+							 "http://7xkbeq.com1.z0.glb.clouddn.com"+returnPath);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -379,7 +392,10 @@ public class MyownActivity extends Activity implements
 					photo.recycle();
 					picture.setImageBitmap(smallBitmap);
 					savePhotoToSDCard(Environment.getExternalStorageDirectory()
-							.toString(), "tempImage.jpg", smallBitmap);
+							.toString(), telphone+".jpg", smallBitmap);
+					String returnPath=UpLoadHeadImage.uploadImg(telphone);
+					 PersonInfoLocal.storeHeadkey(this, telphone,
+							 "http://7xkbeq.com1.z0.glb.clouddn.com"+returnPath);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
