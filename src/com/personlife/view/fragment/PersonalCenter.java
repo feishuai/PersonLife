@@ -27,6 +27,7 @@ import com.personlife.view.activity.personcenter.SecureActivity;
 import com.personlife.view.activity.personcenter.SettingActivity;
 import com.personlife.view.activity.personcenter.TaskList;
 import com.personlife.view.activity.personcenter.TongzhiActivity;
+import com.personlife.view.collection.CollectionActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -182,8 +183,8 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 			Utils.start_Activity(getActivity(), TaskList.class);
 			break;
 		case R.id.txt_mycollection:
-//			Utils.start_Activity(getActivity(), MyCollectionActivity.class,
-//					new BasicNameValuePair("NAME", "我的收藏"));
+			Utils.start_Activity(getActivity(), CollectionActivity.class,
+					new BasicNameValuePair("NAME", "我的收藏"));
 			break;
 		case R.id.txt_connection:
 			Utils.start_Activity(getActivity(), ConnectionActivity.class,

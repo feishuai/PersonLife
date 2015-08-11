@@ -36,6 +36,9 @@ public class App {
 	}
 	public App(){
 	}
+	public App(String name){
+		this.name = name;
+	}
 	public App(String appname,int stars,String tag,int downloadcounts){
 		this.name=appname;
 		this.stars = stars;

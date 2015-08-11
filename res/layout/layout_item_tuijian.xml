@@ -9,6 +9,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:padding="10dp"
+        android:layout_toRightOf="@+id/cb_tuijian_state"
         android:src="@drawable/default_app_icon" />
 
     <LinearLayout
@@ -39,6 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="网易云音乐来了"
+            android:maxLength="20"
             android:textSize="14dp" />
     </LinearLayout>
 
@@ -55,4 +57,26 @@
         android:textSize="20dp"
         android:textColor="@color/white" />
 
+    <CheckBox
+        android:id="@+id/cb_tuijian_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        style="@style/CustomCheckboxTheme" 
+        android:visibility="gone"/>
+	
+    <TextView
+        android:id="@+id/tv_tuijian_beforetime"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:textColor="@color/black"
+        android:layout_alignParentRight="true"
+        android:text="16天前" 
+        android:visibility="gone"/>
 </RelativeLayout>

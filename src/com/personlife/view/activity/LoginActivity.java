@@ -63,6 +63,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 		switch (v.getId()) {
 		case R.id.tv_login_login:
+//			Utils.start_Activity(LoginActivity.this,MainActivity.class);
 			RequestParams params = new RequestParams();
 			params.put("phone", username.getText().toString());
 			params.put("pwd", password.getText().toString());
@@ -98,7 +99,8 @@ public class LoginActivity extends Activity implements OnClickListener {
 						@Override
 						public void jsonFail(JSONObject resp) {
 							// TODO Auto-generated method stub
-							Log.i("login", resp.toString());
+							if(resp!=null)
+								Log.i("login", resp.toString());
 							Toast.makeText(LoginActivity.this,
 									"fail密码错误或者用户名错误", Toast.LENGTH_LONG)
 									.show();
