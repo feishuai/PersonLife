@@ -16,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.personlifep.R;
@@ -113,6 +114,8 @@ public class TabAppList extends Fragment implements OnClickListener {
 						.findViewById(R.id.tv_download_status);
 				holder.icon = (ImageView) convertView
 						.findViewById(R.id.iv_download_icon);
+				holder.download_progress=(ProgressBar) convertView.findViewById(R.id.download_progress);
+				holder.download_progress.setVisibility(View.GONE);
 				holder.download = (Button) convertView
 						.findViewById(R.id.btn_download_download);
 				convertView.setTag(holder);
@@ -155,6 +158,7 @@ public class TabAppList extends Fragment implements OnClickListener {
 			ImageView icon;
 			TextView appname;
 			TextView status;
+			ProgressBar download_progress;
 			Button download;
 		}
 	}
