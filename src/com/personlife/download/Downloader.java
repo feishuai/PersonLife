@@ -1,427 +1,208 @@
-/*
- * Copyright (C) 2014 The Android Open Source Project.
- *
- *        yinglovezhuzhu@gmail.com
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.personlife.download;
-
-import android.content.Context;
-
-
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.LinkedHashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-
-/**
- * usage Downloader class
- *
+/**  
+ *   
+ * @author liugang  
+ * @date 2015年8月11日   
  */
-public class Downloader {
-	
-	private static final String TAG = Downloader.class.getSimpleName();
-	
-	private static final String TEMP_FILE_SUFFIX = ".download";
-	
-	private static final int RESPONSE_OK = 200;
-	private Context mContext;
-	private boolean mStoped = true; // The flag of stopped.
-	private int mDownloadedSize = 0; // The size of downloaded.
-	private int mFileSize = 0; // The size of the file which to download.
-	private DownloadThread [] mTheadPool; // The thread pool of download thread.
-    private File mSaveFolder;
-	private File mSavedFile; // The local file.
-	private long mUpdateTime = 1000;
-	private Map<Integer, Integer> mData = new ConcurrentHashMap<Integer, Integer>(); // The data of all thread state
-	private int mBlockSize; // The block size of each thread need to download
-	private String mUrl; // The url of the file which to download.
-	
-	private boolean mFinished = false;
-	
-	private boolean mBreakPointSupported = true;
-
-	/**
-	 * Constructor<br><br>
-	 * @param context
-	 * @param downloadUrl
-	 * @param saveFolder
-	 * @param threadNum
-	 */
-	public Downloader(Context context, String downloadUrl, File saveFolder, int threadNum) {
-        this.mContext = context;
-        this.mUrl = downloadUrl;
-        this.mSaveFolder = saveFolder;
-        this.mTheadPool = new DownloadThread[threadNum];
-
-        checkDownloadFolder(saveFolder);
-    }
-	
-	/**
-	 * Constructor<br><br>
-	 * @param context
-	 * @param downloadUrl
-	 * @param saveFolder
-	 * @param threadNum
-	 * @param breakPointSupported Is break point supporeted, If this value is true, it would save the download log into database.
-	 */
-	public Downloader(Context context, String downloadUrl, File saveFolder, int threadNum, boolean breakPointSupported) {
-		this(context, downloadUrl, saveFolder, threadNum);
-		this.mBreakPointSupported = breakPointSupported;
-	}
-
-	/**
-	 * Download file
-	 * 
-	 * @param listener The listener to listen download state, can be null if not need.
-	 * @return The size that downloaded.
-	 * @throws Exception The error happened when downloading.
-	 */
-	public int download(DownloadListener listener) throws Exception {
-        mStoped = false;
-        HttpURLConnection conn = null;
-        try {
-            conn = getConnection(mUrl);
-
-            if (conn.getResponseCode() == RESPONSE_OK) {
-                mFileSize = conn.getContentLength();
-                // Throw a RuntimeException when got file size failed.
-                if (mFileSize <= 0) {
-                    throw new RuntimeException("Can't get file size ");
-                }
-
-                String filename = getFileName(conn);
-                // Create local file object according to local saved folder and local file name.
-                mSavedFile = new File(mSaveFolder, filename);
-                
-                if(mBreakPointSupported) {
-                	Map<Integer, Integer> logData = DownloadLogDBUtils.getLogByUrl(mContext, mUrl);
-                	if (!logData.isEmpty()) {
-                		for (Map.Entry<Integer, Integer> entry : logData.entrySet()) {
-                			mData.put(entry.getKey(), entry.getValue());
-                		}
-                	}
-                }
-
-                // If the number of threads that have been downloaded data and the number
-                // of threads is the same now set all the threads have calculated
-                // the total length of the downloaded data
-                mDownloadedSize = getDownloadedSize();
-                // Calculate the length of each thread need to download.
-                mBlockSize = getBlockSize(mFileSize, mTheadPool.length);
-            } else {
-                LogUtil.w(TAG, "Server response error! Response code：" + conn.getResponseCode()
-                        + "Response message：" + conn.getResponseMessage());
-                throw new RuntimeException("server response error, response code:" + conn.getResponseCode());
-            }
-        } catch (Exception e) {
-            LogUtil.e(TAG, e.toString());
-            throw new RuntimeException("Failed to connect the url:" + mUrl, e);
-        } finally {
-            if(null != conn) {
-                conn.disconnect();
-            }
-        }
-
-        if(null == mSavedFile) {
-            mStoped = true;
-            return -1;
-        }
-
-        // Mark a downloading file name a suffix flag,
-        // so as not to open the unfinished download files and error
-        mSavedFile = new File(mSavedFile.getAbsolutePath() + TEMP_FILE_SUFFIX);
-
-		try {
-			RandomAccessFile randOut = new RandomAccessFile(mSavedFile, "rwd");
-			if (mFileSize > 0) {
-				randOut.setLength(mFileSize); // Set total size of the download file.
-			}
-			randOut.close(); // Close the RandomAccessFile to make the settings effective
-			URL url = new URL(mUrl);
-			if (mData.size() != mTheadPool.length) { // The thread count in download log not equal to now.
-				mData.clear();
-				for (int i = 0; i < mTheadPool.length; i++) {
-					mData.put(i + 1, 0);// Init download state map
-				}
-				mDownloadedSize = 0; // Init downloaded size.
-			}
-			for (int i = 0; i < mTheadPool.length; i++) {
-				int downloadedLength = mData.get(i + 1); // Get the size of downloaded from each thread.
-				if (downloadedLength < mBlockSize && mDownloadedSize < mFileSize) {// Go through when downloaded size less then total size.
-					mTheadPool[i] = new DownloadThread(this, url, mSavedFile, mBlockSize, mData.get(i + 1), i + 1); // Init the thread with the given id
-					mTheadPool[i].setPriority(7); // Set the priority of thread
-					                              // Thread.NORM_PRIORITY = 5
-					                              // Thread.MIN_PRIORITY = 1
-					                              // Thread.MAX_PRIORITY = 10
-					mTheadPool[i].start(); // Start thread
-					mFinished = false;
-				} else {
-					mTheadPool[i] = null; // The thread is finished
-				}
-			}
-			
-			if(mBreakPointSupported) {
-				DownloadLogDBUtils.delete(mContext, mUrl); // delete all download log
-				DownloadLogDBUtils.save(mContext, mUrl, mSavedFile.getAbsolutePath(), mData); // add new download log
-			}
-
-            boolean isDownloading = false;
-            do {
-            	isDownloading = false;
-                for (int i = 0; i < mTheadPool.length; i++) {
-                    if (mTheadPool[i] != null && !mTheadPool[i].isFinished()) {// If has some thread not finished.
-                        isDownloading = true;// Set is download state not finished.
-                        mFinished = false;
-                        if (mTheadPool[i].getDownloadedLength() == -1) {
-                            mTheadPool[i] = new DownloadThread(this, url, mSavedFile, mBlockSize, mData.get(i + 1), i + 1); // 重新开辟下载线程
-                            mTheadPool[i].setPriority(7);
-                            mTheadPool[i].start();
-                        }
-                    }
-                }
-                if (listener != null) {
-                    listener.onDownloadSize(mFileSize, mDownloadedSize);// download state call back
-                                                                        // return then download size and downloaded size.
-                }
-                if(mFileSize == mDownloadedSize) {
-                    isDownloading = false;
-                } else {
-                	try {
-                		Thread.sleep(mUpdateTime);
-                	} catch (InterruptedException e) {
-                		isDownloading = false;
-                	}
-                }
-            } while(isDownloading);
-			if (mDownloadedSize == mFileSize) {
-                String fineName = mSavedFile.getAbsolutePath();
-                fineName = fineName.substring(0, fineName.indexOf(TEMP_FILE_SUFFIX));
-                mSavedFile.renameTo(new File(fineName));
-                if(mBreakPointSupported) {
-                	DownloadLogDBUtils.delete(mContext, mUrl);// Delete download log when finished download
-                }
-				mFinished = true;
-			}
-		} catch (Exception e) {
-			LogUtil.e(TAG, e.toString());// 打印错误
-			throw new Exception("Exception occured when downloading file\n", e);// Throw exception when some error happened when downloading.
-		}
-		return mDownloadedSize;
-	}
-
-
-	/**
-	 * Get download state is finished or not.
-	 * @return
-	 */
-	public boolean isFinished() {
-		return mFinished;
-	}
-
-	/**
-	 * Get download thread count.
-	 */
-	public int getThreadNum() {
-		return mTheadPool.length;
-	}
-
-	/**
-	 * Stop the download
-	 */
-	public synchronized void stop() {
-		this.mStoped = true;
-	}
-
-	/**
-	 * Get download state is stopped or not.
-	 * @return
-	 */
-	public synchronized boolean ismStoped() {
-		return this.mStoped;
-	}
-
-	/**
-	 * Get total file size
-	 * 
-	 * @return
-	 */
-	public int getFileSize() {
-		return mFileSize;
-	}
-
-	/**
-	 * Set update frequency
-	 * @param updateTime
-	 */
-	public void setUpdateTime(long updateTime) {
-		this.mUpdateTime = updateTime;
-	}
-	
-	/**
-	 * Update downloaded size.
-	 * 
-	 * @param size
-	 */
-	protected synchronized void append(int size) {
-		mDownloadedSize += size;
-	}
-
-	/**
-	 * Update the download state by thread id.
-	 * 
-	 * @param threadId thread id
-	 * @param pos The last position downloaded.
-	 */
-	protected synchronized void update(int threadId, int pos) {
-		mData.put(threadId, pos); // Update map data.
-		if(mBreakPointSupported) {
-			DownloadLogDBUtils.update(mContext, mUrl, mSavedFile.getAbsolutePath(), threadId, pos); // Update database data.
-		}
-	}
-
-	/**
-	 * Get HttpConnection object
-	 * @param downloadUrl the url to download.
-	 * @return HttpConnection object
-	 */
-	private HttpURLConnection getConnection(String downloadUrl) throws IOException {
-		URL url = new URL(downloadUrl);
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		conn.setConnectTimeout(5 * 1000);
-		conn.setRequestMethod("GET");
-		conn.setRequestProperty("Accept", "*/*");
-		conn.setRequestProperty("Accept-Language", "zh-CN");
-		conn.setRequestProperty("Referer", downloadUrl);
-		conn.setRequestProperty("Charset", "UTF-8");
-		// Set agent.
-		conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; "
-				+ "MSIE 8.0; Windows NT 5.2;"
-				+ " Trident/4.0; .NET CLR 1.1.4322;"
-				+ ".NET CLR 2.0.50727; " + ".NET CLR 3.0.04506.30;"
-				+ " .NET CLR 3.0.4506.2152; " + ".NET CLR 3.5.30729)");
-		conn.setRequestProperty("Connection", "Keep-Alive");
-		conn.connect();
-		LogUtil.i(TAG, getResponseHeader(conn));
-		return conn;
-	}
-	
-	/**
-	 * Check the download folder, make new folder if it is not exist.
-	 * @param folder
-	 */
-	private void checkDownloadFolder(File folder) {
-		if (!folder.exists()) {
-			folder.mkdirs();
-		}
-	}
-	
-	/**
-	 * Get the block size.
-	 * @param fileSize The size of the file which to download.
-	 * @param blockNum The amount of block.
-	 * @return
-	 */
-	private int getBlockSize(int fileSize, int blockNum) {
-		return fileSize % blockNum == 0 ? fileSize / blockNum
-				: fileSize / blockNum + 1;
-	}
-	
-	/**
-     * Get downloaded size.
-	 * @return
-	 */
-	private int getDownloadedSize() {
-		int size = 0;
-		if (mData.size() == mTheadPool.length) {
-			Set<Integer> keys = mData.keySet();
-			for (Integer key : keys) {
-				size += mData.get(key);
-			}
-			LogUtil.i(TAG, "Downloaded size " + size + " bytes");
-		}
-		return size;
-	}
-
-	/**
-	 * Get file name
-	 * @param conn HttpConnection object
-	 * @return
-	 */
-	private String getFileName(HttpURLConnection conn) {
-		String filename = mUrl.substring(mUrl.lastIndexOf("/") + 1);
-
-		if (null == filename || filename.length() < 1) {// Get file name failed.
-			for (int i = 0;; i++) { // Get file name from http header.
-				String mine = conn.getHeaderField(i);
-				if (mine == null)
-					break; // Exit the loop when go through all http header.
-				if ("content-disposition".equals(conn.getHeaderFieldKey(i).toLowerCase(Locale.ENGLISH))) { // Get content-disposition header field returns, which may contain a file name
-					Matcher m = Pattern.compile(".*filename=(.*)").matcher(mine.toLowerCase(Locale.ENGLISH)); // Using regular expressions query file name
-					if (m.find()) {
-						return m.group(1); // If there is compliance with the rules of the regular expression string
-					}
-				}
-			}
-			filename = UUID.randomUUID() + ".tmp";// A 16-byte binary digits generated by a unique identification number
-			                                      // (each card has a unique identification number)
-			                                      // on the card and the CPU clock as the file name
-		}
-		return filename;
-	}
-
-	/**
-	 * Get HTTP response header field
-	 * 
-	 * @param http HttpURLConnection object
-	 * @return HTTp response header field map.
-	 */
-	private static Map<String, String> getHttpResponseHeader(HttpURLConnection http) {
-		Map<String, String> header = new LinkedHashMap<String, String>();
-		for (int i = 0;; i++) {
-			String fieldValue = http.getHeaderField(i);
-			if (fieldValue == null) {
-				break;
-			}
-			header.put(http.getHeaderFieldKey(i), fieldValue);
-		}
-		return header;
-	}
-
-	/**
-	 * Get HTTP response header field as a string
-	 * @param conn HttpURLConnection object
-     * @return HTTP response header field as a string
-	 */
-	private static String getResponseHeader(HttpURLConnection conn) {
-		Map<String, String> header = getHttpResponseHeader(conn);
-		StringBuilder sb = new StringBuilder();
-		for (Map.Entry<String, String> entry : header.entrySet()) {
-			String key = entry.getKey() != null ? entry.getKey() + ":" : "";
-			sb.append(key + entry.getValue());
-		}
-		return sb.toString();
-	}
-}
+import java.io.File;  
+import java.io.InputStream;  
+ import java.io.RandomAccessFile;  
+ import java.net.HttpURLConnection;  
+ import java.net.URL;  
+ import java.util.ArrayList;  
+ import java.util.List;  
+ import android.content.Context;  
+ import android.os.Handler;  
+ import android.os.Message;  
+ import android.util.Log;  
+  
+ public class Downloader {  
+     private String urlstr;// 下载的地址  
+     private String localfile;// 保存路径  
+     private int threadcount;// 线程数  
+     private Handler mHandler;// 消息处理器  
+     private Dao dao;// 工具类  
+     private int fileSize;// 所要下载的文件的大小  
+     private List<DownloadInfo> infos;// 存放下载信息类的集合  
+     private static final int INIT = 1;//定义三种下载的状态：初始化状态，正在下载状态，暂停状态  
+     private static final int DOWNLOADING = 2;  
+     private static final int PAUSE = 3;  
+     private int state = INIT;  
+  
+     public Downloader(String urlstr, String localfile, int threadcount,  
+             Context context, Handler mHandler) {  
+         this.urlstr = urlstr;  
+         this.localfile = localfile;  
+         this.threadcount = threadcount;  
+         this.mHandler = mHandler;  
+         dao = new Dao(context);  
+     }  
+     /**  
+      *判断是否正在下载  
+      */  
+     public boolean isdownloading() {  
+         return state == DOWNLOADING;  
+     }  
+     /**  
+      * 得到downloader里的信息  
+      * 首先进行判断是否是第一次下载，如果是第一次就要进行初始化，并将下载器的信息保存到数据库中  
+      * 如果不是第一次下载，那就要从数据库中读出之前下载的信息（起始位置，结束为止，文件大小等），并将下载信息返回给下载器  
+      */  
+     public LoadInfo getDownloaderInfors() {  
+         if (isFirst(urlstr)) {  
+             Log.v("TAG", "isFirst");  
+             init();  
+             int range = fileSize / threadcount;  
+             infos = new ArrayList<DownloadInfo>();  
+             for (int i = 0; i < threadcount - 1; i++) {  
+                 DownloadInfo info = new DownloadInfo(i, i * range, (i + 1)* range - 1, 0, urlstr);  
+                 infos.add(info);  
+             }  
+             DownloadInfo info = new DownloadInfo(threadcount - 1,(threadcount - 1) * range, fileSize - 1, 0, urlstr);  
+             infos.add(info);  
+             //保存infos中的数据到数据库  
+             dao.saveInfos(infos);  
+             //创建一个LoadInfo对象记载下载器的具体信息  
+             LoadInfo loadInfo = new LoadInfo(fileSize, 0, urlstr);  
+             return loadInfo;  
+         } else {  
+             //得到数据库中已有的urlstr的下载器的具体信息  
+             infos = dao.getInfos(urlstr);  
+             Log.v("TAG", "not isFirst size=" + infos.size());  
+             int size = 0;  
+             int compeleteSize = 0;  
+             for (DownloadInfo info : infos) {  
+                 compeleteSize += info.getCompeleteSize();  
+                 size += info.getEndPos() - info.getStartPos() + 1;  
+             }  
+             return new LoadInfo(size, compeleteSize, urlstr);  
+         }  
+     }  
+  
+     /**  
+      * 初始化  
+      */  
+     private void init() {  
+         try {  
+             URL url = new URL(urlstr);  
+             HttpURLConnection connection = (HttpURLConnection) url.openConnection();  
+             connection.setConnectTimeout(5000);  
+             connection.setRequestMethod("GET");  
+             fileSize = connection.getContentLength();  
+  
+             File file = new File(localfile);  
+             if (!file.exists()) {  
+                 file.createNewFile();  
+             }  
+             // 本地访问文件  
+             RandomAccessFile accessFile = new RandomAccessFile(file, "rwd");  
+             accessFile.setLength(fileSize);  
+             accessFile.close();  
+             connection.disconnect();  
+         } catch (Exception e) {  
+             e.printStackTrace();  
+         }  
+     }  
+  
+     /**  
+      * 判断是否是第一次 下载  
+      */  
+     private boolean isFirst(String urlstr) {  
+         return dao.isHasInfors(urlstr);  
+     }  
+  
+     /**  
+      * 利用线程开始下载数据  
+      */  
+     public void download() {  
+         if (infos != null) {  
+             if (state == DOWNLOADING)  
+                 return;  
+             state = DOWNLOADING;  
+             for (DownloadInfo info : infos) {  
+                 new MyThread(info.getThreadId(), info.getStartPos(),  
+                         info.getEndPos(), info.getCompeleteSize(),  
+                         info.getUrl()).start();  
+             }  
+         }  
+     }  
+  
+     public class MyThread extends Thread {  
+         private int threadId;  
+         private int startPos;  
+         private int endPos;  
+         private int compeleteSize;  
+         private String urlstr;  
+  
+         public MyThread(int threadId, int startPos, int endPos,  
+                 int compeleteSize, String urlstr) {  
+             this.threadId = threadId;  
+             this.startPos = startPos;  
+             this.endPos = endPos;  
+             this.compeleteSize = compeleteSize;  
+             this.urlstr = urlstr;  
+         }  
+         @Override  
+         public void run() {  
+             HttpURLConnection connection = null;  
+             RandomAccessFile randomAccessFile = null;  
+             InputStream is = null;  
+             try {  
+                  
+                 URL url = new URL(urlstr);  
+                 connection = (HttpURLConnection) url.openConnection();  
+                 connection.setConnectTimeout(5000);  
+                 connection.setRequestMethod("GET");  
+                 // 设置范围，格式为Range：bytes x-y;  
+                 connection.setRequestProperty("Range", "bytes="+(startPos + compeleteSize) + "-" + endPos);  
+  
+                 randomAccessFile = new RandomAccessFile(localfile, "rwd");  
+                 randomAccessFile.seek(startPos + compeleteSize);  
+                 Log.i("RG", "connection--->>>"+connection);  
+                 // 将要下载的文件写到保存在保存路径下的文件中  
+                 is = connection.getInputStream();  
+                 byte[] buffer = new byte[4096];  
+                 int length = -1;  
+                 while ((length = is.read(buffer)) != -1) {  
+                     randomAccessFile.write(buffer, 0, length);  
+                     compeleteSize += length;  
+                     // 更新数据库中的下载信息  
+                     dao.updataInfos(threadId, compeleteSize, urlstr);  
+                     // 用消息将下载信息传给进度条，对进度条进行更新  
+                     Message message = Message.obtain();  
+                     message.what = 1;  
+                     message.obj = urlstr;  
+                     message.arg1 = length;  
+                     mHandler.sendMessage(message);  
+                     if (state == PAUSE) {  
+                         return;  
+                     }  
+                 }  
+             } catch (Exception e) {  
+                 e.printStackTrace();  
+             } finally {  
+                 try {  
+                     is.close();  
+                     randomAccessFile.close();  
+                     connection.disconnect();  
+                     dao.closeDb();  
+                 } catch (Exception e) {  
+                     e.printStackTrace();  
+                 }  
+             }  
+  
+         }  
+     }  
+     //删除数据库中urlstr对应的下载器信息  
+     public void delete(String urlstr) {  
+         dao.delete(urlstr);  
+     }  
+     //设置暂停  
+     public void pause() {  
+         state = PAUSE;  
+     }  
+     //重置下载状态  
+     public void reset() {  
+        state = INIT;  
+     }  
+ }  
