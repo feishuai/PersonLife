@@ -31,6 +31,7 @@ import com.personlife.utils.DownloadHeadImg;
 import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.Utils;
+import com.personlife.view.activity.circle.SharePlusActivity;
 import com.personlife.view.activity.home.AllDownloadActivity;
 import com.personlife.view.fragment.CircleFragment;
 import com.personlife.view.fragment.DiscoveryFragment;
@@ -46,6 +47,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	private int currentTabIndex = 0;// 当前tab
 	private Button downloadButton;// 一键下载 按钮
 	private ImageButton txtSearch;// 推荐界面的搜索按钮
+	private ImageButton ibSharePlus;// 朋友圈的发表分享
 
 	private Fragment[] fragments;
 	private PersonalCenter personalCenter;// 个人中心界面
@@ -163,7 +165,10 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		downloadButton.setCompoundDrawables(xiazai,null,null,null);
 
 		txtSearch = (ImageButton) findViewById(R.id.img_right);// 推荐里的搜索按钮
-
+		txtSearch.setOnClickListener(this);
+		ibSharePlus =(ImageButton)findViewById(R.id.imgbtn_plus);
+		ibSharePlus.setOnClickListener(this);
+		
 		personalCenter = new PersonalCenter(telphone);
 		
 		homefragment = new HomeFragment();
@@ -185,6 +190,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	public void onTabClicked(View view) {
 		downloadButton.setVisibility(View.GONE);
 		txtSearch.setVisibility(View.GONE);
+		ibSharePlus.setVisibility(View.GONE);
 		switch (view.getId()) {
 		case R.id.re_home:
 			title.setText("我的APP");
@@ -194,6 +200,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		case R.id.re_interact:
 			index = 1;
 			title.setText("朋友圈");
+			ibSharePlus.setVisibility(View.VISIBLE);
 			break;
 		case R.id.re_recommend:
 			index = 2;
@@ -227,6 +234,12 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		switch(v.getId()){
 		case R.id.txt_download:
 			Utils.start_Activity(MainActivity.this, AllDownloadActivity.class, null);
+			break;
+		case R.id.imgbtn_plus:
+			Utils.start_Activity(MainActivity.this, SharePlusActivity.class, null);
+			break;
+		case R.id.img_right:
+			break;
 		}
 	}
 	

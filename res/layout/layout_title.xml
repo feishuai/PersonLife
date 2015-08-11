@@ -59,7 +59,7 @@
             android:background="@color/transparent"
             android:text="@string/title_button"
             android:textColor="@color/black"
-            android:textSize="12sp"
+            android:textSize="16sp"
             android:visibility="gone" />
 
         <Button
@@ -71,7 +71,7 @@
             android:layout_marginRight="10dp"
             android:background="@color/transparent"
             android:text="@string/save"
-            android:textColor="@color/black"
+            android:textColor="@color/bg"
             android:textSize="18sp"
             android:visibility="gone" />
 
@@ -107,7 +107,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:background="@color/transparent"
-            android:src="@drawable/img_plus"
+            android:src="@drawable/fabiaofenxiang"
             android:visibility="gone" />
     </RelativeLayout>
 

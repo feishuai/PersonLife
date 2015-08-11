@@ -33,5 +33,7 @@
     <string name="title_activity_all_download">AllDownloadActivity</string>
     <string name="title_activity_collection">CollectionActivity</string>
     <string name="title_activity_star_recommend">StarRecommendActivity</string>
+    <string name="title_activity_share_plus">SharePlusActivity</string>
+    <string name="title_activity_app_list">AppListActivity</string>
 
 </resources>

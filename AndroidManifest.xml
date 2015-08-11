@@ -188,8 +188,8 @@
         </activity>
         <activity
             android:name="com.personlife.view.activity.circle.CircleActivity"
-            android:label="@string/title_activity_circle" 
-            android:screenOrientation="portrait">
+            android:label="@string/title_activity_circle"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.personlife.view.activity.home.AllDownloadActivity"
@@ -203,8 +203,16 @@
         </activity>
         <activity
             android:name="com.personlife.view.activity.discovery.StarRecommendActivity"
-            android:label="@string/title_activity_star_recommend" 
-            android:screenOrientation="portrait">
+            android:label="@string/title_activity_star_recommend"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.personlife.view.activity.circle.SharePlusActivity"
+            android:label="@string/title_activity_share_plus" >
+        </activity>
+        <activity
+            android:name="com.personlife.view.activity.circle.AppListActivity"
+            android:label="@string/title_activity_app_list" >
         </activity>
     </application>
 

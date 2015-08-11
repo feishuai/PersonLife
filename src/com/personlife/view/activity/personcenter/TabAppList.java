@@ -121,7 +121,7 @@ public class TabAppList extends Fragment implements OnClickListener {
 			}
 
 			holder.appname.setText(mlist.get(position).getName());
-			holder.icon.setImageDrawable((mlist.get(position).getAppIcon()));
+			holder.icon.setBackground(mlist.get(position).getAppIcon());
 			holder.status.setText("已安装");
 			// 设置控件属性
 			holder.download.setText("打开");
