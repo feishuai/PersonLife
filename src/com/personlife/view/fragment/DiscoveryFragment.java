@@ -29,12 +29,14 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import com.example.personlifep.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.personlife.utils.Utils;
 import com.personlife.view.activity.circle.CircleActivity;
 import com.personlife.view.activity.discovery.GuessActivity;
+import com.personlife.view.activity.discovery.StarRecommendActivity;
 import com.personlife.widget.JazzyViewPager;
 import com.personlife.widget.JazzyViewPager.TransitionEffect;
 import com.personlife.widget.MyListView;
@@ -43,6 +45,7 @@ import com.personlife.widget.OutlineContainer;
 public class DiscoveryFragment extends Fragment implements OnClickListener {
 	private Activity ctx;
 	private View layout;
+	private TextView starmore;
 	private MyListView lvRecommend;
 	private GridView gridview;
 	protected Handler mHandler = null;
@@ -62,6 +65,7 @@ public class DiscoveryFragment extends Fragment implements OnClickListener {
 	private static final int MSG_CHANGE_PHOTO = 1;
 	/** 图片自动切换时间 */
 	private static final int PHOTO_CHANGE_TIME = 3000;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -81,7 +85,8 @@ public class DiscoveryFragment extends Fragment implements OnClickListener {
 		}
 		return layout;
 	}
-	private void initData(){
+
+	private void initData() {
 		mImageUrl = "drawable://" + R.drawable.back1;
 		mImageUrls.add(mImageUrl);
 		mImageUrl = "drawable://" + R.drawable.back3;
@@ -90,44 +95,48 @@ public class DiscoveryFragment extends Fragment implements OnClickListener {
 		mImageUrls.add(mImageUrl);
 
 	}
+
 	private void initView() {
+		starmore = (TextView) layout.findViewById(R.id.tv_discovery_more);
 		gridview = (GridView) layout.findViewById(R.id.gridview);
 		lvRecommend = (MyListView) layout
 				.findViewById(R.id.lv_dicovery_recommend);
-		mViewPager = (JazzyViewPager) layout.findViewById(R.id.index_product_images_container);
-		mIndicator = (LinearLayout) layout.findViewById(R.id.index_product_images_indicator);
+		mViewPager = (JazzyViewPager) layout
+				.findViewById(R.id.index_product_images_container);
+		mIndicator = (LinearLayout) layout
+				.findViewById(R.id.index_product_images_indicator);
 		// 生成动态数组，并且转入数据
 		ArrayList<HashMap<String, Object>> lstImageItem = new ArrayList<HashMap<String, Object>>();
-			HashMap<String, Object> map = new HashMap<String, Object>();
-			map.put("iv_grid_staricon", R.drawable.star1);// 添加图像资源的ID
-			map.put("tv_grid_starname", "李宇春的APP");// 按序号做ItemText
-			map.put("tv_grid_counts", String.valueOf(1211));// 按序号做ItemText
-			lstImageItem.add(map);
-			map = new HashMap<String, Object>();
-			map.put("iv_grid_staricon", R.drawable.star2);// 添加图像资源的ID
-			map.put("tv_grid_starname", "李宇春的APP");// 按序号做ItemText
-			map.put("tv_grid_counts", String.valueOf(1211));// 按序号做ItemText
-			lstImageItem.add(map);
-			map = new HashMap<String, Object>();
-			map.put("iv_grid_staricon", R.drawable.star3);// 添加图像资源的ID
-			map.put("tv_grid_starname", "李宇春的APP");// 按序号做ItemText
-			map.put("tv_grid_counts", String.valueOf(1211));// 按序号做ItemText
-			lstImageItem.add(map);
-			map = new HashMap<String, Object>();
-			map.put("iv_grid_staricon", R.drawable.star4);// 添加图像资源的ID
-			map.put("tv_grid_starname", "李宇春的APP");// 按序号做ItemText
-			map.put("tv_grid_counts", String.valueOf(1211));// 按序号做ItemText
-			lstImageItem.add(map);
-			map = new HashMap<String, Object>();
-			map.put("iv_grid_staricon", R.drawable.star5);// 添加图像资源的ID
-			map.put("tv_grid_starname", "李宇春的APP");// 按序号做ItemText
-			map.put("tv_grid_counts", String.valueOf(1211));// 按序号做ItemText
-			lstImageItem.add(map);
-			map = new HashMap<String, Object>();
-			map.put("iv_grid_staricon", R.drawable.star6);// 添加图像资源的ID
-			map.put("tv_grid_starname", "李宇春的APP");// 按序号做ItemText
-			map.put("tv_grid_counts", String.valueOf(1211));// 按序号做ItemText
-			lstImageItem.add(map);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("iv_grid_staricon", R.drawable.star1);// 添加图像资源的ID
+		map.put("tv_grid_starname", "李宇春的APP");// 按序号做ItemText
+		map.put("tv_grid_counts", String.valueOf(1211));// 按序号做ItemText
+		lstImageItem.add(map);
+		map = new HashMap<String, Object>();
+		map.put("iv_grid_staricon", R.drawable.star2);// 添加图像资源的ID
+		map.put("tv_grid_starname", "李宇春的APP");// 按序号做ItemText
+		map.put("tv_grid_counts", String.valueOf(1211));// 按序号做ItemText
+		lstImageItem.add(map);
+		map = new HashMap<String, Object>();
+		map.put("iv_grid_staricon", R.drawable.star3);// 添加图像资源的ID
+		map.put("tv_grid_starname", "李宇春的APP");// 按序号做ItemText
+		map.put("tv_grid_counts", String.valueOf(1211));// 按序号做ItemText
+		lstImageItem.add(map);
+		map = new HashMap<String, Object>();
+		map.put("iv_grid_staricon", R.drawable.star4);// 添加图像资源的ID
+		map.put("tv_grid_starname", "李宇春的APP");// 按序号做ItemText
+		map.put("tv_grid_counts", String.valueOf(1211));// 按序号做ItemText
+		lstImageItem.add(map);
+		map = new HashMap<String, Object>();
+		map.put("iv_grid_staricon", R.drawable.star5);// 添加图像资源的ID
+		map.put("tv_grid_starname", "李宇春的APP");// 按序号做ItemText
+		map.put("tv_grid_counts", String.valueOf(1211));// 按序号做ItemText
+		lstImageItem.add(map);
+		map = new HashMap<String, Object>();
+		map.put("iv_grid_staricon", R.drawable.star6);// 添加图像资源的ID
+		map.put("tv_grid_starname", "李宇春的APP");// 按序号做ItemText
+		map.put("tv_grid_counts", String.valueOf(1211));// 按序号做ItemText
+		lstImageItem.add(map);
 		// 生成适配器的ImageItem <====> 动态数组的元素，两者一一对应
 		SimpleAdapter saImageItems = new SimpleAdapter(getActivity(), // 没什么解释
 				lstImageItem,// 数据来源
@@ -167,10 +176,12 @@ public class DiscoveryFragment extends Fragment implements OnClickListener {
 				R.layout.layout_item_recommend,// night_item的XML实现
 
 				// 动态数组与ImageItem对应的子项
-				new String[] { "iv_recommend_icon", "tv_recommend_content" ,"tv_recommend_content1"},
+				new String[] { "iv_recommend_icon", "tv_recommend_content",
+						"tv_recommend_content1" },
 
 				// ImageItem的XML文件里面的一个ImageView,两个TextView ID
-				new int[] { R.id.iv_recommend_icon, R.id.tv_recommend_content, R.id.tv_recommend_content1});
+				new int[] { R.id.iv_recommend_icon, R.id.tv_recommend_content,
+						R.id.tv_recommend_content1 });
 		lvRecommend.setAdapter(saRecommend);
 		lvRecommend.setOnItemClickListener(new OnItemClickListener() {
 
@@ -178,14 +189,17 @@ public class DiscoveryFragment extends Fragment implements OnClickListener {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
-//				HashMap<String, Object> item = (HashMap<String, Object>) parent
-//						.getItemAtPosition(position);
-//				Utils.showShortToast(getActivity(), (String)item.get("tv_recommend_content"));
-				BasicNameValuePair name = new BasicNameValuePair("kind", String.valueOf(position));
+				// HashMap<String, Object> item = (HashMap<String, Object>)
+				// parent
+				// .getItemAtPosition(position);
+				// Utils.showShortToast(getActivity(),
+				// (String)item.get("tv_recommend_content"));
+				BasicNameValuePair name = new BasicNameValuePair("kind", String
+						.valueOf(position));
 				Utils.start_Activity(getActivity(), GuessActivity.class, name);
 			}
 		});
-		
+
 		mHandler = new Handler(getActivity().getMainLooper()) {
 
 			@Override
@@ -257,7 +271,7 @@ public class DiscoveryFragment extends Fragment implements OnClickListener {
 	}
 
 	private void setOnListener() {
-
+		starmore.setOnClickListener(this);
 	}
 
 	private void updateContent() {
@@ -298,6 +312,11 @@ public class DiscoveryFragment extends Fragment implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
+		switch(v.getId()){
+		case R.id.tv_discovery_more:
+			Utils.start_Activity(getActivity(), StarRecommendActivity.class, null);
+			break;
+		}
 
 	}
 
@@ -318,6 +337,7 @@ public class DiscoveryFragment extends Fragment implements OnClickListener {
 		}
 
 	}
+
 	public class MyAdapter extends PagerAdapter {
 
 		@Override

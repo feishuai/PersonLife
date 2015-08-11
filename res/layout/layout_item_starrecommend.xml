@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="@color/white" >
+
+    <ImageView
+        android:id="@+id/iv_starrecommend_icon"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_margin="10dp"
+        android:layout_toRightOf="@+id/cb_star_state"
+        android:src="@drawable/star1" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/iv_starrecommend_icon"
+        android:orientation="vertical"
+        android:paddingLeft="4dp" >
+
+        <TextView
+            android:id="@+id/tv_starrecommend_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLength="20"
+            android:text="杨鹏飞"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/tv_starrecommend_fanscounts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLength="20"
+            android:textColor="@color/bg"
+            android:text="12万粉丝"
+            android:drawableLeft="@drawable/fensi"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/tv_starrecommend_lastesttime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLength="20"
+            android:text="最近更新2015-8-10"
+            android:textSize="14dp" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/ib_starrecommend_home"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/tadezhuye" />
+
+    <TextView
+        android:id="@+id/tv_starrecommend_downloadcounts"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        android:layout_alignLeft="@+id/iv_starrecommend_icon"
+        android:layout_alignTop="@+id/iv_starrecommend_icon"
+        android:textSize="12dp"
+        android:maxLength="10"
+        android:background="@color/transparent"
+        android:drawableLeft="@drawable/xiazai"
+        android:gravity="center_vertical"
+        android:text="11200" />
+
+</RelativeLayout>

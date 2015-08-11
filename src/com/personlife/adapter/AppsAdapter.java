@@ -3,6 +3,7 @@ package com.personlife.adapter;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,6 +21,8 @@ import android.widget.Toast;
 
 import com.example.personlifep.R;
 import com.personlife.bean.App;
+import com.personlife.utils.Constants;
+import com.personlife.view.activity.home.AppDetailActivity;
 
 
 public class AppsAdapter extends BaseAdapter {
@@ -93,7 +96,18 @@ public class AppsAdapter extends BaseAdapter {
 				
 			}
 		});
+		convertView.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(context, AppDetailActivity.class);
+				intent.putExtra(Constants.AppId, mlist.get(position)
+						.getId());
+//				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				context.startActivity(intent);
+
+			}
+		});
 		return convertView;
 	}
 

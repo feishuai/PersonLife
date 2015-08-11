@@ -178,19 +178,33 @@
         </activity>
         <activity
             android:name="com.personlife.view.activity.home.ClassificationActivity"
-            android:label="@string/title_activity_classification" >
+            android:label="@string/title_activity_classification"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.personlife.view.activity.home.RecommendActivity"
-            android:label="@string/title_activity_recommend" >
+            android:label="@string/title_activity_recommend"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.personlife.view.activity.circle.CircleActivity"
-            android:label="@string/title_activity_circle" >
+            android:label="@string/title_activity_circle" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.personlife.view.activity.home.AllDownloadActivity"
-            android:label="@string/title_activity_all_download" >
+            android:label="@string/title_activity_all_download"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.personlife.view.collection.CollectionActivity"
+            android:label="@string/title_activity_collection"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.personlife.view.activity.discovery.StarRecommendActivity"
+            android:label="@string/title_activity_star_recommend" 
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,7 +23,9 @@ import com.example.personlifep.R;
 import com.personlife.adapter.AppListAdapter;
 import com.personlife.adapter.AppsAdapter;
 import com.personlife.bean.App;
+import com.personlife.utils.Constants;
 import com.personlife.utils.Utils;
+import com.personlife.view.activity.home.AppDetailActivity;
 import com.personlife.view.activity.home.AppSearchActivity;
 import com.personlife.view.activity.home.ClassificationActivity;
 import com.personlife.view.activity.home.RecommendActivity;
@@ -85,8 +89,10 @@ public class HomeFragment extends Fragment implements OnClickListener {
 			startActivity(intent);
 			break;
 		case R.id.btn_home_class:
-			 Utils.start_Activity(getActivity(), ClassificationActivity.class, null);
-//			Utils.start_Activity(getActivity(), RecommendActivity.class, null);
+			Utils.start_Activity(getActivity(), ClassificationActivity.class,
+					null);
+			// Utils.start_Activity(getActivity(), RecommendActivity.class,
+			// null);
 			break;
 		default:
 			break;
@@ -142,44 +148,43 @@ public class HomeFragment extends Fragment implements OnClickListener {
 				apps.add(new App());
 				apps.add(new App());
 				holder.lvapps.setAdapter(new AppsAdapter(context, apps));
-				
+
 				holder.hlvMyapps.setAdapter(mALikes);
-				
+
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
 			// ImageLoaderUtils.displayAppIcon("https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/5136becf77e9cfc440849e0b694fdd6e_121_121.jpg",
 			// holder.icon);
-			// holder.appname.setText(mlist.get(position).getName());
-			// holder.tag.setText(mlist.get(position).getTag());
-			// holder.stars.setProgress(mlist.get(position).getStars());
-			// holder.downloadcounts.setText("("
-			// + mlist.get(position).getDowloadcount() + ")");
+//			holder.lvapps.setOnItemClickListener(new OnItemClickListener() {
+//
+//				@Override
+//				public void onItemClick(AdapterView<?> parent, View view,
+//						int position, long id) {
+//					// TODO Auto-generated method stub
+//					Intent intent = new Intent(context, AppDetailActivity.class);
+//					intent.putExtra(Constants.AppId, mlist.get(position)
+//							.getId());
+//					context.startActivity(intent);
+//
+//				}
+//
+//			});
+
 			holder.more.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					context.startActivity(new Intent(context,RecommendActivity.class));
+					context.startActivity(new Intent(context,
+							RecommendActivity.class));
 				}
 			});
-			// ImageLoader.getInstance().displayImage(mlist.get(position).getBitmap(),holder.icon);
-			// convertView.setOnClickListener(new OnClickListener() {
-			//
-			// @Override
-			// public void onClick(View v) {
-			// // TODO Auto-generated method stub
-			// // Toast.makeText(context,
-			// // "app's id is"+mlist.get(position).getId(),
-			// // Toast.LENGTH_SHORT).show();;
-			// Log.i("adapter", "app's id is "
-			// + mlist.get(position).getId());
 			// Intent intent = new Intent(context, AppDetailActivity.class);
 			// intent.putExtra(Constants.AppId, mlist.get(position)
 			// .getId());
 			// context.startActivity(intent);
-			//
 			// }
 			// });
 			return convertView;
@@ -197,7 +202,9 @@ public class HomeFragment extends Fragment implements OnClickListener {
 			MyListView lvapps;
 		}
 	}
-	private static String[] urls = new String[] { "Text #1","Text #1","Text #1","Text #1"};
+
+	private static String[] urls = new String[] { "Text #1", "Text #1",
+			"Text #1", "Text #1" };
 	private BaseAdapter mALikes = new BaseAdapter() {
 
 		@Override
@@ -219,7 +226,8 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View retval = LayoutInflater.from(parent.getContext()).inflate(
 					R.layout.layout_item_like, null);
-			ImageView appicon = (ImageView)retval.findViewById(R.id.iv_item_icon);
+			ImageView appicon = (ImageView) retval
+					.findViewById(R.id.iv_item_icon);
 			TextView appname = (TextView) retval
 					.findViewById(R.id.tv_item_name);
 			appname.setVisibility(View.GONE);

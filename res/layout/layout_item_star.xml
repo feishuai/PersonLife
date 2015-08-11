@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@color/white" >
+
+    <com.personlife.widget.CircleImageView
+        android:id="@+id/iv_star_icon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="10dp"
+        android:layout_toRightOf="@+id/cb_star_state"
+        android:src="@drawable/default_app_icon" />
+	<CheckBox
+        android:id="@+id/cb_star_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        style="@style/CustomCheckboxTheme" 
+        android:visibility="gone"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/iv_star_icon"
+        android:orientation="vertical"
+        android:paddingLeft="4dp" >
+
+        <TextView
+            android:id="@+id/tv_star_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="杨鹏飞"
+            android:textColor="@color/black"
+            android:maxLength="20"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/tv_star_signature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我就是我，不服来打我"
+            android:maxLength="20"
+            android:textSize="14dp" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/ib_star_home"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/tadezhuye"
+         />
+    
+</RelativeLayout>

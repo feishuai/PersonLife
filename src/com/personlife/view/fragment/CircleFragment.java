@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,6 +26,8 @@ import com.personlife.adapter.AppListAdapter;
 import com.personlife.adapter.ViewPagerTabAdapter;
 import com.personlife.bean.App;
 import com.personlife.utils.Utils;
+import com.personlife.view.activity.circle.CircleAppsFragment;
+import com.personlife.view.activity.circle.CircleFriendsFragment;
 import com.personlife.view.activity.home.AppSearchActivity;
 import com.personlife.view.activity.home.ClassificationActivity;
 import com.personlife.view.fragment.HomeFragment.KindsAdapter;
@@ -48,7 +51,11 @@ public class CircleFragment extends Fragment implements OnClickListener {
     Drawable drawableFenxiang[];
     Drawable drawableWodeApp[];
     ColorStateList colors[];
-    int Numboftabs =2;
+    ImageView dianzan,fenxiang;
+    TextView dianzancounts,fenxiangcounts;
+    Button addattention;
+	Fragment fragments[];
+	Fragment friendsfragment,appsfragment;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,9 +80,22 @@ public class CircleFragment extends Fragment implements OnClickListener {
 		staricon = (CircleImageView)layout.findViewById(R.id.iv_circle_staricon);
 		starname =(TextView)layout.findViewById(R.id.tv_circle_starname);
 		signature = (TextView)layout.findViewById(R.id.tv_circle_signature);
+		addattention = (Button)layout.findViewById(R.id.btn_circle_addattention);
+		fenxiang =(ImageView)layout.findViewById(R.id.iv_circle_fenxiang);
+		dianzan = (ImageView)layout.findViewById(R.id.iv_circle_dianzan);
+		fenxiangcounts = (TextView)layout.findViewById(R.id.tv_circle_fenxiangcounts);
+		dianzancounts = (TextView)layout.findViewById(R.id.tv_circle_dianzancounts);
+		
+		addattention.setVisibility(View.GONE);
+		fenxiang.setVisibility(View.VISIBLE);
+		fenxiangcounts.setVisibility(View.VISIBLE);
 		
 		  // Creating The ViewPagerAdapter and Passing Fragment Manager, Titles fot the Tabs and Number Of Tabs.
-        adapter =  new ViewPagerTabAdapter(getChildFragmentManager(),Titles,Numboftabs);
+		friendsfragment = new CircleFriendsFragment();
+		appsfragment = new CircleAppsFragment();
+		fragments= new Fragment[]{friendsfragment,appsfragment};
+		
+        adapter =  new ViewPagerTabAdapter(getChildFragmentManager(),Titles,fragments);
         // Assigning ViewPager View and setting the adapter
         pager = (ViewPager) layout.findViewById(R.id.pager_circle);
         pager.setAdapter(adapter);
