@@ -121,7 +121,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		@Override
 		public View getView(final int position, View convertView,
 				ViewGroup parent) {
-			ViewHolder holder = null;
+			final ViewHolder holder;
 			if (convertView == null) {
 				convertView = ((LayoutInflater) context
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
@@ -136,10 +136,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 				holder.hlvMyapps = (HorizontialListView) convertView
 						.findViewById(R.id.hlv_home_apps);
 				holder.lvapps = (MyListView) convertView
-						.findViewById(R.id.lv_home_apps);
-				
-				
-				
+						.findViewById(R.id.lv_home_apps);				
 				List<App> apps = new ArrayList<App>();
 				apps.add(new App());
 				apps.add(new App());

@@ -16,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +34,6 @@ public class TabTaskList extends Fragment implements OnClickListener {
 	private Activity ctx;
 	private View layout;
 	private ListView listView;
-	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -107,7 +107,7 @@ public class TabTaskList extends Fragment implements OnClickListener {
 		@Override
 		public View getView(final int position, View convertView,
 				ViewGroup parent) {
-			ViewHolder holder = null;
+			final ViewHolder holder; 
 			Log.i("adapter", "mlist size is " + mlist.size());
 			if (convertView == null) {
 				convertView = ((LayoutInflater) context
@@ -120,8 +120,10 @@ public class TabTaskList extends Fragment implements OnClickListener {
 						.findViewById(R.id.tv_download_status);
 				holder.icon = (ImageView) convertView
 						.findViewById(R.id.iv_download_icon);
-				holder.download = (Button) convertView
+				holder.download_progress = (ProgressBar) convertView.findViewById(R.id.download_progress);
+				holder.download_button = (Button) convertView
 						.findViewById(R.id.btn_download_download);
+				holder.flag=false;
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
@@ -131,14 +133,19 @@ public class TabTaskList extends Fragment implements OnClickListener {
 //			holder.download.setText("打开");
 //			holder.download.setBackgroundColor(R.color.gray1);
 			
-			holder.download.setOnClickListener(new OnClickListener() {
+			holder.download_button.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					Toast.makeText(context, "downloading", Toast.LENGTH_SHORT)
-							.show();
-					;
+					holder.flag=!holder.flag;
+					if(holder.flag==true){
+						holder.download_button.setText("暂停");
+					}else{
+						holder.download_button.setText("下载");
+					}
+					//下载app
+					
 				}
 			});
 			// ImageLoader.getInstance().displayImage(mlist.get(position).getBitmap(),holder.icon);
@@ -146,9 +153,10 @@ public class TabTaskList extends Fragment implements OnClickListener {
 
 				@Override
 				public void onClick(View v) {
-
+					
 				}
 			});
+			
 			return convertView;
 		}
 
@@ -160,7 +168,9 @@ public class TabTaskList extends Fragment implements OnClickListener {
 			ImageView icon;
 			TextView appname;
 			TextView status;
-			Button download;
+			ProgressBar download_progress;
+			Button download_button;
+			boolean flag;
 		}
 	}
 }

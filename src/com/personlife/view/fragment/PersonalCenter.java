@@ -182,8 +182,10 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 			Utils.start_Activity(getActivity(), TaskList.class);
 			break;
 		case R.id.txt_mycollection:
-//			Utils.start_Activity(getActivity(), MyCollectionActivity.class,
-//					new BasicNameValuePair("NAME", "我的收藏"));
+			Intent intent_c=new Intent(getActivity(), MyCollectionActivity.class);
+			intent_c.putExtra("telphone", telphone);
+			startActivity(intent_c);
+
 			break;
 		case R.id.txt_connection:
 			Utils.start_Activity(getActivity(), ConnectionActivity.class,

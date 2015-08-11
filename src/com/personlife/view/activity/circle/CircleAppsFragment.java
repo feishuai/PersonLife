@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 import com.example.personlifep.R;
 import com.personlife.bean.App;
-import com.personlife.view.activity.personcenter.TabTaskList.TabTaskAdapter;
+
 import com.personlife.widget.MyListView;
 
 public class CircleAppsFragment extends Fragment {

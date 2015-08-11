@@ -13,8 +13,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+
+
+
+
 import com.example.personlifep.R;
 import com.personlife.bean.App;
+
 
 public class AppsAdapter extends BaseAdapter {
 
@@ -42,9 +48,8 @@ public class AppsAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(final int position, View convertView,
-			ViewGroup parent) {
-		ViewHolder holder = null;
+	public View getView(final int position, View convertView, ViewGroup parent) {
+		final ViewHolder holder;
 		if (convertView == null) {
 			convertView = ((LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
@@ -60,24 +65,32 @@ public class AppsAdapter extends BaseAdapter {
 					.findViewById(R.id.iv_tuijian_icon);
 			holder.download = (Button) convertView
 					.findViewById(R.id.btn_tuijian_tuijian);
+			holder.flag=false;
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		// ImageLoaderUtils.displayAppIcon("https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/5136becf77e9cfc440849e0b694fdd6e_121_121.jpg",
 		// holder.icon);
-	
+
 		holder.download.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Toast.makeText(
-						context,
-						"downloading "
-								+ mlist.get(position).getDownloadUrl(),
+				holder.flag=!holder.flag;
+				Toast.makeText(context,
+						"downloading " + mlist.get(position).getDownloadUrl(),
 						Toast.LENGTH_SHORT).show();
-				;
+				if(holder.flag==true){
+					holder.download.setText("暂停");
+					
+					
+				}else{
+					holder.download.setText("下载");
+					
+				}
+				
 			}
 		});
 
@@ -94,5 +107,6 @@ public class AppsAdapter extends BaseAdapter {
 		TextView status;
 		TextView intro;
 		Button download;
+		boolean flag;
 	}
 }
