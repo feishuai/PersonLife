@@ -12,8 +12,10 @@ import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ActivityCollector;
 import com.personlife.utils.FriendsUtils;
+import com.personlife.utils.ImageLoaderUtils;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +32,7 @@ public class UserDetail extends Activity implements OnClickListener {
 	private String UserPhone;
 	private Button btn_sendmsg;
 	private ImageView sex,head;
+	private String phone;
 	
 
 	@Override
@@ -37,6 +40,8 @@ public class UserDetail extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_friendmsg);
 		ActivityCollector.addActivity(this);
+		Intent intent=getIntent();
+		phone=intent.getStringExtra("phone");
 		initview();
 		setListener();
 		initData();
@@ -58,12 +63,11 @@ public class UserDetail extends Activity implements OnClickListener {
 	}
 
 	protected void initData() {
-		UserPhone = getIntent().getStringExtra("phone");
-		Log.i("phone", UserPhone);
-		RequestParams request = new RequestParams();
-		request.put("phone", UserPhone);
 		
-		BaseAsyncHttp.postReq(getApplicationContext(),"users/getinfo", request,
+		RequestParams request = new RequestParams();
+		request.put("phone", phone);
+		
+		BaseAsyncHttp.postReq(getApplicationContext(),"/users/getinfo", request,
 				new JSONObjectHttpResponseHandler() {
 
 					@Override
@@ -78,6 +82,7 @@ public class UserDetail extends Activity implements OnClickListener {
 								sex.setImageResource(R.drawable.ic_sex_female);
 							tv_region.setText(resp.getString("area").toString());
 							tv_sign.setText(resp.getString("signature").toString());
+							ImageLoaderUtils.displayAppIcon(resp.getString("thumb"), head);
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

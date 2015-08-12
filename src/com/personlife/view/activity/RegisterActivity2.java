@@ -118,7 +118,7 @@ public class RegisterActivity2 extends Activity implements
 			 }else if(flag==0){
 				 Toast.makeText(this, "请设置头像", Toast.LENGTH_SHORT).show();
 			 }else{
-				 returnPath=UpLoadHeadImage.uploadImg(telphone);
+				 returnPath=UpLoadHeadImage.uploadImg(this,telphone);
 				 PersonInfoLocal.storeRegisterNickName(RegisterActivity2.this, telphone,
 						 nickname.getText().toString(), imageUri.toString(),"http://7xkbeq.com1.z0.glb.clouddn.com"+returnPath);
 				 Intent intent = new Intent(RegisterActivity2.this,RegisterActivity3.class);

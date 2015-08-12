@@ -27,8 +27,7 @@ import android.widget.LinearLayout.LayoutParams;
 import com.example.personlifep.R;
 import com.personlife.adapter.AppsAdapter;
 import com.personlife.bean.App;
-import com.personlife.download.Downloader;
-import com.personlife.download.LoadInfo;
+
 import com.personlife.view.activity.personcenter.TabAppList.TabAppListAdapter;
 
 /**
@@ -132,52 +131,52 @@ public class TabTaskList extends Fragment implements OnClickListener {
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			Handler mHandler = new Handler() {  
-	              public void handleMessage(Message msg) {  
-	                  if (msg.what == 1) {  
-	                      String url = (String) msg.obj;  
-	                      int length = msg.arg1;  
-	                       
-	                      if (holder.download_progress != null) {  
-	                          // 设置进度条按读取的length长度更新  
-	                    	  holder.download_progress.incrementProgressBy(length);  
-	                          if (holder.download_progress.getProgress() == holder.download_progress.getMax()) {   
-	                              // 下载完成后清除进度条并将map中的数据清空  
-	                        	  holder.download_progress.setVisibility(View.GONE);
-	                               
-	                              AppsAdapter.downloaders.get(url).delete(url);  
-	                              AppsAdapter.downloaders.get(url).reset();  
-	                              AppsAdapter.downloaders.remove(url);  
-	                          }  
-	                      }  
-	                  }  
-	              }  
-	          };
-			String musicName="fbb77294-6041-41ac-befa-37e237bd41f2.jpg";
-			String urlstr = AppsAdapter.URL + musicName;  
-            String localfile = AppsAdapter.SD_PATH + musicName; 
-			
-            //设置下载线程数为4，这里是我为了方便随便固定的  
-            int threadcount = 4;  
-            // 初始化一个downloader下载器  
-            Downloader downloader = AppsAdapter.downloaders.get(urlstr);  
-            if (downloader == null) {  
-                downloader = new Downloader(urlstr, localfile, threadcount, ctx, mHandler);  
-                AppsAdapter.downloaders.put(urlstr, downloader);  
-            }  
-     
-           // 得到下载信息类的个数组成集合  
-           LoadInfo loadInfo = downloader.getDownloaderInfors();  
-           // 显示进度条  
-           
-           if (holder.download_progress == null) {  
-    
-        	   holder.download_progress.setMax(loadInfo.getFileSize());  
-        	   holder.download_progress.setProgress(loadInfo.getComplete());  
-
-           } 
-           // 调用方法开始下载  
-           downloader.download();  
+//			Handler mHandler = new Handler() {  
+//	              public void handleMessage(Message msg) {  
+//	                  if (msg.what == 1) {  
+//	                      String url = (String) msg.obj;  
+//	                      int length = msg.arg1;  
+//	                       
+//	                      if (holder.download_progress != null) {  
+//	                          // 设置进度条按读取的length长度更新  
+//	                    	  holder.download_progress.incrementProgressBy(length);  
+//	                          if (holder.download_progress.getProgress() == holder.download_progress.getMax()) {   
+//	                              // 下载完成后清除进度条并将map中的数据清空  
+//	                        	  holder.download_progress.setVisibility(View.GONE);
+//	                               
+//	                              AppsAdapter.downloaders.get(url).delete(url);  
+//	                              AppsAdapter.downloaders.get(url).reset();  
+//	                              AppsAdapter.downloaders.remove(url);  
+//	                          }  
+//	                      }  
+//	                  }  
+//	              }  
+//	          };
+//			String musicName="fbb77294-6041-41ac-befa-37e237bd41f2.jpg";
+//			String urlstr = AppsAdapter.URL + musicName;  
+//            String localfile = AppsAdapter.SD_PATH + musicName; 
+//			
+//            //设置下载线程数为4，这里是我为了方便随便固定的  
+//            int threadcount = 4;  
+//            // 初始化一个downloader下载器  
+//            Downloader downloader = AppsAdapter.downloaders.get(urlstr);  
+//            if (downloader == null) {  
+//                downloader = new Downloader(urlstr, localfile, threadcount, ctx, mHandler);  
+//                AppsAdapter.downloaders.put(urlstr, downloader);  
+//            }  
+//     
+//           // 得到下载信息类的个数组成集合  
+//           LoadInfo loadInfo = downloader.getDownloaderInfors();  
+//           // 显示进度条  
+//           
+//           if (holder.download_progress == null) {  
+//    
+//        	   holder.download_progress.setMax(loadInfo.getFileSize());  
+//        	   holder.download_progress.setProgress(loadInfo.getComplete());  
+//
+//           } 
+//           // 调用方法开始下载  
+//           downloader.download();  
 			
 			holder.download_button.setOnClickListener(new OnClickListener() {
 

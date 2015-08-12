@@ -82,8 +82,8 @@ public class Dao {
      * 下载完成后删除数据库中的数据  
      */  
     public void delete(String url) {  
-//        SQLiteDatabase database = dbHelper.getReadableDatabase();  
-//        database.delete("download_info", "url=?", new String[] { url });  
-//        database.close();  
+        SQLiteDatabase database = dbHelper.getReadableDatabase();  
+        database.delete("download_info", "url=?", new String[] { url });  
+        database.close();  
     }  
 }  

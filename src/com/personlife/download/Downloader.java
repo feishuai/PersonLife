@@ -6,15 +6,20 @@ package com.personlife.download;
  */
 import java.io.File;  
 import java.io.InputStream;  
- import java.io.RandomAccessFile;  
- import java.net.HttpURLConnection;  
- import java.net.URL;  
- import java.util.ArrayList;  
- import java.util.List;  
- import android.content.Context;  
- import android.os.Handler;  
- import android.os.Message;  
- import android.util.Log;  
+import java.io.RandomAccessFile;  
+import java.net.HttpURLConnection;  
+import java.net.URL;  
+import java.util.ArrayList;  
+import java.util.List;  
+
+
+
+import com.loopj.android.http.AsyncHttpClient;
+
+import android.content.Context;  
+import android.os.Handler;  
+import android.os.Message;  
+import android.util.Log;  
   
  public class Downloader {  
      private String urlstr;// 下载的地址  
@@ -83,9 +88,13 @@ import java.io.InputStream;
       * 初始化  
       */  
      private void init() {  
-         try {  
+         try {
+        	 
+        	 
              URL url = new URL(urlstr);  
-             HttpURLConnection connection = (HttpURLConnection) url.openConnection();  
+             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+             connection.setRequestProperty("Accept-Encoding", "identity"); //加上这句话解决问题
+             connection.connect();
              connection.setConnectTimeout(5000);  
              connection.setRequestMethod("GET");  
              fileSize = connection.getContentLength();  
@@ -108,7 +117,7 @@ import java.io.InputStream;
       * 判断是否是第一次 下载  
       */  
      private boolean isFirst(String urlstr) {  
-         return dao.isHasInfors(urlstr);  
+         return true;//dao.isHasInfors(urlstr);  
      }  
   
      /**  

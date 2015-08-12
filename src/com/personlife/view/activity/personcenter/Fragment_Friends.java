@@ -51,8 +51,12 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 	private SideBar indexBar;
 	private TextView mDialogText;
 	private WindowManager mWindowManager;
-	private SharedPreferences pref;
-	
+	private String telphone;
+	public Fragment_Friends(String tel) {
+		// TODO Auto-generated constructor stub
+		super();
+		telphone=tel;
+	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -114,11 +118,11 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 
 	private void initData() {
 		
-		pref = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+		
 		RequestParams params = new RequestParams();
-		params.put("myid", pref.getString("id", "myid"));
+		params.put("phone", telphone);
 			
-		Log.i("personlife", "start post");
+		
 		BaseAsyncHttp.postReq(getActivity().getApplicationContext(),"/friend/getall", params,
 				new JSONObjectHttpResponseHandler() {
 
