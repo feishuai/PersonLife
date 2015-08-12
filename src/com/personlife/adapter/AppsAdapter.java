@@ -1,10 +1,15 @@
 package com.personlife.adapter;
 
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,6 +25,7 @@ import com.personlife.bean.App;
 import com.personlife.download.Downloader;
 import com.personlife.download.LoadInfo;
 import com.personlife.utils.Constants;
+import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.view.activity.home.AppDetailActivity;
 
 public class AppsAdapter extends BaseAdapter {
@@ -30,16 +36,19 @@ public class AppsAdapter extends BaseAdapter {
 	// 固定下载的资源路径，这里可以设置网络上的地址
 	public static final String URL = "http://www.gzevergrandefc.com/UploadFile/photos/2013-06/";
 	// 固定存放下载的音乐的路径：SD卡目录下
+
 	public static final String SD_PATH = Environment.getExternalStorageDirectory().toString()+"/downapp/";
 //	// 固定存放下载的音乐的路径：SD卡目录下  
 //    private static final String SD_PATH = "/mnt/sdcard/";  
 //	// 存放各个下载器
 //	public static Map<String, Downloader> downloaders = new HashMap<String, Downloader>();
 
+
 	public AppsAdapter(Context context, List<App> mlist) {
+		this.mlist = new ArrayList<App>();
 		this.context = context;
-		this.mlist = mlist;
-		
+
+		this.mlist.addAll(mlist);
 	}
 
 	@Override
@@ -80,9 +89,9 @@ public class AppsAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		// ImageLoaderUtils.displayAppIcon("https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/5136becf77e9cfc440849e0b694fdd6e_121_121.jpg",
-		// holder.icon);
-
+		ImageLoaderUtils.displayAppIcon(mlist.get(position).getIcon(),
+				holder.icon);
+		holder.appname.setText(mlist.get(position).getName());
 		holder.download.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -102,9 +111,6 @@ public class AppsAdapter extends BaseAdapter {
 					Downloader download=new Downloader(urlstr, localfile, count, context, null);
 					LoadInfo loadInfo=download.getDownloaderInfors();
 					download.download();
-					
-					 
-
 
 				} else {
 					holder.download.setText("下载");
@@ -122,7 +128,9 @@ public class AppsAdapter extends BaseAdapter {
 			public void onClick(View v) {
 				Intent intent = new Intent(context, AppDetailActivity.class);
 				intent.putExtra(Constants.AppId, mlist.get(position).getId());
-				// intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				Log.i("click appid detail info",
+						String.valueOf(mlist.get(position).getId()));
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				context.startActivity(intent);
 
 			}
@@ -131,7 +139,8 @@ public class AppsAdapter extends BaseAdapter {
 	}
 
 	public void setData(List<App> list) {
-		mlist = list;
+		this.mlist.clear();
+		this.mlist.addAll(list);
 	}
 
 	class ViewHolder {

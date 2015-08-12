@@ -103,7 +103,10 @@ public class ImageLoaderUtils {
 		public static void displayAppIcon(String uri, ImageView imageView){
 			ImageLoader.getInstance().displayImage(uri, imageView, icon_options);
 		}
-
+		
+		public static void displayImageView(String uri, ImageView imageView){
+			ImageLoader.getInstance().displayImage(uri, imageView, binner_options);
+		}
 		public static String getHJYCacheDir() {
 			if (Environment.getExternalStorageState().equals(
 					Environment.MEDIA_MOUNTED))

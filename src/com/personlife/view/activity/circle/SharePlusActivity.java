@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -112,7 +113,7 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
-		super.onActivityResult(requestCode, resultCode, data);
+		Log.i("resultCode", String.valueOf(resultCode));
 		switch (resultCode) {
 		case RESULT_OK:
 			 ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(this, "pfy", MODE_PRIVATE);
@@ -164,17 +165,13 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 					.inflate(R.layout.layout_grid_appicon, null);
 			
 			ImageView btn = (ImageView) convertView.findViewById(R.id.iv_shareplus_appicon);
-			
-			if(position ==(getCount()-1))
-				btn.setBackgroundResource(R.drawable.fabiaofenxiang);
+			btn.setBackground(apps.get(position).getAppIcon());
 			btn.setOnClickListener(new OnClickListener() {
-
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					if(current == (getCount()-1)){
-						Intent intent = new Intent();
-						intent.setClass(SharePlusActivity.this, AppListActivity.class);
+						Intent intent = new Intent(SharePlusActivity.this, AppListActivity.class);
 						startActivityForResult(intent, RESULT_OK);
 					}
 				}
