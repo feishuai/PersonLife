@@ -174,7 +174,7 @@ public class RegisterActivity3 extends Activity implements OnClickListener {
 				}
 			}
 			PersonInfoLocal.storeRegisterHobbys(this, telphone, set);
-			Intent intent=new Intent(this, MainActivity.class);
+			Intent intent=new Intent(this, RegisterActivity4.class);
 			intent.putExtra("telphone", telphone);
 			 startActivity(intent);
 			finish();

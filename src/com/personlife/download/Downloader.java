@@ -34,9 +34,10 @@ import android.util.Log;
      private static final int PAUSE = 3;  
      private int state = INIT;  
   
-     public Downloader(String urlstr, String localfile, int threadcount,  
+     public Downloader(String urlstr,int filesize, String localfile, int threadcount,  
              Context context, Handler mHandler) {  
-         this.urlstr = urlstr;  
+         this.urlstr = urlstr;
+         this.fileSize=filesize;
          this.localfile = localfile;  
          this.threadcount = threadcount;  
          this.mHandler = mHandler;  
@@ -91,13 +92,13 @@ import android.util.Log;
          try {
         	 
         	 
-             URL url = new URL(urlstr);  
-             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-             connection.setRequestProperty("Accept-Encoding", "identity"); //加上这句话解决问题
-             connection.connect();
-             connection.setConnectTimeout(5000);  
-             connection.setRequestMethod("GET");  
-             fileSize = connection.getContentLength();  
+//             URL url = new URL(urlstr);  
+//             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//             connection.setRequestProperty("Accept-Encoding", "identity"); //加上这句话解决问题
+//             connection.connect();
+//             connection.setConnectTimeout(5000);  
+//             connection.setRequestMethod("GET");  
+//             fileSize = connection.getContentLength();  
   
              File file = new File(localfile);  
              if (!file.exists()) {  
@@ -107,7 +108,7 @@ import android.util.Log;
              RandomAccessFile accessFile = new RandomAccessFile(file, "rwd");  
              accessFile.setLength(fileSize);  
              accessFile.close();  
-             connection.disconnect();  
+//             connection.disconnect();  
          } catch (Exception e) {  
              e.printStackTrace();  
          }  

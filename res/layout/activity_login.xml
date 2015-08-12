@@ -10,7 +10,7 @@
         android:layout_height="40dp"
         android:background="@color/transparent" />
 
-    <ImageView
+    <com.personlife.widget.CircleImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"

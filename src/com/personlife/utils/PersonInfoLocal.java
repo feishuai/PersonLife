@@ -17,11 +17,10 @@ public class PersonInfoLocal {
 		editor.putString("password", "");
 		editor.commit();
 	}
-	public static void storeRegisterNickName(Context ctx,String phone,String nickname,String headUri,String headkey){
+	public static void storeRegisterNickName(Context ctx,String phone,String nickname,String headUri){
 		SharedPreferences.Editor editor = ctx.getSharedPreferences(phone, ctx.MODE_PRIVATE).edit();
 		editor.putString("nickname", nickname);
 		editor.putString("headuri", headUri);
-		editor.putString("headkey", headkey);
 		editor.commit();
 	}
 	public static void storeRegisterHobbys(Context ctx,String phone ,Set<String> hobby){

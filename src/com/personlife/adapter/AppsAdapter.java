@@ -33,16 +33,7 @@ public class AppsAdapter extends BaseAdapter {
 	private Context context;
 	private List<App> mlist;
 
-	// 固定下载的资源路径，这里可以设置网络上的地址
-	public static final String URL = "http://www.gzevergrandefc.com/UploadFile/photos/2013-06/";
-	// 固定存放下载的音乐的路径：SD卡目录下
-
-	public static final String SD_PATH = Environment.getExternalStorageDirectory().toString()+"/downapp/";
-//	// 固定存放下载的音乐的路径：SD卡目录下  
-//    private static final String SD_PATH = "/mnt/sdcard/";  
-//	// 存放各个下载器
-//	public static Map<String, Downloader> downloaders = new HashMap<String, Downloader>();
-
+	public static final String SD_PATH = Environment.getExternalStorageDirectory().toString()+"/";
 
 	public AppsAdapter(Context context, List<App> mlist) {
 		this.mlist = new ArrayList<App>();
@@ -99,24 +90,24 @@ public class AppsAdapter extends BaseAdapter {
 				// TODO Auto-generated method stub
 				holder.flag = !holder.flag;
 				Toast.makeText(context,
-						"downloading " + mlist.get(position).getDownloadUrl(),
+						mlist.get(position).getDownloadUrl(),
 						Toast.LENGTH_SHORT).show();
 				if (holder.flag == true) {
 					
-					holder.download.setText("干啥");
-					String urlstr=URL+"fbb77294-6041-41ac-befa-37e237bd41f2.jpg";//mlist.get(position).getDownloadUrl();
-					String appname="hello.jpg";//mlist.get(position).getName();
-					String localfile=SD_PATH+appname;
-					int count=1;
-					Downloader download=new Downloader(urlstr, localfile, count, context, null);
-					LoadInfo loadInfo=download.getDownloaderInfors();
-					download.download();
+//					holder.download.setText("干啥");
+//					String urlstr=mlist.get(position).getDownloadUrl();//mlist.get(position).getDownloadUrl();
+//					String appname=mlist.get(position).getName();
+//					String localfile=SD_PATH+appname;
+//					int count=1;
+//					String filesize=mlist.get(position).getSize();
+//					
+//					Downloader download=new Downloader(urlstr,Integer.parseInt(filesize.substring(0, filesize.length()-1)), localfile, count, context, null);
+//					LoadInfo loadInfo=download.getDownloaderInfors();
+//					download.download();
 
 				} else {
 					holder.download.setText("下载");
-//					String musicName = "fbb77294-6041-41ac-befa-37e237bd41f2.jpg";
-//					String urlstr = URL + musicName;
-//					downloaders.get(urlstr).pause();
+
 				}
 
 			}

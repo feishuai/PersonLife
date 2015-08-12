@@ -41,6 +41,7 @@ import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.UpLoadHeadImage;
 import com.personlife.utils.Utils;
 import com.personlife.view.activity.personcenter.MyownActivity;
+import com.personlife.widget.CircleImageView;
 
 /**
  * 
@@ -51,7 +52,7 @@ public class RegisterActivity2 extends Activity implements
 		android.content.DialogInterface.OnClickListener, OnClickListener {
 
 	private Button back, nextstep;
-	private ImageView re_picture;
+	private CircleImageView re_picture;
 	private EditText nickname;
 	private TextView tv_title;
 	private Uri imageUri;
@@ -86,7 +87,7 @@ public class RegisterActivity2 extends Activity implements
 		nextstep = (Button) findViewById(R.id.register2_nextstep);
 		nextstep.setOnClickListener(this);
 		nickname = (EditText) findViewById(R.id.register2_nickname);
-		re_picture = (ImageView) findViewById(R.id.register2_touxiang);
+		re_picture = (CircleImageView) findViewById(R.id.register2_touxiang);
 		re_picture.setOnClickListener(this);
 		tv_title = (TextView) findViewById(R.id.txt_title);
 		tv_title.setText("设置个人资料");
@@ -113,20 +114,25 @@ public class RegisterActivity2 extends Activity implements
 			onBackPressed();
 			break;
 		case R.id.register2_nextstep:
-			 if(nickname.getText().toString().length()==0){
-				 Toast.makeText(this, "请输入昵称", Toast.LENGTH_SHORT).show();
-			 }else if(flag==0){
-				 Toast.makeText(this, "请设置头像", Toast.LENGTH_SHORT).show();
-			 }else{
-				 returnPath=UpLoadHeadImage.uploadImg(this,telphone);
-				 PersonInfoLocal.storeRegisterNickName(RegisterActivity2.this, telphone,
-						 nickname.getText().toString(), imageUri.toString(),"http://7xkbeq.com1.z0.glb.clouddn.com"+returnPath);
-				 Intent intent = new Intent(RegisterActivity2.this,RegisterActivity3.class);
-				 intent.putExtra("telphone", telphone);
-				 startActivity(intent);
-				 finish();
-				 
-			 }			 
+			
+			Intent intent = new Intent(RegisterActivity2.this,RegisterActivity3.class);
+			 intent.putExtra("telphone", telphone);
+			 startActivity(intent);
+			 finish();
+//			 if(nickname.getText().toString().length()==0){
+//				 Toast.makeText(this, "请输入昵称", Toast.LENGTH_SHORT).show();
+//			 }else if(flag==0){
+//				 Toast.makeText(this, "请设置头像", Toast.LENGTH_SHORT).show();
+//			 }else{
+//				 returnPath=UpLoadHeadImage.uploadImg(this,telphone);
+//				 PersonInfoLocal.storeRegisterNickName(RegisterActivity2.this, telphone,
+//						 nickname.getText().toString(), imageUri.toString());
+//				 Intent intent = new Intent(RegisterActivity2.this,RegisterActivity3.class);
+//				 intent.putExtra("telphone", telphone);
+//				 startActivity(intent);
+//				 finish();
+//				 
+//			 }			 
 			break;
 		case R.id.register2_touxiang:
 			showDialog();
