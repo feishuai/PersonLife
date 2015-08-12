@@ -23,23 +23,25 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/black2" />
-		<com.personlife.widget.HorizontialListView
-		    android:layout_height="266dp"
-		    android:layout_width="wrap_content"
-		    android:padding="2dp"
-		    android:id="@+id/hlv_detail_urls">
-		</com.personlife.widget.HorizontialListView>
       
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/black2" />
 
+        <com.personlife.widget.HorizontialListView
+            android:id="@+id/hlv_detail_urls"
+            android:layout_width="wrap_content"
+            android:layout_height="266dp"
+            android:padding="2dp" >
+        </com.personlife.widget.HorizontialListView>
+
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingLeft="10dp" >
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" >
               <TextView
                     android:id="@+id/textView1"
                     android:layout_width="wrap_content"
@@ -95,6 +97,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
+                    android:paddingRight
+                    ="10dp"
                     android:textSize="15dp" 
                     android:text="日志信息" />
          <View

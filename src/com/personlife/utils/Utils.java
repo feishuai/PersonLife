@@ -1,5 +1,8 @@
 package com.personlife.utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.apache.http.message.BasicNameValuePair;
 
 import android.Manifest;
@@ -14,9 +17,8 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-
 public class Utils {
-	
+
 	public static void showLongToast(Context context, String pMsg) {
 		Toast.makeText(context, pMsg, Toast.LENGTH_LONG).show();
 	}
@@ -24,7 +26,7 @@ public class Utils {
 	public static void showShortToast(Context context, String pMsg) {
 		Toast.makeText(context, pMsg, Toast.LENGTH_SHORT).show();
 	}
-	
+
 	/**
 	 * 打开Activity
 	 * 
@@ -92,4 +94,13 @@ public class Utils {
 		return (int) (sDensity * nDip);
 	}
 
+	public static String TimeStamp2Date(long timestamp) {
+		return new SimpleDateFormat("yyyy-MM-dd").format(new Date(
+				timestamp * 1000));
+	}
+	public static String TimeStamp2DateChinese(long timestamp) {
+		return new SimpleDateFormat("yyyy年MM月dd日").format(new Date(
+				timestamp * 1000));
+	}
+	
 }

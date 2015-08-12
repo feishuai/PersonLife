@@ -1,7 +1,7 @@
 package com.personlife.utils;
 
 public interface Constants {
-	String AppId = "AppId";
+	String AppId = "appid";
 	// 聊天
 	public static final String NEW_FRIENDS_USERNAME = "item_new_friends";
 	String isFriend = "isFriend";

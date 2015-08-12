@@ -15,13 +15,20 @@ public class App {
 	private String introdution;
 	private String version;
 	private String size;
-	private Date updateDate;
-	private String[] urls;
+	private long updateDate;
+	private List<String> urls;
 	private List<Comment> comments;
 	private String downloadUrl;
 	private List<App> likes;
 	private Drawable appIcon;
 	private String packageName;
+	private String updateLog;
+	public String getUpdateLog() {
+		return updateLog;
+	}
+	public void setUpdateLog(String updateLog) {
+		this.updateLog = updateLog;
+	}
 	public List<App> getLikes() {
 		return likes;
 	}
@@ -94,16 +101,16 @@ public class App {
 		this.version = version;
 	}
 	
-	public Date getUpdateDate() {
+	public long getUpdateDate() {
 		return updateDate;
 	}
-	public void setUpdateDate(Date updateDate) {
+	public void setUpdateDate(long updateDate) {
 		this.updateDate = updateDate;
 	}
-	public String[] getUrls() {
+	public List<String> getUrls() {
 		return urls;
 	}
-	public void setUrls(String[] urls) {
+	public void setUrls(List<String> urls) {
 		this.urls = urls;
 	}
 	public List<Comment> getComments() {

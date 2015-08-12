@@ -184,7 +184,7 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 			break;
 		case R.id.txt_mycollection:
 
-			Intent intent_c=new Intent(getActivity(), MyCollectionActivity.class);
+			Intent intent_c=new Intent(getActivity(), CollectionActivity.class);
 			intent_c.putExtra("telphone", telphone);
 			startActivity(intent_c);
 

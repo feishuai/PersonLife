@@ -3,8 +3,12 @@ package com.personlife.view.activity.home;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.message.BasicNameValuePair;
+
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,8 +20,11 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.personlifep.R;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.personlife.bean.Comment;
-import com.personlife.common.Utils;
+import com.personlife.utils.ComplexPreferences;
+import com.personlife.utils.ImageLoaderUtils;
+import com.personlife.utils.Utils;
 import com.personlife.widget.ClearEditText;
 import com.personlife.widget.MyListView;
 
@@ -27,7 +34,8 @@ public class CommentActivity extends Activity implements OnClickListener {
 	Button mBtnBack, download;
 	TextView mTitle;
 	ClearEditText comment;
-	private  List<Comment> lcomments;
+	CommentAdapter commentAdapter;
+	private List<Comment> lcomments;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +50,7 @@ public class CommentActivity extends Activity implements OnClickListener {
 		mBtnBack.setOnClickListener(this);
 		comment.setOnClickListener(this);
 		mTitle.setText("评论列表");
-		
+
 		initData();
 	}
 
@@ -52,16 +60,35 @@ public class CommentActivity extends Activity implements OnClickListener {
 		lcomments.add(new Comment());
 		lcomments.add(new Comment());
 		lcomments.add(new Comment());
-		comments.setAdapter(new CommentAdapter(lcomments));
+		commentAdapter = new CommentAdapter(lcomments);
+		comments.setAdapter(commentAdapter);
+		ComplexPreferences complexPreferences = ComplexPreferences
+				.getComplexPreferences(getApplication(), "pfy", MODE_PRIVATE);
+		List<Comment> commentsLocal = complexPreferences.getObject("comments",
+				new TypeReference<List<Comment>>() {
+				});
+		if (commentsLocal != null) {
+			Log.i("comment activity comment size is ",
+					String.valueOf(commentsLocal.size()));
+			// lcomments = commentsLocal;
+			commentAdapter.setData(commentsLocal);
+			commentAdapter.notifyDataSetChanged();
+		}
+
 	}
-	
+
 	class CommentAdapter extends BaseAdapter {
-		private  List<Comment> lcomments; 
-		
+		private List<Comment> lcomments;
+
 		public CommentAdapter(List<Comment> l) {
 			// TODO Auto-generated constructor stub
 			lcomments = l;
 		}
+
+		public void setData(List<Comment> l) {
+			this.lcomments = l;
+		}
+
 		@Override
 		public int getCount() {
 			return lcomments.size();
@@ -91,17 +118,17 @@ public class CommentActivity extends Activity implements OnClickListener {
 					.findViewById(R.id.tv_comment_time);
 			RatingBar rates = (RatingBar) retval
 					.findViewById(R.id.rb_comment_rating);
-			// content.setText(lcomments.get(position).getComments());
-			// name.setText(lcomments.get(position).getUsernickname());
-			// time.setText(lcomments.get(position).getCreated_at());
-			// rates.setNumStars(lcomments.get(position).getCommentstars());
-			// ImageLoaderUtils.displayAppIcon(lcomments.get(position).getUserthumb(),
-			// icon);
+			content.setText(lcomments.get(position).getComments());
+			name.setText(lcomments.get(position).getUsernickname());
+			time.setText(Utils.TimeStamp2Date(lcomments.get(position)
+					.getCreated_at()));
+			rates.setRating(lcomments.get(position).getCommentstars());
+			ImageLoaderUtils.displayAppIcon(lcomments.get(position)
+					.getUserthumb(), icon);
 			return retval;
 		}
 	}
-	
-	
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -112,10 +139,16 @@ public class CommentActivity extends Activity implements OnClickListener {
 		case R.id.btn_comment_download:
 			break;
 		case R.id.et_comment_comment:
-			Utils.start_Activity(CommentActivity.this,
-					CommentAppActivity.class, null);
+			Intent intent = new Intent(CommentActivity.this,CommentAppActivity.class);
+			intent.putExtra("appid", getIntent().getStringExtra("appid"));
+			startActivityForResult(intent,1);
 			break;
 		}
 	}
-
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(resultCode == 1)
+			finish();
+	}
 }

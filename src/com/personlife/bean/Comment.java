@@ -4,17 +4,19 @@ import java.util.Date;
 
 public class Comment {
 	private String title;
+	private int appid;
 	private int commentstars;
+	private String username;
+	private String userthumb;
 	private String usernickname;
 	private String comments;
-	private String userthumb;
-	private String created_at;
+	private long created_at;
 	
 	public Comment(){
 		
 	}
 	public Comment(String title, int stars, String username, String content,
-			String createdDate) {
+			int createdDate) {
 		super();
 		this.title = title;
 		this.commentstars = stars;
@@ -23,6 +25,18 @@ public class Comment {
 		this.created_at = createdDate;
 	}
 
+	public int getAppid() {
+		return appid;
+	}
+	public void setAppid(int appid) {
+		this.appid = appid;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
 	public String getTitle() {
 		return title;
 	}
@@ -55,7 +69,7 @@ public class Comment {
 		this.comments = content;
 	}
 
-	public String getCreated_at() {
+	public long getCreated_at() {
 		return created_at;
 	}
 
@@ -67,7 +81,7 @@ public class Comment {
 		this.userthumb = userthumb;
 	}
 
-	public void setCreated_at(String createdDate) {
+	public void setCreated_at(long createdDate) {
 		this.created_at = createdDate;
 	}
 }
