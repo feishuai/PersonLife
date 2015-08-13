@@ -15,24 +15,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.personlifep.R;
+import com.personlife.bean.Star;
 import com.personlife.bean.User;
 import com.personlife.widget.MyListView;
 
 public class StarRecommendFragment extends Fragment {
 	private View layout;
 	private MyListView lv;
-	List<User> mList;
-	UsersAdapter starsAdapter;
+	List<Star> mList;
+	StarsAdapter starsAdapter;
 	
-	public StarRecommendFragment(List<User> mList) {
+	
+	public StarRecommendFragment(List<Star> mList) {
 		// TODO Auto-generated constructor stub
 		this.mList = mList;
 	}
-	public List<User> getAppsList() {
+	public List<Star> getAppsList() {
 		return mList;
 	}
-	public void setAppsList(List<User> mList) {
+	public void setAppsList(List<Star> mList) {
 		this.mList = mList;
+		starsAdapter.notifyDataSetChanged();
 	}
 	@Override
 	public View onCreateView(LayoutInflater inflater,
@@ -46,15 +49,15 @@ public class StarRecommendFragment extends Fragment {
 	
 	public void initView() {
 		lv = (MyListView) layout.findViewById(R.id.lv_starrecommend_stars);
-		starsAdapter = new UsersAdapter(getActivity());
+		starsAdapter = new StarsAdapter(getActivity());
 		lv.setAdapter(starsAdapter);
 	}
 
-	class UsersAdapter extends BaseAdapter {
+	class StarsAdapter extends BaseAdapter {
 
 		private Context context;
 
-		public UsersAdapter(Context context) {
+		public StarsAdapter(Context context) {
 			this.context = context;
 		}
 

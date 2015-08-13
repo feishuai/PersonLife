@@ -16,12 +16,13 @@
             android:layout_width="match_parent"
             android:layout_height="125dp"
             android:background="@color/white" />
+
         <LinearLayout
-                android:id="@+id/index_product_images_indicator"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="horizontal" />
+            android:id="@+id/index_product_images_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal" />
 
         <View
             android:layout_width="fill_parent"

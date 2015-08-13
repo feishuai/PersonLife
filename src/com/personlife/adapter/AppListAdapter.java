@@ -16,8 +16,7 @@ import android.widget.Toast;
 
 import com.example.personlifep.R;
 import com.personlife.bean.App;
-
-
+import com.personlife.utils.ImageLoaderUtils;
 
 public class AppListAdapter extends BaseAdapter {
 
@@ -45,8 +44,7 @@ public class AppListAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(final int position, View convertView,
-			ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder holder = null;
 		Log.i("adapter", "mlist size is " + mlist.size());
 		if (convertView == null) {
@@ -66,15 +64,10 @@ public class AppListAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		// ImageLoaderUtils
-		// .displayAppIcon(
-		// "https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/5136becf77e9cfc440849e0b694fdd6e_121_121.jpg",
-		// holder.icon);
-		// holder.appname.setText(mlist.get(position).getName());
-		// holder.tag.setText(mlist.get(position).getTag());
-		// holder.stars.setProgress(mlist.get(position).getStars());
-		// holder.downloadcounts.setText("("
-		// + mlist.get(position).getDowloadcount() + ")");
+		ImageLoaderUtils.displayAppIcon(mlist.get(position).getIcon(),holder.icon);
+		holder.appname.setText(mlist.get(position).getName());
+		holder.status.setText("未安装");
+		
 		holder.download.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -90,11 +83,11 @@ public class AppListAdapter extends BaseAdapter {
 
 			@Override
 			public void onClick(View v) {
-//				Intent intent = new Intent(context, AppDetailActivity.class);
-//				intent.putExtra(Constants.AppId, mlist.get(position)
-//						.getId());
-//				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//				context.startActivity(intent);
+				// Intent intent = new Intent(context, AppDetailActivity.class);
+				// intent.putExtra(Constants.AppId, mlist.get(position)
+				// .getId());
+				// intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				// context.startActivity(intent);
 
 			}
 		});

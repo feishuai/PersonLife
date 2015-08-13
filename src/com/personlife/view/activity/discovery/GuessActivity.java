@@ -3,10 +3,13 @@ package com.personlife.view.activity.discovery;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,8 +18,11 @@ import com.example.personlifep.R;
 import com.example.personlifep.R.drawable;
 import com.example.personlifep.R.id;
 import com.example.personlifep.R.layout;
+import com.loopj.android.http.RequestParams;
 import com.personlife.adapter.AppListAdapter;
 import com.personlife.bean.App;
+import com.personlife.net.BaseAsyncHttp;
+import com.personlife.net.JSONArrayHttpResponseHandler;
 import com.personlife.widget.MyListView;
 
 public class GuessActivity extends Activity implements OnClickListener {
@@ -33,7 +39,7 @@ public class GuessActivity extends Activity implements OnClickListener {
 			R.drawable.bangongbibei, R.drawable.nindepengyouxihuan };
 	
 	private AppListAdapter aApps;
-	private List<App> mList;
+	private List<App> mList=new ArrayList<App>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +62,41 @@ public class GuessActivity extends Activity implements OnClickListener {
 		back1.setBackground(getResources().getDrawable(urls[kind]));
 		back2.setBackground(getResources().getDrawable(icons[kind]));
 		tvContent.setText(contents[kind]);
-		mList = new ArrayList<App>();
-		mList.add(new App());
-		mList.add(new App());
-		mList.add(new App());
-		aApps = new AppListAdapter(getApplicationContext(), mList);
-		lv.setAdapter(aApps);
+		switch(kind){
+		case 0:
+			RequestParams request=new RequestParams();
+			BaseAsyncHttp.postReq(this, "/app/guess", request, new JSONArrayHttpResponseHandler() {
+				
+				@Override
+				public void jsonSuccess(JSONArray resp) {
+					// TODO Auto-generated method stub
+					for(int i=0;i<resp.length();i++){
+						App appInfo=new App();
+						appInfo.setId(resp.optJSONObject(i).optInt("id"));
+						appInfo.setName(resp.optJSONObject(i).optString("name"));
+						appInfo.setVersion(resp.optJSONObject(i).optString("version"));
+						appInfo.setDownloadUrl(resp.optJSONObject(i).optString("android_url"));
+						appInfo.setStars(resp.optJSONObject(i).optInt("stars"));
+						appInfo.setDowloadcount(resp.optJSONObject(i).optInt("downloadcount"));
+						appInfo.setIntrodution(resp.optJSONObject(i).optString("introduction"));
+						appInfo.setUpdateDate(resp.optJSONObject(i).optLong("updated_at"));
+						appInfo.setSize(resp.optJSONObject(i).optString("size"));
+						appInfo.setIcon(resp.optJSONObject(i).optString("icon"));
+						appInfo.setUpdateLog(resp.optJSONObject(i).optString("updated_log"));
+						mList.add(appInfo);
+						aApps = new AppListAdapter(getApplicationContext(), mList);
+						lv.setAdapter(aApps);
+					}
+				}
+				
+				@Override
+				public void jsonFail(JSONArray resp) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+			break;
+		}
 	}
 
 	@Override

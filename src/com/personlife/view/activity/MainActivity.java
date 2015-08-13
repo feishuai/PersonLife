@@ -172,7 +172,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		personalCenter = new PersonalCenter(telphone);
 		
 		homefragment = new HomeFragment();
-		discoveryfragment = new DiscoveryFragment();
+		discoveryfragment = new DiscoveryFragment(telphone);
 		circlefragment = new CircleFragment();
 		fragments = new Fragment[] { homefragment, circlefragment,
 				discoveryfragment, personalCenter };

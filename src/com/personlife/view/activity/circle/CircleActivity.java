@@ -2,6 +2,7 @@ package com.personlife.view.activity.circle;
 
 import java.util.List;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -13,18 +14,20 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.personlifep.R;
 import com.personlife.adapter.ViewPagerTabAdapter;
+import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.widget.CircleImageView;
 import com.personlife.widget.PagerSlidingTabStrip;
 
 public class CircleActivity extends FragmentActivity implements OnClickListener {
 	private TextView mTitle;
 	private Button mBack;
-	CircleImageView staricon;
+	ImageView staricon;
 	TextView starname, signature, tabviews[];
 	ViewPager pager;
 	ViewPagerTabAdapter adapter;
@@ -36,18 +39,25 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 	ColorStateList colors[];
 	Fragment fragments[];
 	Fragment friendsfragment,appsfragment;
+	private String starphone,starnickname,starthumb;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_circle);
+		Intent intent=getIntent();
+		starphone=intent.getStringExtra("starphone");
+		starnickname=intent.getStringExtra("starnickname");
+		starthumb=intent.getStringExtra("starthumb");
 		mBack = (Button) findViewById(R.id.txt_left);
 		mBack.setVisibility(View.VISIBLE);
 		mBack.setOnClickListener(this);
 		mTitle = (TextView) findViewById(R.id.txt_title);
-		mTitle.setText("李宇春的圈子");
+		mTitle.setText(starnickname+"的圈子");
 
-		staricon = (CircleImageView) findViewById(R.id.iv_circle_staricon);
+		staricon = (ImageView) findViewById(R.id.iv_circle_staricon);
+		ImageLoaderUtils.displayAppIcon(starthumb, staricon);
 		starname = (TextView) findViewById(R.id.tv_circle_starname);
+		starname.setText(starnickname);
 		signature = (TextView) findViewById(R.id.tv_circle_signature);
 		
 		friendsfragment = new CircleFriendsFragment();

@@ -41,7 +41,7 @@ public class CircleFragment extends Fragment implements OnClickListener {
 	private Button kind;
 	private Activity ctx;
 	private View layout;
-	CircleImageView staricon;
+	ImageView staricon;
 	TextView starname,signature,tabviews[];
     ViewPager pager;
     ViewPagerTabAdapter adapter;
@@ -77,7 +77,7 @@ public class CircleFragment extends Fragment implements OnClickListener {
 	}
 
 	public void initView() {
-		staricon = (CircleImageView)layout.findViewById(R.id.iv_circle_staricon);
+		staricon = (ImageView)layout.findViewById(R.id.iv_circle_staricon);
 		starname =(TextView)layout.findViewById(R.id.tv_circle_starname);
 		signature = (TextView)layout.findViewById(R.id.tv_circle_signature);
 		addattention = (Button)layout.findViewById(R.id.btn_circle_addattention);

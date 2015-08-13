@@ -3,6 +3,8 @@ package com.personlife.view.activity.discovery;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,9 +21,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.personlifep.R;
+import com.loopj.android.http.RequestParams;
 import com.personlife.adapter.ViewPagerTabAdapter;
 import com.personlife.bean.App;
+import com.personlife.bean.Star;
 import com.personlife.bean.User;
+import com.personlife.net.BaseAsyncHttp;
+import com.personlife.net.JSONArrayHttpResponseHandler;
 import com.personlife.widget.CircleImageView;
 import com.personlife.widget.PagerSlidingTabStrip;
 
@@ -42,7 +48,7 @@ public class StarRecommendActivity extends FragmentActivity implements
 	StarRecommendFragment hoteststarfragment;
 	int lastTab = 0;
 	int currentTab = 0;
-	List<User> mStars;
+	List<Star> mStars;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +60,108 @@ public class StarRecommendActivity extends FragmentActivity implements
 		mTitle = (TextView) findViewById(R.id.txt_title);
 		mTitle.setText("新星推荐");
 
-		mStars = new ArrayList<User>();
-		mStars.add(new User());
-		mStars.add(new User());
-		mStars.add(new User());
-		mStars.add(new User());
+		mStars = new ArrayList<Star>();
+		mStars.add(new Star());
+		mStars.add(new Star());
+		mStars.add(new Star());
+		mStars.add(new Star());
 		allstarfragment = new StarRecommendFragment(mStars);
 		lasteststarfragment = new StarRecommendFragment(mStars);
 		hoteststarfragment = new StarRecommendFragment(mStars);
+		RequestParams request = new RequestParams();
+		BaseAsyncHttp.postReq(this, "/app/recommend-all", request,
+				new JSONArrayHttpResponseHandler() {
 
+					@Override
+					public void jsonSuccess(JSONArray resp) {
+						// TODO Auto-generated method stub
+						List<Star> list = new ArrayList<Star>();
+						for (int i = 0; i < resp.length(); i++) {
+							Star star = new Star();
+							star.setPhone(resp.optJSONObject(i).optString(
+									"phone"));
+							star.setNickname(resp.optJSONObject(i).optString(
+									"nickname"));
+							star.setThumb(resp.optJSONObject(i).optString(
+									"thumb"));
+							star.setFollower(resp.optJSONObject(i).optString(
+									"follower"));
+							star.setShared(resp.optJSONObject(i).optString(
+									"shared"));
+							list.add(star);
+
+						}
+						allstarfragment.setAppsList(list);
+					}
+
+					@Override
+					public void jsonFail(JSONArray resp) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+		BaseAsyncHttp.postReq(this, "/app/recommend-new", request,
+				new JSONArrayHttpResponseHandler() {
+
+					@Override
+					public void jsonSuccess(JSONArray resp) {
+						// TODO Auto-generated method stub
+						List<Star> list = new ArrayList<Star>();
+						for (int i = 0; i < resp.length(); i++) {
+							Star star = new Star();
+							star.setPhone(resp.optJSONObject(i).optString(
+									"phone"));
+							star.setNickname(resp.optJSONObject(i).optString(
+									"nickname"));
+							star.setThumb(resp.optJSONObject(i).optString(
+									"thumb"));
+							star.setFollower(resp.optJSONObject(i).optString(
+									"follower"));
+							star.setShared(resp.optJSONObject(i).optString(
+									"shared"));
+							list.add(star);
+
+						}
+						lasteststarfragment.setAppsList(list);
+					}
+
+					@Override
+					public void jsonFail(JSONArray resp) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+		BaseAsyncHttp.postReq(this, "/app/recommend-hot", request,
+				new JSONArrayHttpResponseHandler() {
+
+					@Override
+					public void jsonSuccess(JSONArray resp) {
+						// TODO Auto-generated method stub
+						List<Star> list = new ArrayList<Star>();
+						for (int i = 0; i < resp.length(); i++) {
+							Star star = new Star();
+							star.setPhone(resp.optJSONObject(i).optString(
+									"phone"));
+							star.setNickname(resp.optJSONObject(i).optString(
+									"nickname"));
+							star.setThumb(resp.optJSONObject(i).optString(
+									"thumb"));
+							star.setFollower(resp.optJSONObject(i).optString(
+									"follower"));
+							star.setShared(resp.optJSONObject(i).optString(
+									"shared"));
+							list.add(star);
+
+						}
+						hoteststarfragment.setAppsList(list);
+					}
+
+					@Override
+					public void jsonFail(JSONArray resp) {
+						// TODO Auto-generated method stub
+
+					}
+				});
 		fragments = new Fragment[] { allstarfragment, lasteststarfragment,
 				hoteststarfragment };
 		// Creating The ViewPagerAdapter and Passing Fragment Manager, Titles
