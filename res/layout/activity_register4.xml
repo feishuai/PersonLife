@@ -19,6 +19,7 @@
         android:textSize="18sp" />
 
     <GridView
+        android:listSelector="@color/transparent"
         android:id="@+id/star_gridview"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

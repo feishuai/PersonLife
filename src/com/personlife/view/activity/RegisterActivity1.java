@@ -99,42 +99,42 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 		case R.id.btn_nextstep:
 //			getRegister();
 			
-			Intent intent = new Intent(RegisterActivity1.this,RegisterActivity2.class);
-			intent.putExtra("telphone", et_usertel.getText().toString());
-			startActivity(intent);												
-			finish();
+//			Intent intent = new Intent(RegisterActivity1.this,RegisterActivity2.class);
+//			intent.putExtra("telphone", et_usertel.getText().toString());
+//			startActivity(intent);												
+//			finish();
 			
-//			String telphone = et_usertel.getText().toString();
-//			String code=et_code.getText().toString();
-//			RequestParams request = new RequestParams();
-//			request.put("phone", telphone);
-//			request.put("num", code);
-//			BaseAsyncHttp.postReq(getApplicationContext(), "/users/verify",
-//					request, new JSONObjectHttpResponseHandler() {
-//
-//						@Override
-//						public void jsonSuccess(JSONObject resp) {
-//							try {
-//								if(resp.getString("flag").equals("1")){
-//									PersonInfoLocal.storeRegisterTel(RegisterActivity1.this, et_usertel.getText().toString());
-//									Intent intent = new Intent(RegisterActivity1.this,RegisterActivity2.class);
-//									intent.putExtra("telphone", et_usertel.getText().toString());
-//									startActivity(intent);												
-//									finish();
-//								}else{
-//									Toast.makeText(RegisterActivity1.this, "验证码错误", Toast.LENGTH_SHORT).show();
-//								}
-//							} catch (JSONException e) {
-//								// TODO Auto-generated catch block
-//								e.printStackTrace();
-//							}
-//						}
-//						@Override
-//						public void jsonFail(JSONObject resp) {
-//							// TODO Auto-generated method stub
-//						}
-//					});
-//			
+			String telphone = et_usertel.getText().toString();
+			String code=et_code.getText().toString();
+			RequestParams request = new RequestParams();
+			request.put("phone", telphone);
+			request.put("num", code);
+			BaseAsyncHttp.postReq(getApplicationContext(), "/users/verify",
+					request, new JSONObjectHttpResponseHandler() {
+
+						@Override
+						public void jsonSuccess(JSONObject resp) {
+							try {
+								if(resp.getString("flag").equals("1")){
+									PersonInfoLocal.storeRegisterTel(RegisterActivity1.this, et_usertel.getText().toString());
+									Intent intent = new Intent(RegisterActivity1.this,RegisterActivity2.class);
+									intent.putExtra("telphone", et_usertel.getText().toString());
+									startActivity(intent);												
+									
+								}else{
+									Toast.makeText(RegisterActivity1.this, "验证码错误", Toast.LENGTH_SHORT).show();
+								}
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+						@Override
+						public void jsonFail(JSONObject resp) {
+							// TODO Auto-generated method stub
+						}
+					});
+			
 			break;
 		default:
 			break;
@@ -243,7 +243,7 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 					public void jsonSuccess(JSONObject resp) {
 						try {
 							if(resp.getString("flag").equals("0")){
-								Toast.makeText(RegisterActivity1.this, "发送失败", Toast.LENGTH_SHORT).show();
+								Toast.makeText(RegisterActivity1.this, "您已注册过", Toast.LENGTH_SHORT).show();
 							}else{
 								Toast.makeText(RegisterActivity1.this, "发送成功", Toast.LENGTH_SHORT).show();
 							}
@@ -255,7 +255,7 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 					@Override
 					public void jsonFail(JSONObject resp) {
 						// TODO Auto-generated method stub
-						Toast.makeText(RegisterActivity1.this, "nali发送失败", Toast.LENGTH_SHORT).show();
+						Toast.makeText(RegisterActivity1.this, "网络发送失败", Toast.LENGTH_SHORT).show();
 					}
 				});
 	}

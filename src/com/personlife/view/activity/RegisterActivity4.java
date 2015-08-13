@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.example.personlifep.R;
+import com.personlife.adapter.Register4_Adapter;
 import com.personlife.utils.ActivityCollector;
 import com.personlife.utils.Utils;
 import com.personlife.view.activity.circle.CircleActivity;
@@ -25,7 +26,7 @@ import android.widget.AdapterView.OnItemClickListener;
  * @author liugang
  * @date 2015年8月12日
  */
-public class RegisterActivity4 extends Activity {
+public class RegisterActivity4 extends Activity implements OnClickListener{
 
 	private String telphone;
 	private Button back, finishstep;
@@ -46,95 +47,51 @@ public class RegisterActivity4 extends Activity {
 
 	public void initview() {
 		back = (Button) findViewById(R.id.txt_left);
-		back.setVisibility(View.GONE);
-		back.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				onBackPressed();
-			}
-		});
+		back.setVisibility(View.VISIBLE);
+		back.setOnClickListener(this);
 		tv_title = (TextView) findViewById(R.id.txt_title);
 		tv_title.setText("完善个人信息");
 		star_gridview = (GridView) findViewById(R.id.star_gridview);
+		finishstep=(Button) findViewById(R.id.register4_nextstep);
+		finishstep.setOnClickListener(this);
 	}
 
 	public void initdata() {
-		// 生成动态数组，并且转入数据
-		ArrayList<HashMap<String, Object>> lstImageItem = new ArrayList<HashMap<String, Object>>();
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("register4_grid_staricon", R.drawable.star1);// 添加图像资源的ID
-		map.put("register4_grid_starname", "李宇春");// 按序号做ItemText
-		
-		lstImageItem.add(map);
-		map = new HashMap<String, Object>();
-		map.put("register4_grid_staricon", R.drawable.star2);// 添加图像资源的ID
-		map.put("register4_grid_starname", "范冰冰");// 按序号做ItemText
-		
-		lstImageItem.add(map);
-		map = new HashMap<String, Object>();
-		map.put("register4_grid_staricon", R.drawable.star3);// 添加图像资源的ID
-		map.put("register4_grid_starname", "郑凯");// 按序号做ItemText
-		
-		lstImageItem.add(map);
-		map = new HashMap<String, Object>();
-		map.put("register4_grid_staricon", R.drawable.star4);// 添加图像资源的ID
-		map.put("register4_grid_starname", "baby");// 按序号做ItemText
-		
-		lstImageItem.add(map);
-		map = new HashMap<String, Object>();
-		map.put("register4_grid_staricon", R.drawable.star5);// 添加图像资源的ID
-		map.put("register4_grid_starname", "谁啊");// 按序号做ItemText
-		
-		lstImageItem.add(map);
-		map = new HashMap<String, Object>();
-		map.put("register4_grid_staricon", R.drawable.star6);// 添加图像资源的ID
-		map.put("register4_grid_starname", "不认识");// 按序号做ItemText
-		
-		lstImageItem.add(map);
-		map = new HashMap<String, Object>();
-		map.put("register4_grid_staricon", R.drawable.star4);// 添加图像资源的ID
-		map.put("register4_grid_starname", "又来？");// 按序号做ItemText
-		
-		lstImageItem.add(map);
-		map = new HashMap<String, Object>();
-		map.put("register4_grid_staricon", R.drawable.star5);// 添加图像资源的ID
-		map.put("register4_grid_starname", "好烦");// 按序号做ItemText
-		
-		lstImageItem.add(map);
-		map = new HashMap<String, Object>();
-		map.put("register4_grid_staricon", R.drawable.star6);// 添加图像资源的ID
-		map.put("register4_grid_starname", "额囧");// 按序号做ItemText
-		
-		lstImageItem.add(map);
-		// 生成适配器的ImageItem <====> 动态数组的元素，两者一一对应
-		SimpleAdapter saImageItems = new SimpleAdapter(this, // 没什么解释
-				lstImageItem,// 数据来源
-				R.layout.register4_item,// night_item的XML实现
+		// 图片的文字标题
+		String[] titles = new String[] { "李宇春", "范冰冰", "郑凯", "baby", "谁啊",
+				"不认识", "又来？", "好烦啊", "额囧" };
+		// 图片ID数组
+		int[] images = new int[] { R.drawable.star1, R.drawable.star2,
+				R.drawable.star3, R.drawable.star4, R.drawable.star5,
+				R.drawable.star6, R.drawable.star4, R.drawable.star5,
+				R.drawable.star6 };
+		Register4_Adapter  adapter = new Register4_Adapter(titles, images, this);
+		star_gridview.setAdapter(adapter);
+		star_gridview.setOnItemClickListener(new OnItemClickListener() {
 
-				// 动态数组与ImageItem对应的子项
-				new String[] { "register4_grid_staricon", "register4_grid_starname"
-						 },
-
-				// ImageItem的XML文件里面的一个ImageView,两个TextView ID
-				new int[] { R.id.register4_grid_staricon, R.id.register4_grid_starname
-						 });
-		// 添加并且显示
-		star_gridview.setAdapter(saImageItems);
-		// 添加消息处理
-		star_gridview.setOnItemClickListener(new ItemClickListener());
-	}
-	// 当AdapterView被单击(触摸屏或者键盘)，则返回的Item单击事件
-		class ItemClickListener implements OnItemClickListener {
-			public void onItemClick(AdapterView<?> arg0,// The AdapterView where the
-														// click happened
-					View arg1,// The view within the AdapterView that was clicked
-					int arg2,// The position of the view in the adapter
-					long arg3// The row id of the item that was clicked
-			) {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// TODO Auto-generated method stub
 				
 			}
+		});
+	}
 
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch(v.getId()){
+		case R.id.register4_nextstep:
+			
+			Intent intent = new Intent(RegisterActivity4.this,MainActivity.class);
+			intent.putExtra("telphone", telphone);
+			startActivity(intent);												
+			ActivityCollector.finishAll();
+			break;
+		case R.id.txt_left:
+			onBackPressed();
+			break;
 		}
+	}
 }
