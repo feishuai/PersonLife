@@ -1,5 +1,6 @@
 package com.personlife.utils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,11 +96,14 @@ public class SystemUtils {
 			Toast.makeText(context, "这个应用程序无法启动", Toast.LENGTH_SHORT).show();
 	}
 
-	public static void installApp(Context context, String filePath) {
-		Intent i = new Intent(Intent.ACTION_VIEW);
-		i.setDataAndType(Uri.parse("file://" + filePath),
+	void openAppFronUri(Context context ,String uri) {
+		// TODO Auto-generated method stub
+		Log.e("OpenFile", uri);
+		Intent intent = new Intent();
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.setAction(android.content.Intent.ACTION_VIEW);
+		intent.setDataAndType(Uri.fromFile(new File(uri)),
 				"application/vnd.android.package-archive");
-		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		context.startActivity(i);
+		context.startActivity(intent);
 	}
 }

@@ -34,17 +34,15 @@
             android:text="未安装"
             android:textColor="@color/black1"
             android:textSize="14dp" />
-
-        <ProgressBar
+		
+           <ProgressBar
             android:id="@+id/download_progress"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:background="@null"
-            android:indeterminateOnly="false"
+            style="@style/ProgressBar_Mini"
+            android:layout_width="200dp"
+            android:layout_height="4dp"
             android:max="100"
-            android:progressDrawable="@drawable/progress_bar_layer"
-            android:progress="50" />
+            android:progress="10"
+            android:layout_toRightOf="@+id/start" />
 
     </LinearLayout>
 

@@ -70,6 +70,7 @@ public class AppListActivity extends Activity implements OnClickListener {
 			ComplexPreferences complexPreferences = ComplexPreferences
 					.getComplexPreferences(this, "pfy", MODE_PRIVATE);
 			complexPreferences.putObject("selectedApps", selectedApps);
+			complexPreferences.commit();
 			setResult(RESULT_OK,getIntent());
 			finish();
 			break;
