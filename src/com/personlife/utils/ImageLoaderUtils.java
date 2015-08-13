@@ -18,9 +18,11 @@ import java.io.IOException;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.example.personlifep.R;
@@ -29,11 +31,14 @@ import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.personlife.widget.CircleImageView;
 
 
 public class ImageLoaderUtils {
@@ -106,6 +111,62 @@ public class ImageLoaderUtils {
 		
 		public static void displayImageView(String uri, ImageView imageView){
 			ImageLoader.getInstance().displayImage(uri, imageView, binner_options);
+		}
+		public static void displayCircleImageViewBackgroud(String uri,final CircleImageView imageview){
+			ImageLoader.getInstance().loadImage(uri, icon_options, new ImageLoadingListener() {
+				
+				@Override
+				public void onLoadingStarted(String arg0, View arg1) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onLoadingComplete(String arg0, View arg1, Bitmap arg2) {
+					// TODO Auto-generated method stub
+					imageview.setBackground(new BitmapDrawable(arg2));
+				}
+				
+				@Override
+				public void onLoadingCancelled(String arg0, View arg1) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+		}
+		public static void displayCircleImageViewSrc(String uri,final CircleImageView imageview){
+			ImageLoader.getInstance().loadImage(uri, icon_options, new ImageLoadingListener() {
+				
+				@Override
+				public void onLoadingStarted(String arg0, View arg1) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onLoadingComplete(String arg0, View arg1, Bitmap arg2) {
+					// TODO Auto-generated method stub
+					imageview.setImageBitmap(arg2);
+				}
+				
+				@Override
+				public void onLoadingCancelled(String arg0, View arg1) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 		}
 		public static String getHJYCacheDir() {
 			if (Environment.getExternalStorageState().equals(
