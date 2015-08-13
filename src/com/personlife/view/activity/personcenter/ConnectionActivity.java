@@ -4,6 +4,7 @@ import com.example.personlifep.R;
 import com.personlife.utils.ActivityCollector;
 import com.personlife.utils.Utils;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -24,12 +25,15 @@ public class ConnectionActivity extends FragmentActivity{
 	private Button back;
 	private TextView title;
 	private Fragment friend;
+	private String telphone;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.connection_friends);
 		ActivityCollector.addActivity(this);
+		Intent intent=getIntent();
+		telphone=intent.getStringExtra("telphone");
 		init();
 	}
 	public void init(){
@@ -56,7 +60,7 @@ public class ConnectionActivity extends FragmentActivity{
 			}
 		});
 		
-		friend=new Fragment_Friends();
+		friend=new Fragment_Friends(telphone);
 		getSupportFragmentManager().beginTransaction()
 		.add(R.id.friend_container, friend).show(friend).commit();
 	}

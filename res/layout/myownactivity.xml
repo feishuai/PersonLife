@@ -31,10 +31,10 @@
             android:textColor="@color/black"
             android:textSize="16sp" />
 
-        <ImageView
+        <com.personlife.widget.CircleImageView
             android:id="@+id/touxiangpicture"
-            android:layout_width="60.0dip"
-            android:layout_height="60.0dip"
+            android:layout_width="60.0dp"
+            android:layout_height="60.0dp"
             android:layout_toLeftOf="@+id/youjiantou"
             android:src="@drawable/head" />
 

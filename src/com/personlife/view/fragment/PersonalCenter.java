@@ -15,6 +15,7 @@ import com.loopj.android.http.RequestParams;
 import com.personlife.bean.UserInfo;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONObjectHttpResponseHandler;
+import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.Utils;
 import com.personlife.view.activity.MainActivity;
@@ -28,6 +29,7 @@ import com.personlife.view.activity.personcenter.SettingActivity;
 import com.personlife.view.activity.personcenter.TaskList;
 import com.personlife.view.activity.personcenter.TongzhiActivity;
 import com.personlife.view.collection.CollectionActivity;
+import com.personlife.widget.CircleImageView;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -57,7 +59,8 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 	private Activity ctx;
 	private View layout;
 	private TextView username, personsign;
-	private ImageView head,sex;//头像
+	private ImageView sex;
+	private ImageView head;
 	private Uri imageUri;
 	private Bitmap bitmap;
 	private String telphone,headuri;
@@ -105,15 +108,16 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 				sex.setImageResource(R.drawable.ic_sex_male);
 			else 
 				sex.setImageResource(R.drawable.ic_sex_female);
-			Bitmap photo;
-			try {
-				photo = BitmapFactory
-						.decodeStream(getActivity().getContentResolver().openInputStream(Uri.parse(headuri)));
-				head.setImageBitmap(photo);
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			ImageLoaderUtils.displayAppIcon(PersonInfoLocal.getHeadKey(ctx, telphone), head);
+//			Bitmap photo;
+//			try {
+//				photo = BitmapFactory
+//						.decodeStream(getActivity().getContentResolver().openInputStream(Uri.parse(headuri)));
+//				head.setImageBitmap(photo);
+//			} catch (FileNotFoundException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 			
 		}else{
 			RequestParams request = new RequestParams();
@@ -130,17 +134,18 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 									sex.setImageResource(R.drawable.ic_sex_male);
 								else 
 									sex.setImageResource(R.drawable.ic_sex_female);
-								Bitmap photo;
-								try {
-									photo = BitmapFactory
-											.decodeStream(getActivity().getContentResolver().openInputStream(Uri.parse(Environment.getExternalStorageDirectory()
-													.getPath() + "/" + telphone + ".jpg")));
-									head.setImageBitmap(photo);
-									photo.recycle();
-								} catch (FileNotFoundException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
+								ImageLoaderUtils.displayAppIcon(PersonInfoLocal.getHeadKey(ctx, telphone), head);
+//								Bitmap photo;
+//								try {
+//									photo = BitmapFactory
+//											.decodeStream(getActivity().getContentResolver().openInputStream(Uri.parse(Environment.getExternalStorageDirectory()
+//													.getPath() + "/" + telphone + ".jpg")));
+//									head.setImageBitmap(photo);
+//									photo.recycle();
+//								} catch (FileNotFoundException e) {
+//									// TODO Auto-generated catch block
+//									e.printStackTrace();
+//								}
 							} catch (JSONException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -154,7 +159,7 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 						}
 					});
 		}
-		headinit();
+		//headinit();
 	}
 
 	private void setOnListener() {
@@ -191,8 +196,9 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 
 			break;
 		case R.id.txt_connection:
-			Utils.start_Activity(getActivity(), ConnectionActivity.class,
-					new BasicNameValuePair("NAME", "通讯录"));
+			Intent intent_connection=new Intent(getActivity(), ConnectionActivity.class);
+			intent_connection.putExtra("telphone", telphone);
+			startActivity(intent_connection);
 			break;
 		case R.id.txt_tongzhi:
 //			Utils.start_Activity(getActivity(), TongzhiActivity.class,
@@ -218,26 +224,26 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 			break;
 		}
 	}
-	public void headinit(){
-		File outputImage = new File(Environment.getExternalStorageDirectory(),
-				telphone+".jpg");
-		try {
-			if (!outputImage.exists()) {
-				outputImage.createNewFile();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		imageUri = Uri.fromFile(outputImage);
-
-		try {
-			bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver()
-					.openInputStream(imageUri));
-			head.setImageBitmap(bitmap);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
+//	public void headinit(){
+//		File outputImage = new File(Environment.getExternalStorageDirectory(),
+//				telphone+".jpg");
+//		try {
+//			if (!outputImage.exists()) {
+//				outputImage.createNewFile();
+//			}
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		imageUri = Uri.fromFile(outputImage);
+//
+//		try {
+//			bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver()
+//					.openInputStream(imageUri));
+//			head.setImageBitmap(bitmap);
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//	}
 }

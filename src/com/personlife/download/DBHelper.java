@@ -22,7 +22,7 @@ public class DBHelper extends SQLiteOpenHelper {
      */  
     @Override  
     public void onCreate(SQLiteDatabase db) {  
-        db.execSQL("create table download_info (_id integer PRIMARY KEY AUTOINCREMENT, thread_id integer, "  
+        db.execSQL("create table download_info(_id integer PRIMARY KEY AUTOINCREMENT, thread_id integer, "  
                 + "start_pos integer, end_pos integer, compelete_size integer,url char)");  
     }  
   

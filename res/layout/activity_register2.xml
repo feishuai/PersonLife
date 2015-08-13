@@ -14,7 +14,7 @@
         android:layout_height="30dp"
         android:background="@color/transparent" />
 
-    <ImageView
+    <com.personlife.widget.CircleImageView
         android:id="@+id/register2_touxiang"
         android:layout_width="100dp"
         android:layout_height="100dp"

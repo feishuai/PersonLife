@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.personlifep.R;
 import com.personlife.bean.User;
 import com.personlife.common.ViewHolder;
+import com.personlife.utils.ImageLoaderUtils;
 
 /**  
  *   
@@ -58,7 +59,7 @@ public class UserAdapter extends BaseAdapter implements SectionIndexer {
 				R.id.contactitem_avatar_iv);
 		
 		TextView tvNick = ViewHolder.get(convertView, R.id.contactitem_nick);
-		ivAvatar.setImageResource(R.drawable.head);
+		ImageLoaderUtils.displayAppIcon(user.getHeadUrl(), ivAvatar);
 		tvNick.setText(user.getUserName());
 		return convertView;
 	}

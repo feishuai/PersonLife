@@ -6,15 +6,20 @@ package com.personlife.download;
  */
 import java.io.File;  
 import java.io.InputStream;  
- import java.io.RandomAccessFile;  
- import java.net.HttpURLConnection;  
- import java.net.URL;  
- import java.util.ArrayList;  
- import java.util.List;  
- import android.content.Context;  
- import android.os.Handler;  
- import android.os.Message;  
- import android.util.Log;  
+import java.io.RandomAccessFile;  
+import java.net.HttpURLConnection;  
+import java.net.URL;  
+import java.util.ArrayList;  
+import java.util.List;  
+
+
+
+import com.loopj.android.http.AsyncHttpClient;
+
+import android.content.Context;  
+import android.os.Handler;  
+import android.os.Message;  
+import android.util.Log;  
   
  public class Downloader {  
      private String urlstr;// 下载的地址  
@@ -29,9 +34,10 @@ import java.io.InputStream;
      private static final int PAUSE = 3;  
      private int state = INIT;  
   
-     public Downloader(String urlstr, String localfile, int threadcount,  
+     public Downloader(String urlstr,int filesize, String localfile, int threadcount,  
              Context context, Handler mHandler) {  
-         this.urlstr = urlstr;  
+         this.urlstr = urlstr;
+         this.fileSize=filesize;
          this.localfile = localfile;  
          this.threadcount = threadcount;  
          this.mHandler = mHandler;  
@@ -83,12 +89,16 @@ import java.io.InputStream;
       * 初始化  
       */  
      private void init() {  
-         try {  
-             URL url = new URL(urlstr);  
-             HttpURLConnection connection = (HttpURLConnection) url.openConnection();  
-             connection.setConnectTimeout(5000);  
-             connection.setRequestMethod("GET");  
-             fileSize = connection.getContentLength();  
+         try {
+        	 
+        	 
+//             URL url = new URL(urlstr);  
+//             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//             connection.setRequestProperty("Accept-Encoding", "identity"); //加上这句话解决问题
+//             connection.connect();
+//             connection.setConnectTimeout(5000);  
+//             connection.setRequestMethod("GET");  
+//             fileSize = connection.getContentLength();  
   
              File file = new File(localfile);  
              if (!file.exists()) {  
@@ -98,7 +108,7 @@ import java.io.InputStream;
              RandomAccessFile accessFile = new RandomAccessFile(file, "rwd");  
              accessFile.setLength(fileSize);  
              accessFile.close();  
-             connection.disconnect();  
+//             connection.disconnect();  
          } catch (Exception e) {  
              e.printStackTrace();  
          }  
@@ -108,7 +118,7 @@ import java.io.InputStream;
       * 判断是否是第一次 下载  
       */  
      private boolean isFirst(String urlstr) {  
-         return dao.isHasInfors(urlstr);  
+         return true;//dao.isHasInfors(urlstr);  
      }  
   
      /**  

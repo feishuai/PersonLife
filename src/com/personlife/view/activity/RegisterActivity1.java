@@ -1,10 +1,17 @@
 package com.personlife.view.activity;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -16,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.easemob.EMCallBack;
 import com.easemob.chat.EMChatManager;
@@ -24,8 +32,11 @@ import com.example.personlifep.R;
 import com.loopj.android.http.RequestParams;
 import com.personlife.common.DES;
 import com.personlife.common.Utils;
+import com.personlife.net.BaseAsyncHttp;
+import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ActivityCollector;
 import com.personlife.utils.Constants;
+import com.personlife.utils.DownloadHeadImg;
 import com.personlife.utils.PersonInfoLocal;
 
 //注册
@@ -87,12 +98,43 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 			break;
 		case R.id.btn_nextstep:
 //			getRegister();
-			PersonInfoLocal.storeRegisterTel(this, et_usertel.getText().toString());
+			
 			Intent intent = new Intent(RegisterActivity1.this,RegisterActivity2.class);
 			intent.putExtra("telphone", et_usertel.getText().toString());
-			startActivity(intent);
-						
+			startActivity(intent);												
 			finish();
+			
+//			String telphone = et_usertel.getText().toString();
+//			String code=et_code.getText().toString();
+//			RequestParams request = new RequestParams();
+//			request.put("phone", telphone);
+//			request.put("num", code);
+//			BaseAsyncHttp.postReq(getApplicationContext(), "/users/verify",
+//					request, new JSONObjectHttpResponseHandler() {
+//
+//						@Override
+//						public void jsonSuccess(JSONObject resp) {
+//							try {
+//								if(resp.getString("flag").equals("1")){
+//									PersonInfoLocal.storeRegisterTel(RegisterActivity1.this, et_usertel.getText().toString());
+//									Intent intent = new Intent(RegisterActivity1.this,RegisterActivity2.class);
+//									intent.putExtra("telphone", et_usertel.getText().toString());
+//									startActivity(intent);												
+//									finish();
+//								}else{
+//									Toast.makeText(RegisterActivity1.this, "验证码错误", Toast.LENGTH_SHORT).show();
+//								}
+//							} catch (JSONException e) {
+//								// TODO Auto-generated catch block
+//								e.printStackTrace();
+//							}
+//						}
+//						@Override
+//						public void jsonFail(JSONObject resp) {
+//							// TODO Auto-generated method stub
+//						}
+//					});
+//			
 			break;
 		default:
 			break;
@@ -191,37 +233,31 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 //	}
 
 	private void getCode() {
-//		String phone = et_usertel.getText().toString();
-//		RequestParams params = new RequestParams();
-//		params.put("telephone", phone);
-//		params.put("codeType", "1");
-//		netClient.post(Constants.SendCodeURL, params,
-//				new JsonHttpResponseHandler() {
-//					@Override
-//					public void onSuccess(JSONObject response) {
-//						super.onSuccess(response);
-//						try {
-//							String result = response.getString("result");
-//							System.out.println("返回的值" + response);
-//							if (result == null) {
-//								Utils.showLongToast(App.getInstance(),
-//										Constants.NET_ERROR);
-//							} else if (result.equals("Y")) {
-//								String str = response.getString("value");
-//								Utils.showLongToast(App.getInstance(), str);
-//
-//							} else {
-//								String str = response.getString("value");
-//								Utils.showLongToast(App.getInstance(), str);
-//								mc.cancel();
-//								btn_send.setEnabled(true);
-//								btn_send.setText("发送验证码");
-//							}
-//						} catch (JSONException e) {
-//							e.printStackTrace();
-//						}
-//					}
-//				});
+		String telphone = et_usertel.getText().toString();
+		RequestParams request = new RequestParams();
+		request.put("phone", telphone);
+		BaseAsyncHttp.postReq(getApplicationContext(), "/users/send",
+				request, new JSONObjectHttpResponseHandler() {
+
+					@Override
+					public void jsonSuccess(JSONObject resp) {
+						try {
+							if(resp.getString("flag").equals("0")){
+								Toast.makeText(RegisterActivity1.this, "发送失败", Toast.LENGTH_SHORT).show();
+							}else{
+								Toast.makeText(RegisterActivity1.this, "发送成功", Toast.LENGTH_SHORT).show();
+							}
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					@Override
+					public void jsonFail(JSONObject resp) {
+						// TODO Auto-generated method stub
+						Toast.makeText(RegisterActivity1.this, "nali发送失败", Toast.LENGTH_SHORT).show();
+					}
+				});
 	}
 
 	// 手机号 EditText监听器
@@ -313,6 +349,7 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 		public void onTick(long millisUntilFinished) {
 			btn_send.setEnabled(false);
 			btn_send.setText("(" + millisUntilFinished / 1000 + ")秒");
+			btn_send.setEnabled(false);			
 		}
 	}
 

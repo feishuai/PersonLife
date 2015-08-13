@@ -38,6 +38,7 @@ import com.personlife.view.activity.personinfo.NickName;
 import com.personlife.view.activity.personinfo.PersonalSign;
 import com.personlife.view.activity.personinfo.Profession;
 import com.personlife.view.activity.personinfo.UserSex;
+import com.personlife.widget.CircleImageView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -79,7 +80,7 @@ public class MyownActivity extends Activity implements
 	private Button tv_back,login_out;
 	private TextView tv_title, nickname, sex, area, profession, interests,
 			sign;
-	private ImageView picture;
+	private CircleImageView picture;
 	private Uri imageUri;
 	public static final int TAKE_PHOTO = 1;
 	public static final int CROP_PHOTO = 2;
@@ -87,6 +88,7 @@ public class MyownActivity extends Activity implements
 	private Bitmap bitmap;
 
 	private String telphone;
+	private String returnPath=null;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -107,7 +109,6 @@ public class MyownActivity extends Activity implements
 		update();
 	}
 	public void update(){
-		
 		RequestParams request = new RequestParams();
 		request.put("phone", telphone);
 		request.put("nickname", PersonInfoLocal.getNcikName(MyownActivity.this, telphone));
@@ -157,10 +158,11 @@ public class MyownActivity extends Activity implements
 								.show();
 					}
 				});
+		
 	}
 	public void init() {
 
-		picture = (ImageView) findViewById(R.id.touxiangpicture);
+		picture = (CircleImageView) findViewById(R.id.touxiangpicture);
 		nickname = (TextView) findViewById(R.id.pernicheng);
 		sex = (TextView) findViewById(R.id.persex);
 		area = (TextView) findViewById(R.id.perarea);
@@ -373,9 +375,10 @@ public class MyownActivity extends Activity implements
 					savePhotoToSDCard(Environment.getExternalStorageDirectory()
 							.toString(), telphone+".jpg", smallBitmap);
 					picture.setImageBitmap(smallBitmap);
-					String returnPath=UpLoadHeadImage.uploadImg(telphone);
-					 PersonInfoLocal.storeHeadkey(this, telphone,
-							 "http://7xkbeq.com1.z0.glb.clouddn.com"+returnPath);
+					returnPath=UpLoadHeadImage.uploadImg(this,telphone);
+					
+//					PersonInfoLocal.storeHeadkey(this, telphone,
+//							 "http://7xkbeq.com1.z0.glb.clouddn.com/"+returnPath);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -393,9 +396,10 @@ public class MyownActivity extends Activity implements
 					picture.setImageBitmap(smallBitmap);
 					savePhotoToSDCard(Environment.getExternalStorageDirectory()
 							.toString(), telphone+".jpg", smallBitmap);
-					String returnPath=UpLoadHeadImage.uploadImg(telphone);
-					 PersonInfoLocal.storeHeadkey(this, telphone,
-							 "http://7xkbeq.com1.z0.glb.clouddn.com"+returnPath);
+					returnPath=UpLoadHeadImage.uploadImg(this,telphone);
+					
+//					 PersonInfoLocal.storeHeadkey(this, telphone,
+//							 "http://7xkbeq.com1.z0.glb.clouddn.com/"+returnPath);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

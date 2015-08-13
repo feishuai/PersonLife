@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
 import com.example.personlifep.R;
 import com.loopj.android.http.RequestParams;
@@ -100,25 +101,24 @@ public class SearchUser extends Activity implements OnClickListener {
 								@Override
 								public void jsonSuccess(JSONObject resp) {
 									// TODO Auto-generated method stub
-									User user = new User();
-									user.setId(resp.optString("id"));
-									user.setUserName(resp.optString("nickname"));
-									user.setHeadUrl(resp.optString("thumb"));
-									user.setTelephone(resp.optString("phone"));
-									user.setSex(resp.optString("gender"));
-									user.setLocation(resp.optString("area"));
-									user.setJob(resp.optString("job"));
-									user.setHobby(resp.optString("hobby"));
-									user.setSignature(resp.optString("signature"));
-									if(user.getUserName().equals("")){
-										user.setHeadUrl("");
-										user.setUserName("所搜索用户不存在");
-										users.add(user);
-										mListView.setAdapter(new UserAdapter(SearchUser.this, users));
+									if(resp.optString("nickname").equals("")){
+										
+										Toast.makeText(getApplicationContext(), "所搜索用户不存在", Toast.LENGTH_SHORT).show();
 									}else{
+										User user = new User();
+										user.setId(resp.optString("id"));
+										user.setUserName(resp.optString("nickname"));
+										user.setHeadUrl(resp.optString("thumb"));
+										user.setTelephone(resp.optString("phone"));
+										user.setSex(resp.optString("gender"));
+										user.setLocation(resp.optString("area"));
+										user.setJob(resp.optString("job"));
+										user.setHobby(resp.optString("hobby"));
+										user.setSignature(resp.optString("signature"));
 										users.add(user);
 										mListView.setAdapter(new UserAdapter(SearchUser.this, users));
 									}
+									
 								}
 
 								@Override

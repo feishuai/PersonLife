@@ -9,8 +9,16 @@ import com.personlife.bean.UserFriend;
 import com.personlife.common.PingYinUtil;
 import com.personlife.common.PinyinComparator;
 import com.personlife.common.ViewHolder;
+import com.personlife.utils.DownloadHeadImg;
+import com.personlife.utils.ImageLoaderUtils;
+import com.personlife.utils.PersonInfoLocal;
+import com.personlife.view.activity.MainActivity;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,8 +83,10 @@ public class ContactAdapter extends BaseAdapter implements SectionIndexer {
 				tvCatalog.setText(catalog);
 			}
 		}
-
-		ivAvatar.setImageResource(R.drawable.head);
+		
+		ImageLoaderUtils.displayAppIcon(user.getThumb(), ivAvatar);
+		
+		//ivAvatar.setImageResource(R.drawable.head);
 		tvNick.setText(user.getNickname());
 		return convertView;
 	}
