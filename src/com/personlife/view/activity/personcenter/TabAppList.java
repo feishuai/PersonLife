@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.example.personlifep.R;
 import com.personlife.bean.App;
+import com.personlife.utils.DrawableStringUtils;
 import com.personlife.utils.SystemUtils;
 
 /**
@@ -114,7 +115,8 @@ public class TabAppList extends Fragment implements OnClickListener {
 						.findViewById(R.id.tv_download_status);
 				holder.icon = (ImageView) convertView
 						.findViewById(R.id.iv_download_icon);
-				holder.download_progress=(ProgressBar) convertView.findViewById(R.id.download_progress);
+				holder.download_progress = (ProgressBar) convertView
+						.findViewById(R.id.download_progress);
 				holder.download_progress.setVisibility(View.GONE);
 				holder.download = (Button) convertView
 						.findViewById(R.id.btn_download_download);
@@ -124,7 +126,8 @@ public class TabAppList extends Fragment implements OnClickListener {
 			}
 
 			holder.appname.setText(mlist.get(position).getName());
-			holder.icon.setBackground(mlist.get(position).getAppIcon());
+			holder.icon.setImageDrawable(DrawableStringUtils
+					.stringToDrawable(mlist.get(position).getDrawableString()));
 			holder.status.setText("已安装");
 			// 设置控件属性
 			holder.download.setText("打开");
@@ -136,7 +139,8 @@ public class TabAppList extends Fragment implements OnClickListener {
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					Log.i("package", mlist.get(position).getPackageName());
-					SystemUtils.startApp(getActivity(), mlist.get(position).getPackageName());
+					SystemUtils.startApp(getActivity(), mlist.get(position)
+							.getPackageName());
 				}
 			});
 			// ImageLoader.getInstance().displayImage(mlist.get(position).getBitmap(),holder.icon);

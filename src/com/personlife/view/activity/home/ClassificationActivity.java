@@ -30,6 +30,7 @@ public class ClassificationActivity extends Activity implements OnClickListener 
 			"午休", "运动", "酒吧", "驾车", "旅游", "地铁", "聚会", "度假", "散步" };
 	private String[] zhuti = { "全部", "游戏", "70后", "80后", "怀旧", "90后", "00后",
 			"儿童", "音乐" };
+	private Boolean[] isSelected ;
 	private GridView gvchangjing, gvzhuti;
 	private Button mBack;
 	private TextView mTitle;
@@ -49,6 +50,10 @@ public class ClassificationActivity extends Activity implements OnClickListener 
 	}
 
 	private void initData() {
+		isSelected = new Boolean[changjing.length+zhuti.length];
+		for (int i = 0; i < isSelected.length; i++) {
+			isSelected[i] = false;
+		}
 		// 添加并且显示
 		gvchangjing.setAdapter(new ButtonAdapter(getApplicationContext(),
 				changjing));
@@ -84,6 +89,7 @@ public class ClassificationActivity extends Activity implements OnClickListener 
 
 		public View getView(int position, View convertView, ViewGroup parent) {
 			final Button btn;
+			final int current = position; 
 			convertView = ((LayoutInflater) mContext
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
 					.inflate(R.layout.layout_grid_class, null);
@@ -98,7 +104,11 @@ public class ClassificationActivity extends Activity implements OnClickListener 
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					btn.setBackgroundResource(R.drawable.xuanzhong);
+					isSelected[current] = !isSelected[current];
+					if(isSelected[current])
+						btn.setBackgroundResource(R.drawable.xuanzhong);
+					else
+						btn.setBackgroundResource(R.color.transparent);
 				}
 			});
 

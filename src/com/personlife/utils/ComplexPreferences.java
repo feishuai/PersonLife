@@ -30,11 +30,11 @@ public class ComplexPreferences {
 	}
 
 	public static ComplexPreferences getComplexPreferences(Context context,
-			String namePreferences, int mode) {
+			String namePreferences) {
 
 		if (complexPreferences == null) {
 			complexPreferences = new ComplexPreferences(context,
-					namePreferences, mode);
+					namePreferences, context.MODE_PRIVATE);
 		}
 
 		return complexPreferences;

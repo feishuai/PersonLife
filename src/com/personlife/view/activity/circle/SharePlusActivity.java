@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +25,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.personlife.bean.App;
 import com.personlife.bean.User;
 import com.personlife.utils.ComplexPreferences;
+import com.personlife.utils.Constants;
+import com.personlife.utils.DrawableStringUtils;
+import com.personlife.utils.Utils;
 
 public class SharePlusActivity extends Activity implements OnClickListener {
 	Button mBack, save;
@@ -55,6 +59,8 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 		mBack.setVisibility(View.VISIBLE);
 		save.setVisibility(View.VISIBLE);
 		mTitle.setVisibility(View.GONE);
+		
+		mBack.setText("取消");
 		save.setText("发表");
 
 		btnXiazai.setBackgroundResource(R.drawable.xuanzhong); // 默认选中下载
@@ -68,7 +74,7 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 		
 		selectedApps = new ArrayList<App>();
 		defaultapp = new App();
-		defaultapp.setAppIcon(getResources().getDrawable(R.drawable.fabiaofenxiang));
+		defaultapp.setDrawableString(DrawableStringUtils.drawableToString(getResources().getDrawable(R.drawable.fabiaofenxiang)));
 		selectedApps.add(defaultapp);
 		
 		appsAdapter = new AppIconAdapter(getApplicationContext(), selectedApps);
@@ -86,7 +92,8 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 
 			break;
 		case R.id.tv_shareplus_range:
-
+			Intent intent = new Intent(SharePlusActivity.this, ShareRangeActivity.class);
+			startActivityForResult(intent, 2);
 			break;
 		case R.id.btn_shareplus_xiazai:
 			selectedkind = 0;
@@ -115,16 +122,19 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		Log.i("resultCode", String.valueOf(resultCode));
 		switch (resultCode) {
-		case RESULT_OK:
-			 ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(this, "pfy", MODE_PRIVATE);
-			 if(complexPreferences.getObject("selectedApps", new TypeReference<ArrayList<User>>(){})!=null){
-				 selectedApps = complexPreferences.getObject("selectedApps", new TypeReference<ArrayList<User>>(){});
+		case 1:
+			 ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(this, Constants.SharePrefrencesName);
+			 if(complexPreferences.getObject("selectedApps", new TypeReference<ArrayList<App>>(){})!=null){
+				 selectedApps = complexPreferences.getObject("selectedApps", new TypeReference<ArrayList<App>>(){});
 				 selectedApps.add(defaultapp);
 				 appsAdapter.setData(selectedApps);
 				 appsAdapter.notifyDataSetChanged();
 			 }
 			break;
-
+		case 2:
+			int selected = data.getIntExtra("rangeIndex", 0);
+			
+			Utils.showShortToast(getApplication(), String.valueOf(selected));
 		default:
 			break;
 		}
@@ -165,14 +175,14 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 					.inflate(R.layout.layout_grid_appicon, null);
 			
 			ImageView btn = (ImageView) convertView.findViewById(R.id.iv_shareplus_appicon);
-			btn.setBackground(apps.get(position).getAppIcon());
+			btn.setBackground(DrawableStringUtils.stringToDrawable(apps.get(position).getDrawableString()));
 			btn.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					if(current == (getCount()-1)){
 						Intent intent = new Intent(SharePlusActivity.this, AppListActivity.class);
-						startActivityForResult(intent, RESULT_OK);
+						startActivityForResult(intent, 1);
 					}
 				}
 			});

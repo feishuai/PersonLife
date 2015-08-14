@@ -32,6 +32,8 @@ import com.personlife.bean.App;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONArrayHttpResponseHandler;
 import com.personlife.net.JSONObjectHttpResponseHandler;
+import com.personlife.utils.ComplexPreferences;
+import com.personlife.utils.Constants;
 import com.personlife.utils.Utils;
 import com.personlife.view.activity.home.AppSearchActivity;
 import com.personlife.view.activity.home.ClassificationActivity;
@@ -52,6 +54,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 	private KindsApps ka;
 	private List<List<App>> kindsapps;
 	private List<String> kindlist;
+	private List<App> downloadApps;
 	KindsAdapter kindsAdapter;
 
 	@Override
@@ -85,6 +88,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 	}
 
 	public void initData() {
+		downloadApps = new ArrayList<App>();
 		kindsapps = new ArrayList<List<App>>();
 		kinds = new ArrayList<String>();
 		kindlist = new ArrayList<String>();
@@ -166,6 +170,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 									app.setName(jsonapp.getString("name"));
 									app.setId(jsonapp.getInt("id"));
 									app.setDownloadUrl(jsonapp.getString("android_url"));
+									app.setDownloadPath(Constants.DownloadPath+app.getName()+".apk");
 									applist.add(app);
 								}
 								kinds.add(kind);
@@ -265,26 +270,8 @@ public class HomeFragment extends Fragment implements OnClickListener {
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			// ImageLoaderUtils.displayAppIcon("https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/5136becf77e9cfc440849e0b694fdd6e_121_121.jpg",
-			// holder.icon);
-			// holder.lvapps.setOnItemClickListener(new OnItemClickListener() {
-			//
-			// @Override
-			// public void onItemClick(AdapterView<?> parent, View view,
-			// int position, long id) {
-			// // TODO Auto-generated method stub
-			// Intent intent = new Intent(context, AppDetailActivity.class);
-			// intent.putExtra(Constants.AppId, mlist.get(position)
-			// .getId());
-			// context.startActivity(intent);
-			//
-			// }
-			//
-			// });
 			holder.tvkind.setText(kaa.getKinds().get(position));
 			holder.counts.setText("我的（" + kaa.getUserapps().size() + "）");
-//			Log.i("kind size is ", String.valueOf(kaa.getKinds().size()));
-//			Log.i("position is ", String.valueOf(position));
 			List<App> apps = kaa.getKindsapps().get(position);
 			
 			if (apps.size() > 3)

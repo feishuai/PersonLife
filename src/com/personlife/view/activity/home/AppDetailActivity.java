@@ -30,6 +30,7 @@ import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONArrayHttpResponseHandler;
 import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ComplexPreferences;
+import com.personlife.utils.Constants;
 import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.utils.Utils;
 import com.personlife.widget.HorizontialListView;
@@ -208,7 +209,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 		mLog.setText(app.getUpdateLog());
 
 		ComplexPreferences complexPreferences = ComplexPreferences
-				.getComplexPreferences(getApplication(), "pfy", MODE_PRIVATE);
+				.getComplexPreferences(getApplication(), Constants.SharePrefrencesName);
 		complexPreferences.putObject("comments", app.getComments());
 		complexPreferences.commit();
 

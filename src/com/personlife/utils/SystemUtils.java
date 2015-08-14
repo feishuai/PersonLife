@@ -74,8 +74,8 @@ public class SystemUtils {
 			App app = new App();
 			app.setName(packageInfo.applicationInfo.loadLabel(
 					context.getPackageManager()).toString());
-			app.setAppIcon(packageInfo.applicationInfo.loadIcon(context
-					.getPackageManager()));
+			app.setDrawableString(DrawableStringUtils.drawableToString(packageInfo.applicationInfo.loadIcon(context
+					.getPackageManager())));
 			app.setPackageName(packageInfo.packageName);
 			mList.add(app);
 		}

@@ -6,6 +6,7 @@ public interface Constants {
 	public static final String NEW_FRIENDS_USERNAME = "item_new_friends";
 	String SharePrefrencesName = "pfy";
 	String DownloadPath = "/mnt/sdcard/Download/";
+	String DownloadApps = "downloadapps";
 	String Download = "download";
 	String isFriend = "isFriend";
 	String LoginState = "LoginState";

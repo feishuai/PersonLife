@@ -9,46 +9,53 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="150dp">
-      <ImageView 
-          android:layout_height="fill_parent"
-          android:layout_width="fill_parent"
-          android:background="@drawable/back1"
-          android:id="@+id/iv_guess_back"/>
+        android:layout_height="150dp" >
 
-      <ImageView
-          android:id="@+id/iv_guess_back1"
-          android:layout_width="60dp"
-          android:layout_height="60dp"
-          android:layout_alignParentLeft="true"
-          android:layout_centerVertical="true"
-          android:layout_marginLeft="16dp"
-          android:background="@drawable/caininxihuan"
-          android:paddingLeft="16dp" />
+        <ImageView
+            android:id="@+id/iv_guess_back"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/back1" />
 
-      <TextView
-          android:id="@+id/tv_guess_content"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_alignLeft="@+id/iv_guess_back1"
-          android:layout_below="@+id/iv_guess_back1"
-          android:textColor="@color/white"
-          android:background="@color/transparent"
-          android:layout_marginTop="10dp"
-          android:textSize="14dp"
-          android:text="内容" />
+        <ImageView
+            android:id="@+id/iv_guess_back1"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:background="@drawable/caininxihuan"
+            android:paddingLeft="16dp" />
+
+        <TextView
+            android:id="@+id/tv_guess_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/iv_guess_back1"
+            android:layout_below="@+id/iv_guess_back1"
+            android:layout_marginTop="10dp"
+            android:background="@color/transparent"
+            android:text="内容"
+            android:textColor="@color/white"
+            android:textSize="14dp" />
     </RelativeLayout>
-      <View
+
+    <View
         android:layout_width="fill_parent"
         android:layout_height="10dp"
         android:background="@color/black2" />
 
-      <com.personlife.widget.MyListView
-          android:id="@+id/lv_guess_app"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:divider="@color/black2"
-          android:dividerHeight="4dp" >
-      </com.personlife.widget.MyListView>
+    <ScrollView 
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content" >
+
+        <com.personlife.widget.MyListView
+            android:id="@+id/lv_guess_app"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/black2"
+            android:dividerHeight="4dp" >
+        </com.personlife.widget.MyListView>
+    </ScrollView>
 
 </LinearLayout>

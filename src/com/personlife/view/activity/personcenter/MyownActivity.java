@@ -37,6 +37,7 @@ import com.personlife.view.activity.personinfo.Interests;
 import com.personlife.view.activity.personinfo.NickName;
 import com.personlife.view.activity.personinfo.PersonalSign;
 import com.personlife.view.activity.personinfo.Profession;
+import com.personlife.view.activity.personinfo.SetPassword;
 import com.personlife.view.activity.personinfo.UserSex;
 import com.personlife.widget.CircleImageView;
 
@@ -185,11 +186,20 @@ public class MyownActivity extends Activity implements
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MyownActivity.this).edit();
-				editor.putString("islogin", "0");
-				editor.commit();
-				Utils.start_Activity(MyownActivity.this,LoginActivity.class);
-				ActivityCollector.finishAll();
+				
+				if(PersonInfoLocal.getPersonPassword(MyownActivity.this, telphone).equals("")){
+					Intent intent=new Intent(MyownActivity.this,SetPassword.class);
+					intent.putExtra("telphone", telphone);
+					startActivity(intent);
+					
+				}else{
+					SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MyownActivity.this).edit();
+					editor.putString("islogin", "0");
+					editor.commit();
+					Utils.start_Activity(MyownActivity.this,LoginActivity.class);
+					ActivityCollector.finishAll();
+				}
+				
 			}
 		});
 		tv_title = (TextView) findViewById(R.id.txt_title);

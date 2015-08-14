@@ -115,24 +115,24 @@ public class RegisterActivity2 extends Activity implements
 			break;
 		case R.id.register2_nextstep:
 			
-			Intent intent = new Intent(RegisterActivity2.this,RegisterActivity3.class);
-			 intent.putExtra("telphone", telphone);
-			 startActivity(intent);
-			 finish();
-//			 if(nickname.getText().toString().length()==0){
-//				 Toast.makeText(this, "请输入昵称", Toast.LENGTH_SHORT).show();
-//			 }else if(flag==0){
-//				 Toast.makeText(this, "请设置头像", Toast.LENGTH_SHORT).show();
-//			 }else{
-//				 returnPath=UpLoadHeadImage.uploadImg(this,telphone);
-//				 PersonInfoLocal.storeRegisterNickName(RegisterActivity2.this, telphone,
-//						 nickname.getText().toString(), imageUri.toString());
-//				 Intent intent = new Intent(RegisterActivity2.this,RegisterActivity3.class);
-//				 intent.putExtra("telphone", telphone);
-//				 startActivity(intent);
-//				 finish();
-//				 
-//			 }			 
+//			Intent intent = new Intent(RegisterActivity2.this,RegisterActivity3.class);
+//			 intent.putExtra("telphone", telphone);
+//			 startActivity(intent);
+//			 finish();
+			 if(nickname.getText().toString().length()==0){
+				 Toast.makeText(this, "请输入昵称", Toast.LENGTH_SHORT).show();
+			 }else if(flag==0){
+				 Toast.makeText(this, "请设置头像", Toast.LENGTH_SHORT).show();
+			 }else{
+				 returnPath=UpLoadHeadImage.uploadImg(this,telphone);
+				 PersonInfoLocal.storeRegisterNickName(RegisterActivity2.this, telphone,
+						 nickname.getText().toString(), imageUri.toString());
+				 Intent intent = new Intent(RegisterActivity2.this,RegisterActivity3.class);
+				 intent.putExtra("telphone", telphone);
+				 startActivity(intent);
+				 
+				 
+			 }			 
 			break;
 		case R.id.register2_touxiang:
 			showDialog();

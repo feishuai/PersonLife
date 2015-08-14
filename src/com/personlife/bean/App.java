@@ -20,9 +20,24 @@ public class App {
 	private List<Comment> comments;
 	private String downloadUrl;
 	private List<App> likes;
-	private Drawable appIcon;
+//	private Drawable appIcon;
+	private String drawableString;
 	private String packageName;
 	private String updateLog;
+	private String downloadPath;
+	
+	public String getDownloadPath() {
+		return downloadPath;
+	}
+	public void setDownloadPath(String downloadPath) {
+		this.downloadPath = downloadPath;
+	}
+	public String getDrawableString() {
+		return drawableString;
+	}
+	public void setDrawableString(String drawableString) {
+		this.drawableString = drawableString;
+	}
 	public String getUpdateLog() {
 		return updateLog;
 	}
@@ -35,12 +50,12 @@ public class App {
 	public void setLikes(List<App> likes) {
 		this.likes = likes;
 	}
-	public Drawable getAppIcon() {
-		return appIcon;
-	}
-	public void setAppIcon(Drawable appIcon) {
-		this.appIcon = appIcon;
-	}
+//	public Drawable getAppIcon() {
+//		return appIcon;
+//	}
+//	public void setAppIcon(Drawable appIcon) {
+//		this.appIcon = appIcon;
+//	}
 	public App(){
 	}
 	public App(String name){

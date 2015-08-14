@@ -1,51 +1,81 @@
 package com.personlife.view.activity.circle;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.personlifep.R;
 import com.personlife.bean.Shuoshuo;
+import com.personlife.utils.ListViewUtils;
 import com.personlife.widget.HorizontialListView;
-import com.personlife.widget.MyListView;
 
 public class CircleFriendsFragment extends Fragment {
 	View layout;
-	MyListView lv;
-
+	ListView lv;
+	List<Shuoshuo> mlist;
+	ShuoshuoAdapter mAdapter;
+	Boolean isLoad=false;
+	public CircleFriendsFragment(List<Shuoshuo> list) {
+		// TODO Auto-generated constructor stub
+		this.mlist = list;
+//		initView();
+	}
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		layout = inflater.inflate(R.layout.fragment_circle_friends, container,
 				false);
+		mAdapter = new ShuoshuoAdapter(getActivity(), mlist);
+		Log.i("listview getview", "circle firends frigment oncreateview");
+		isLoad = true;
 		initData();
 		initView();
 		return layout;
 	}
-
+	
+	public Boolean getIsLoad(){
+		return isLoad;
+	}
+	
+	@Override
+	public void onStart() {
+		// TODO Auto-generated method stub
+		Log.i("listview getview", "circle firends frigment onstart");
+		super.onStart();
+	}
+	
+	public void updateData(List<Shuoshuo> list){
+		mAdapter.setData(list);
+		mAdapter.notifyDataSetChanged();
+	}
+	
+	public int getListViewLayoutParams(){
+		if(lv==null)
+			return 0;
+		int listViewHeight = ListViewUtils.setListViewHeightBasedOnChildren1(lv);
+		Log.i("listview height", String.valueOf(listViewHeight));
+		return listViewHeight;
+	}
 	public void initData() {
 
 	}
 
 	public void initView() {
-		lv = (MyListView) layout.findViewById(R.id.lv_circle_shuoshuo);
-		List<Shuoshuo> shuoshuos = new ArrayList<Shuoshuo>();
-		shuoshuos.add(new Shuoshuo());
-		shuoshuos.add(new Shuoshuo());
-		shuoshuos.add(new Shuoshuo());
-		lv.setAdapter(new ShuoshuoAdapter(getActivity(), shuoshuos));
+		lv = (ListView) layout.findViewById(R.id.lv_circle_shuoshuo);
+		lv.setAdapter(mAdapter);
 	}
 
 	class ShuoshuoAdapter extends BaseAdapter {
@@ -101,7 +131,7 @@ public class CircleFriendsFragment extends Fragment {
 			holder.apps.setAdapter(mALikes);
 			// ImageLoaderUtils.displayAppIcon("https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/5136becf77e9cfc440849e0b694fdd6e_121_121.jpg",
 			// holder.icon);
-
+			Log.i("listview getview", "circle firends frigment"+String.valueOf(mlist.size()));
 			return convertView;
 		}
 

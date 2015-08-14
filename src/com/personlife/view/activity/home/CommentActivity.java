@@ -23,6 +23,7 @@ import com.example.personlifep.R;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.personlife.bean.Comment;
 import com.personlife.utils.ComplexPreferences;
+import com.personlife.utils.Constants;
 import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.utils.Utils;
 import com.personlife.widget.ClearEditText;
@@ -63,7 +64,7 @@ public class CommentActivity extends Activity implements OnClickListener {
 		commentAdapter = new CommentAdapter(lcomments);
 		comments.setAdapter(commentAdapter);
 		ComplexPreferences complexPreferences = ComplexPreferences
-				.getComplexPreferences(getApplication(), "pfy", MODE_PRIVATE);
+				.getComplexPreferences(getApplication(), Constants.SharePrefrencesName);
 		List<Comment> commentsLocal = complexPreferences.getObject("comments",
 				new TypeReference<List<Comment>>() {
 				});

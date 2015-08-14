@@ -22,12 +22,14 @@ import android.widget.TextView;
 import com.example.personlifep.R;
 import com.personlife.bean.App;
 import com.personlife.utils.ComplexPreferences;
+import com.personlife.utils.Constants;
+import com.personlife.utils.DrawableStringUtils;
 import com.personlife.utils.SystemUtils;
 import com.personlife.widget.MyListView;
 
 public class AppListActivity extends Activity implements OnClickListener {
 	MyListView lvApps;
-	Button mBack, mSave;
+	Button mBack, mSave,mDownload;
 	TextView mTitle;
 	AppsAdapter appsAdapter;
 	List<App> apps;
@@ -41,9 +43,11 @@ public class AppListActivity extends Activity implements OnClickListener {
 		mBack = (Button) findViewById(R.id.txt_left);
 		mTitle = (TextView) findViewById(R.id.txt_title);
 		mSave = (Button) findViewById(R.id.txt_save);
+		mDownload = (Button)findViewById(R.id.btn_alldownload_download);
 		mTitle.setText("APP列表");
 		mBack.setVisibility(View.VISIBLE);
 		mSave.setVisibility(View.VISIBLE);
+		mDownload.setVisibility(View.GONE);
 		mBack.setText("取消");
 		mSave.setText("完成");
 		mBack.setOnClickListener(this);
@@ -68,10 +72,10 @@ public class AppListActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.txt_save:
 			ComplexPreferences complexPreferences = ComplexPreferences
-					.getComplexPreferences(this, "pfy", MODE_PRIVATE);
+					.getComplexPreferences(this, Constants.SharePrefrencesName);
 			complexPreferences.putObject("selectedApps", selectedApps);
 			complexPreferences.commit();
-			setResult(RESULT_OK,getIntent());
+			setResult(1);
 			finish();
 			break;
 		}
@@ -126,7 +130,7 @@ public class AppListActivity extends Activity implements OnClickListener {
 			}
 
 			holder.size.setVisibility(View.GONE);
-			holder.appicon.setImageDrawable(mlist.get(position).getAppIcon());
+			holder.appicon.setImageDrawable(DrawableStringUtils.stringToDrawable(mlist.get(position).getDrawableString()));
 			holder.appname.setText(mlist.get(position).getName());
 
 			holder.check

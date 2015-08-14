@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.example.personlifep.R;
 import com.loopj.android.http.RequestParams;
 import com.personlife.net.BaseAsyncHttp;
+import com.personlife.net.DownloadTaskManager;
 import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ActivityCollector;
 import com.personlife.utils.DownloadHeadImg;
@@ -140,6 +141,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	}
 
 	public void init() {
+		DownloadTaskManager.getDownloadTaskManager(getApplicationContext());
 		title = (TextView) findViewById(R.id.txt_title);
 		title.setText("我的APP");
 		tabButtons = new ImageView[4];
@@ -172,7 +174,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		personalCenter = new PersonalCenter(telphone);
 		
 		homefragment = new HomeFragment();
-		discoveryfragment = new DiscoveryFragment();
+		discoveryfragment = new DiscoveryFragment(telphone);
 		circlefragment = new CircleFragment();
 		fragments = new Fragment[] { homefragment, circlefragment,
 				discoveryfragment, personalCenter };

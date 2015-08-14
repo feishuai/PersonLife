@@ -177,8 +177,6 @@ public class RegisterActivity3 extends Activity implements OnClickListener {
 			Intent intent=new Intent(this, RegisterActivity4.class);
 			intent.putExtra("telphone", telphone);
 			 startActivity(intent);
-			finish();
-			ActivityCollector.finishAll();
 			break;
 		}
 		

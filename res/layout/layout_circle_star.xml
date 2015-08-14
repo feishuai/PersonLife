@@ -4,7 +4,7 @@
     android:layout_height="160dp"
     android:background="@drawable/back3" >
 
-    <com.personlife.widget.CircleImageView
+    <ImageView
         android:id="@+id/iv_circle_staricon"
         android:layout_width="100dp"
         android:layout_height="100dp"

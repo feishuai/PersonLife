@@ -1,9 +1,7 @@
 package com.personlife.adapter;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import java.util.List;
 
 import android.content.Context;
@@ -21,9 +19,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.personlifep.R;
+import com.github.snowdream.android.app.DownloadStatus;
 import com.personlife.bean.App;
+import com.personlife.common.Utils;
 import com.personlife.download.Downloader;
 import com.personlife.download.LoadInfo;
+import com.personlife.net.DownloadTaskManager;
 import com.personlife.utils.Constants;
 import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.view.activity.home.AppDetailActivity;
@@ -33,7 +34,8 @@ public class AppsAdapter extends BaseAdapter {
 	private Context context;
 	private List<App> mlist;
 
-	public static final String SD_PATH = Environment.getExternalStorageDirectory().toString()+"/";
+	public static final String SD_PATH = Environment
+			.getExternalStorageDirectory().toString() + "/";
 
 	public AppsAdapter(Context context, List<App> mlist) {
 		this.mlist = new ArrayList<App>();
@@ -75,7 +77,6 @@ public class AppsAdapter extends BaseAdapter {
 					.findViewById(R.id.iv_tuijian_icon);
 			holder.download = (Button) convertView
 					.findViewById(R.id.btn_tuijian_tuijian);
-			holder.flag = false;
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
@@ -83,36 +84,22 @@ public class AppsAdapter extends BaseAdapter {
 		ImageLoaderUtils.displayAppIcon(mlist.get(position).getIcon(),
 				holder.icon);
 		holder.appname.setText(mlist.get(position).getName());
+
 		holder.download.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				holder.flag = !holder.flag;
-				Toast.makeText(context,
-						mlist.get(position).getDownloadUrl(),
-						Toast.LENGTH_SHORT).show();
-				if (holder.flag == true) {
-					
-//					holder.download.setText("干啥");
-//					String urlstr=mlist.get(position).getDownloadUrl();//mlist.get(position).getDownloadUrl();
-//					String appname=mlist.get(position).getName();
-//					String localfile=SD_PATH+appname;
-//					int count=1;
-//					String filesize=mlist.get(position).getSize();
-//					
-//					Downloader download=new Downloader(urlstr,Integer.parseInt(filesize.substring(0, filesize.length()-1)), localfile, count, context, null);
-//					LoadInfo loadInfo=download.getDownloaderInfors();
-//					download.download();
-
-				} else {
-					holder.download.setText("下载");
-
+				Log.i("is download ", String.valueOf(DownloadTaskManager.getDownloadTaskManager(context).isHasDownloaded(mlist.get(position))));
+				if(DownloadTaskManager.getDownloadTaskManager(context).isHasDownloaded(mlist.get(position))){
+					Utils.showShortToast(context, "该应用已下载，请到下载任务中管理");
 				}
-
+				else
+					DownloadTaskManager.getDownloadTaskManager(context).startDownload(context, mlist.get(position));
+				holder.download.setText("已下载");
 			}
 		});
-		
+
 		convertView.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -140,6 +127,5 @@ public class AppsAdapter extends BaseAdapter {
 		TextView status;
 		TextView intro;
 		Button download;
-		boolean flag;
 	}
 }
