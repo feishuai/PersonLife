@@ -22,6 +22,8 @@ import android.widget.TextView;
 import com.example.personlifep.R;
 import com.personlife.bean.App;
 import com.personlife.utils.ComplexPreferences;
+import com.personlife.utils.Constants;
+import com.personlife.utils.DrawableStringUtils;
 import com.personlife.utils.SystemUtils;
 import com.personlife.widget.MyListView;
 
@@ -36,7 +38,7 @@ public class AppListActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_all_download);
+		setContentView(R.layout.activity_app_select);
 		lvApps = (MyListView) findViewById(R.id.lv_alldownload_apps);
 		mBack = (Button) findViewById(R.id.txt_left);
 		mTitle = (TextView) findViewById(R.id.txt_title);
@@ -53,7 +55,7 @@ public class AppListActivity extends Activity implements OnClickListener {
 
 	private void initData() {
 		selectedApps = new ArrayList<App>();
-		apps = SystemUtils.getAppsNoSystom(getApplicationContext());
+		apps = SystemUtils.getUserApps(getApplicationContext());
 		appsAdapter = new AppsAdapter(getApplicationContext(), apps);
 		lvApps.setAdapter(appsAdapter);
 	}
@@ -68,9 +70,10 @@ public class AppListActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.txt_save:
 			ComplexPreferences complexPreferences = ComplexPreferences
-					.getComplexPreferences(this, "pfy", MODE_PRIVATE);
+					.getComplexPreferences(this, Constants.SharePrefrencesName);
 			complexPreferences.putObject("selectedApps", selectedApps);
-			setResult(RESULT_OK,getIntent());
+			complexPreferences.commit();
+			setResult(1);
 			finish();
 			break;
 		}
@@ -123,9 +126,10 @@ public class AppListActivity extends Activity implements OnClickListener {
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-
+			Log.i("adapter size is", String.valueOf(mlist.size()));
 			holder.size.setVisibility(View.GONE);
-			holder.appicon.setImageDrawable(mlist.get(position).getAppIcon());
+			holder.appicon.setImageDrawable(DrawableStringUtils
+					.stringToDrawable(mlist.get(position).getDrawableString()));
 			holder.appname.setText(mlist.get(position).getName());
 
 			holder.check

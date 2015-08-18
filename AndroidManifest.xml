@@ -225,11 +225,18 @@
         </activity>
         <activity
             android:name="com.personlife.view.activity.circle.SharePlusActivity"
-            android:label="@string/title_activity_share_plus" >
+            android:label="@string/title_activity_share_plus"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.personlife.view.activity.circle.AppListActivity"
-            android:label="@string/title_activity_app_list" >
+            android:label="@string/title_activity_app_list" 
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="com.personlife.view.activity.circle.ShareRangeActivity"
+            android:label="@string/title_activity_share_range"
+            android:screenOrientation="portrait" >
         </activity>
     </application>
 

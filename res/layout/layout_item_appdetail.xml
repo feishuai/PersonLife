@@ -6,7 +6,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="100dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="10dp"
@@ -15,21 +15,12 @@
         <ImageView
             android:id="@+id/iv_app_icon"
             android:layout_width="70dp"
-            android:layout_height="fill_parent"
+            android:layout_height="70dp"
             android:scaleType="centerCrop"
             android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
             android:src="@drawable/default_app_icon" />
-
-        <TextView
-            android:id="@+id/tv_app_appname"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="5dp"
-            android:textSize="18dp"
-            android:layout_toRightOf="@+id/iv_app_icon"
-            android:text="网易云音乐" />
 
         <RatingBar
             android:id="@+id/rb_app_rating"
@@ -62,6 +53,23 @@
             android:text="下载"
             android:textColor="@color/white"
             android:textSize="20dp" />
+         <ProgressBar
+            android:id="@+id/bar"
+            style="@style/ProgressBar_Mini"
+            android:layout_width="match_parent"
+            android:layout_height="4dp" 
+            android:visibility="gone"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentBottom="true"/>
+
+         <TextView
+             android:id="@+id/tv_app_appname"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignLeft="@+id/rb_app_rating"
+             android:layout_alignTop="@+id/iv_app_icon"
+             android:text="网易云音乐"
+             android:textSize="18dp" />
         
     </RelativeLayout>
 

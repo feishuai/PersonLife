@@ -18,18 +18,24 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.personlifep.R;
+import com.github.snowdream.android.app.DownloadListener;
+import com.github.snowdream.android.app.DownloadStatus;
+import com.github.snowdream.android.app.DownloadTask;
 import com.loopj.android.http.RequestParams;
 import com.personlife.bean.App;
 import com.personlife.bean.Comment;
 import com.personlife.net.BaseAsyncHttp;
+import com.personlife.net.DownloadTaskManager;
 import com.personlife.net.JSONArrayHttpResponseHandler;
 import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ComplexPreferences;
+import com.personlife.utils.Constants;
 import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.utils.Utils;
 import com.personlife.widget.HorizontialListView;
@@ -47,6 +53,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 	List<App> likesapp;
 	LikesAppAdapter likesadapter;
 	UrlsAppAdapter urlsadapter;
+	ProgressBar bar;
 	int appid;
 
 	@Override
@@ -74,17 +81,19 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 		mMore = (TextView) findViewById(R.id.tv_detail_more);
 		mTime = (TextView) findViewById(R.id.tv_detail_time);
 		mNumbers = (TextView) findViewById(R.id.tv_detail_numbers);
+		bar = (ProgressBar) findViewById(R.id.bar);
 		mBack.setVisibility(View.VISIBLE);
 		mTitle.setText("网易云音乐");
 		mBack.setOnClickListener(this);
 		mMore.setOnClickListener(this);
 		mComments.setOnClickListener(this);
-		mDownload.setOnClickListener(this);
+		// mDownload.setOnClickListener(this);
 
 		initData();
 	}
 
 	private void initData() {
+
 		appid = getIntent().getIntExtra("appid", 0);
 		app = new App();
 		urlsapp = new ArrayList<String>();
@@ -143,6 +152,8 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 								comments.add(comment);
 							}
 							app.setComments(comments);
+							app.setDownloadPath(Constants.DownloadPath
+									+ app.getName() + ".apk");
 							updateView();
 							getLikesapp();
 						} catch (JSONException e) {
@@ -198,6 +209,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 
 	protected void updateView() {
 		// TODO Auto-generated method stub
+		initDownload();
 		mTitle.setText(app.getName());
 		ImageLoaderUtils.displayAppIcon(app.getIcon(), mIcon);
 		mName.setText(app.getName());
@@ -208,7 +220,8 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 		mLog.setText(app.getUpdateLog());
 
 		ComplexPreferences complexPreferences = ComplexPreferences
-				.getComplexPreferences(getApplication(), "pfy", MODE_PRIVATE);
+				.getComplexPreferences(getApplication(),
+						Constants.SharePrefrencesName);
 		complexPreferences.putObject("comments", app.getComments());
 		complexPreferences.commit();
 
@@ -228,6 +241,105 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 			mIntro.setText(app.getIntrodution().substring(0, numbersOfDisplay));
 
 		updateUrls();
+	}
+
+	private void initDownload() {
+		// TODO Auto-generated method stub
+
+		if (DownloadTaskManager.getDownloadTaskManager(getApplicationContext())
+				.isHasDownloaded(app)) {
+			long size = DownloadTaskManager
+					.getDownloadTaskManager(getApplicationContext())
+					.getDownloadTaskByApp(app).getSize();
+			if (size > 0) {
+				int progress = DownloadTaskManager.getDownloadTaskManager(
+						getApplicationContext()).getDownloadProgress(app);
+				if (progress == 100)
+					mDownload.setText("已下载");
+				else
+					mDownload.setText("继续");
+				bar.setVisibility(View.VISIBLE);
+				bar.setProgress(progress);
+			}
+		}
+
+		mDownload.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if (mDownload.getText().toString().equals("已下载")) {
+					Utils.showShortToast(getApplicationContext(),
+							"该应用已下载，请到下载任务中管理");
+					return;
+				}
+				if (mDownload.getText().toString().equals("下载")) {
+					if (DownloadTaskManager.getDownloadTaskManager(getApplicationContext())
+							.isHasDownloaded(app)){
+						mDownload.setText("继续");
+						mDownload.callOnClick();
+						Utils.showShortToast(getApplicationContext(), "该应用已在下载列表中");
+						return ;
+					}
+					mDownload.setText("暂停");
+					bar.setVisibility(View.VISIBLE);
+					DownloadTaskManager.getDownloadTaskManager(
+							getApplicationContext()).startNewDownload(
+							getApplicationContext(), app,
+							new DownloadListener<Integer, DownloadTask>() {
+								@Override
+								public void onProgressUpdate(Integer... values) {
+									super.onProgressUpdate(values);
+									bar.setProgress(values[0]);
+									if (values[0] == 100) {
+										mDownload.setText("已下载");
+									}
+									Log.i("update progress",
+											String.valueOf(values[0]));
+								}
+							});
+					return;
+				}
+				if (mDownload.getText().toString().equals("继续")) {
+					mDownload.setText("暂停");
+					bar.setVisibility(View.VISIBLE);
+					if (DownloadTaskManager
+							.getDownloadTaskManager(getApplicationContext())
+							.getDownloadTaskByApp(app).getStatus() == DownloadStatus.STATUS_RUNNING) {
+						// Utils.showShortToast(getApplicationContext(),
+						// "该应用已在下载,请在下载任务管理");
+						DownloadTaskManager.getDownloadTaskManager(
+								getApplicationContext()).stopDownload(
+								getApplicationContext(), app);
+
+					}
+					DownloadTaskManager.getDownloadTaskManager(
+							getApplicationContext()).startContinueDownload(
+							getApplicationContext(), app,
+							new DownloadListener<Integer, DownloadTask>() {
+								@Override
+								public void onProgressUpdate(Integer... values) {
+									super.onProgressUpdate(values);
+									bar.setProgress(values[0]);
+									if (values[0] == 100) {
+										mDownload.setText("已下载");
+									}
+									Log.i("update progress",
+											String.valueOf(values[0]));
+								}
+							});
+					return;
+				}
+				if (mDownload.getText().toString().equals("暂停")) {
+					mDownload.setText("继续");
+					DownloadTaskManager.getDownloadTaskManager(
+							getApplicationContext()).stopDownload(
+							getApplicationContext(), app);
+					return;
+				}
+			}
+		});
+
 	}
 
 	protected void updateUrls() {
@@ -311,13 +423,24 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View retval = LayoutInflater.from(parent.getContext()).inflate(
 					R.layout.layout_item_like, null);
+			final int posi = position;
 			ImageView icon = (ImageView) retval.findViewById(R.id.iv_item_icon);
 			TextView name = (TextView) retval.findViewById(R.id.tv_item_name);
 			ImageLoaderUtils.displayAppIcon(apps.get(position).getIcon(), icon);
 			name.setText(apps.get(position).getName());
-			Utils.start_Activity(AppDetailActivity.this,
-					AppDetailActivity.class, new BasicNameValuePair("appid",
-							String.valueOf(apps.get(position).getId())));
+			icon.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Utils.start_Activity(
+							AppDetailActivity.this,
+							AppDetailActivity.class,
+							new BasicNameValuePair("appid", String.valueOf(apps
+									.get(posi).getId())));
+				}
+			});
+
 			return retval;
 		}
 	};

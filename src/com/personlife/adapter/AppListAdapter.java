@@ -46,7 +46,6 @@ public class AppListAdapter extends BaseAdapter {
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder holder = null;
-		Log.i("adapter", "mlist size is " + mlist.size());
 		if (convertView == null) {
 			convertView = ((LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE))

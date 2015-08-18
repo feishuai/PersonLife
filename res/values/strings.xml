@@ -35,5 +35,6 @@
     <string name="title_activity_star_recommend">StarRecommendActivity</string>
     <string name="title_activity_share_plus">SharePlusActivity</string>
     <string name="title_activity_app_list">AppListActivity</string>
+    <string name="title_activity_share_range">ShareRangeActivity</string>
 
 </resources>

@@ -64,7 +64,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 		switch (v.getId()) {
 		case R.id.tv_login_login:
-			
+//			Utils.start_Activity(LoginActivity.this, MainActivity.class, null);
 			RequestParams params = new RequestParams();
 			params.put("phone", username.getText().toString());
 			params.put("pwd", password.getText().toString());

@@ -21,30 +21,45 @@ import android.widget.Toast;
 
 import com.example.personlifep.R;
 import com.personlife.bean.App;
-
+import com.personlife.utils.DrawableStringUtils;
+import com.personlife.utils.ListViewUtils;
+import com.personlife.utils.SystemUtils;
 import com.personlife.widget.MyListView;
 
 public class CircleAppsFragment extends Fragment {
 	private View layout;
 	private MyListView lv;
+	private AppsAdapter appsAdapter;
+	private List<App> apps;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		layout = inflater.inflate(R.layout.fragment_circle_apps, container,
 				false);
+		appsAdapter = new AppsAdapter(getActivity(), apps); // 不能放在构造函数里面，否个getActivity()返回null
 		initView();
 		return layout;
 	}
-	
-	public void initView(){
-		lv = (MyListView)layout.findViewById(R.id.lv_circle_apps);
-		List<App>mList = new ArrayList<App>();
-		mList.add(new App());
-		mList.add(new App());
-		mList.add(new App());
-		lv.setAdapter( new AppsAdapter(getActivity(), mList));
-		
+
+	public CircleAppsFragment(List<App> apps) {
+		// TODO Auto-generated constructor stub
+		this.apps = apps;
+	}
+
+	public int getListViewLayoutParams() {
+		if (lv == null)
+			return 0;
+		int listViewHeight = ListViewUtils
+				.setListViewHeightBasedOnChildren1(lv);
+		Log.i("listview height", String.valueOf(listViewHeight));
+		return listViewHeight;
+	}
+
+	public void initView() {
+		lv = (MyListView) layout.findViewById(R.id.lv_circle_apps);
+		lv.setAdapter(appsAdapter);
+
 	}
 
 	class AppsAdapter extends BaseAdapter {
@@ -98,15 +113,24 @@ public class CircleAppsFragment extends Fragment {
 			// 设置控件属性
 			// holder.download.setText("打开");
 			// holder.download.setBackgroundColor(R.color.gray1);
-
+			Log.i("listview getview",
+					"circle apps frigment" + String.valueOf(mlist.size()));
+			holder.appname.setText(mlist.get(position).getName());
+			holder.icon.setImageDrawable(DrawableStringUtils
+					.stringToDrawable(mlist.get(position).getDrawableString()));
+			holder.status.setText("已安装");
+			// 设置控件属性
+			holder.download.setText("打开");
+			holder.download.setBackgroundResource(R.drawable.yibananniu);
+			holder.download.setTextColor(R.color.black);
 			holder.download.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					Toast.makeText(context, "downloading", Toast.LENGTH_SHORT)
-							.show();
-					;
+					Log.i("package", mlist.get(position).getPackageName());
+					SystemUtils.startApp(getActivity(), mlist.get(position)
+							.getPackageName());
 				}
 			});
 			// ImageLoader.getInstance().displayImage(mlist.get(position).getBitmap(),holder.icon);

@@ -1,6 +1,5 @@
 package com.personlife.view.activity;
 
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,6 +24,7 @@ import android.widget.TextView;
 import com.example.personlifep.R;
 import com.loopj.android.http.RequestParams;
 import com.personlife.net.BaseAsyncHttp;
+import com.personlife.net.DownloadTaskManager;
 import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ActivityCollector;
 import com.personlife.utils.DownloadHeadImg;
@@ -55,7 +55,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	private DiscoveryFragment discoveryfragment;
 	private String telphone;
 	private CircleFragment circlefragment;
-	
+
 	private String headkey;
 
 	@Override
@@ -70,7 +70,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		if (PersonInfoLocal.getPersonPassword(this, telphone).length() != 0) {
 
 			initdataWithPassword();
-			
+
 		} else {
 			initdataWithNoPassword();
 		}
@@ -113,8 +113,12 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 											.get("job").toString(), set);
 							try {
 								DownloadHeadImg.downloadFile(headkey, telphone);
-								PersonInfoLocal.storeMainHeadUri(MainActivity.this, telphone, Environment.getExternalStorageDirectory()
-										.getPath() + "/" + telphone + ".jpg");
+								PersonInfoLocal.storeMainHeadUri(
+										MainActivity.this, telphone,
+										Environment
+												.getExternalStorageDirectory()
+												.getPath()
+												+ "/" + telphone + ".jpg");
 							} catch (Exception e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -140,6 +144,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	}
 
 	public void init() {
+		DownloadTaskManager.getDownloadTaskManager(getApplicationContext());
 		title = (TextView) findViewById(R.id.txt_title);
 		title.setText("我的APP");
 		tabButtons = new ImageView[4];
@@ -160,17 +165,18 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		downloadButton.setVisibility(View.VISIBLE);// 主页的一键下载按钮显示
 		downloadButton.setOnClickListener(this);
 		Drawable xiazai = getResources().getDrawable(R.drawable.xiazai);
-		/// 这一步必须要做,否则不会显示.
-		xiazai.setBounds(0, 0, xiazai.getMinimumWidth(), xiazai.getMinimumHeight());
-		downloadButton.setCompoundDrawables(xiazai,null,null,null);
+		// / 这一步必须要做,否则不会显示.
+		xiazai.setBounds(0, 0, xiazai.getMinimumWidth(),
+				xiazai.getMinimumHeight());
+		downloadButton.setCompoundDrawables(xiazai, null, null, null);
 
 		txtSearch = (ImageButton) findViewById(R.id.img_right);// 推荐里的搜索按钮
 		txtSearch.setOnClickListener(this);
-		ibSharePlus =(ImageButton)findViewById(R.id.imgbtn_plus);
+		ibSharePlus = (ImageButton) findViewById(R.id.imgbtn_plus);
 		ibSharePlus.setOnClickListener(this);
-		
+
 		personalCenter = new PersonalCenter(telphone);
-		
+
 		homefragment = new HomeFragment();
 		discoveryfragment = new DiscoveryFragment(telphone);
 		circlefragment = new CircleFragment();
@@ -215,10 +221,18 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		if (currentTabIndex != index) {
 			FragmentTransaction trx = getSupportFragmentManager()
 					.beginTransaction();
+
 			trx.hide(fragments[currentTabIndex]);
+
+			if (index == 0 || index == 2) {
+				trx.remove(fragments[1]);
+				fragments[1] = new CircleFragment();
+			}
+
 			if (!fragments[index].isAdded()) {
 				trx.add(R.id.fragment_container, fragments[index]);
 			}
+
 			trx.show(fragments[index]).commit();
 		}
 		tabButtons[currentTabIndex].setSelected(false);
@@ -231,16 +245,18 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		switch(v.getId()){
+		switch (v.getId()) {
 		case R.id.txt_download:
-			Utils.start_Activity(MainActivity.this, AllDownloadActivity.class, null);
+			Utils.start_Activity(MainActivity.this, AllDownloadActivity.class,
+					null);
 			break;
 		case R.id.imgbtn_plus:
-			Utils.start_Activity(MainActivity.this, SharePlusActivity.class, null);
+			Utils.start_Activity(MainActivity.this, SharePlusActivity.class,
+					null);
 			break;
 		case R.id.img_right:
 			break;
 		}
 	}
-	
+
 }
