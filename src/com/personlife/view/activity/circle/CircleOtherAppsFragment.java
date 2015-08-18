@@ -122,7 +122,7 @@ public class CircleOtherAppsFragment extends Fragment {
 			holder.status.setText("未安装");
 			// 设置控件属性
 			holder.download.setText("下载");
-			holder.download.setBackgroundResource(R.drawable.yibanxiazai);
+			holder.download.setBackgroundResource(R.drawable.backgroud_download);
 			holder.download.setTextColor(R.color.black);
 			holder.download.setOnClickListener(new OnClickListener() {
 
