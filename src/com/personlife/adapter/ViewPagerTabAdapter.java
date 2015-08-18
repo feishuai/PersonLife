@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.personlife.view.activity.circle.CircleAppsFragment;
+import com.personlife.view.activity.circle.CircleMyAppsFragment;
 import com.personlife.view.activity.circle.CircleFriendsFragment;
 
 /**

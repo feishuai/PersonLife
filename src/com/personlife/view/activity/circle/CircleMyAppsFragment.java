@@ -22,11 +22,12 @@ import android.widget.Toast;
 import com.example.personlifep.R;
 import com.personlife.bean.App;
 import com.personlife.utils.DrawableStringUtils;
+import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.utils.ListViewUtils;
 import com.personlife.utils.SystemUtils;
 import com.personlife.widget.MyListView;
 
-public class CircleAppsFragment extends Fragment {
+public class CircleMyAppsFragment extends Fragment {
 	private View layout;
 	private MyListView lv;
 	private AppsAdapter appsAdapter;
@@ -42,7 +43,7 @@ public class CircleAppsFragment extends Fragment {
 		return layout;
 	}
 
-	public CircleAppsFragment(List<App> apps) {
+	public CircleMyAppsFragment(List<App> apps) {
 		// TODO Auto-generated constructor stub
 		this.apps = apps;
 	}
