@@ -152,6 +152,7 @@ public class DiscoveryFragment extends Fragment implements OnClickListener {
 						intent.putExtra("starphone", star.getPhone());
 						intent.putExtra("starnickname", star.getNickname());
 						intent.putExtra("starthumb", star.getThumb());
+						intent.putExtra("starfollowers", star.getFollower());
 						startActivity(intent);
 						
 					}

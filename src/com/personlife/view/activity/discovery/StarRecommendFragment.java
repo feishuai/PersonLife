@@ -3,11 +3,13 @@ package com.personlife.view.activity.discovery;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
@@ -17,6 +19,8 @@ import android.widget.TextView;
 import com.example.personlifep.R;
 import com.personlife.bean.Star;
 import com.personlife.bean.User;
+import com.personlife.utils.ImageLoaderUtils;
+import com.personlife.view.activity.circle.CircleActivity;
 import com.personlife.widget.MyListView;
 
 public class StarRecommendFragment extends Fragment {
@@ -35,7 +39,6 @@ public class StarRecommendFragment extends Fragment {
 	}
 	public void setAppsList(List<Star> mList) {
 		this.mList = mList;
-		starsAdapter.notifyDataSetChanged();
 	}
 	@Override
 	public View onCreateView(LayoutInflater inflater,
@@ -101,10 +104,23 @@ public class StarRecommendFragment extends Fragment {
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			// ImageLoaderUtils.displayAppIcon("https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/5136becf77e9cfc440849e0b694fdd6e_121_121.jpg",
-			// holder.icon);
-//			holder.name.setText(mList.get(position).getName());
-			
+			ImageLoaderUtils.displayImageView(mList.get(position).getThumb(), holder.icon);
+			holder.name.setText(mList.get(position).getNickname());
+			holder.fanscounts.setText(mList.get(position).getFollower());
+			holder.downloadcounts.setText(mList.get(position).getShared());
+			holder.home.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Intent intent=new Intent(getActivity(),CircleActivity.class);
+					intent.putExtra("starphone", mList.get(position).getPhone());
+					intent.putExtra("starnickname", mList.get(position).getNickname());
+					intent.putExtra("starthumb", mList.get(position).getThumb());
+					intent.putExtra("starfollowers", mList.get(position).getFollower());
+					startActivity(intent);
+				}
+			});
 			return convertView;
 		}
 

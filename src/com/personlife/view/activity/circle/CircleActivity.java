@@ -28,7 +28,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 	private TextView mTitle;
 	private Button mBack;
 	ImageView staricon;
-	TextView starname, signature, tabviews[];
+	TextView starname, signature, tabviews[],follows;
 	ViewPager pager;
 	ViewPagerTabAdapter adapter;
 	PagerSlidingTabStrip tabs;
@@ -39,7 +39,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 	ColorStateList colors[];
 	Fragment fragments[];
 	Fragment friendsfragment,appsfragment;
-	private String starphone,starnickname,starthumb;
+	private String starphone,starnickname,starthumb,starfollower;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,6 +48,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 		starphone=intent.getStringExtra("starphone");
 		starnickname=intent.getStringExtra("starnickname");
 		starthumb=intent.getStringExtra("starthumb");
+		starfollower=intent.getStringExtra("starfollowers");
 		mBack = (Button) findViewById(R.id.txt_left);
 		mBack.setVisibility(View.VISIBLE);
 		mBack.setOnClickListener(this);
@@ -59,6 +60,8 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 		starname = (TextView) findViewById(R.id.tv_circle_starname);
 		starname.setText(starnickname);
 		signature = (TextView) findViewById(R.id.tv_circle_signature);
+		follows=(TextView) findViewById(R.id.tv_circle_dianzancounts);
+		follows.setText(starfollower);
 		
 		friendsfragment = new CircleFriendsFragment();
 		appsfragment = new CircleAppsFragment();

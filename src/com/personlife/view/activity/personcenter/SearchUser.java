@@ -51,13 +51,14 @@ public class SearchUser extends Activity implements OnClickListener {
 	private UserAdapter userAdapter;
 	private MyListView mListView;
 	private List<User> users;
+	private String telphone;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.search_user);
 		ActivityCollector.addActivity(this);
-		
+		telphone=getIntent().getStringExtra("telphone");
 		initView();
 	}
 
@@ -143,6 +144,7 @@ public class SearchUser extends Activity implements OnClickListener {
 				if (user != null) {
 					 Intent intent = new Intent(SearchUser.this,UserDetail.class);
 					 intent.putExtra("phone", user.getPhone());
+					 intent.putExtra("mytelphone", telphone);
 					 startActivity(intent);
 //					 getActivity().overridePendingTransition(R.anim.push_left_in,
 //					 R.anim.push_left_out);

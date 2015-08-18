@@ -22,8 +22,6 @@ import android.widget.Toast;
 
 import com.example.personlifep.R;
 import com.personlife.bean.App;
-import com.personlife.download.Downloader;
-import com.personlife.download.LoadInfo;
 import com.personlife.utils.Constants;
 import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.view.activity.home.AppDetailActivity;
