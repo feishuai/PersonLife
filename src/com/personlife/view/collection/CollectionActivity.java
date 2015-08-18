@@ -3,6 +3,9 @@ package com.personlife.view.collection;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,9 +22,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.personlifep.R;
+import com.loopj.android.http.RequestParams;
 import com.personlife.adapter.ViewPagerTabAdapter;
 import com.personlife.bean.App;
+import com.personlife.bean.Star;
 import com.personlife.bean.User;
+import com.personlife.net.BaseAsyncHttp;
+import com.personlife.net.JSONArrayHttpResponseHandler;
+import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.widget.CircleImageView;
 import com.personlife.widget.PagerSlidingTabStrip;
 
@@ -47,12 +55,14 @@ public class CollectionActivity extends FragmentActivity implements
 	int lastTab = 0;
 	int currentTab = 0;
 	List<App> mApps;
-	List<User> mStars;
-
+	List<Star> mStars;
+	private String telphone;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_collection);
+		telphone=getIntent().getStringExtra("telphone");
 		mBack = (Button) findViewById(R.id.txt_left);
 		mBack.setVisibility(View.VISIBLE);
 		mBack.setOnClickListener(this);
@@ -80,14 +90,69 @@ public class CollectionActivity extends FragmentActivity implements
 
 		appsfragment = new CollectionAppsFragment(mApps);
 
-		mStars = new ArrayList<User>();
-		mStars.add(new User());
-		mStars.add(new User());
-		mStars.add(new User());
-		mStars.add(new User());
+		mStars = new ArrayList<Star>();
+		mStars.add(new Star());
+		mStars.add(new Star());
+		mStars.add(new Star());
+		mStars.add(new Star());
 		
 		starsfragment = new CollectionStarsFragment(mStars);
+		RequestParams request=new RequestParams();
+		request.put("myphone",telphone);
+		BaseAsyncHttp.postReq(this, "/follow/get", request,
+				new JSONArrayHttpResponseHandler() {
 
+					@Override
+					public void jsonSuccess(JSONArray resp) {
+						// TODO Auto-generated method stub
+						List<Star> list = new ArrayList<Star>();
+						for (int i = 0; i < resp.length(); i++) {
+							Star star = new Star();
+							star.setPhone(resp.optJSONObject(i).optString(
+									"phone"));
+							star.setNickname(resp.optJSONObject(i).optString(
+									"nickname"));
+							star.setThumb(resp.optJSONObject(i).optString(
+									"thumb"));
+							
+							list.add(star);
+
+						}
+						starsfragment.setAppsList(list);					
+					}
+
+					@Override
+					public void jsonFail(JSONArray resp) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+		
+		RequestParams requestca=new RequestParams();
+		request.put("phone",telphone);
+		BaseAsyncHttp.postReq(this, "/collect/getpersoncl", request,new JSONObjectHttpResponseHandler() {
+			
+			@Override
+			public void jsonSuccess(JSONObject resp) {
+				// TODO Auto-generated method stub
+				List<App> apps=new ArrayList<App>();
+				JSONArray jsons = resp.optJSONArray("item");
+				for (int i = 0; i < jsons.length(); i++) {
+					App app=new App();
+					app.setIcon(jsons.optJSONObject(i).optString("icon"));
+					app.setId(Integer.parseInt(jsons.optJSONObject(i).optString("id")));
+					app.setName(jsons.optJSONObject(i).optString("name"));
+					apps.add(app);
+				}
+				appsfragment.setAppsList(apps);
+			}
+			
+			@Override
+			public void jsonFail(JSONObject resp) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		fragments = new Fragment[] { sharesfragment, appsfragment,
 				starsfragment };
 		// Creating The ViewPagerAdapter and Passing Fragment Manager, Titles

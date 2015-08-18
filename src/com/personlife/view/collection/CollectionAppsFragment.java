@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.personlifep.R;
 import com.personlife.bean.App;
+import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.utils.Utils;
 import com.personlife.widget.MyListView;
 
@@ -126,8 +127,7 @@ public class CollectionAppsFragment extends Fragment {
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			// ImageLoaderUtils.displayAppIcon("https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/5136becf77e9cfc440849e0b694fdd6e_121_121.jpg",
-			// holder.icon);
+			ImageLoaderUtils.displayAppIcon(mList.get(position).getIcon(),holder.icon);
 			holder.appname.setText(mList.get(position).getName());
 			holder.download.setVisibility(View.GONE);
 			if(isDelete)

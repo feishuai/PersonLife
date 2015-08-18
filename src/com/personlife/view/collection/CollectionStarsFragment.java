@@ -17,10 +17,13 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.personlifep.R;
+import com.personlife.bean.Star;
 import com.personlife.bean.User;
+import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.utils.Utils;
 import com.personlife.widget.CircleImageView;
 import com.personlife.widget.MyListView;
@@ -28,19 +31,19 @@ import com.personlife.widget.MyListView;
 public class CollectionStarsFragment extends Fragment {
 	private View layout;
 	private MyListView lv;
-	List<User> mList;
-	List<User> deletedList;
+	List<Star> mList;
+	List<Star> deletedList;
 	AppsAdapter appsAdapter;
 	
-	public CollectionStarsFragment(List<User> mList) {
+	public CollectionStarsFragment(List<Star> mList) {
 		// TODO Auto-generated constructor stub
 		this.mList = mList;
-		this.deletedList = new ArrayList<User>();
+		this.deletedList = new ArrayList<Star>();
 	}
-	public List<User> getAppsList() {
+	public List<Star> getAppsList() {
 		return mList;
 	}
-	public void setAppsList(List<User> mList) {
+	public void setAppsList(List<Star> mList) {
 		this.mList = mList;
 	}
 	@Override
@@ -112,7 +115,7 @@ public class CollectionStarsFragment extends Fragment {
 						.findViewById(R.id.tv_star_name);
 				holder.signature = (TextView) convertView
 						.findViewById(R.id.tv_star_signature);
-				holder.icon = (CircleImageView) convertView
+				holder.icon = (ImageView) convertView
 						.findViewById(R.id.iv_star_icon);
 				holder.home = (ImageButton) convertView
 						.findViewById(R.id.ib_star_home);
@@ -122,6 +125,8 @@ public class CollectionStarsFragment extends Fragment {
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
+			ImageLoaderUtils.displayAppIcon(mList.get(position).getThumb(),holder.icon);
+			holder.name.setText(mList.get(position).getNickname());
 			// ImageLoaderUtils.displayAppIcon("https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/5136becf77e9cfc440849e0b694fdd6e_121_121.jpg",
 			// holder.icon);
 //			holder.name.setText(mList.get(position).getUserName());
@@ -171,7 +176,7 @@ public class CollectionStarsFragment extends Fragment {
 		}
 		
 		class ViewHolder {
-			CircleImageView icon;
+			ImageView icon;
 			TextView name;
 			TextView signature;
 			ImageButton home;
