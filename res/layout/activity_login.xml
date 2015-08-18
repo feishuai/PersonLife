@@ -105,8 +105,56 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="40dp"
-            android:text="密码找回"
+            android:text="忘记密码"
             android:textSize="15dp" />
     </RelativeLayout>
+	<View 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="1"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"        
+        android:layout_alignParentBottom="true" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="使用第三方账号登陆"
+            android:gravity="center"
+            android:textColor="@color/black1" />
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
+            <ImageButton
+                android:id="@+id/qqlogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/qqlogin"/>
+            <View 
+                android:layout_width="25dp"
+                android:layout_height="5dp"
+                android:background="@color/transparent"/>
+            <ImageButton
+                android:id="@+id/weibologin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/weibologin"/>
+            <View 
+                android:layout_width="25dp"
+                android:layout_height="5dp"
+                android:background="@color/transparent"/>
+            <ImageButton
+                android:id="@+id/weixinlogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/weixinlogin"/>
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

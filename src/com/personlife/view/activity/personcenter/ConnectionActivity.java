@@ -56,7 +56,10 @@ public class ConnectionActivity extends FragmentActivity{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Utils.start_Activity(ConnectionActivity.this,SearchUser.class);
+				Intent intent=new Intent(ConnectionActivity.this,SearchUser.class);
+				intent.putExtra("telphone", telphone);
+				startActivity(intent);
+				
 			}
 		});
 		

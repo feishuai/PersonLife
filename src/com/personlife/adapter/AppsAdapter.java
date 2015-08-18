@@ -22,8 +22,10 @@ import com.github.snowdream.android.app.DownloadListener;
 import com.github.snowdream.android.app.DownloadStatus;
 import com.github.snowdream.android.app.DownloadTask;
 import com.personlife.bean.App;
+
 import com.personlife.common.Utils;
 import com.personlife.net.DownloadTaskManager;
+
 import com.personlife.utils.Constants;
 import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.utils.SystemUtils;

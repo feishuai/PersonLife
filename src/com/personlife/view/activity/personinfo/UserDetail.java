@@ -33,7 +33,7 @@ public class UserDetail extends Activity implements OnClickListener {
 	private Button btn_sendmsg;
 	private ImageView sex,head;
 	private String phone;
-	
+	private String mytelphone;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -42,6 +42,7 @@ public class UserDetail extends Activity implements OnClickListener {
 		ActivityCollector.addActivity(this);
 		Intent intent=getIntent();
 		phone=intent.getStringExtra("phone");
+		mytelphone=intent.getStringExtra("mytelphone");
 		initview();
 		setListener();
 		initData();

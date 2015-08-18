@@ -63,9 +63,7 @@ public class StarRecommendActivity extends FragmentActivity implements
 		mStars = new ArrayList<Star>();
 		mStars.add(new Star());
 		mStars.add(new Star());
-		mStars.add(new Star());
-		mStars.add(new Star());
-		allstarfragment = new StarRecommendFragment(mStars);
+		allstarfragment = new StarRecommendFragment(mStars);		
 		lasteststarfragment = new StarRecommendFragment(mStars);
 		hoteststarfragment = new StarRecommendFragment(mStars);
 		RequestParams request = new RequestParams();
@@ -75,7 +73,7 @@ public class StarRecommendActivity extends FragmentActivity implements
 					@Override
 					public void jsonSuccess(JSONArray resp) {
 						// TODO Auto-generated method stub
-						List<Star> list = new ArrayList<Star>();
+						List<Star> list_all = new ArrayList<Star>();
 						for (int i = 0; i < resp.length(); i++) {
 							Star star = new Star();
 							star.setPhone(resp.optJSONObject(i).optString(
@@ -88,10 +86,10 @@ public class StarRecommendActivity extends FragmentActivity implements
 									"follower"));
 							star.setShared(resp.optJSONObject(i).optString(
 									"shared"));
-							list.add(star);
+							list_all.add(star);
 
 						}
-						allstarfragment.setAppsList(list);
+						allstarfragment.setAppsList(list_all);					
 					}
 
 					@Override
@@ -106,7 +104,7 @@ public class StarRecommendActivity extends FragmentActivity implements
 					@Override
 					public void jsonSuccess(JSONArray resp) {
 						// TODO Auto-generated method stub
-						List<Star> list = new ArrayList<Star>();
+						List<Star> list_new = new ArrayList<Star>();
 						for (int i = 0; i < resp.length(); i++) {
 							Star star = new Star();
 							star.setPhone(resp.optJSONObject(i).optString(
@@ -119,10 +117,10 @@ public class StarRecommendActivity extends FragmentActivity implements
 									"follower"));
 							star.setShared(resp.optJSONObject(i).optString(
 									"shared"));
-							list.add(star);
+							list_new.add(star);
 
 						}
-						lasteststarfragment.setAppsList(list);
+						lasteststarfragment.setAppsList(list_new);					
 					}
 
 					@Override
@@ -137,7 +135,7 @@ public class StarRecommendActivity extends FragmentActivity implements
 					@Override
 					public void jsonSuccess(JSONArray resp) {
 						// TODO Auto-generated method stub
-						List<Star> list = new ArrayList<Star>();
+						List<Star> list_hot = new ArrayList<Star>();
 						for (int i = 0; i < resp.length(); i++) {
 							Star star = new Star();
 							star.setPhone(resp.optJSONObject(i).optString(
@@ -150,10 +148,11 @@ public class StarRecommendActivity extends FragmentActivity implements
 									"follower"));
 							star.setShared(resp.optJSONObject(i).optString(
 									"shared"));
-							list.add(star);
+							list_hot.add(star);
 
 						}
-						hoteststarfragment.setAppsList(list);
+						hoteststarfragment.setAppsList(list_hot);
+						
 					}
 
 					@Override
@@ -164,10 +163,12 @@ public class StarRecommendActivity extends FragmentActivity implements
 				});
 		fragments = new Fragment[] { allstarfragment, lasteststarfragment,
 				hoteststarfragment };
+		
 		// Creating The ViewPagerAdapter and Passing Fragment Manager, Titles
 		// fot the Tabs and Number Of Tabs.
 		adapter = new ViewPagerTabAdapter(getSupportFragmentManager(), Titles,
 				fragments);
+		
 		// Assigning ViewPager View and setting the adapter
 		pager = (ViewPager) findViewById(R.id.pager_starrecommend);
 		pager.setAdapter(adapter);

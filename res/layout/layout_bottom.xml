@@ -7,7 +7,7 @@
 
     <!-- 普通底部导航 -->
 
-     <LinearLayout
+    <LinearLayout
         android:id="@+id/main_bottom"
         android:layout_width="match_parent"
         android:layout_height="54dp"
@@ -22,31 +22,33 @@
             android:layout_weight="1"
             android:onClick="onTabClicked"
             android:padding="3dp" >
- 			<RelativeLayout
-     			android:layout_width="60dp"
-     			android:gravity="center"
-                android:layout_centerHorizontal="true"
-     			android:layout_height="match_parent">
-            	<ImageView
-                	android:id="@+id/ib_home"
-                	android:layout_width="wrap_content"
-                	android:layout_height="28dp"
-                	android:layout_centerHorizontal="true"
-                	android:background="#ffffff"
-                	android:focusable="false"
-                	android:scaleType="centerInside"
-                	android:src="@drawable/tab_home" />
 
-            	<TextView
-                	android:id="@+id/tv_home"
-                	android:layout_width="wrap_content"
-                	android:layout_height="wrap_content"
-                	android:layout_below="@id/ib_home"
-                	android:layout_centerHorizontal="true"
-                	android:layout_marginTop="3dp"
-                	android:text="我的APP"
-                	android:textColor="@color/black"
-                	android:textSize="12sp" />            	
+            <RelativeLayout
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:gravity="center" >
+
+                <ImageView
+                    android:id="@+id/ib_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="#ffffff"
+                    android:focusable="false"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/tab_home" />
+
+                <TextView
+                    android:id="@+id/tv_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ib_home"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="3dp"
+                    android:text="我的APP"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
             </RelativeLayout>
         </RelativeLayout>
 
@@ -57,34 +59,36 @@
             android:layout_weight="1"
             android:onClick="onTabClicked"
             android:padding="3dp" >
-			<RelativeLayout
-     			android:layout_width="60dp"
-     			android:gravity="center"
-                android:layout_centerHorizontal="true"
-     			android:layout_height="match_parent">
-            	<ImageView
-                	android:id="@+id/ib_interact"
-                	android:layout_width="wrap_content"
-                	android:layout_height="28dp"
-                	android:layout_centerHorizontal="true"
-                	android:background="#ffffff"
-                	android:focusable="false"
-                	android:scaleType="centerInside"
-                	android:src="@drawable/tab_interact" />
 
-            	<TextView
-                	android:id="@+id/tv_interact"
-                	android:layout_width="wrap_content"
-                	android:layout_height="wrap_content"
-                	android:layout_below="@id/ib_interact"
-                	android:layout_centerHorizontal="true"
-                	android:layout_marginTop="3dp"
-                	android:text="圈子"
-                	android:textColor="@color/black"
-                	android:textSize="12sp" />
+            <RelativeLayout
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:gravity="center" >
+
+                <ImageView
+                    android:id="@+id/ib_interact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="#ffffff"
+                    android:focusable="false"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/tab_interact" />
+
+                <TextView
+                    android:id="@+id/tv_interact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ib_interact"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="3dp"
+                    android:text="圈子"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+            </RelativeLayout>
         </RelativeLayout>
-      </RelativeLayout>
-      
+
         <RelativeLayout
             android:id="@+id/re_recommend"
             android:layout_width="0dp"
@@ -92,34 +96,35 @@
             android:layout_weight="1"
             android:onClick="onTabClicked"
             android:padding="3dp" >
-			<RelativeLayout
-     			android:layout_width="60dp"
-     			android:gravity="center"
-                android:layout_centerHorizontal="true"
-     			android:layout_height="match_parent">
-            <ImageView
-                android:id="@+id/ib_recom"
-                android:layout_width="wrap_content"
-                android:layout_height="28dp"
-                android:layout_centerHorizontal="true"
-                android:background="#ffffff"
-                android:focusable="false"
-                android:scaleType="centerInside"
-                android:src="@drawable/tab_recom" />
 
-            <TextView
-                android:id="@+id/tv_recom"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ib_recom"
+            <RelativeLayout
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="3dp"
-                android:text="发现"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
-              
+                android:gravity="center" >
+
+                <ImageView
+                    android:id="@+id/ib_recom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="#ffffff"
+                    android:focusable="false"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/tab_recom" />
+
+                <TextView
+                    android:id="@+id/tv_recom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ib_recom"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="3dp"
+                    android:text="发现"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+            </RelativeLayout>
         </RelativeLayout>
- </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/re_personal"
@@ -150,5 +155,6 @@
                 android:textColor="@color/black"
                 android:textSize="12sp" />
         </RelativeLayout>
-     </LinearLayout>
+    </LinearLayout>
+
 </LinearLayout>
