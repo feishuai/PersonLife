@@ -23,6 +23,7 @@ public class SystemUtils {
 	/**
 	 * @param context
 	 */
+	private static List<App> userApps;
 	public static List<PackageInfo> getAllApps(Context context) {
 		PackageManager pManager = context.getPackageManager();
 		List<PackageInfo> paklist = pManager.getInstalledPackages(0);
@@ -81,7 +82,11 @@ public class SystemUtils {
 		}
 		return mList;
 	}
-
+	public static List<App> getUserApps(Context context){
+		if(userApps ==null)
+			return getAppsNoSystom(context);
+		return userApps;
+	}
 	public static void startApp(Context context, String packageName) {
 		if (packageName == null || packageName == "") {
 			Toast.makeText(context, "这个应用程序无法正常启动", Toast.LENGTH_SHORT).show();
@@ -96,7 +101,7 @@ public class SystemUtils {
 			Toast.makeText(context, "这个应用程序无法启动", Toast.LENGTH_SHORT).show();
 	}
 
-	void openAppFronUri(Context context ,String uri) {
+	public static void openAppFronUri(Context context ,String uri) {
 		// TODO Auto-generated method stub
 		Log.e("OpenFile", uri);
 		Intent intent = new Intent();

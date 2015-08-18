@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.personlifep.R;
@@ -29,6 +30,7 @@ import com.personlife.adapter.AppListAdapter;
 import com.personlife.adapter.ViewPagerTabAdapter;
 import com.personlife.bean.App;
 import com.personlife.bean.Shuoshuo;
+import com.personlife.utils.SystemUtils;
 import com.personlife.utils.Utils;
 import com.personlife.view.activity.circle.CircleAppsFragment;
 import com.personlife.view.activity.circle.CircleFriendsFragment;
@@ -46,6 +48,7 @@ public class CircleFragment extends Fragment implements OnClickListener {
 	private Activity ctx;
 	private View layout;
 	ImageView staricon;
+	RelativeLayout rlBack;
 	TextView starname, signature, tabviews[];
 	ViewPager pager;
 	ViewPagerTabAdapter adapter;
@@ -67,9 +70,7 @@ public class CircleFragment extends Fragment implements OnClickListener {
 			case 1:
 				Log.i("listview getview", "activity main thread");
 				LayoutParams params = pager.getLayoutParams();
-				int height1 = friendsfragment.getListViewLayoutParams();
-				int height2 = appsfragment.getListViewLayoutParams();
-				params.height = height1 > height2 ? height1 : height2;
+				params.height = friendsfragment.getListViewLayoutParams();
 				pager.setLayoutParams(params);
 				break;
 			default:
@@ -110,6 +111,9 @@ public class CircleFragment extends Fragment implements OnClickListener {
 				.findViewById(R.id.tv_circle_fenxiangcounts);
 		dianzancounts = (TextView) layout
 				.findViewById(R.id.tv_circle_dianzancounts);
+		rlBack = (RelativeLayout) layout.findViewById(R.id.rl_circle_back);
+
+		rlBack.setBackgroundResource(R.color.transparent);
 
 		addattention.setVisibility(View.GONE);
 		fenxiang.setVisibility(View.VISIBLE);
@@ -131,7 +135,7 @@ public class CircleFragment extends Fragment implements OnClickListener {
 		apps.add(new App());
 		apps.add(new App());
 		apps.add(new App());
-
+		apps = SystemUtils.getUserApps(getActivity());
 		appsfragment = new CircleAppsFragment(apps);
 
 		fragments = new Fragment[] { friendsfragment, appsfragment };
@@ -154,14 +158,14 @@ public class CircleFragment extends Fragment implements OnClickListener {
 				try {
 					Log.i("listview getview", "activity update thread");
 					while (!friendsfragment.getIsLoad()) {
-						Thread.sleep(200);
+						Thread.sleep(100);
 					}
-//					while (true) {
-//						Thread.sleep(200);
-//						Message message = new Message();
-//						message.what = 1;
-//						mHandler.sendMessage(message);
-//					}
+					// while (true) {
+					// Thread.sleep(200);
+					// Message message = new Message();
+					// message.what = 1;
+					// mHandler.sendMessage(message);
+					// }
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -186,17 +190,17 @@ public class CircleFragment extends Fragment implements OnClickListener {
 							null, null);
 					tabviews[0].setCompoundDrawables(drawableFenxiang[0], null,
 							null, null);
-//					LayoutParams params = pager.getLayoutParams();
-//					params.height = appsfragment.getListViewLayoutParams();
-//					pager.setLayoutParams(params);
+					LayoutParams params = pager.getLayoutParams();
+					params.height = appsfragment.getListViewLayoutParams();
+					pager.setLayoutParams(params);
 				} else {
 					tabviews[0].setCompoundDrawables(drawableFenxiang[1], null,
 							null, null);
 					tabviews[1].setCompoundDrawables(drawableWodeApp[0], null,
 							null, null);
-//					LayoutParams params = pager.getLayoutParams();
-//					params.height = friendsfragment.getListViewLayoutParams();
-//					pager.setLayoutParams(params);
+					LayoutParams params = pager.getLayoutParams();
+					params.height = friendsfragment.getListViewLayoutParams();
+					pager.setLayoutParams(params);
 				}
 			}
 

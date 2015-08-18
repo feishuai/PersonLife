@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="160dp"
+    android:id="@+id/rl_circle_back"
     android:background="@drawable/back3" >
 
     <ImageView
@@ -32,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/tv_circle_starname"
         android:layout_below="@+id/tv_circle_starname"
-        android:drawableLeft="@drawable/signature1"
+        android:drawableLeft="@drawable/signature2"
         android:singleLine="true"
         android:text="我更新了我的APP列表"
         android:textSize="14dp" />

@@ -29,7 +29,7 @@ import com.personlife.widget.MyListView;
 
 public class AppListActivity extends Activity implements OnClickListener {
 	MyListView lvApps;
-	Button mBack, mSave,mDownload;
+	Button mBack, mSave;
 	TextView mTitle;
 	AppsAdapter appsAdapter;
 	List<App> apps;
@@ -38,16 +38,14 @@ public class AppListActivity extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_all_download);
+		setContentView(R.layout.activity_app_select);
 		lvApps = (MyListView) findViewById(R.id.lv_alldownload_apps);
 		mBack = (Button) findViewById(R.id.txt_left);
 		mTitle = (TextView) findViewById(R.id.txt_title);
 		mSave = (Button) findViewById(R.id.txt_save);
-		mDownload = (Button)findViewById(R.id.btn_alldownload_download);
 		mTitle.setText("APP列表");
 		mBack.setVisibility(View.VISIBLE);
 		mSave.setVisibility(View.VISIBLE);
-		mDownload.setVisibility(View.GONE);
 		mBack.setText("取消");
 		mSave.setText("完成");
 		mBack.setOnClickListener(this);
@@ -57,7 +55,7 @@ public class AppListActivity extends Activity implements OnClickListener {
 
 	private void initData() {
 		selectedApps = new ArrayList<App>();
-		apps = SystemUtils.getAppsNoSystom(getApplicationContext());
+		apps = SystemUtils.getUserApps(getApplicationContext());
 		appsAdapter = new AppsAdapter(getApplicationContext(), apps);
 		lvApps.setAdapter(appsAdapter);
 	}
@@ -128,9 +126,10 @@ public class AppListActivity extends Activity implements OnClickListener {
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-
+			Log.i("adapter size is", String.valueOf(mlist.size()));
 			holder.size.setVisibility(View.GONE);
-			holder.appicon.setImageDrawable(DrawableStringUtils.stringToDrawable(mlist.get(position).getDrawableString()));
+			holder.appicon.setImageDrawable(DrawableStringUtils
+					.stringToDrawable(mlist.get(position).getDrawableString()));
 			holder.appname.setText(mlist.get(position).getName());
 
 			holder.check

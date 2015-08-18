@@ -37,6 +37,7 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 	Button btnXiazai, btnFenxiang, btnShoucang;
 	TextView tvRange;
 	String sharekinds[] = { "下载", "分享", "收藏" };
+	String[] ranges = { "所有人可见", "仅好友可见", "仅自己可见" };
 	int selectedkind = 0;
 	List<App>selectedApps ;
 	App defaultapp;
@@ -133,8 +134,7 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 			break;
 		case 2:
 			int selected = data.getIntExtra("rangeIndex", 0);
-			
-			Utils.showShortToast(getApplication(), String.valueOf(selected));
+			tvRange.setText(ranges[selected]);
 		default:
 			break;
 		}

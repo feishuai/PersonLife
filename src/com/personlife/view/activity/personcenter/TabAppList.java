@@ -61,7 +61,7 @@ public class TabAppList extends Fragment implements OnClickListener {
 
 	public void initData() {
 		listView.setAdapter(new TabAppListAdapter(getActivity(), SystemUtils
-				.getAppsNoSystom(getActivity())));
+				.getUserApps(getActivity())));
 	}
 
 	public void setOnListener() {

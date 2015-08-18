@@ -1,7 +1,6 @@
 package com.personlife.adapter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
@@ -15,18 +14,19 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.personlifep.R;
+import com.github.snowdream.android.app.DownloadListener;
 import com.github.snowdream.android.app.DownloadStatus;
+import com.github.snowdream.android.app.DownloadTask;
 import com.personlife.bean.App;
 import com.personlife.common.Utils;
-import com.personlife.download.Downloader;
-import com.personlife.download.LoadInfo;
 import com.personlife.net.DownloadTaskManager;
 import com.personlife.utils.Constants;
 import com.personlife.utils.ImageLoaderUtils;
+import com.personlife.utils.SystemUtils;
 import com.personlife.view.activity.home.AppDetailActivity;
 
 public class AppsAdapter extends BaseAdapter {
@@ -67,6 +67,7 @@ public class AppsAdapter extends BaseAdapter {
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
 					.inflate(R.layout.layout_item_tuijian, null);
 			holder = new ViewHolder();
+			holder.bar = (ProgressBar) convertView.findViewById(R.id.bar);
 			holder.appname = (TextView) convertView
 					.findViewById(R.id.tv_tuijian_name);
 			holder.status = (TextView) convertView
@@ -85,18 +86,102 @@ public class AppsAdapter extends BaseAdapter {
 				holder.icon);
 		holder.appname.setText(mlist.get(position).getName());
 
+		if (DownloadTaskManager.getDownloadTaskManager(context)
+				.isHasDownloaded(mlist.get(position))) {
+			long size = DownloadTaskManager.getDownloadTaskManager(context)
+					.getDownloadTaskByApp(mlist.get(position)).getSize();
+			if (size > 0) {
+				int progress = DownloadTaskManager.getDownloadTaskManager(
+						context).getDownloadProgress(mlist.get(position));
+				if (progress == 100)
+					holder.download.setText("已下载");
+				else
+					holder.download.setText("继续");
+				holder.bar.setVisibility(View.VISIBLE);
+				holder.bar.setProgress(progress);
+			}
+		}
+
 		holder.download.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Log.i("is download ", String.valueOf(DownloadTaskManager.getDownloadTaskManager(context).isHasDownloaded(mlist.get(position))));
-				if(DownloadTaskManager.getDownloadTaskManager(context).isHasDownloaded(mlist.get(position))){
+				if (holder.download.getText().toString().equals("已下载")) {
 					Utils.showShortToast(context, "该应用已下载，请到下载任务中管理");
+					return;
 				}
-				else
-					DownloadTaskManager.getDownloadTaskManager(context).startDownload(context, mlist.get(position));
-				holder.download.setText("已下载");
+				if (holder.download.getText().toString().equals("下载")) {
+					if (DownloadTaskManager.getDownloadTaskManager(context)
+							.isHasDownloaded(mlist.get(position))) {
+						holder.download.setText("继续");
+						holder.download.callOnClick();
+						return;
+					}
+					holder.download.setText("暂停");
+					holder.bar.setVisibility(View.VISIBLE);
+					DownloadTaskManager
+							.getDownloadTaskManager(context)
+							.startNewDownload(
+									context,
+									mlist.get(position),
+									new DownloadListener<Integer, DownloadTask>() {
+										@Override
+										public void onProgressUpdate(
+												Integer... values) {
+											super.onProgressUpdate(values);
+											holder.bar.setProgress(values[0]);
+											if (values[0] == 100) {
+												holder.download.setText("已下载");
+											}
+											Log.i("update progress",
+													String.valueOf(values[0]));
+										}
+									});
+					return;
+				}
+				if (holder.download.getText().toString().equals("继续")) {
+					if (DownloadTaskManager.getDownloadTaskManager(context)
+							.getDownloadTaskByApp(mlist.get(position))
+							.getStatus() == DownloadStatus.STATUS_RUNNING) {
+						// Utils.showShortToast(getApplicationContext(),
+						// "该应用已在下载,请在下载任务管理");
+						DownloadTaskManager.getDownloadTaskManager(context)
+								.stopDownload(context, mlist.get(position));
+					}
+					holder.download.setText("暂停");
+					holder.bar.setVisibility(View.VISIBLE);
+					DownloadTaskManager
+							.getDownloadTaskManager(context)
+							.startContinueDownload(
+									context,
+									mlist.get(position),
+									new DownloadListener<Integer, DownloadTask>() {
+										@Override
+										public void onProgressUpdate(
+												Integer... values) {
+											super.onProgressUpdate(values);
+											holder.bar.setProgress(values[0]);
+											if (values[0] == 100) {
+												holder.download.setText("已下载");
+											}
+											Log.i("update progress",
+													String.valueOf(values[0]));
+										}
+									     @Override
+									        public void onStop(DownloadTask downloadTask) {
+									            super.onStop(downloadTask);
+									            holder.download.setText("继续");
+									        }
+									});
+					return;
+				}
+				if (holder.download.getText().toString().equals("暂停")) {
+					holder.download.setText("继续");
+					DownloadTaskManager.getDownloadTaskManager(context)
+							.stopDownload(context, mlist.get(position));
+					return;
+				}
 			}
 		});
 
@@ -127,5 +212,6 @@ public class AppsAdapter extends BaseAdapter {
 		TextView status;
 		TextView intro;
 		Button download;
+		ProgressBar bar;
 	}
 }

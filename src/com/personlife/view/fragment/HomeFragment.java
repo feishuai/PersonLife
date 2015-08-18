@@ -95,8 +95,9 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		apps = new ArrayList<App>();
 		ka = new KindsApps();
 		
-		apps.add(new App());
-		apps.add(new App());
+		apps.add(new App("网易云音乐","https://www.baidu.com"));
+		apps.add(new App("网易云音乐","https://www.baidu.com"));
+		apps.add(new App("网易云音乐","https://www.baidu.com"));
 		apps.add(new App());
 		kindsapps.add(apps);
 		kindsapps.add(apps);
@@ -290,12 +291,6 @@ public class HomeFragment extends Fragment implements OnClickListener {
 					context.startActivity(intent);
 				}
 			});
-			// Intent intent = new Intent(context, AppDetailActivity.class);
-			// intent.putExtra(Constants.AppId, mlist.get(position)
-			// .getId());
-			// context.startActivity(intent);
-			// }
-			// });
 			return convertView;
 		}
 

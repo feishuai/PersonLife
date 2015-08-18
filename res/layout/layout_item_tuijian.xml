@@ -8,11 +8,12 @@
         android:id="@+id/iv_tuijian_icon"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:padding="10dp"
         android:layout_toRightOf="@+id/cb_tuijian_state"
+        android:padding="10dp"
         android:src="@drawable/default_app_icon" />
 
     <LinearLayout
+        android:id="@+id/linearLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -39,9 +40,16 @@
             android:id="@+id/tv_tuijian_intro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="网易云音乐来了"
             android:maxLength="20"
+            android:text="网易云音乐来了"
             android:textSize="14dp" />
+
+        <ProgressBar
+            android:id="@+id/bar"
+            style="@style/ProgressBar_Mini"
+            android:layout_width="160dp"
+            android:layout_height="4dp" 
+            android:visibility="gone"/>
     </LinearLayout>
 
     <Button
@@ -54,29 +62,30 @@
         android:background="@drawable/backgroud_download"
         android:gravity="center"
         android:text="下载"
-        android:textSize="20dp"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:textSize="20dp" />
 
     <CheckBox
         android:id="@+id/cb_tuijian_state"
+        style="@style/CustomCheckboxTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        style="@style/CustomCheckboxTheme" 
-        android:visibility="gone"/>
-	
+        android:visibility="gone" />
+
     <TextView
         android:id="@+id/tv_tuijian_beforetime"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:textColor="@color/black"
         android:layout_alignParentRight="true"
-        android:text="16天前" 
-        android:visibility="gone"/>
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:text="16天前"
+        android:textColor="@color/black"
+        android:visibility="gone" />
+
 </RelativeLayout>

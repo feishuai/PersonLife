@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.snowdream.android.util.Log;
 import com.google.gson.reflect.TypeToken;
 
 public class ComplexPreferences {
@@ -50,6 +51,7 @@ public class ComplexPreferences {
 		}
 		
 		try {
+			Log.i("sharepreferences get" +key, mapper.writeValueAsString(object));
 			editor.putString(key, mapper.writeValueAsString(object));
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
@@ -64,6 +66,7 @@ public class ComplexPreferences {
 	public <T> T getObject(String key, TypeReference valueTypeRef) {
 	
 		String json = preferences.getString(key, null);
+		Log.i("sharepreferences get" +key, json);
 		if (json == null) {
 			return null;
 		} else {
