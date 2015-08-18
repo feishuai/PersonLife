@@ -106,7 +106,7 @@ public class ClassificationActivity extends Activity implements OnClickListener 
 					// TODO Auto-generated method stub
 					isSelected[current] = !isSelected[current];
 					if(isSelected[current])
-						btn.setBackgroundResource(R.drawable.xuanzhong);
+						btn.setBackgroundResource(R.drawable.fenleixuanze);
 					else
 						btn.setBackgroundResource(R.color.transparent);
 				}
