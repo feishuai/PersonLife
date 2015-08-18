@@ -32,7 +32,7 @@ import com.personlife.bean.App;
 import com.personlife.bean.Shuoshuo;
 import com.personlife.utils.SystemUtils;
 import com.personlife.utils.Utils;
-import com.personlife.view.activity.circle.CircleAppsFragment;
+import com.personlife.view.activity.circle.CircleMyAppsFragment;
 import com.personlife.view.activity.circle.CircleFriendsFragment;
 import com.personlife.view.activity.home.AppSearchActivity;
 import com.personlife.view.activity.home.ClassificationActivity;
@@ -63,7 +63,7 @@ public class CircleFragment extends Fragment implements OnClickListener {
 	Button addattention;
 	Fragment fragments[];
 	CircleFriendsFragment friendsfragment;
-	CircleAppsFragment appsfragment;
+	CircleMyAppsFragment appsfragment;
 	public Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
@@ -127,16 +127,8 @@ public class CircleFragment extends Fragment implements OnClickListener {
 		friendsfragment = new CircleFriendsFragment(shuoshuos);
 
 		List<App> apps = new ArrayList<App>();
-		apps.add(new App());
-		apps.add(new App());
-		apps.add(new App());
-		apps.add(new App());
-		apps.add(new App());
-		apps.add(new App());
-		apps.add(new App());
-		apps.add(new App());
 		apps = SystemUtils.getUserApps(getActivity());
-		appsfragment = new CircleAppsFragment(apps);
+		appsfragment = new CircleMyAppsFragment(apps);
 
 		fragments = new Fragment[] { friendsfragment, appsfragment };
 

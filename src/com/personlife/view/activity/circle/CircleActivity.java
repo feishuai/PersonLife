@@ -45,7 +45,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 	Fragment fragments[];
 	private String starphone,starnickname,starthumb,starfollower;
 	CircleFriendsFragment friendsfragment;
-	CircleAppsFragment appsfragment;
+	CircleOtherAppsFragment appsfragment;
 	public Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
@@ -104,7 +104,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 		apps.add(new App());
 		apps.add(new App());
 
-		appsfragment = new CircleAppsFragment(apps);
+		appsfragment = new CircleOtherAppsFragment(apps);
 
 		fragments = new Fragment[] { friendsfragment, appsfragment };
 
