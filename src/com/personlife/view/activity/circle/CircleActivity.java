@@ -95,15 +95,6 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 		List<App> apps = new ArrayList<App>();
 		apps.add(new App());
 		apps.add(new App());
-		apps.add(new App());
-		apps.add(new App());
-		apps.add(new App());
-		apps.add(new App());
-		apps.add(new App());
-		apps.add(new App());
-		apps.add(new App());
-		apps.add(new App());
-
 		appsfragment = new CircleOtherAppsFragment(apps);
 
 		fragments = new Fragment[] { friendsfragment, appsfragment };

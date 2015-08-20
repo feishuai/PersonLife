@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -32,8 +33,10 @@ import com.personlife.adapter.AppsAdapter;
 import com.personlife.bean.App;
 import com.personlife.common.Utils;
 import com.personlife.net.DownloadTaskManager;
+import com.personlife.utils.Constants;
 import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.utils.SystemUtils;
+import com.personlife.view.activity.home.AppDetailActivity;
 import com.personlife.view.activity.personcenter.TabAppList.TabAppListAdapter;
 
 /**
@@ -229,6 +232,17 @@ public class TabTaskList extends Fragment implements OnClickListener {
 			holder.appname.setText(mlist.get(position).getName());
 			ImageLoaderUtils.displayAppIcon(mlist.get(position).getIcon(),
 					holder.icon);
+			convertView.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					 Intent intent = new Intent(context, AppDetailActivity.class);
+					 intent.putExtra(Constants.AppId, mlist.get(position)
+					 .getId());
+					 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					 context.startActivity(intent);
+				}
+			});
 			
 			return convertView;
 		}
