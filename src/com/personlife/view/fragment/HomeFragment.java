@@ -314,9 +314,6 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		}
 	}
 
-	private static String[] urls = new String[] { "Text #1", "Text #1",
-			"Text #1", "Text #1" };
-
 	class MyAppsAdapter extends BaseAdapter {
 		List<App> apps;
 
