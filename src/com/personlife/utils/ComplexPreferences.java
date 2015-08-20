@@ -62,7 +62,13 @@ public class ComplexPreferences {
 	public void commit() {
 		editor.commit();
 	}
-
+	
+	public static void putObject(Context context ,String key, Object object){
+		ComplexPreferences pre = getComplexPreferences(context, Constants.SharePrefrencesName);
+		pre.putObject(key, object);
+		pre.commit();
+	}
+	
 	public <T> T getObject(String key, TypeReference valueTypeRef) {
 	
 		String json = preferences.getString(key, null);
@@ -77,4 +83,11 @@ public class ComplexPreferences {
 			}
 		}
 	}
+	
+	public static <T> T getObject(Context context,String key, TypeReference valueTypeRef){
+		ComplexPreferences pre = getComplexPreferences(context, Constants.SharePrefrencesName);
+		return pre.getObject(key, valueTypeRef);
+	}
+	
+	
 }

@@ -6,7 +6,6 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,14 +19,21 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.baidu.platform.comapi.map.m;
 import com.example.personlifep.R;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.github.snowdream.android.app.DownloadListener;
+import com.github.snowdream.android.app.DownloadTask;
 import com.personlife.bean.App;
+import com.personlife.net.DownloadTaskManager;
+import com.personlife.utils.ComplexPreferences;
+import com.personlife.utils.Constants;
+import com.personlife.utils.ImageLoaderUtils;
+import com.personlife.utils.Utils;
 import com.personlife.widget.MyListView;
 
 public class AllDownloadActivity extends Activity implements OnClickListener {
 	MyListView lvApps;
-	Button mBack, mAll;
+	Button mBack, mAll, download;
 	TextView mTitle;
 	AppsAdapter appsAdapter;
 	List<App> apps;
@@ -41,6 +47,8 @@ public class AllDownloadActivity extends Activity implements OnClickListener {
 		mBack = (Button) findViewById(R.id.txt_left);
 		mTitle = (TextView) findViewById(R.id.txt_title);
 		mAll = (Button) findViewById(R.id.btn_title_right);
+		download = (Button) findViewById(R.id.btn_alldownload_download);
+		download.setOnClickListener(this);
 		mTitle.setText("已选0项");
 		mBack.setVisibility(View.VISIBLE);
 		mAll.setVisibility(View.VISIBLE);
@@ -54,11 +62,54 @@ public class AllDownloadActivity extends Activity implements OnClickListener {
 	private void initData() {
 		mDownloadList = new ArrayList<App>();
 		apps = new ArrayList<App>();
-		apps.add(new App());
-		apps.add(new App());
-		apps.add(new App());
-		appsAdapter = new AppsAdapter(getApplicationContext(), apps);
+		apps = ComplexPreferences.getComplexPreferences(
+				getApplicationContext(), Constants.SharePrefrencesName)
+				.getObject(getIntent().getStringExtra("key"),
+						new TypeReference<ArrayList<App>>() {
+						});
+		// RequestParams params = new RequestParams();
+		// params.add("kind", "娱乐");
+		// BaseAsyncHttp.postReq(getApplicationContext(), "/app/kind", params,
+		// new JSONObjectHttpResponseHandler() {
+		//
+		// @Override
+		// public void jsonSuccess(JSONObject resp) {
+		// // TODO Auto-generated method stub
+		// try {
+		// JSONArray jsonapps = resp.getJSONArray("item");
+		// for (int i = 0; i < jsonapps.length(); i++) {
+		// App app = new App();
+		// JSONObject jsonapp = jsonapps.getJSONObject(i);
+		// app.setIcon(jsonapp.getString("icon"));
+		// app.setSize(jsonapp.getString("size"));
+		// app.setDowloadcount(jsonapp
+		// .getInt("downloadcount"));
+		// app.setIntrodution(jsonapp
+		// .getString("introduction"));
+		// app.setName(jsonapp.getString("name"));
+		// app.setId(jsonapp.getInt("id"));
+		// app.setDownloadUrl(jsonapp
+		// .getString("android_url"));
+		// app.setProfile(jsonapp.getString("profile"));
+		// app.setDownloadPath(Constants.DownloadPath
+		// + app.getName() + ".apk");
+		// apps.add(app);
+		// }
+		 appsAdapter = new AppsAdapter(
+		 getApplicationContext(), apps);
 		lvApps.setAdapter(appsAdapter);
+		// } catch (JSONException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// }
+		//
+		// @Override
+		// public void jsonFail(JSONObject resp) {
+		// // TODO Auto-generated method stub
+		//
+		// }
+		// });
 	}
 
 	@Override
@@ -71,19 +122,27 @@ public class AllDownloadActivity extends Activity implements OnClickListener {
 		case R.id.btn_title_right:
 			appsAdapter.setAll();
 			appsAdapter.notifyDataSetChanged();
-			// if(!isClicked){
-			// new Handler().postDelayed(new Runnable() {
-			//
-			// @Override
-			// public void run() {
-			// // TODO Auto-generated method stub
-			// mDownloadList.remove(apps.get(0));
-			// // mTitle.setText("已选handler" + mDownloadList.size() + "项");
-			// }
-			// }, 200);
-			// }
-			// isClicked=true;
-			//
+			break;
+		case R.id.btn_alldownload_download:
+			for (int i = 0; i < mDownloadList.size(); i++) {
+				App app = mDownloadList.get(i);
+				if (DownloadTaskManager.getDownloadTaskManager(
+						getApplicationContext()).isHasDownloaded(app)) {
+					DownloadTaskManager.getDownloadTaskManager(
+							getApplicationContext()).startContinueDownload(
+							getApplicationContext(), app,
+							new DownloadListener<Integer, DownloadTask>());
+				} else {
+					DownloadTaskManager.getDownloadTaskManager(
+							getApplicationContext()).startNewDownload(
+							getApplicationContext(), app,
+							new DownloadListener<Integer, DownloadTask>());
+				}
+
+			}
+			Utils.showShortToast(getApplicationContext(), mDownloadList.size()
+					+ "个应用正在下载");
+			finish();
 			break;
 		}
 	}
@@ -135,9 +194,10 @@ public class AllDownloadActivity extends Activity implements OnClickListener {
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			// ImageLoaderUtils.displayAppIcon("https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/5136becf77e9cfc440849e0b694fdd6e_121_121.jpg",
-			// holder.icon);
-
+			ImageLoaderUtils.displayAppIcon(mlist.get(position).getIcon(),
+					holder.appicon);
+			holder.appname.setText(mlist.get(position).getName());
+			holder.size.setText("(" + mlist.get(position).getSize() + ")");
 			holder.check
 					.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
@@ -148,7 +208,7 @@ public class AllDownloadActivity extends Activity implements OnClickListener {
 							Log.i("check changed" + position + " state",
 									String.valueOf(isChecked));
 							if (isChecked) {
-								if(!mDownloadList.contains(mlist.get(position)))
+								if (!mDownloadList.contains(mlist.get(position)))
 									mDownloadList.add(mlist.get(position));
 							} else {
 								mDownloadList.remove(mlist.get(position));

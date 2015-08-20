@@ -23,6 +23,7 @@ import com.loopj.android.http.RequestParams;
 import com.personlife.bean.Comment;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONObjectHttpResponseHandler;
+import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.Utils;
 
 public class CommentAppActivity extends Activity implements OnClickListener {
@@ -79,7 +80,7 @@ public class CommentAppActivity extends Activity implements OnClickListener {
 		params.add("appid", getIntent().getStringExtra("appid"));
 		params.add("comments", comments);
 		params.add("commentstars", String.valueOf(counts));
-		params.add("phone", String.valueOf(1));
+		params.add("phone", PersonInfoLocal.getPhone());
 		params.add("title", "真的是很好用的");
 		Log.i("submit comment param is ", params.toString());
 		BaseAsyncHttp.postReq(getApplicationContext(), "/app/submitcomment", params,

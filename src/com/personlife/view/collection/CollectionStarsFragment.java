@@ -3,7 +3,10 @@ package com.personlife.view.collection;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -21,10 +25,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.personlifep.R;
+import com.loopj.android.http.RequestParams;
 import com.personlife.bean.Star;
 import com.personlife.bean.User;
+import com.personlife.net.BaseAsyncHttp;
+import com.personlife.net.JSONObjectHttpResponseHandler;
+import com.personlife.utils.Constants;
 import com.personlife.utils.ImageLoaderUtils;
+import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.Utils;
+import com.personlife.view.activity.circle.CircleActivity;
+import com.personlife.view.activity.home.AppDetailActivity;
 import com.personlife.widget.CircleImageView;
 import com.personlife.widget.MyListView;
 
@@ -33,57 +44,84 @@ public class CollectionStarsFragment extends Fragment {
 	private MyListView lv;
 	List<Star> mList;
 	List<Star> deletedList;
-	AppsAdapter appsAdapter;
-	
+	StarsAdapter starsAdapter;
+
 	public CollectionStarsFragment(List<Star> mList) {
 		// TODO Auto-generated constructor stub
 		this.mList = mList;
 		this.deletedList = new ArrayList<Star>();
 	}
+
 	public List<Star> getAppsList() {
 		return mList;
 	}
-	public void setAppsList(List<Star> mList) {
+
+	public void setStarsList(List<Star> mList) {
 		this.mList = mList;
+		if (starsAdapter != null)
+			starsAdapter.notifyDataSetChanged();
 	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		layout = inflater.inflate(R.layout.fragment_collection_stars, container,
-				false);
+		layout = inflater.inflate(R.layout.fragment_collection_stars,
+				container, false);
 		initView();
 		return layout;
 	}
-	
-	public void setDeleteMode(){
-		appsAdapter.setDeleteMode();
+
+	public void setDeleteMode() {
+		starsAdapter.setDeleteMode();
 	}
-	
-	public void setNormalMode(){
-		if(updateData()){
-			mList.removeAll(deletedList);
+
+	public void setNormalMode() {
+		int n = deletedList.size();
+		for (int i = 0; i < n; i++) {
+			RequestParams params = new RequestParams();
+			params.add("myphone", PersonInfoLocal.getPhone());
+			params.add("fphone", deletedList.get(i).getPhone());
+
+			BaseAsyncHttp.postReq(getActivity(), "/follow/cancel", params,
+					new JSONObjectHttpResponseHandler() {
+
+						@Override
+						public void jsonSuccess(JSONObject resp) {
+							// TODO Auto-generated method stub
+						}
+
+						@Override
+						public void jsonFail(JSONObject resp) {
+							// TODO Auto-generated method stub
+
+						}
+					});
 		}
+		Utils.showShortToast(getActivity(), "删除" + n + " 位明星收藏成功");
+		mList.removeAll(deletedList);
 		deletedList.clear();
-		appsAdapter.setNormalMode();
+		starsAdapter.setNormalMode();
 	}
-	
-	public boolean updateData(){
+
+	public boolean updateData() {
 		Utils.showShortToast(getActivity(), "删除应用收藏成功");
 		return true;
-		
+
 	}
+
 	public void initView() {
 		lv = (MyListView) layout.findViewById(R.id.lv_collection_stars);
-		appsAdapter = new AppsAdapter(getActivity());
-		lv.setAdapter(appsAdapter);
+		starsAdapter = new StarsAdapter(getActivity());
+		lv.setAdapter(starsAdapter);
 
 	}
 
-	class AppsAdapter extends BaseAdapter {
+	class StarsAdapter extends BaseAdapter {
 
 		private Context context;
 		private Boolean isDelete = false;
-		public AppsAdapter(Context context) {
+
+		public StarsAdapter(Context context) {
 			this.context = context;
 		}
 
@@ -125,56 +163,61 @@ public class CollectionStarsFragment extends Fragment {
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			ImageLoaderUtils.displayAppIcon(mList.get(position).getThumb(),holder.icon);
+			ImageLoaderUtils.displayAppIcon(mList.get(position).getThumb(),
+					holder.icon);
 			holder.name.setText(mList.get(position).getNickname());
-			// ImageLoaderUtils.displayAppIcon("https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/5136becf77e9cfc440849e0b694fdd6e_121_121.jpg",
-			// holder.icon);
-//			holder.name.setText(mList.get(position).getUserName());
-			if(isDelete)
+			holder.signature.setText(mList.get(position).getSignature());
+			if (isDelete)
 				holder.state.setVisibility(View.VISIBLE);
 			else
 				holder.state.setVisibility(View.GONE);
-			holder.state.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-				
+			holder.state
+					.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+						@Override
+						public void onCheckedChanged(CompoundButton buttonView,
+								boolean isChecked) {
+							// TODO Auto-generated method stub
+							if (isChecked) {
+								if (!deletedList.contains(mList.get(position)))
+									;
+								deletedList.add(mList.get(position));
+							} else
+								deletedList.remove(mList.get(position));
+						}
+					});
+
+			// 设置state的状态为未选中
+			holder.state.setChecked(false);
+			Log.i("check " + position + "state",
+					String.valueOf(holder.state.isChecked()));
+			holder.home.setOnClickListener(new OnClickListener() {
+
 				@Override
-				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-					// TODO Auto-generated method stub
-					if(isChecked){
-						if(!deletedList.contains(mList.get(position)));
-							deletedList.add(mList.get(position));
-					}else
-						deletedList.remove(mList.get(position));
+				public void onClick(View v) {
+					if (!isDelete) {
+						Intent intent = new Intent(context,
+								CircleActivity.class);
+						intent.putExtra("starphone", mList.get(position)
+								.getPhone());
+						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						context.startActivity(intent);
+					}
 				}
 			});
-			
-//			设置state的状态为未选中
-			holder.state.setChecked(false);
-			Log.i("check "+position +"state", String.valueOf(holder.state.isChecked()));
-//			convertView.setOnClickListener(new OnClickListener() {
-//
-//				@Override
-//				public void onClick(View v) {
-//					Intent intent = new Intent(context, AppDetailActivity.class);
-//					intent.putExtra(Constants.AppId, mlist.get(position)
-//							.getId());
-//					// intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//					context.startActivity(intent);
-//
-//				}
-//			});
 			return convertView;
 		}
 
-		public void setDeleteMode(){
+		public void setDeleteMode() {
 			isDelete = true;
 			notifyDataSetChanged();
 		}
-		
-		public void setNormalMode(){
+
+		public void setNormalMode() {
 			isDelete = false;
 			notifyDataSetChanged();
 		}
-		
+
 		class ViewHolder {
 			ImageView icon;
 			TextView name;

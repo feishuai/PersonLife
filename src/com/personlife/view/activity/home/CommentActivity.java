@@ -3,8 +3,6 @@ package com.personlife.view.activity.home;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.message.BasicNameValuePair;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +19,12 @@ import android.widget.TextView;
 
 import com.example.personlifep.R;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.github.snowdream.android.app.DownloadListener;
+import com.github.snowdream.android.app.DownloadStatus;
+import com.github.snowdream.android.app.DownloadTask;
+import com.personlife.bean.App;
 import com.personlife.bean.Comment;
+import com.personlife.net.DownloadTaskManager;
 import com.personlife.utils.ComplexPreferences;
 import com.personlife.utils.Constants;
 import com.personlife.utils.ImageLoaderUtils;
@@ -36,7 +39,8 @@ public class CommentActivity extends Activity implements OnClickListener {
 	TextView mTitle;
 	ClearEditText comment;
 	CommentAdapter commentAdapter;
-	private List<Comment> lcomments;
+	List<Comment> lcomments;
+	App app;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,8 @@ public class CommentActivity extends Activity implements OnClickListener {
 		mBtnBack = (Button) findViewById(R.id.txt_left);
 		mTitle = (TextView) findViewById(R.id.txt_title);
 		comment = (ClearEditText) findViewById(R.id.et_comment_comment);
+		download = (Button) findViewById(R.id.btn_comment_download);
+		download.setOnClickListener(this);
 		lcomments = new ArrayList<Comment>();
 		mBtnBack.setVisibility(View.VISIBLE);
 		mBtnBack.setOnClickListener(this);
@@ -64,10 +70,30 @@ public class CommentActivity extends Activity implements OnClickListener {
 		commentAdapter = new CommentAdapter(lcomments);
 		comments.setAdapter(commentAdapter);
 		ComplexPreferences complexPreferences = ComplexPreferences
-				.getComplexPreferences(getApplication(), Constants.SharePrefrencesName);
+				.getComplexPreferences(getApplication(),
+						Constants.SharePrefrencesName);
 		List<Comment> commentsLocal = complexPreferences.getObject("comments",
 				new TypeReference<List<Comment>>() {
 				});
+		app = complexPreferences.getObject(Constants.SelectedApp,
+				new TypeReference<App>() {
+				});
+
+		if (DownloadTaskManager.getDownloadTaskManager(getApplicationContext())
+				.isHasDownloaded(app)) {
+			long size = DownloadTaskManager
+					.getDownloadTaskManager(getApplicationContext())
+					.getDownloadTaskByApp(app).getSize();
+			if (size > 0) {
+				int progress = DownloadTaskManager.getDownloadTaskManager(
+						getApplicationContext()).getDownloadProgress(app);
+				if (progress == 100)
+					download.setText("已下载");
+				else
+					download.setText("继续");
+			}
+		}
+
 		if (commentsLocal != null) {
 			Log.i("comment activity comment size is ",
 					String.valueOf(commentsLocal.size()));
@@ -138,18 +164,84 @@ public class CommentActivity extends Activity implements OnClickListener {
 			finish();
 			break;
 		case R.id.btn_comment_download:
+			if (download.getText().toString().equals("已下载")) {
+				Utils.showShortToast(getApplicationContext(),
+						"该应用已下载，请到下载任务中管理");
+				return;
+			}
+			if (download.getText().toString().equals("下载")) {
+				if (DownloadTaskManager.getDownloadTaskManager(
+						getApplicationContext()).isHasDownloaded(app)) {
+					download.setText("继续");
+					download.callOnClick();
+					Utils.showShortToast(getApplicationContext(), "该应用已在下载列表中");
+					return;
+				}
+				download.setText("暂停");
+				DownloadTaskManager.getDownloadTaskManager(
+						getApplicationContext()).startNewDownload(
+						getApplicationContext(), app,
+						new DownloadListener<Integer, DownloadTask>() {
+							@Override
+							public void onProgressUpdate(Integer... values) {
+								super.onProgressUpdate(values);
+								if (values[0] == 100) {
+									download.setText("已下载");
+								}
+								Log.i("update progress",
+										String.valueOf(values[0]));
+							}
+						});
+				return;
+			}
+			if (download.getText().toString().equals("继续")) {
+				download.setText("暂停");
+				if (DownloadTaskManager
+						.getDownloadTaskManager(getApplicationContext())
+						.getDownloadTaskByApp(app).getStatus() == DownloadStatus.STATUS_RUNNING) {
+					// Utils.showShortToast(getApplicationContext(),
+					// "该应用已在下载,请在下载任务管理");
+					DownloadTaskManager.getDownloadTaskManager(
+							getApplicationContext()).stopDownload(
+							getApplicationContext(), app);
+
+				}
+				DownloadTaskManager.getDownloadTaskManager(
+						getApplicationContext()).startContinueDownload(
+						getApplicationContext(), app,
+						new DownloadListener<Integer, DownloadTask>() {
+							@Override
+							public void onProgressUpdate(Integer... values) {
+								super.onProgressUpdate(values);
+								if (values[0] == 100) {
+									download.setText("已下载");
+								}
+								Log.i("update progress",
+										String.valueOf(values[0]));
+							}
+						});
+				return;
+			}
+			if (download.getText().toString().equals("暂停")) {
+				download.setText("继续");
+				DownloadTaskManager.getDownloadTaskManager(
+						getApplicationContext()).stopDownload(
+						getApplicationContext(), app);
+				return;
+			}
 			break;
 		case R.id.et_comment_comment:
-			Intent intent = new Intent(CommentActivity.this,CommentAppActivity.class);
+			Intent intent = new Intent(CommentActivity.this,
+					CommentAppActivity.class);
 			intent.putExtra("appid", getIntent().getStringExtra("appid"));
-			startActivityForResult(intent,1);
+			startActivityForResult(intent, 1);
 			break;
 		}
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if(resultCode == 1)
+		if (resultCode == 1)
 			finish();
 	}
 }

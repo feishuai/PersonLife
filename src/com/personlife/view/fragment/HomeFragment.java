@@ -34,6 +34,8 @@ import com.personlife.net.JSONArrayHttpResponseHandler;
 import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ComplexPreferences;
 import com.personlife.utils.Constants;
+import com.personlife.utils.DrawableStringUtils;
+import com.personlife.utils.SystemUtils;
 import com.personlife.utils.Utils;
 import com.personlife.view.activity.home.AppSearchActivity;
 import com.personlife.view.activity.home.ClassificationActivity;
@@ -55,6 +57,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 	private List<List<App>> kindsapps;
 	private List<String> kindlist;
 	private List<App> downloadApps;
+	private List<App> userApps;
 	KindsAdapter kindsAdapter;
 
 	@Override
@@ -94,10 +97,10 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		kindlist = new ArrayList<String>();
 		apps = new ArrayList<App>();
 		ka = new KindsApps();
-		
-		apps.add(new App("网易云音乐","https://www.baidu.com"));
-		apps.add(new App("网易云音乐","https://www.baidu.com"));
-		apps.add(new App("网易云音乐","https://www.baidu.com"));
+		userApps = SystemUtils.getUserApps(getActivity()).subList(0, 2);
+		apps.add(new App("网易云音乐", "https://www.baidu.com"));
+		apps.add(new App("网易云音乐", "https://www.baidu.com"));
+		apps.add(new App("网易云音乐", "https://www.baidu.com"));
 		apps.add(new App());
 		kindsapps.add(apps);
 		kindsapps.add(apps);
@@ -110,7 +113,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		ka.setUserapps(kindsapps);
 		kindsAdapter = new KindsAdapter(getActivity(), ka);
 		mLvApps.setAdapter(kindsAdapter);
-		
+
 		BaseAsyncHttp.postReq(getActivity(), "/app/allkind", null,
 				new JSONArrayHttpResponseHandler() {
 
@@ -136,7 +139,6 @@ public class HomeFragment extends Fragment implements OnClickListener {
 						return;
 					}
 				});
-		
 
 		Log.i("kinds", String.valueOf(kinds.size()));// 3
 	}
@@ -170,13 +172,17 @@ public class HomeFragment extends Fragment implements OnClickListener {
 											.getString("introduction"));
 									app.setName(jsonapp.getString("name"));
 									app.setId(jsonapp.getInt("id"));
-									app.setDownloadUrl(jsonapp.getString("android_url"));
-									app.setDownloadPath(Constants.DownloadPath+app.getName()+".apk");
+									app.setDownloadUrl(jsonapp
+											.getString("android_url"));
+									app.setProfile(jsonapp.getString("profile"));
+									app.setDownloadPath(Constants.DownloadPath
+											+ app.getName() + ".apk");
 									applist.add(app);
 								}
 								kinds.add(kind);
 								kindsapps.add(applist);
-								Log.i("kindsapps size is ", String.valueOf(kindsapps.size()));
+								Log.i("kindsapps size is ",
+										String.valueOf(kindsapps.size()));
 								updateView();
 							} catch (JSONException e) {
 								// TODO Auto-generated catch block
@@ -201,7 +207,8 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		ka.setUserapps(kindsapps);
 		kindsAdapter.setData(ka);
 		kindsAdapter.notifyDataSetChanged();
-		
+		ComplexPreferences.putObject(getActivity(), Constants.HomeAllDownloadApps,
+				kindsapps.get(0));
 	}
 
 	@Override
@@ -272,21 +279,21 @@ public class HomeFragment extends Fragment implements OnClickListener {
 				holder = (ViewHolder) convertView.getTag();
 			}
 			holder.tvkind.setText(kaa.getKinds().get(position));
-			holder.counts.setText("我的（" + kaa.getUserapps().size() + "）");
+			holder.counts.setText("我的（" + 2 + "）");
 			List<App> apps = kaa.getKindsapps().get(position);
-			
+
 			if (apps.size() > 3)
 				apps = apps.subList(0, 3);
 			holder.lvapps.setAdapter(new AppsAdapter(context, apps));
 
-			holder.hlvMyapps.setAdapter(new MyAppsAdapter(apps));
+			holder.hlvMyapps.setAdapter(new MyAppsAdapter(userApps));
 
 			holder.more.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					Intent intent = new Intent(context,RecommendActivity.class);
+					Intent intent = new Intent(context, RecommendActivity.class);
 					intent.putExtra("kind", kaa.getKinds().get(position));
 					context.startActivity(intent);
 				}
@@ -334,13 +341,26 @@ public class HomeFragment extends Fragment implements OnClickListener {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
+			final int pos = position;
 			View retval = LayoutInflater.from(parent.getContext()).inflate(
 					R.layout.layout_item_like, null);
 			ImageView appicon = (ImageView) retval
 					.findViewById(R.id.iv_item_icon);
 			TextView appname = (TextView) retval
 					.findViewById(R.id.tv_item_name);
+			appicon.setImageDrawable(DrawableStringUtils.stringToDrawable(apps
+					.get(position).getDrawableString()));
 			appname.setVisibility(View.GONE);
+			appicon.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					SystemUtils.startApp(getActivity(), apps.get(pos)
+							.getPackageName());
+
+				}
+			});
 			return retval;
 		}
 

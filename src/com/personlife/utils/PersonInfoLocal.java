@@ -11,6 +11,12 @@ import android.content.SharedPreferences;
  * @date 2015年8月9日   
  */
 public class PersonInfoLocal {
+	private static String phone;
+	public static String getPhone(){
+		if(phone!=null)
+			return phone;
+		return "18268028693";
+	}
 	public static void storeRegisterTel(Context ctx,String phone){
 		SharedPreferences.Editor editor = ctx.getSharedPreferences(phone, ctx.MODE_PRIVATE).edit();
 		editor.putString("telephone", phone);
@@ -37,6 +43,7 @@ public class PersonInfoLocal {
 		editor.putString("telephone", phone);
 		editor.putString("password", password);
 		editor.commit();
+		phone = phone;
 	}
 	public static void storeMainPersonInfo(Context ctx,String phone,
 			String nickname,String headkey,String signature,String sex,String location,

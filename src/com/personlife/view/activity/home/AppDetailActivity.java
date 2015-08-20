@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.graphics.Bitmap.CompressFormat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
@@ -44,6 +46,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 	HorizontialListView hlvUrls, hlvLikes;
 	Button mBack;
 	ImageView mIcon;
+	ImageButton shoucang;
 	TextView mTitle, mName, mSizeAndCounts, mDownload, mIntro, mLog, mMore,
 			mTime, mNumbers;
 	RelativeLayout mComments;
@@ -55,6 +58,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 	UrlsAppAdapter urlsadapter;
 	ProgressBar bar;
 	int appid;
+	Boolean isCollected = false; // 判断是否已在收藏列表
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +86,10 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 		mTime = (TextView) findViewById(R.id.tv_detail_time);
 		mNumbers = (TextView) findViewById(R.id.tv_detail_numbers);
 		bar = (ProgressBar) findViewById(R.id.bar);
+		shoucang = (ImageButton) findViewById(R.id.img_right);
+		shoucang.setVisibility(View.VISIBLE);
+		shoucang.setImageResource(R.drawable.shoucang1);
+		shoucang.setOnClickListener(this);
 		mBack.setVisibility(View.VISIBLE);
 		mTitle.setText("网易云音乐");
 		mBack.setOnClickListener(this);
@@ -127,6 +135,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 							app.setStars(jsonapp.getInt("stars"));
 							app.setUpdateLog(jsonapp.getString("updated_log"));
 							app.setUpdateDate(jsonapp.getLong("updated_at"));
+							app.setProfile(jsonapp.getString("profile"));
 							urlsapp.clear();
 							for (int i = 0; i < jsonurls.length(); i++) {
 								urlsapp.add(jsonurls.getJSONObject(i)
@@ -154,6 +163,9 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 							app.setComments(comments);
 							app.setDownloadPath(Constants.DownloadPath
 									+ app.getName() + ".apk");
+							ComplexPreferences pre = ComplexPreferences.getComplexPreferences(getApplicationContext(), Constants.SharePrefrencesName);
+							pre.putObject(Constants.SelectedApp, app);
+							pre.commit();
 							updateView();
 							getLikesapp();
 						} catch (JSONException e) {
@@ -274,12 +286,13 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 					return;
 				}
 				if (mDownload.getText().toString().equals("下载")) {
-					if (DownloadTaskManager.getDownloadTaskManager(getApplicationContext())
-							.isHasDownloaded(app)){
+					if (DownloadTaskManager.getDownloadTaskManager(
+							getApplicationContext()).isHasDownloaded(app)) {
 						mDownload.setText("继续");
 						mDownload.callOnClick();
-						Utils.showShortToast(getApplicationContext(), "该应用已在下载列表中");
-						return ;
+						Utils.showShortToast(getApplicationContext(),
+								"该应用已在下载列表中");
+						return;
 					}
 					mDownload.setText("暂停");
 					bar.setVisibility(View.VISIBLE);
@@ -459,6 +472,40 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 		case R.id.tv_detail_more:
 			mIntro.setText(app.getIntrodution());
 			mMore.setVisibility(View.GONE);
+			break;
+		case R.id.img_right:
+			// TODO Auto-generated method stub
+			RequestParams params = new RequestParams();
+			params.add("app", String.valueOf(appid));
+			params.add("phone", "18268028693");
+			if(isCollected){
+				Utils.showShortToast(getApplicationContext(), "已收藏");
+				return ;
+			}
+				
+			BaseAsyncHttp.postReq(getApplicationContext(), "/collect/set-app",
+					params, new JSONObjectHttpResponseHandler() {
+
+						@Override
+						public void jsonSuccess(JSONObject resp) {
+							// TODO Auto-generated method stub
+							int flag = resp.optInt("flag");
+							if (flag == 1)
+								Utils.showShortToast(getApplicationContext(),
+										"收藏成功");
+							else
+								Utils.showShortToast(getApplicationContext(),
+										"已收藏");
+							isCollected = true;
+						}
+
+						@Override
+						public void jsonFail(JSONObject resp) {
+							// TODO Auto-generated method stub
+
+						}
+					});
+			break;
 		}
 	}
 }

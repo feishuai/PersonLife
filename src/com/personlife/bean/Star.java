@@ -10,6 +10,14 @@ public class Star {
 	private String thumb;
 	private String follower;
 	private String shared;
+	private String signature;
+	
+	public String getSignature() {
+		return signature;
+	}
+	public void setSignature(String signature) {
+		this.signature = signature;
+	}
 	public String getPhone() {
 		return phone;
 	}

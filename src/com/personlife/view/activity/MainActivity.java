@@ -3,6 +3,7 @@ package com.personlife.view.activity;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,6 +28,7 @@ import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.DownloadTaskManager;
 import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ActivityCollector;
+import com.personlife.utils.Constants;
 import com.personlife.utils.DownloadHeadImg;
 import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.utils.PersonInfoLocal;
@@ -248,7 +250,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.txt_download:
 			Utils.start_Activity(MainActivity.this, AllDownloadActivity.class,
-					null);
+					new BasicNameValuePair("key", Constants.HomeAllDownloadApps));
 			break;
 		case R.id.imgbtn_plus:
 			Utils.start_Activity(MainActivity.this, SharePlusActivity.class,

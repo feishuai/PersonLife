@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -36,6 +37,7 @@ import com.personlife.adapter.AppListAdapter;
 import com.personlife.bean.App;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONArrayHttpResponseHandler;
+import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ComplexPreferences;
 import com.personlife.utils.Constants;
 import com.personlife.utils.Utils;
@@ -50,7 +52,7 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 	private ScrollView slResult, slHistory;
 	private TextView tvClearHistory;
 	private TextView[] tvLables = new TextView[3];
-	private String[] lables = { "图像", "游戏", "社交" };
+	private String[] lables = { "娱乐", "视频", "社交" };
 	private int[] idLables = { R.id.tv_search_label1, R.id.tv_search_label2,
 			R.id.tv_search_label3 };
 	private List<String> history;
@@ -103,7 +105,8 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 		ComplexPreferences pre = ComplexPreferences.getComplexPreferences(this,
 				Constants.SharePrefrencesName);
 		history = pre.getObject("history",
-				new TypeReference<ArrayList<String>>(){});
+				new TypeReference<ArrayList<String>>() {
+				});
 		pre.commit();
 		if (history == null)
 			history = new ArrayList<String>();
@@ -111,7 +114,6 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 		lvHistory.setAdapter(historyAdapter);
 
 		search.setOnFocusChangeListener(new OnFocusChangeListener() {
-			
 
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
@@ -212,8 +214,57 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 					@Override
 					public void jsonFail(JSONArray resp) {
 						// TODO Auto-generated method stub
-						Utils.showLongToast(getApplicationContext(),
-								"请连接网络");
+						Utils.showLongToast(getApplicationContext(), "请连接网络");
+					}
+				});
+	}
+
+	public void showKindResult(String kind) {
+		llLabel.setVisibility(View.GONE);
+		slResult.setVisibility(View.VISIBLE);
+		slHistory.setVisibility(View.GONE);
+		resultAdapter.clear();
+		RequestParams params = new RequestParams();
+		params.add("kind", kind);
+		BaseAsyncHttp.postReq(getApplicationContext(), "/app/kind", params,
+				new JSONObjectHttpResponseHandler() {
+
+					@Override
+					public void jsonSuccess(JSONObject resp) {
+						// TODO Auto-generated method stub
+						List<App> applist = new ArrayList<App>();
+						try {
+							JSONArray jsonapps = resp.getJSONArray("item");
+							for (int i = 0; i < jsonapps.length(); i++) {
+								App app = new App();
+								JSONObject jsonapp = jsonapps.getJSONObject(i);
+								app.setIcon(jsonapp.getString("icon"));
+								app.setSize(jsonapp.getString("size"));
+								app.setDowloadcount(jsonapp
+										.getInt("downloadcount"));
+								app.setIntrodution(jsonapp
+										.getString("introduction"));
+								app.setName(jsonapp.getString("name"));
+								app.setId(jsonapp.getInt("id"));
+								app.setDownloadUrl(jsonapp
+										.getString("android_url"));
+								app.setProfile(jsonapp.getString("profile"));
+								app.setDownloadPath(Constants.DownloadPath
+										+ app.getName() + ".apk");
+								applist.add(app);
+							}
+							resultAdapter.setData(applist);
+							resultAdapter.notifyDataSetChanged();
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+
+					@Override
+					public void jsonFail(JSONObject resp) {
+						// TODO Auto-generated method stub
+
 					}
 				});
 	}
@@ -233,13 +284,13 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 			slResult.setVisibility(View.GONE);
 			break;
 		case R.id.tv_search_label1:
-			showResult(lables[0]);
+			showKindResult(lables[0]);
 			break;
 		case R.id.tv_search_label2:
-			showResult(lables[1]);
+			showKindResult(lables[1]);
 			break;
 		case R.id.tv_search_label3:
-			showResult(lables[2]);
+			showKindResult(lables[2]);
 			break;
 		case R.id.tv_search_clear:
 			history.clear();
@@ -340,11 +391,9 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 			convertView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Utils.start_Activity(
-							AppSearchActivity.this,
-							AppDetailActivity.class,
-							new BasicNameValuePair(Constants.AppId, String
-									.valueOf(apps.get(position).getId())));
+					Intent intent = new Intent(AppSearchActivity.this, AppDetailActivity.class);
+					intent.putExtra(Constants.AppId, apps.get(position).getId());
+					AppSearchActivity.this.startActivity(intent);
 				}
 			});
 			return convertView;

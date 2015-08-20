@@ -10,6 +10,7 @@ public class App {
 	private String name;
 	private int stars;
 	private int dowloadcount;
+	private String profile;
 	private String tag;
 	private String icon;
 	private String introdution;
@@ -26,6 +27,12 @@ public class App {
 	private String updateLog;
 	private String downloadPath;
 	
+	public String getProfile() {
+		return profile;
+	}
+	public void setProfile(String profile) {
+		this.profile = profile;
+	}
 	public String getDownloadPath() {
 		return downloadPath;
 	}

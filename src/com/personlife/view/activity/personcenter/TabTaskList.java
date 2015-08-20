@@ -136,7 +136,7 @@ public class TabTaskList extends Fragment implements OnClickListener {
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-
+			
 			long size = DownloadTaskManager.getDownloadTaskManager(context)
 					.getDownloadTaskByApp(mlist.get(position)).getSize();
 			if (size > 0) {
@@ -145,6 +145,7 @@ public class TabTaskList extends Fragment implements OnClickListener {
 				if (progress == 100) {
 					holder.status.setText("等待安装");
 					holder.download.setText("安装");
+					holder.bar.setVisibility(View.GONE);
 				} else {
 					if (DownloadTaskManager.getDownloadTaskManager(context)
 							.getDownloadTaskByApp(mlist.get(position))
@@ -226,19 +227,9 @@ public class TabTaskList extends Fragment implements OnClickListener {
 			});
 
 			holder.appname.setText(mlist.get(position).getName());
-			holder.status.setText("已下载");
 			ImageLoaderUtils.displayAppIcon(mlist.get(position).getIcon(),
 					holder.icon);
-
-			// ImageLoader.getInstance().displayImage(mlist.get(position).getBitmap(),holder.icon);
-			convertView.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-
-				}
-			});
-
+			
 			return convertView;
 		}
 
