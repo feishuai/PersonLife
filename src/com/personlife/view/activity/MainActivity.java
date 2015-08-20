@@ -35,6 +35,7 @@ import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.Utils;
 import com.personlife.view.activity.circle.SharePlusActivity;
 import com.personlife.view.activity.home.AllDownloadActivity;
+import com.personlife.view.activity.home.AppSearchActivity;
 import com.personlife.view.fragment.CircleFragment;
 import com.personlife.view.fragment.DiscoveryFragment;
 import com.personlife.view.fragment.HomeFragment;
@@ -257,6 +258,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 					null);
 			break;
 		case R.id.img_right:
+			Utils.start_Activity(MainActivity.this, AppSearchActivity.class, null);
 			break;
 		}
 	}

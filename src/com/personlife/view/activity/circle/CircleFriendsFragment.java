@@ -9,8 +9,8 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,12 +27,14 @@ public class CircleFriendsFragment extends Fragment {
 	ListView lv;
 	List<Shuoshuo> mlist;
 	ShuoshuoAdapter mAdapter;
-	Boolean isLoad=false;
+	Boolean isLoad = false;
+
 	public CircleFriendsFragment(List<Shuoshuo> list) {
 		// TODO Auto-generated constructor stub
 		this.mlist = list;
-//		initView();
+		// initView();
 	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,30 +47,32 @@ public class CircleFriendsFragment extends Fragment {
 		initView();
 		return layout;
 	}
-	
-	public Boolean getIsLoad(){
+
+	public Boolean getIsLoad() {
 		return isLoad;
 	}
-	
+
 	@Override
 	public void onStart() {
 		// TODO Auto-generated method stub
 		Log.i("listview getview", "circle firends frigment onstart");
 		super.onStart();
 	}
-	
-	public void updateData(List<Shuoshuo> list){
+
+	public void updateData(List<Shuoshuo> list) {
 		mAdapter.setData(list);
 		mAdapter.notifyDataSetChanged();
 	}
-	
-	public int getListViewLayoutParams(){
-		if(lv==null)
+
+	public int getListViewLayoutParams() {
+		if (lv == null)
 			return 0;
-		int listViewHeight = ListViewUtils.setListViewHeightBasedOnChildren1(lv);
+		int listViewHeight = ListViewUtils
+				.setListViewHeightBasedOnChildren1(lv);
 		Log.i("listview height", String.valueOf(listViewHeight));
 		return listViewHeight;
 	}
+
 	public void initData() {
 
 	}
@@ -124,14 +128,41 @@ public class CircleFriendsFragment extends Fragment {
 						.findViewById(R.id.tv_shuoshuo_content);
 				holder.apps = (HorizontialListView) convertView
 						.findViewById(R.id.hlv_shuoshuo_apps);
+				holder.comment = (ImageView) convertView
+						.findViewById(R.id.iv_shuoshuo_pinglun);
+				holder.praise = (ImageView) convertView
+						.findViewById(R.id.iv_shuoshuo_dianzan);
+				holder.more = (ImageView) convertView
+						.findViewById(R.id.iv_shuoshuo_more);
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
 			holder.apps.setAdapter(mALikes);
-			// ImageLoaderUtils.displayAppIcon("https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/5136becf77e9cfc440849e0b694fdd6e_121_121.jpg",
-			// holder.icon);
-			Log.i("listview getview", "circle firends frigment"+String.valueOf(mlist.size()));
+			holder.praise.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+			holder.comment.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+			holder.more.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 			return convertView;
 		}
 
@@ -146,11 +177,12 @@ public class CircleFriendsFragment extends Fragment {
 			TextView status;
 			TextView content;
 			HorizontialListView apps;
+			ImageView comment, praise, more;
 		}
 	}
 
 	private static String[] urls = new String[] { "Text #1", "Text #1",
-			"Text #1", "Text #1", "Text #1", "Text #1" };
+			"Text #1", "Text #1" };
 
 	private BaseAdapter mALikes = new BaseAdapter() {
 
@@ -173,13 +205,15 @@ public class CircleFriendsFragment extends Fragment {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View retval = LayoutInflater.from(parent.getContext()).inflate(
 					R.layout.layout_item_like, null);
-			ImageView appicon = (ImageView)retval.findViewById(R.id.iv_item_icon);
+			ImageView appicon = (ImageView) retval
+					.findViewById(R.id.iv_item_icon);
 			TextView appname = (TextView) retval
 					.findViewById(R.id.tv_item_name);
 			appname.setVisibility(View.GONE);
-			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(appicon.getLayoutParams());  
-			lp.setMargins(0, 20, 0, 0);  
-			appicon.setLayoutParams(lp);  
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+					appicon.getLayoutParams());
+			lp.setMargins(0, 35, 0, 0);
+			appicon.setLayoutParams(lp);
 			return retval;
 		}
 	};
