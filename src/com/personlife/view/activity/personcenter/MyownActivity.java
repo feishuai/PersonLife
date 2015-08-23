@@ -137,13 +137,13 @@ public class MyownActivity extends Activity implements
 					public void jsonSuccess(JSONObject resp) {
 						try {
 							if (resp.get("flag").equals(0)) {
-								Toast.makeText(MyownActivity.this,
-										"修改信息失败", Toast.LENGTH_SHORT)
-										.show();
+//								Toast.makeText(MyownActivity.this,
+//										"修改信息失败", Toast.LENGTH_SHORT)
+//										.show();
 							}else{
-								Toast.makeText(MyownActivity.this,
-										"修改信息成功", Toast.LENGTH_SHORT)
-										.show();
+//								Toast.makeText(MyownActivity.this,
+//										"修改信息成功", Toast.LENGTH_SHORT)
+//										.show();
 							}
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
@@ -154,9 +154,9 @@ public class MyownActivity extends Activity implements
 					@Override
 					public void jsonFail(JSONObject resp) {
 						// TODO Auto-generated method stub
-						Toast.makeText(MyownActivity.this,
-								"Fail修改信息失败", Toast.LENGTH_SHORT)
-								.show();
+//						Toast.makeText(MyownActivity.this,
+//								"Fail修改信息失败", Toast.LENGTH_SHORT)
+//								.show();
 					}
 				});
 		

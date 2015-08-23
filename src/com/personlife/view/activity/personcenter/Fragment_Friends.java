@@ -183,6 +183,7 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 		UserFriend user = FriendsUtils.userFriends.get(arg2 - 1);
 		if (user != null) {
 			 Intent intent = new Intent(getActivity(),UserDetail.class);
+			 intent.putExtra("fromwhere", "friend");
 			 intent.putExtra("phone", user.getPhone());
 			 getActivity().startActivity(intent);
 //			 getActivity().overridePendingTransition(R.anim.push_left_in,

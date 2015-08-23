@@ -16,10 +16,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="8.0dip"
-                android:background="@color/black2" />
+            
 
             <RelativeLayout
                 android:id="@+id/view_user"
