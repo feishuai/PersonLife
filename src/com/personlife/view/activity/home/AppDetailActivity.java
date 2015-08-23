@@ -144,8 +144,8 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 							JSONArray jsoncomments = resp
 									.getJSONArray("comments");
 							List<Comment> comments = new ArrayList<Comment>();
-							Comment comment = new Comment();
 							for (int i = 0; i < jsoncomments.length(); i++) {
+								Comment comment = new Comment();
 								JSONObject jsoncomment = jsoncomments
 										.getJSONObject(i);
 								comment.setComments(jsoncomment

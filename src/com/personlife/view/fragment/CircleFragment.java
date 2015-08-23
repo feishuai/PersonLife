@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -17,8 +16,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,20 +25,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.personlifep.R;
-import com.personlife.adapter.AppListAdapter;
 import com.personlife.adapter.ViewPagerTabAdapter;
 import com.personlife.bean.App;
+import com.personlife.bean.Reply;
 import com.personlife.bean.Shuoshuo;
+import com.personlife.bean.Star;
 import com.personlife.utils.SystemUtils;
-import com.personlife.utils.Utils;
-import com.personlife.view.activity.circle.CircleMyAppsFragment;
 import com.personlife.view.activity.circle.CircleFriendsFragment;
-import com.personlife.view.activity.home.AppSearchActivity;
-import com.personlife.view.activity.home.ClassificationActivity;
-import com.personlife.view.fragment.HomeFragment.KindsAdapter;
-import com.personlife.widget.CircleImageView;
+import com.personlife.view.activity.circle.CircleMyAppsFragment;
 import com.personlife.widget.ClearEditText;
-import com.personlife.widget.MyListView;
 import com.personlife.widget.PagerSlidingTabStrip;
 
 public class CircleFragment extends Fragment implements OnClickListener {
@@ -120,10 +114,29 @@ public class CircleFragment extends Fragment implements OnClickListener {
 		fenxiangcounts.setVisibility(View.VISIBLE);
 
 		List<Shuoshuo> shuoshuos = new ArrayList<Shuoshuo>();
-		shuoshuos.add(new Shuoshuo());
-		shuoshuos.add(new Shuoshuo());
-		shuoshuos.add(new Shuoshuo());
-
+		Shuoshuo shuoshuo = new Shuoshuo();
+		List<App> appsshuoshuo = new ArrayList<App>();
+		appsshuoshuo.add(new App());
+		shuoshuo.setApps(appsshuoshuo);
+		List<Star> starsshuoshuo = new ArrayList<Star>();
+		Star starshuoshuo = new Star();
+		starshuoshuo.setPhone("111");
+		starshuoshuo.setNickname("飞帅");
+		starsshuoshuo.add(starshuoshuo);
+		starsshuoshuo.add(starshuoshuo);
+		shuoshuo.setStars(starsshuoshuo);
+		List<Reply> repliesshuoshuo = new ArrayList<Reply>();
+		Reply reply = new Reply();
+		reply.setContent("什么东西");
+		reply.setFromnickname("飞帅");
+		reply.setTonickname("威少");
+		repliesshuoshuo.add(reply);
+		repliesshuoshuo.add(reply);
+		repliesshuoshuo.add(reply);
+		shuoshuo.setReplies(repliesshuoshuo);
+		shuoshuos.add(shuoshuo);
+		shuoshuos.add(shuoshuo);
+		shuoshuos.add(shuoshuo);
 		friendsfragment = new CircleFriendsFragment(shuoshuos);
 
 		List<App> apps = new ArrayList<App>();

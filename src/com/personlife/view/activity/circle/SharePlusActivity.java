@@ -3,10 +3,11 @@ package com.personlife.view.activity.circle;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,11 +23,14 @@ import android.widget.TextView;
 
 import com.example.personlifep.R;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.loopj.android.http.RequestParams;
 import com.personlife.bean.App;
-import com.personlife.bean.User;
+import com.personlife.net.BaseAsyncHttp;
+import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ComplexPreferences;
 import com.personlife.utils.Constants;
 import com.personlife.utils.DrawableStringUtils;
+import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.Utils;
 
 public class SharePlusActivity extends Activity implements OnClickListener {
@@ -39,6 +43,7 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 	String sharekinds[] = { "下载", "分享", "收藏" };
 	String[] ranges = { "所有人可见", "仅好友可见", "仅自己可见" };
 	int selectedkind = 0;
+	int selectedRange = 0;
 	List<App>selectedApps ;
 	App defaultapp;
 	AppIconAdapter appsAdapter;
@@ -75,7 +80,7 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 		
 		selectedApps = new ArrayList<App>();
 		defaultapp = new App();
-		defaultapp.setDrawableString(DrawableStringUtils.drawableToString(getResources().getDrawable(R.drawable.fabiaofenxiang)));
+		defaultapp.setDrawableString(DrawableStringUtils.drawableToString(getResources().getDrawable(R.drawable.fabiaofenxiang1)));
 		selectedApps.add(defaultapp);
 		
 		appsAdapter = new AppIconAdapter(getApplicationContext(), selectedApps);
@@ -90,7 +95,42 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 			finish();
 			break;
 		case R.id.txt_save:
+			String content = etContent.getText().toString();
+			if(content.length()<5){
+				Utils.showShortToast(getApplicationContext(), "请至少输入5个字");
+				return ;
+			}
+			if(selectedApps.size()<2){
+				Utils.showShortToast(getApplicationContext(), "请至少选择1个要分享的应用");
+				return ;
+			}
+			
+			
+			RequestParams params = new RequestParams();
+			params.add("phone", PersonInfoLocal.getPhone());
+			params.add("content", content);
+			params.add("kind", sharekinds[selectedkind]);
+			params.add("area", ranges[selectedRange]);
+			for (int i = 0; i < selectedApps.size(); i++) {
+//				params.add("apps["+i+"][id]", String.valueOf(selectedApps.get(i).getId())); //getId为空
+				params.add("apps["+i+"][id]", String.valueOf(i+1));
+			}
+			BaseAsyncHttp.postReq(getApplicationContext(), "/message/send", params,
+					new JSONObjectHttpResponseHandler() {
 
+						@Override
+						public void jsonSuccess(JSONObject resp) {
+							// TODO Auto-generated method stub
+							Utils.showShortToast(getApplicationContext(), "发表分享成功");
+							finish();
+						}
+
+						@Override
+						public void jsonFail(JSONObject resp) {
+							// TODO Auto-generated method stub
+							Utils.showShortToast(getApplicationContext(), "网络故障，发表分享失败");
+						}
+					});
 			break;
 		case R.id.tv_shareplus_range:
 			Intent intent = new Intent(SharePlusActivity.this, ShareRangeActivity.class);
@@ -133,8 +173,8 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 			 }
 			break;
 		case 2:
-			int selected = data.getIntExtra("rangeIndex", 0);
-			tvRange.setText(ranges[selected]);
+			selectedRange = data.getIntExtra("rangeIndex", 0);
+			tvRange.setText(ranges[selectedRange]);
 		default:
 			break;
 		}

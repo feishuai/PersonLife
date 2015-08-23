@@ -1,14 +1,27 @@
 package com.personlife.view.activity.circle;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 
 import com.example.personlifep.R;
 import com.example.personlifep.R.layout;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.loopj.android.http.RequestParams;
+import com.personlife.adapter.AppsAdapter;
+import com.personlife.bean.App;
+import com.personlife.net.BaseAsyncHttp;
+import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ComplexPreferences;
 import com.personlife.utils.Constants;
+import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.Utils;
 import com.personlife.view.activity.discovery.GuessActivity;
 import com.personlife.view.activity.home.AllDownloadActivity;
@@ -18,7 +31,11 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
 import android.view.Gravity;
+
+import android.util.Log;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +53,12 @@ public class ShareAppListActivity extends Activity implements OnClickListener {
 	private Button mBack;
 	private Button downloadButton;// 一键下载 按钮
 	private ImageButton btnShare, btnCollect;// 分享按钮
+
+	MyListView lvApps;
+	List<App> apps;
+	AppsAdapter appsadapter;
+	int msgid;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +85,18 @@ public class ShareAppListActivity extends Activity implements OnClickListener {
 		downloadButton.setCompoundDrawables(xiazai, null, null, null);
 		downloadButton.setTextColor(getResources()
 				.getColorStateList(R.color.bg));
+
+
+		msgid = getIntent().getIntExtra("msgid", 1);
+		lvApps = (MyListView) findViewById(R.id.lv_tuijian_apps);
+		apps = new ArrayList<App>();
+		apps = ComplexPreferences.getObject(getApplicationContext(),
+				Constants.ShareAllDownloadApps,
+				new TypeReference<ArrayList<App>>() {
+				});
+		appsadapter = new AppsAdapter(getApplicationContext(), apps);
+		lvApps.setAdapter(appsadapter);
+
 	}
 
 	@Override
@@ -74,10 +109,16 @@ public class ShareAppListActivity extends Activity implements OnClickListener {
 		case R.id.txt_download:
 			// ComplexPreferences.putObject(getApplicationContext(),
 			// Constants.ShareAllDownloadApps, mList);
+
 			// Utils.start_Activity(GuessActivity.this,
 			// AllDownloadActivity.class,
 			// new BasicNameValuePair("key",
 			// Constants.ShareAllDownloadApps));
+
+			Utils.start_Activity(ShareAppListActivity.this,
+					AllDownloadActivity.class, new BasicNameValuePair("key",
+							Constants.ShareAllDownloadApps));
+
 			break;
 		case R.id.imgbtn_share:
 			Dialog dialog = new ShareDialog(ShareAppListActivity.this);
@@ -137,6 +178,31 @@ public class ShareAppListActivity extends Activity implements OnClickListener {
 
 			dialog.show();
 		case R.id.imgbtn_collect:
+			RequestParams params = new RequestParams();
+			params.add("phone", PersonInfoLocal.getPhone());
+			params.add("msg", String.valueOf(msgid));
+			BaseAsyncHttp.postReq(getApplicationContext(), "/collect/set-msg",
+					params, new JSONObjectHttpResponseHandler() {
+
+						@Override
+						public void jsonSuccess(JSONObject resp) {
+							// TODO Auto-generated method stub
+							int flag = resp.optInt("flag");
+							if (flag == 1)
+								Utils.showShortToast(getApplicationContext(),
+										"收藏成功");
+							else
+								Utils.showShortToast(getApplicationContext(),
+										"已收藏");
+						}
+
+						@Override
+						public void jsonFail(JSONObject resp) {
+							// TODO Auto-generated method stub
+							Utils.showShortToast(getApplicationContext(),
+									Constants.OnFailure);
+						}
+					});
 			break;
 		}
 	}

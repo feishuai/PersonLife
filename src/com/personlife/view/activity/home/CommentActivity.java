@@ -150,7 +150,7 @@ public class CommentActivity extends Activity implements OnClickListener {
 			time.setText(Utils.TimeStamp2Date(lcomments.get(position)
 					.getCreated_at()));
 			rates.setRating(lcomments.get(position).getCommentstars());
-			ImageLoaderUtils.displayAppIcon(lcomments.get(position)
+			ImageLoaderUtils.displayImageView(lcomments.get(position)
 					.getUserthumb(), icon);
 			return retval;
 		}
