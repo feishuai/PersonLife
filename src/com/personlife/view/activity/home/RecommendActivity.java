@@ -21,6 +21,7 @@ import com.loopj.android.http.RequestParams;
 import com.personlife.adapter.AppsAdapter;
 import com.personlife.bean.App;
 import com.personlife.net.BaseAsyncHttp;
+import com.personlife.net.JSONArrayHttpResponseHandler;
 import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.Constants;
 import com.personlife.widget.ClearEditText;
@@ -55,19 +56,19 @@ public class RecommendActivity extends Activity implements OnClickListener {
 		appsadapter = new AppsAdapter(getApplicationContext(), apps);
 		lvApps.setAdapter(appsadapter);
 		kind = getIntent().getStringExtra("kind");
+		
 		RequestParams params = new RequestParams();
-		params.add("kind", kind);
-		BaseAsyncHttp.postReq(getApplicationContext(), "/app/kind", params,
-				new JSONObjectHttpResponseHandler() {
+		params.add("tag", kind);
+		BaseAsyncHttp.postReq(getApplicationContext(), "/myapp/tag", params,
+				new JSONArrayHttpResponseHandler() {
 
 					@Override
-					public void jsonSuccess(JSONObject resp) {
+					public void jsonSuccess(JSONArray resp) {
 						// TODO Auto-generated method stub
 						try {
-							JSONArray jsonapps = resp.getJSONArray("item");
-							for (int i = 0; i < jsonapps.length(); i++) {
+							for (int i = 0; i < resp.length(); i++) {
 								App app = new App();
-								JSONObject jsonapp = jsonapps.getJSONObject(i);
+								JSONObject jsonapp = resp.getJSONObject(i);
 								app.setIcon(jsonapp.getString("icon"));
 								app.setSize(jsonapp.getString("size"));
 								app.setDowloadcount(jsonapp
@@ -91,7 +92,7 @@ public class RecommendActivity extends Activity implements OnClickListener {
 					}
 
 					@Override
-					public void jsonFail(JSONObject resp) {
+					public void jsonFail(JSONArray resp) {
 						// TODO Auto-generated method stub
 
 					}

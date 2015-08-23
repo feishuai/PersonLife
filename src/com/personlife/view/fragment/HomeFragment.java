@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.personlifep.R;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.loopj.android.http.RequestParams;
 import com.personlife.adapter.AppListAdapter;
 import com.personlife.adapter.AppsAdapter;
@@ -97,6 +98,16 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		kindlist = new ArrayList<String>();
 		apps = new ArrayList<App>();
 		ka = new KindsApps();
+		if (ComplexPreferences.getObject(getActivity(), "tags",
+				new TypeReference<ArrayList<String>>() {
+				}) == null) {
+			kindlist.add("清晨");
+			kindlist.add("午后");
+			ComplexPreferences.putObject(getActivity(), "tags", kindlist);
+		} else
+			kindlist = ComplexPreferences.getObject(getActivity(), "tags",
+					new TypeReference<ArrayList<String>>() {
+					});
 		userApps = SystemUtils.getUserApps(getActivity()).subList(0, 2);
 		apps.add(new App("网易云音乐", "https://www.baidu.com"));
 		apps.add(new App("网易云音乐", "https://www.baidu.com"));
@@ -113,34 +124,34 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		ka.setUserapps(kindsapps);
 		kindsAdapter = new KindsAdapter(getActivity(), ka);
 		mLvApps.setAdapter(kindsAdapter);
-
-		BaseAsyncHttp.postReq(getActivity(), "/app/allkind", null,
-				new JSONArrayHttpResponseHandler() {
-
-					@Override
-					public void jsonSuccess(JSONArray resp) {
-						// TODO Auto-generated method stub
-						kindlist.clear();
-						for (int i = 0; i < resp.length(); i++) {
-							try {
-								kindlist.add(resp.getJSONObject(i).getString(
-										"kind"));
-							} catch (JSONException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
-						getAllKindsApps();
-					}
-
-					@Override
-					public void jsonFail(JSONArray resp) {
-						// TODO Auto-generated method stub
-						return;
-					}
-				});
-
-		Log.i("kinds", String.valueOf(kinds.size()));// 3
+		getAllKindsApps();
+		// BaseAsyncHttp.postReq(getActivity(), "/app/allkind", null,
+		// new JSONArrayHttpResponseHandler() {
+		//
+		// @Override
+		// public void jsonSuccess(JSONArray resp) {
+		// // TODO Auto-generated method stub
+		// kindlist.clear();
+		// for (int i = 0; i < resp.length(); i++) {
+		// try {
+		// kindlist.add(resp.getJSONObject(i).getString(
+		// "kind"));
+		// } catch (JSONException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// }
+		// getAllKindsApps();
+		// }
+		//
+		// @Override
+		// public void jsonFail(JSONArray resp) {
+		// // TODO Auto-generated method stub
+		// return;
+		// }
+		// });
+		//
+		// Log.i("kinds", String.valueOf(kinds.size()));// 3
 	}
 
 	protected void getAllKindsApps() {
@@ -150,20 +161,20 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		for (int i = 0; i < kindlist.size(); i++) {
 			final String kind = kindlist.get(i);
 			RequestParams params = new RequestParams();
-			params.add("kind", kind);
-			BaseAsyncHttp.postReq(getActivity(), "/app/kind", params,
-					new JSONObjectHttpResponseHandler() {
+			params.add("tag", kind);
+			// params.add("kind", kind);
+			// BaseAsyncHttp.postReq(getActivity(), "/app/kind", params,
+			BaseAsyncHttp.postReq(getActivity(), "/myapp/tag", params,
+					new JSONArrayHttpResponseHandler() {
 
 						@Override
-						public void jsonSuccess(JSONObject resp) {
+						public void jsonSuccess(JSONArray resp) {
 							// TODO Auto-generated method stub
 							List<App> applist = new ArrayList<App>();
 							try {
-								JSONArray jsonapps = resp.getJSONArray("item");
-								for (int i = 0; i < jsonapps.length(); i++) {
+								for (int i = 0; i < resp.length(); i++) {
 									App app = new App();
-									JSONObject jsonapp = jsonapps
-											.getJSONObject(i);
+									JSONObject jsonapp = resp.getJSONObject(i);
 									app.setIcon(jsonapp.getString("icon"));
 									app.setSize(jsonapp.getString("size"));
 									app.setDowloadcount(jsonapp
@@ -191,7 +202,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 						}
 
 						@Override
-						public void jsonFail(JSONObject resp) {
+						public void jsonFail(JSONArray resp) {
 							// TODO Auto-generated method stub
 
 						}
@@ -207,8 +218,25 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		ka.setUserapps(kindsapps);
 		kindsAdapter.setData(ka);
 		kindsAdapter.notifyDataSetChanged();
-		ComplexPreferences.putObject(getActivity(), Constants.HomeAllDownloadApps,
-				kindsapps.get(0));
+		ComplexPreferences.putObject(getActivity(),
+				Constants.HomeAllDownloadApps, kindsapps.get(0));
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		Log.i("resultCode", String.valueOf(resultCode));
+		switch (resultCode) {
+		case 1:
+			kindlist = ComplexPreferences.getObject(getActivity(), "tags",
+					new TypeReference<ArrayList<String>>() {
+					});
+			getAllKindsApps();
+			break;
+		case 2:
+		default:
+			break;
+		}
 	}
 
 	@Override
@@ -220,10 +248,9 @@ public class HomeFragment extends Fragment implements OnClickListener {
 			startActivity(intent);
 			break;
 		case R.id.btn_home_class:
-			Utils.start_Activity(getActivity(), ClassificationActivity.class,
-					null);
-			// Utils.start_Activity(getActivity(), RecommendActivity.class,
-			// null);
+			Intent intentclass = new Intent(getActivity(),
+					ClassificationActivity.class);
+			startActivityForResult(intentclass, 1);
 			break;
 		default:
 			break;

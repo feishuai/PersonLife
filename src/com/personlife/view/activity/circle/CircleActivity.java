@@ -141,6 +141,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 										.getInt("created_at"));
 								shuoshuo.setArea(jsonbasic.getString("area"));
 								shuoshuo.setKind(jsonbasic.getString("kind"));
+								shuoshuo.setMsgid(jsonbasic.getInt("id"));
 								JSONArray jsonapps = jsonshuoshuo
 										.getJSONArray("apps");
 								List<App> shuoshuoapps = new ArrayList<App>();
@@ -205,6 +206,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 							e.printStackTrace();
 						}
 					}
+
 					@Override
 					public void jsonFail(JSONObject resp) {
 						// TODO Auto-generated method stub
@@ -275,12 +277,12 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 							appInfo.setDownloadPath(Constants.DownloadPath
 									+ appInfo.getName() + ".apk");
 							apps.add(appInfo);
-							apps.add(appInfo);
-							apps.add(appInfo);
-							apps.add(appInfo);
-							apps.add(appInfo);
-							apps.add(appInfo);
-							apps.add(appInfo);
+							// apps.add(appInfo);
+							// apps.add(appInfo);
+							// apps.add(appInfo);
+							// apps.add(appInfo);
+							// apps.add(appInfo);
+							// apps.add(appInfo);
 						}
 						appsfragment.setData(apps);
 					}
@@ -328,7 +330,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 				mHandler.sendMessage(message);
 			}
 		});
-		// thread.start();
+		thread.start();
 
 		tabs.setOnPageChangeListener(new OnPageChangeListener() {
 

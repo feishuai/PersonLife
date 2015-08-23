@@ -156,14 +156,13 @@ public class CircleFriendsFragment extends Fragment {
 		// 我觉得这里是API的一个bug
 		// popupWindow.setBackgroundDrawable(getResources().getDrawable(
 		// R.drawable.selectmenu_bg_downward));
-		timer.schedule(new TimerTask() {
-			public void run() {
-				// 设置好参数之后再show
-				popupWindow.showAsDropDown(view);
-			}
-		},
-
-		998);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		popupWindow.showAsDropDown(view);
 	}
 
 	class ShuoshuoAdapter extends BaseAdapter {
@@ -248,8 +247,9 @@ public class CircleFriendsFragment extends Fragment {
 					break;
 				}
 			}
-			LinkBuilder.on(holder.person).addLinks(getStarsLinks(stars))
-					.build();
+			if (stars.size() > 0)
+				LinkBuilder.on(holder.person).addLinks(getStarsLinks(stars))
+						.build();
 			holder.comments.setAdapter(new MyCommentsAdapter(mlist
 					.get(position).getReplies()));
 			if (mlist.get(position).getApps().size() > 4)
@@ -270,7 +270,9 @@ public class CircleFriendsFragment extends Fragment {
 					request.add("msgid",
 							String.valueOf(mlist.get(position).getMsgid()));
 					if (holder.isPraised) {
-						if (text.equals(nickname)) {
+						holder.praise.setImageDrawable(getResources()
+								.getDrawable(R.drawable.dianzan1));
+						if (text.equals(nickname + " ")) {
 							holder.person.setText("");
 							holder.person.setVisibility(View.GONE);
 							return;
@@ -279,6 +281,7 @@ public class CircleFriendsFragment extends Fragment {
 							text = text.replace(nickname + ", ", "");
 						else
 							text = text.replace(", " + nickname, "");
+						holder.person.setText(text);
 						BaseAsyncHttp.postReq(getActivity(), "/message/zan",
 								request, new JSONObjectHttpResponseHandler() {
 
@@ -294,9 +297,11 @@ public class CircleFriendsFragment extends Fragment {
 									}
 								});
 					} else {
+						holder.praise.setImageDrawable(getResources()
+								.getDrawable(R.drawable.dianzan2));
 						if (holder.person.getVisibility() == View.GONE) {
 							holder.person.setVisibility(View.VISIBLE);
-							holder.person.setText(nickname);
+							holder.person.setText(nickname + " ");
 						} else
 							holder.person.setText(text + ", " + nickname);
 						BaseAsyncHttp.postReq(getActivity(),
@@ -336,6 +341,7 @@ public class CircleFriendsFragment extends Fragment {
 					Intent intent = new Intent(context,
 							ShareAppListActivity.class);
 					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					intent.putExtra("msgid", mlist.get(position).getMsgid());
 					context.startActivity(intent);
 				}
 			});
