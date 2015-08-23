@@ -52,7 +52,7 @@ public class SearchUser extends Activity implements OnClickListener {
 	private MyListView mListView;
 	private List<User> users;
 	private String telphone;
-
+	private int isFriend=0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -94,9 +94,10 @@ public class SearchUser extends Activity implements OnClickListener {
 					mListView.setAdapter(new UserAdapter(SearchUser.this, users));
 					// 添加搜索
 					RequestParams params = new RequestParams();
-					params.put("phone", v.getText().toString());
+					params.put("myphone", telphone);
+					params.put("fphone", v.getText().toString());
 					
-					BaseAsyncHttp.postReq(getApplicationContext(),"/users/getinfo", params,
+					BaseAsyncHttp.postReq(getApplicationContext(),"/users/search", params,
 							new JSONObjectHttpResponseHandler() {
 
 								@Override
@@ -116,6 +117,7 @@ public class SearchUser extends Activity implements OnClickListener {
 										user.setJob(resp.optString("job"));
 										user.setHobby(resp.optString("hobby"));
 										user.setSignature(resp.optString("signature"));
+										isFriend=resp.optInt("isfriend");
 										users.add(user);
 										mListView.setAdapter(new UserAdapter(SearchUser.this, users));
 									}
@@ -140,14 +142,20 @@ public class SearchUser extends Activity implements OnClickListener {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
-				UserFriend user = FriendsUtils.userFriends.get(position);
+				User user = users.get(position);
 				if (user != null) {
 					 Intent intent = new Intent(SearchUser.this,UserDetail.class);
-					 intent.putExtra("phone", user.getPhone());
+					 intent.putExtra("nickname", user.getUserName());
+					 intent.putExtra("phone", user.getTelephone());
 					 intent.putExtra("mytelphone", telphone);
+					 intent.putExtra("thumb", user.getHeadUrl());
+					 intent.putExtra("gender", user.getSex());
+					 intent.putExtra("area", user.getLocation());
+					 intent.putExtra("signature", user.getSignature());
+					 intent.putExtra("isFriend", isFriend);
+					 intent.putExtra("fromwhere", "search");
 					 startActivity(intent);
-//					 getActivity().overridePendingTransition(R.anim.push_left_in,
-//					 R.anim.push_left_out);
+
 				}
 			}
 		});
