@@ -192,9 +192,6 @@ public class CollectionAppsFragment extends Fragment {
 
 			// 设置state的状态为未选中
 			holder.state.setChecked(false);
-			Log.i("check " + position + "state",
-					String.valueOf(holder.state.isChecked()));
-
 			convertView.setOnClickListener(new OnClickListener() {
 
 				@Override

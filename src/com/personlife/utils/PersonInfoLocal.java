@@ -12,10 +12,16 @@ import android.content.SharedPreferences;
  */
 public class PersonInfoLocal {
 	private static String phone;
+	private static String nickname;
 	public static String getPhone(){
 		if(phone!=null)
 			return phone;
 		return "18268028693";
+	}
+	public static String getNickname(){
+		if(nickname!=null)
+			return nickname;
+		return "小明";
 	}
 	public static void storeRegisterTel(Context ctx,String phone){
 		SharedPreferences.Editor editor = ctx.getSharedPreferences(phone, ctx.MODE_PRIVATE).edit();

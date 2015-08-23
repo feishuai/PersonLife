@@ -2,21 +2,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="@color/white">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white" >
+         >
+
+        <CheckBox
+            android:id="@+id/cb_shuoshuo_state"
+            style="@style/CustomCheckboxTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:visibility="gone" />
 
         <com.personlife.widget.CircleImageView
             android:id="@+id/iv_shuoshuo_icon"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/cb_shuoshuo_state"
             android:src="@drawable/touxiang" />
 
         <TextView
@@ -60,7 +72,9 @@
             android:layout_alignBaseline="@+id/tv_shuoshuo_status"
             android:layout_alignBottom="@+id/tv_shuoshuo_status"
             android:layout_alignLeft="@+id/tv_shuoshuo_status"
-            android:text="           我今天收藏了一些app，感觉还不错哦~"
+            android:text="           我今天收藏了一些app，感觉还不错哦~我今天收藏了一些app，感觉还不错哦~"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textColor="@color/black"
             android:textSize="16dp" />
 
@@ -72,7 +86,8 @@
             android:layout_below="@+id/tv_shuoshuo_content"
             android:layout_marginRight="10dp"
             android:layout_marginTop="2dp"
-            android:background="@drawable/fenxiangbg" >
+            android:background="@drawable/fenxiangbg"
+            android:layout_marginBottom="2dp" >
         </com.personlife.widget.HorizontialListView>
 
         <ImageView
@@ -113,4 +128,36 @@
             android:src="@drawable/dianzan1" />
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/tv_shuoshuo_praise"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/bg"
+        android:textSize="16dp"
+        android:text="TextView" 
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"/>
+
+    <com.personlife.widget.MyListView
+        android:id="@+id/lv_shuoshuo_comment"
+        android:layout_width="match_parent"
+        android:dividerHeight="2dp"
+        android:divider="@color/transparent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp" >
+    </com.personlife.widget.MyListView>
+
+     <com.personlife.widget.ClearEditText
+            android:id="@+id/et_shuoshuo_comment"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/sousuokuang"
+            android:focusable="false"
+            android:hint="我要评论"
+            android:paddingLeft="10dp"
+            android:singleLine="true"
+            android:textSize="16dp" />
 </LinearLayout>

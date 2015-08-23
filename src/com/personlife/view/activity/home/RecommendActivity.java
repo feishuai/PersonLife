@@ -27,7 +27,7 @@ import com.personlife.widget.ClearEditText;
 import com.personlife.widget.MyListView;
 
 public class RecommendActivity extends Activity implements OnClickListener {
-	private MyListView lvApps;
+	MyListView lvApps;
 	Button mBack;
 	TextView mTitle;
 	ClearEditText search;
@@ -53,13 +53,7 @@ public class RecommendActivity extends Activity implements OnClickListener {
 	private void initData() {
 		apps = new ArrayList<App>();
 		appsadapter = new AppsAdapter(getApplicationContext(), apps);
-		apps.add(new App());
-		apps.add(new App());
-		apps.add(new App());
-		apps.add(new App());
-		apps.add(new App());
 		lvApps.setAdapter(appsadapter);
-		apps.clear();
 		kind = getIntent().getStringExtra("kind");
 		RequestParams params = new RequestParams();
 		params.add("kind", kind);

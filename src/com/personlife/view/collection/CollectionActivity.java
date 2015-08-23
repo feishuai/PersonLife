@@ -26,8 +26,9 @@ import com.example.personlifep.R;
 import com.loopj.android.http.RequestParams;
 import com.personlife.adapter.ViewPagerTabAdapter;
 import com.personlife.bean.App;
+import com.personlife.bean.Reply;
+import com.personlife.bean.Shuoshuo;
 import com.personlife.bean.Star;
-import com.personlife.bean.User;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONArrayHttpResponseHandler;
 import com.personlife.net.JSONObjectHttpResponseHandler;
@@ -57,6 +58,7 @@ public class CollectionActivity extends FragmentActivity implements
 	CollectionStarsFragment starsfragment;
 	int lastTab = 0;
 	int currentTab = 0;
+	List<Shuoshuo> mShuoshuos;
 	List<App> mApps;
 	List<Star> mStars;
 	private String telphone;
@@ -79,7 +81,89 @@ public class CollectionActivity extends FragmentActivity implements
 		mDelete = (ImageView) findViewById(R.id.iv_collection_delete);
 		mDelete.setOnClickListener(this);
 
-		sharesfragment = new CollectionSharesFragment();
+		mShuoshuos = new ArrayList<Shuoshuo>();
+		sharesfragment = new CollectionSharesFragment(mShuoshuos);
+
+		RequestParams requestShuoshuo = new RequestParams();
+		requestShuoshuo.add("phone", PersonInfoLocal.getPhone());
+		BaseAsyncHttp.postReq(this, "/collect/get-msg", requestShuoshuo,
+				new JSONObjectHttpResponseHandler() {
+
+					@Override
+					public void jsonSuccess(JSONObject resp) {
+						// TODO Auto-generated method stub
+						try {
+							JSONArray jsonshuoshuos = resp.getJSONArray("item");
+							for (int i = 0; i < jsonshuoshuos.length(); i++) {
+								Shuoshuo shuoshuo = new Shuoshuo();
+								JSONObject jsonshuoshuo = jsonshuoshuos
+										.getJSONObject(i);
+								shuoshuo.setThumb(jsonshuoshuo
+										.getString("thumb"));
+								shuoshuo.setNickname(jsonshuoshuo
+										.getString("nickname"));
+								shuoshuo.setContent(jsonshuoshuo
+										.getString("content"));
+								shuoshuo.setCollecttime(jsonshuoshuo
+										.getInt("created_at"));
+								shuoshuo.setMsgid(jsonshuoshuo.getInt("msg"));
+								shuoshuo.setKind(jsonshuoshuo.getString("kind"));
+								shuoshuo.setPhone(jsonshuoshuo
+										.getString("phone"));
+								JSONArray jsonapps = jsonshuoshuo
+										.getJSONArray("apps");
+								List<App> shuoshuoapps = new ArrayList<App>();
+								for (int j = 0; j < jsonapps.length(); j++) {
+									App app = new App();
+									JSONObject jsonapp = jsonapps
+											.getJSONObject(j);
+									app.setIcon(jsonapp.getString("icon"));
+									app.setSize(jsonapp.getString("size"));
+									app.setDowloadcount(jsonapp
+											.getInt("downloadcount"));
+									app.setIntrodution(jsonapp
+											.getString("introduction"));
+									app.setName(jsonapp.getString("name"));
+									app.setId(jsonapp.getInt("id"));
+									app.setDownloadUrl(jsonapp
+											.getString("android_url"));
+									app.setProfile(jsonapp.getString("profile"));
+									app.setDownloadPath(Constants.DownloadPath
+											+ app.getName() + ".apk");
+									shuoshuoapps.add(app);
+								}
+								shuoshuo.setApps(shuoshuoapps);
+								JSONArray jsonreplies = jsonshuoshuo
+										.getJSONArray("replys");
+								List<Reply> shuoshuoreplies = new ArrayList<Reply>();
+								for (int k = 0; k < jsonreplies.length(); k++) {
+									Reply reply = new Reply();
+									JSONObject jsonreply = jsonreplies
+											.getJSONObject(k);
+									reply.setFromphone(jsonreply.getString("fromphone"));
+									reply.setFromnickname(jsonreply
+											.getString("fromnickname"));
+									reply.setTophone(jsonreply.getString("tophone"));
+									reply.setTonickname(jsonreply
+											.getString("tonickname"));
+									shuoshuoreplies.add(reply);
+								}
+								shuoshuo.setReplies(shuoshuoreplies);
+								mShuoshuos.add(shuoshuo);
+							}
+							sharesfragment.setShuoshuosList(mShuoshuos);
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+
+					@Override
+					public void jsonFail(JSONObject resp) {
+						// TODO Auto-generated method stub
+
+					}
+				});
 
 		mApps = new ArrayList<App>();
 		appsfragment = new CollectionAppsFragment(mApps);
@@ -109,7 +193,6 @@ public class CollectionActivity extends FragmentActivity implements
 								mApps.add(app);
 							}
 							appsfragment.setAppsList(mApps);
-							;
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -145,7 +228,6 @@ public class CollectionActivity extends FragmentActivity implements
 							star.setSignature(resp.optJSONObject(i).optString(
 									"signature"));
 							mStars.add(star);
-
 						}
 						starsfragment.setStarsList(mStars);
 					}
@@ -242,7 +324,7 @@ public class CollectionActivity extends FragmentActivity implements
 			layout_bottom.setVisibility(View.VISIBLE);
 			mEdit.setVisibility(View.GONE);
 			if (currentTab == 0) {
-
+				sharesfragment.setDeleteMode();
 			}
 
 			if (currentTab == 1) {
@@ -257,7 +339,7 @@ public class CollectionActivity extends FragmentActivity implements
 			layout_bottom.setVisibility(View.GONE);
 			mEdit.setVisibility(View.VISIBLE);
 			if (lastTab == 0) {
-
+				sharesfragment.setNormalMode();
 			}
 
 			if (lastTab == 1) {
