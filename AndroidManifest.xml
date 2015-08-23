@@ -99,14 +99,32 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-        <!-- 易信分享回调 -->
         <activity
-            android:name=".yxapi.YXEntryActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="true"
+            android:name="cn.sharesdk.framework.ShareSDKUIShell"
+            android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+        </activity>
+        <!-- share SDK 里面的组件 -->
+        <activity
+            android:name="cn.sharesdk.framework.AuthorizeActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+        </activity>
+        <activity
+            android:name="cn.sharesdk.onekeyshare.ShareAllGird"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name="cn.sharesdk.onekeyshare.SharePage"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name="com.personlife.view.activity.MainActivity"
             android:label="@string/app_name"
@@ -215,7 +233,6 @@
         <activity
             android:name="com.personlife.view.activity.LoginActivity"
             android:screenOrientation="portrait" >
-           
         </activity>
         <activity
             android:name="com.personlife.view.activity.RegisterActivity1"
@@ -278,9 +295,9 @@
         </activity>
         <activity
             android:name="com.personlife.view.activity.circle.ShareAppListActivity"
-            android:label="@string/title_activity_share_app_list" 
-            android:screenOrientation="portrait">
-             <intent-filter>
+            android:label="@string/title_activity_share_app_list"
+            android:screenOrientation="portrait" >
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
