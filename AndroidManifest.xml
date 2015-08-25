@@ -220,6 +220,10 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name="com.personlife.view.activity.personcenter.NewFriendsListActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.personlife.view.activity.LoginActivity"
             android:screenOrientation="portrait" >
 

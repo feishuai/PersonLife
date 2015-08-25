@@ -118,6 +118,7 @@ public class SearchUser extends Activity implements OnClickListener {
 										user.setHobby(resp.optString("hobby"));
 										user.setSignature(resp.optString("signature"));
 										isFriend=resp.optInt("isfriend");
+										Log.i("sdangmanm,vznlfawlkej",isFriend+"");
 										users.add(user);
 										mListView.setAdapter(new UserAdapter(SearchUser.this, users));
 									}

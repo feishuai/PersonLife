@@ -29,6 +29,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.personlifep.R;
 import com.loopj.android.http.RequestParams;
@@ -149,9 +150,7 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 					}
 				});
 
-		// Intent intent = new Intent(getActivity(), UpdateService.class);
-		// getActivity().startService(intent);
-		// }
+		
 	}
 	
 	private void setOnListener() {
@@ -169,8 +168,10 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 			Utils.start_Activity(getActivity(), SearchFriendActivity.class);
 			break;
 		case R.id.layout_addfriend:// 添加好友
-			// Utils.start_Activity(getActivity(),
-			// NewFriendsListActivity.class);
+			Intent intent=new Intent(getActivity(),NewFriendsListActivity.class);
+			intent.putExtra("telphone", telphone);
+			startActivity(intent);
+			
 			break;
 
 		default:

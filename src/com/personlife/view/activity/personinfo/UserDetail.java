@@ -7,12 +7,15 @@ import org.json.JSONObject;
 import com.example.personlifep.R;
 import com.loopj.android.http.RequestParams;
 import com.personlife.adapter.ContactAdapter;
+import com.personlife.adapter.UserAdapter;
+import com.personlife.bean.User;
 import com.personlife.bean.UserFriend;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ActivityCollector;
 import com.personlife.utils.FriendsUtils;
 import com.personlife.utils.ImageLoaderUtils;
+import com.personlife.view.activity.personcenter.SearchUser;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -48,7 +51,7 @@ public class UserDetail extends Activity implements OnClickListener {
 		if (where.equals("search")) {
 			initview();
 			setListener();
-			
+
 		}
 		if (where.equals("friend")) {
 			initviewfr();
@@ -103,6 +106,7 @@ public class UserDetail extends Activity implements OnClickListener {
 		btn_sendmsg = (Button) findViewById(R.id.btn_sendmsg);
 		btn_sendmsg.setTag("1");
 		btn_sendmsg.setText("查看主页");
+		btn_sendmsg.setVisibility(View.GONE);
 		tv_name = (TextView) findViewById(R.id.tv_name);
 
 	}
@@ -160,17 +164,26 @@ public class UserDetail extends Activity implements OnClickListener {
 			finish();
 			break;
 		case R.id.btn_sendmsg:
-			// if ("1".equals(v.getTag().toString())) {
-			// Intent intent = new Intent(this, ChatActivity.class);
-			// intent.putExtra(Constants.NAME, Name);
-			// intent.putExtra(Constants.TYPE, ChatActivity.CHATTYPE_SINGLE);
-			// intent.putExtra(Constants.User_ID, UserId);
-			// startActivity(intent);
-			// overridePendingTransition(R.anim.push_left_in,
-			// R.anim.push_left_out);
-			// } else {
-			// // TODO 添加好友
-			// }
+			RequestParams request = new RequestParams();
+			request.put("myphone", mytelphone);
+			request.put("fphone", phone);
+			BaseAsyncHttp.postReq(getApplicationContext(), "/friend/requestadd",
+					request, new JSONObjectHttpResponseHandler() {
+
+						@Override
+						public void jsonSuccess(JSONObject resp) {
+							// TODO Auto-generated method stub
+							Toast.makeText(UserDetail.this, "发送好友请求成功", Toast.LENGTH_SHORT).show();
+
+						}
+
+						@Override
+						public void jsonFail(JSONObject resp) {
+							// TODO Auto-generated method stub
+
+						}
+					});
+
 			break;
 		default:
 			break;
