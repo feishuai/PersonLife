@@ -32,6 +32,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.personlifep.R;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.loopj.android.http.RequestParams;
 import com.personlife.adapter.ViewPagerTabAdapter;
 import com.personlife.bean.App;
@@ -92,7 +93,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_circle);
-		phone = getIntent().getStringExtra("phone");
+		phone = getIntent().getStringExtra("starphone");
 		mBack = (Button) findViewById(R.id.txt_left);
 		mBack.setVisibility(View.VISIBLE);
 		mBack.setOnClickListener(this);
@@ -120,10 +121,12 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 				.getColorStateList(R.color.bg));
 
 		star = new Star();
-		star.setPhone(PersonInfoLocal.getPhone());
+		star.setPhone(phone);
 		final List<Shuoshuo> shuoshuos = new ArrayList<Shuoshuo>();
-		friendsfragment = new CircleFriendsFragment(shuoshuos);
-
+		friendsfragment = new CircleFriendsFragment(shuoshuos,
+				(Star)ComplexPreferences.getObject(getApplicationContext(), "user",
+						new TypeReference<Star>() {
+						}));
 		RequestParams request = new RequestParams();
 		request.add("phone", star.getPhone());
 		BaseAsyncHttp.postReq(getApplicationContext(), "/users/getinfo",

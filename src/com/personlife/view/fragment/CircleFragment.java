@@ -94,7 +94,6 @@ public class CircleFragment extends Fragment implements OnClickListener {
 			layout = ctx.getLayoutInflater().inflate(R.layout.fragment_circle,
 					null);
 			initView();
-			setOnListener();
 			initData();
 		} else {
 			ViewGroup parent = (ViewGroup) layout.getParent();
@@ -128,7 +127,7 @@ public class CircleFragment extends Fragment implements OnClickListener {
 		star = new Star();
 		star.setPhone(PersonInfoLocal.getPhone());
 		final List<Shuoshuo> shuoshuos = new ArrayList<Shuoshuo>();
-		friendsfragment = new CircleFriendsFragment(shuoshuos);
+		friendsfragment = new CircleFriendsFragment(shuoshuos,star);
 
 		RequestParams request = new RequestParams();
 		request.add("phone", star.getPhone());
@@ -146,6 +145,8 @@ public class CircleFragment extends Fragment implements OnClickListener {
 						star.setFamous(resp.optInt("famous"));
 						star.setSignature(resp.optString("signature"));
 						star.setFavour(resp.optInt("favour"));
+						ComplexPreferences.putObject(getActivity(), "user",
+								star);
 						updateFriendsCircle();
 					}
 
@@ -179,7 +180,7 @@ public class CircleFragment extends Fragment implements OnClickListener {
 			public void run() {
 				try {
 					Log.i("listview getview", "activity update thread");
-					while(!friendsfragment.getIsLoaded()){
+					while (!friendsfragment.getIsLoaded()) {
 						Thread.sleep(400);
 					}
 					Thread.sleep(500);
@@ -239,7 +240,7 @@ public class CircleFragment extends Fragment implements OnClickListener {
 		// TODO Auto-generated method stub
 		ImageLoaderUtils.displayImageView(star.getThumb(), staricon);
 		starname.setText(star.getNickname());
-		fenxiangcounts.setText("("+msgsize+")");
+		fenxiangcounts.setText("(" + msgsize + ")");
 		dianzancounts.setText("(" + star.getFavour() + ")");
 		signature.setText(star.getSignature());
 	}
@@ -344,9 +345,6 @@ public class CircleFragment extends Fragment implements OnClickListener {
 					}
 				});
 
-	}
-
-	public void setOnListener() {
 	}
 
 	public void initData() {

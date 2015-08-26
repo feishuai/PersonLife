@@ -198,7 +198,7 @@ public class CollectionStarsFragment extends Fragment {
 					if (!isDelete) {
 						Intent intent = new Intent(context,
 								CircleActivity.class);
-						intent.putExtra("phone", mList.get(position)
+						intent.putExtra("starphone", mList.get(position)
 								.getPhone());
 						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						context.startActivity(intent);

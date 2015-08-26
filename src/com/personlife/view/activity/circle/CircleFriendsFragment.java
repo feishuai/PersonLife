@@ -58,11 +58,13 @@ public class CircleFriendsFragment extends Fragment {
 	List<Shuoshuo> mlist;
 	ShuoshuoAdapter mAdapter;
 	Star star;
+	Star user;
 	Boolean isLoaded = false;
 
-	public CircleFriendsFragment(List<Shuoshuo> list) {
+	public CircleFriendsFragment(List<Shuoshuo> list, Star star) {
 		// TODO Auto-generated constructor stub
 		this.mlist = list;
+		this.star = star;
 		// initView();
 	}
 
@@ -72,20 +74,16 @@ public class CircleFriendsFragment extends Fragment {
 		layout = inflater.inflate(R.layout.fragment_circle_friends, container,
 				false);
 		mAdapter = new ShuoshuoAdapter(getActivity());
-		star = ComplexPreferences.getObject(getActivity(), "star",
-				new TypeReference<Star>() {
-				});
-		if (star == null)
-			star = new Star();
 		isLoaded = true;
 		initData();
 		initView();
 		return layout;
 	}
 
-	public Boolean getIsLoaded(){
+	public Boolean getIsLoaded() {
 		return isLoaded;
 	}
+
 	public void updateData(List<Shuoshuo> list) {
 		this.mlist = list;
 		if (mAdapter != null)
@@ -102,7 +100,9 @@ public class CircleFriendsFragment extends Fragment {
 	}
 
 	public void initData() {
-
+		user = ComplexPreferences.getObject(getActivity(), "user",
+				new TypeReference<Star>() {
+				});
 	}
 
 	public void initView() {
@@ -319,7 +319,7 @@ public class CircleFriendsFragment extends Fragment {
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					String text = holder.person.getText().toString();
-					String nickname = PersonInfoLocal.getNickname();
+					String nickname = star.getNickname();
 					RequestParams request = new RequestParams();
 					request.add("phone", PersonInfoLocal.getPhone());
 					request.add("msgid",

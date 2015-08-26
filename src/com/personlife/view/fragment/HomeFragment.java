@@ -1,8 +1,6 @@
 package com.personlife.view.fragment;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -32,12 +30,10 @@ import com.personlife.adapter.AppsAdapter;
 import com.personlife.bean.App;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONArrayHttpResponseHandler;
-import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ComplexPreferences;
 import com.personlife.utils.Constants;
 import com.personlife.utils.DrawableStringUtils;
 import com.personlife.utils.SystemUtils;
-import com.personlife.utils.Utils;
 import com.personlife.view.activity.home.AppSearchActivity;
 import com.personlife.view.activity.home.ClassificationActivity;
 import com.personlife.view.activity.home.RecommendActivity;
@@ -52,14 +48,10 @@ public class HomeFragment extends Fragment implements OnClickListener {
 	private View layout;
 	private MyListView mLvApps;
 	private AppListAdapter mAdapter;
-	private List<App> apps;
-	private List<String> kinds;
-	private KindsApps ka;
-	private List<List<App>> kindsapps;
-	private List<String> kindlist;
-	private List<App> downloadApps;
-	private List<App> userApps;
+	private List<App> userapps;
+	private List<String> taglist;
 	KindsAdapter kindsAdapter;
+	List<App> allapps;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -92,138 +84,30 @@ public class HomeFragment extends Fragment implements OnClickListener {
 	}
 
 	public void initData() {
-		downloadApps = new ArrayList<App>();
-		kindsapps = new ArrayList<List<App>>();
-		kinds = new ArrayList<String>();
-		kindlist = new ArrayList<String>();
-		apps = new ArrayList<App>();
-		ka = new KindsApps();
+		taglist = new ArrayList<String>();
+		allapps = new ArrayList<App>();
+		userapps = new ArrayList<App>();
 		if (ComplexPreferences.getObject(getActivity(), "tags",
 				new TypeReference<ArrayList<String>>() {
 				}) == null) {
-			kindlist.add("清晨");
-			kindlist.add("午后");
-			ComplexPreferences.putObject(getActivity(), "tags", kindlist);
+			taglist.add("清晨");
+			taglist.add("午后");
+			ComplexPreferences.putObject(getActivity(), "tags", taglist);
 		} else
-			kindlist = ComplexPreferences.getObject(getActivity(), "tags",
+			taglist = ComplexPreferences.getObject(getActivity(), "tags",
 					new TypeReference<ArrayList<String>>() {
 					});
-		userApps = SystemUtils.getUserApps(getActivity());
-		apps.add(new App("网易云音乐", "https://www.baidu.com"));
-		apps.add(new App("网易云音乐", "https://www.baidu.com"));
-		apps.add(new App("网易云音乐", "https://www.baidu.com"));
-		apps.add(new App());
-		kindsapps.add(apps);
-		kindsapps.add(apps);
-		kindsapps.add(apps);
-		kinds.add("清晨");
-		kinds.add("清晨");
-		kinds.add("清晨");
-		ka.setKinds(kinds);
-		ka.setKindsapps(kindsapps);
-		ka.setUserapps(kindsapps);
-		kindsAdapter = new KindsAdapter(getActivity(), ka);
+		userapps = SystemUtils.getUserApps(getActivity());
+
+		kindsAdapter = new KindsAdapter(getActivity(), taglist);
 		mLvApps.setAdapter(kindsAdapter);
-		getAllKindsApps();
-		// BaseAsyncHttp.postReq(getActivity(), "/app/allkind", null,
-		// new JSONArrayHttpResponseHandler() {
-		//
-		// @Override
-		// public void jsonSuccess(JSONArray resp) {
-		// // TODO Auto-generated method stub
-		// kindlist.clear();
-		// for (int i = 0; i < resp.length(); i++) {
-		// try {
-		// kindlist.add(resp.getJSONObject(i).getString(
-		// "kind"));
-		// } catch (JSONException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// }
-		// getAllKindsApps();
-		// }
-		//
-		// @Override
-		// public void jsonFail(JSONArray resp) {
-		// // TODO Auto-generated method stub
-		// return;
-		// }
-		// });
-		//
-		// Log.i("kinds", String.valueOf(kinds.size()));// 3
-	}
-
-	protected void getAllKindsApps() {
-		kindsapps.clear();
-		kinds.clear();
-		// TODO Auto-generated method stub
-		for (int i = 0; i < kindlist.size(); i++) {
-			final String kind = kindlist.get(i);
-			RequestParams params = new RequestParams();
-			params.add("tag", kind);
-			// params.add("kind", kind);
-			// BaseAsyncHttp.postReq(getActivity(), "/app/kind", params,
-			BaseAsyncHttp.postReq(getActivity(), "/myapp/tag", params,
-					new JSONArrayHttpResponseHandler() {
-
-						@Override
-						public void jsonSuccess(JSONArray resp) {
-							// TODO Auto-generated method stub
-							List<App> applist = new ArrayList<App>();
-							try {
-								for (int i = 0; i < resp.length(); i++) {
-									App app = new App();
-									JSONObject jsonapp = resp.getJSONObject(i);
-									app.setIcon(jsonapp.getString("icon"));
-									app.setSize(jsonapp.getString("size"));
-									app.setDowloadcount(jsonapp
-											.getInt("downloadcount"));
-									app.setIntrodution(jsonapp
-											.getString("introduction"));
-									app.setName(jsonapp.getString("name"));
-									app.setId(jsonapp.getInt("appid"));
-									app.setDownloadUrl(jsonapp
-											.getString("android_url"));
-									app.setProfile(jsonapp.getString("profile"));
-									app.setDownloadPath(Constants.DownloadPath
-											+ app.getName() + ".apk");
-									applist.add(app);
-								}
-								kinds.add(kind);
-								kindsapps.add(applist);
-								Log.i("kindsapps size is ",
-										String.valueOf(kindsapps.size()));
-								updateView();
-							} catch (JSONException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
-
-						@Override
-						public void jsonFail(JSONArray resp) {
-							// TODO Auto-generated method stub
-
-						}
-					});
-		}
+		updateView();
 	}
 
 	protected void updateView() {
 		// TODO Auto-generated method stub
-		ka.setKinds(kinds);
-		Log.i("updateview kindsapps size is", String.valueOf(kindsapps.size()));
-		ka.setKindsapps(kindsapps);
-		ka.setUserapps(kindsapps);
-		kindsAdapter.setData(ka);
+		kindsAdapter.setData(taglist);
 		kindsAdapter.notifyDataSetChanged();
-		List<App> allapps = new ArrayList<App>();
-		for (int i = 0; i < kindsapps.size(); i++) {
-			allapps.addAll(kindsapps.get(i));
-		}
-		ComplexPreferences.putObject(getActivity(),
-				Constants.HomeAllDownloadApps, allapps);
 	}
 
 	@Override
@@ -232,10 +116,10 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		Log.i("resultCode", String.valueOf(resultCode));
 		switch (resultCode) {
 		case 1:
-			kindlist = ComplexPreferences.getObject(getActivity(), "tags",
+			taglist = ComplexPreferences.getObject(getActivity(), "tags",
 					new TypeReference<ArrayList<String>>() {
 					});
-			getAllKindsApps();
+			updateView();
 			break;
 		case 2:
 		default:
@@ -264,16 +148,16 @@ public class HomeFragment extends Fragment implements OnClickListener {
 	class KindsAdapter extends BaseAdapter {
 
 		private Context context;
-		private KindsApps kaa;
+		private List<String> tags;
 
-		public KindsAdapter(Context context, KindsApps ka) {
+		public KindsAdapter(Context context, List<String> tags) {
 			this.context = context;
-			this.kaa = ka;
+			this.tags = tags;
 		}
 
 		@Override
 		public int getCount() {
-			return ka.getKinds().size();
+			return tags.size();
 		}
 
 		@Override
@@ -309,36 +193,76 @@ public class HomeFragment extends Fragment implements OnClickListener {
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			holder.tvkind.setText(kaa.getKinds().get(position));
-			holder.counts.setText("我的（" + 2 + "）");
-			List<App> apps = kaa.getKindsapps().get(position);
+			final List<App> apps = new ArrayList<App>();
+			RequestParams params = new RequestParams();
+			params.add("tag", tags.get(position));
+			BaseAsyncHttp.postReq(getActivity(), "/myapp/tag", params,
+					new JSONArrayHttpResponseHandler() {
 
-			if (apps.size() > 3)
-				apps = apps.subList(0, 3);
-			holder.lvapps.setAdapter(new AppsAdapter(context, apps));
-			int tribe = position * 3;
-			if ((tribe + 3) > userApps.size())
-				holder.hlvMyapps.setAdapter(new MyAppsAdapter(userApps.subList(
-						0, 3)));
-			else
-				holder.hlvMyapps.setAdapter(new MyAppsAdapter(userApps.subList(
-						position * 3, position * 3 + 3)));
+						@Override
+						public void jsonSuccess(JSONArray resp) {
+							// TODO Auto-generated method stub
+							try {
+								for (int i = 0; i < resp.length() && i < 3; i++) {
+									App app = new App();
+									JSONObject jsonapp = resp.getJSONObject(i);
+									app.setIcon(jsonapp.getString("icon"));
+									app.setSize(jsonapp.getString("size"));
+									app.setDowloadcount(jsonapp
+											.getInt("downloadcount"));
+									app.setIntrodution(jsonapp
+											.getString("introduction"));
+									app.setName(jsonapp.getString("name"));
+									app.setId(jsonapp.getInt("appid"));
+									app.setDownloadUrl(jsonapp
+											.getString("android_url"));
+									app.setProfile(jsonapp.getString("profile"));
+									app.setDownloadPath(Constants.DownloadPath
+											+ app.getName() + ".apk");
+									apps.add(app);
+								}
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							allapps.addAll(apps);
+							if (position == tags.size())
+								ComplexPreferences.putObject(getActivity(),
+										Constants.HomeAllDownloadApps, allapps);
+							holder.tvkind.setText(tags.get(position));
+							holder.counts.setText("我的（" + 2 + "）");
+							holder.lvapps.setAdapter(new AppsAdapter(context,
+									apps));
+							int tribe = position * 3;
+							if ((tribe + 3) > userapps.size())
+								holder.hlvMyapps.setAdapter(new MyAppsAdapter(
+										userapps.subList(0, 3)));
+							else
+								holder.hlvMyapps.setAdapter(new MyAppsAdapter(
+										userapps.subList(position * 3,
+												position * 3 + 3)));
+						}
 
+						@Override
+						public void jsonFail(JSONArray resp) {
+							// TODO Auto-generated method stub
+						}
+					});
 			holder.more.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					Intent intent = new Intent(context, RecommendActivity.class);
-					intent.putExtra("kind", kaa.getKinds().get(position));
+					intent.putExtra("kind", tags.get(position));
 					context.startActivity(intent);
 				}
 			});
 			return convertView;
 		}
 
-		public void setData(KindsApps ka) {
-			this.kaa = ka;
+		public void setData(List<String> tags) {
+			this.tags = tags;
 		}
 
 		class ViewHolder {
@@ -391,50 +315,9 @@ public class HomeFragment extends Fragment implements OnClickListener {
 					// TODO Auto-generated method stub
 					SystemUtils.startApp(getActivity(), apps.get(pos)
 							.getPackageName());
-
 				}
 			});
 			return retval;
-		}
-
-	}
-
-	class KindsApps {
-		List<String> kinds;
-		List<List<App>> kindsapps;
-		List<List<App>> userapps;
-
-		public KindsApps() {
-			kinds = new ArrayList<String>();
-			kindsapps = new ArrayList<List<App>>();
-			userapps = new ArrayList<List<App>>();
-		}
-
-		public List<String> getKinds() {
-			return kinds;
-		}
-
-		public void setKinds(List<String> kinds) {
-			this.kinds.clear();
-			this.kinds.addAll(kinds);
-		}
-
-		public List<List<App>> getKindsapps() {
-			return kindsapps;
-		}
-
-		public void setKindsapps(List<List<App>> kindsapps) {
-			this.kindsapps.clear();
-			this.kindsapps.addAll(kindsapps);
-		}
-
-		public List<List<App>> getUserapps() {
-			return userapps;
-		}
-
-		public void setUserapps(List<List<App>> userapps) {
-			this.userapps.clear();
-			this.userapps.addAll(userapps);
 		}
 
 	}
