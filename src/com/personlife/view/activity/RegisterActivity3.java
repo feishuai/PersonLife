@@ -3,10 +3,17 @@ package com.personlife.view.activity;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.example.personlifep.R;
+import com.loopj.android.http.RequestParams;
 import com.personlife.common.Utils;
+import com.personlife.net.BaseAsyncHttp;
+import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ActivityCollector;
 import com.personlife.utils.PersonInfoLocal;
+import com.personlife.view.activity.personcenter.MyownActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -176,7 +183,52 @@ public class RegisterActivity3 extends Activity implements OnClickListener {
 			PersonInfoLocal.storeRegisterHobbys(this, telphone, set);
 			Intent intent=new Intent(this, RegisterActivity4.class);
 			intent.putExtra("telphone", telphone);
-			 startActivity(intent);
+			startActivity(intent);
+			RequestParams request = new RequestParams();
+			request.put("phone", telphone);
+			request.put("nickname", PersonInfoLocal.getNcikName(this, telphone));
+			request.put("thumb", PersonInfoLocal.getHeadKey(this, telphone));
+			request.put("gender", "");
+			request.put("area", "");
+			request.put("job", "");
+			StringBuffer sb = new StringBuffer();
+			sb.append("");			
+			if(set!=null){
+				for (String str : set) {  
+					sb.append(str+" ");
+				}
+			}
+			request.put("hobby",sb.toString() );
+			request.put("signature", "");
+			BaseAsyncHttp.postReq(getApplicationContext(),"/users/modify", request,
+					new JSONObjectHttpResponseHandler() {
+
+						@Override
+						public void jsonSuccess(JSONObject resp) {
+							try {
+								if (resp.get("flag").equals(0)) {
+//									Toast.makeText(MyownActivity.this,
+//											"修改信息失败", Toast.LENGTH_SHORT)
+//											.show();
+								}else{
+//									Toast.makeText(MyownActivity.this,
+//											"修改信息成功", Toast.LENGTH_SHORT)
+//											.show();
+								}
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+
+						@Override
+						public void jsonFail(JSONObject resp) {
+							// TODO Auto-generated method stub
+//							Toast.makeText(MyownActivity.this,
+//									"Fail修改信息失败", Toast.LENGTH_SHORT)
+//									.show();
+						}
+					});
 			break;
 		}
 		

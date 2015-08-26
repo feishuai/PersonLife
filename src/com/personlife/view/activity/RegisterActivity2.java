@@ -4,6 +4,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -29,6 +34,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.personlifep.R;
+import com.loopj.android.http.RequestParams;
+import com.personlife.net.BaseAsyncHttp;
+import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.personinfo.carema.DialogPlus;
 import com.personlife.personinfo.carema.Holder;
 import com.personlife.personinfo.carema.ListHolder;
@@ -114,25 +122,27 @@ public class RegisterActivity2 extends Activity implements
 			onBackPressed();
 			break;
 		case R.id.register2_nextstep:
-			
-//			Intent intent = new Intent(RegisterActivity2.this,RegisterActivity3.class);
-//			 intent.putExtra("telphone", telphone);
-//			 startActivity(intent);
-//			 finish();
-			 if(nickname.getText().toString().length()==0){
-				 Toast.makeText(this, "请输入昵称", Toast.LENGTH_SHORT).show();
-			 }else if(flag==0){
-				 Toast.makeText(this, "请设置头像", Toast.LENGTH_SHORT).show();
-			 }else{
-				 returnPath=UpLoadHeadImage.uploadImg(this,telphone);
-				 PersonInfoLocal.storeRegisterNickName(RegisterActivity2.this, telphone,
-						 nickname.getText().toString(), imageUri.toString());
-				 Intent intent = new Intent(RegisterActivity2.this,RegisterActivity3.class);
-				 intent.putExtra("telphone", telphone);
-				 startActivity(intent);
-				 
-				 
-			 }			 
+
+			// Intent intent = new
+			// Intent(RegisterActivity2.this,RegisterActivity3.class);
+			// intent.putExtra("telphone", telphone);
+			// startActivity(intent);
+			// finish();
+			if (nickname.getText().toString().length() == 0) {
+				Toast.makeText(this, "请输入昵称", Toast.LENGTH_SHORT).show();
+			} else if (flag == 0) {
+				Toast.makeText(this, "请设置头像", Toast.LENGTH_SHORT).show();
+			} else {
+				returnPath = UpLoadHeadImage.uploadImg(this, telphone);
+				PersonInfoLocal.storeRegisterNickName(RegisterActivity2.this,
+						telphone, nickname.getText().toString(),
+						imageUri.toString());
+				Intent intent = new Intent(RegisterActivity2.this,
+						RegisterActivity3.class);
+				intent.putExtra("telphone", telphone);
+				startActivity(intent);
+
+			}
 			break;
 		case R.id.register2_touxiang:
 			showDialog();
@@ -235,9 +245,9 @@ public class RegisterActivity2 extends Activity implements
 					Bitmap smallBitmap = zoomBitmap(bitmap, 60, 60);
 					bitmap.recycle();
 					savePhotoToSDCard(Environment.getExternalStorageDirectory()
-							.toString(), telphone+".jpg", smallBitmap);
+							.toString(), telphone + ".jpg", smallBitmap);
 					re_picture.setImageBitmap(smallBitmap);
-					flag=1;
+					flag = 1;
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -253,8 +263,9 @@ public class RegisterActivity2 extends Activity implements
 					Bitmap smallBitmap = zoomBitmap(photo, 120, 120);
 					photo.recycle();
 					re_picture.setImageBitmap(smallBitmap);
-					flag=1;
-					savePhotoToSDCard(Environment.getExternalStorageDirectory().toString(), telphone+".jpg", smallBitmap);
+					flag = 1;
+					savePhotoToSDCard(Environment.getExternalStorageDirectory()
+							.toString(), telphone + ".jpg", smallBitmap);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

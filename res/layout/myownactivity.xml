@@ -273,10 +273,13 @@
 
         <TextView
             android:id="@+id/personsign"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_toLeftOf="@+id/youjiantou6"
+            android:gravity="right"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:text="我的个性签名"
             android:textColor="@color/black1" />
 

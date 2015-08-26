@@ -14,12 +14,13 @@
     <EditText 
         android:id="@+id/sign"
         android:layout_width="match_parent"
-        android:layout_height="32dip"
+        android:layout_height="64dip"
         android:gravity="center_vertical"
         android:paddingLeft="16dp"	       
         android:textColor="@color/black"
         android:background="@color/white"
-        android:focusable="true"        
+        android:focusable="true"
+        android:maxLength="56"     
         />
 
 </LinearLayout>
