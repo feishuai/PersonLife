@@ -108,7 +108,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 			kindlist = ComplexPreferences.getObject(getActivity(), "tags",
 					new TypeReference<ArrayList<String>>() {
 					});
-		userApps = SystemUtils.getUserApps(getActivity()).subList(0, 2);
+		userApps = SystemUtils.getUserApps(getActivity());
 		apps.add(new App("网易云音乐", "https://www.baidu.com"));
 		apps.add(new App("网易云音乐", "https://www.baidu.com"));
 		apps.add(new App("网易云音乐", "https://www.baidu.com"));
@@ -182,7 +182,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 									app.setIntrodution(jsonapp
 											.getString("introduction"));
 									app.setName(jsonapp.getString("name"));
-									app.setId(jsonapp.getInt("id"));
+									app.setId(jsonapp.getInt("appid"));
 									app.setDownloadUrl(jsonapp
 											.getString("android_url"));
 									app.setProfile(jsonapp.getString("profile"));
@@ -218,8 +218,12 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		ka.setUserapps(kindsapps);
 		kindsAdapter.setData(ka);
 		kindsAdapter.notifyDataSetChanged();
+		List<App> allapps = new ArrayList<App>();
+		for (int i = 0; i < kindsapps.size(); i++) {
+			allapps.addAll(kindsapps.get(i));
+		}
 		ComplexPreferences.putObject(getActivity(),
-				Constants.HomeAllDownloadApps, kindsapps.get(0));
+				Constants.HomeAllDownloadApps, allapps);
 	}
 
 	@Override
@@ -312,8 +316,13 @@ public class HomeFragment extends Fragment implements OnClickListener {
 			if (apps.size() > 3)
 				apps = apps.subList(0, 3);
 			holder.lvapps.setAdapter(new AppsAdapter(context, apps));
-
-			holder.hlvMyapps.setAdapter(new MyAppsAdapter(userApps));
+			int tribe = position * 3;
+			if ((tribe + 3) > userApps.size())
+				holder.hlvMyapps.setAdapter(new MyAppsAdapter(userApps.subList(
+						0, 3)));
+			else
+				holder.hlvMyapps.setAdapter(new MyAppsAdapter(userApps.subList(
+						position * 3, position * 3 + 3)));
 
 			holder.more.setOnClickListener(new OnClickListener() {
 

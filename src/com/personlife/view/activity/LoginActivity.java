@@ -68,49 +68,49 @@ public class LoginActivity extends Activity implements OnClickListener {
 
 		switch (v.getId()) {
 		case R.id.tv_login_login:
-//			Utils.start_Activity(LoginActivity.this, MainActivity.class, null);
-			RequestParams params = new RequestParams();
-			params.put("phone", username.getText().toString());
-			params.put("pwd", password.getText().toString());
-			BaseAsyncHttp.postReq(getApplicationContext(),"/users/login", params,
-					new JSONObjectHttpResponseHandler() {
-
-						@Override
-						public void jsonSuccess(JSONObject resp) {
-							// TODO Auto-generated method stub
-							try {
-								if (resp.get("flag").equals(1)) {
-									editor.putString("islogin", "1");
-									editor.putString("telphone", username.getText().toString());
-									editor.commit();
-									PersonInfoLocal.storeLoginTelAndPass(LoginActivity.this, username.getText().toString(),
-											password.getText().toString());
-									Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-									intent.putExtra("telphone", username.getText().toString());
-									startActivity(intent);
-									finish();
-								} else {
-									Toast.makeText(LoginActivity.this,
-											"密码错误或者用户名错误", Toast.LENGTH_LONG)
-											.show();
-								}
-
-							} catch (JSONException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
-
-						@Override
-						public void jsonFail(JSONObject resp) {
-							// TODO Auto-generated method stub
-							if(resp!=null)
-								Log.i("login", resp.toString());
-							Toast.makeText(LoginActivity.this,
-									"fail密码错误或者用户名错误", Toast.LENGTH_LONG)
-									.show();
-						}
-					});
+			Utils.start_Activity(LoginActivity.this, MainActivity.class, null);
+//			RequestParams params = new RequestParams();
+//			params.put("phone", username.getText().toString());
+//			params.put("pwd", password.getText().toString());
+//			BaseAsyncHttp.postReq(getApplicationContext(),"/users/login", params,
+//					new JSONObjectHttpResponseHandler() {
+//
+//						@Override
+//						public void jsonSuccess(JSONObject resp) {
+//							// TODO Auto-generated method stub
+//							try {
+//								if (resp.get("flag").equals(1)) {
+//									editor.putString("islogin", "1");
+//									editor.putString("telphone", username.getText().toString());
+//									editor.commit();
+//									PersonInfoLocal.storeLoginTelAndPass(LoginActivity.this, username.getText().toString(),
+//											password.getText().toString());
+//									Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+//									intent.putExtra("telphone", username.getText().toString());
+//									startActivity(intent);
+//									finish();
+//								} else {
+//									Toast.makeText(LoginActivity.this,
+//											"密码错误或者用户名错误", Toast.LENGTH_LONG)
+//											.show();
+//								}
+//
+//							} catch (JSONException e) {
+//								// TODO Auto-generated catch block
+//								e.printStackTrace();
+//							}
+//						}
+//
+//						@Override
+//						public void jsonFail(JSONObject resp) {
+//							// TODO Auto-generated method stub
+//							if(resp!=null)
+//								Log.i("login", resp.toString());
+//							Toast.makeText(LoginActivity.this,
+//									"fail密码错误或者用户名错误", Toast.LENGTH_LONG)
+//									.show();
+//						}
+//					});
 
 			break;
 		case R.id.tv_login_register:

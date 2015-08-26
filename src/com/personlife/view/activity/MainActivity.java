@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -225,23 +226,18 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 			FragmentTransaction trx = getSupportFragmentManager()
 					.beginTransaction();
 
-			trx.hide(fragments[currentTabIndex]);
-
-			if (index == 0 || index == 2) {
-				trx.remove(fragments[1]);
-				fragments[1] = new CircleFragment();
-			}
-
 			if (!fragments[index].isAdded()) {
 				trx.add(R.id.fragment_container, fragments[index]);
 			}
 
-			trx.show(fragments[index]).commit();
+			trx.hide(fragments[currentTabIndex]).show(fragments[index])
+					.commit();
 		}
 		tabButtons[currentTabIndex].setSelected(false);
 		tabText[currentTabIndex].setTextColor(Color.BLACK);
 		tabButtons[index].setSelected(true);// 把当前tab设为选中状态
-		tabText[index].setTextColor(Color.GREEN);
+		tabText[index].setTextColor(getResources()
+				.getColorStateList(R.color.bg));
 		currentTabIndex = index;
 	}
 
@@ -250,7 +246,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.txt_download:
-			Utils.start_Activity(MainActivity.this, AllDownloadActivity.class,
+			Utils.start_Activity(
+					MainActivity.this,
+					AllDownloadActivity.class,
 					new BasicNameValuePair("key", Constants.HomeAllDownloadApps));
 			break;
 		case R.id.imgbtn_plus:
@@ -258,7 +256,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 					null);
 			break;
 		case R.id.img_right:
-			Utils.start_Activity(MainActivity.this, AppSearchActivity.class, null);
+			Utils.start_Activity(MainActivity.this, AppSearchActivity.class,
+					null);
 			break;
 		}
 	}

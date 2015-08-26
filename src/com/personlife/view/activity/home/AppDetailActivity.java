@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap.CompressFormat;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +30,7 @@ import com.example.personlifep.R;
 import com.github.snowdream.android.app.DownloadListener;
 import com.github.snowdream.android.app.DownloadStatus;
 import com.github.snowdream.android.app.DownloadTask;
+import com.j256.ormlite.stmt.query.In;
 import com.loopj.android.http.RequestParams;
 import com.personlife.bean.App;
 import com.personlife.bean.Comment;
@@ -39,16 +41,17 @@ import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ComplexPreferences;
 import com.personlife.utils.Constants;
 import com.personlife.utils.ImageLoaderUtils;
+import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.Utils;
 import com.personlife.widget.HorizontialListView;
 
 public class AppDetailActivity extends Activity implements OnClickListener {
 	HorizontialListView hlvUrls, hlvLikes;
-	Button mBack;
+	Button mBack, mDownload;
 	ImageView mIcon;
 	ImageButton shoucang;
-	TextView mTitle, mName, mSizeAndCounts, mDownload, mIntro, mLog, mMore,
-			mTime, mNumbers;
+	TextView mTitle, mName, mSizeAndCounts, mIntro, mLog, mMore, mTime,
+			mNumbers;
 	RelativeLayout mComments;
 	RatingBar mStars;
 	App app;
@@ -79,7 +82,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 		mComments = (RelativeLayout) findViewById(R.id.rl_detail_comments);
 		mStars = (RatingBar) findViewById(R.id.rb_app_rating);
 		mSizeAndCounts = (TextView) findViewById(R.id.tv_app_sizeanddownloadcounts);
-		mDownload = (TextView) findViewById(R.id.tv_app_download);
+		mDownload = (Button) findViewById(R.id.btn_app_download);
 		mIntro = (TextView) findViewById(R.id.tv_detail_intro);
 		mLog = (TextView) findViewById(R.id.tv_detail_log);
 		mMore = (TextView) findViewById(R.id.tv_detail_more);
@@ -103,6 +106,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 	private void initData() {
 
 		appid = getIntent().getIntExtra("appid", 0);
+		Log.i("appdetail appid", String.valueOf(appid));
 		app = new App();
 		urlsapp = new ArrayList<String>();
 		likesapp = new ArrayList<App>();
@@ -163,7 +167,10 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 							app.setComments(comments);
 							app.setDownloadPath(Constants.DownloadPath
 									+ app.getName() + ".apk");
-							ComplexPreferences pre = ComplexPreferences.getComplexPreferences(getApplicationContext(), Constants.SharePrefrencesName);
+							ComplexPreferences pre = ComplexPreferences
+									.getComplexPreferences(
+											getApplicationContext(),
+											Constants.SharePrefrencesName);
 							pre.putObject(Constants.SelectedApp, app);
 							pre.commit();
 							updateView();
@@ -446,17 +453,78 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					Utils.start_Activity(
-							AppDetailActivity.this,
-							AppDetailActivity.class,
-							new BasicNameValuePair("appid", String.valueOf(apps
-									.get(posi).getId())));
+					Intent intent = new Intent(AppDetailActivity.this,
+							AppDetailActivity.class);
+					intent.putExtra("appid", apps.get(posi).getId());
+					AppDetailActivity.this.startActivity(intent);
 				}
 			});
 
 			return retval;
 		}
 	};
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		if (requestCode == 1) {
+			RequestParams params = new RequestParams();
+			params.add("appid", String.valueOf(appid));
+			BaseAsyncHttp.postReq(getApplicationContext(), "/app/getapp",
+					params, new JSONObjectHttpResponseHandler() {
+						@Override
+						public void jsonSuccess(JSONObject resp) {
+							// TODO Auto-generated method stub
+							try {
+								JSONArray jsoncomments = resp
+										.getJSONArray("comments");
+								List<Comment> comments = new ArrayList<Comment>();
+								for (int i = 0; i < jsoncomments.length(); i++) {
+									Comment comment = new Comment();
+									JSONObject jsoncomment = jsoncomments
+											.getJSONObject(i);
+									comment.setComments(jsoncomment
+											.getString("comments"));
+									comment.setCommentstars(jsoncomment
+											.getInt("commentstars"));
+									comment.setUsernickname(jsoncomment
+											.getString("usernickname"));
+									comment.setUserthumb(jsoncomment
+											.getString("userthumb"));
+									comment.setCreated_at(jsoncomment
+											.getLong("created_at"));
+									comments.add(comment);
+								}
+								app.setComments(comments);
+								ComplexPreferences pre = ComplexPreferences
+										.getComplexPreferences(
+												getApplicationContext(),
+												Constants.SharePrefrencesName);
+								pre.putObject(Constants.SelectedApp, app);
+								pre.commit();
+								mNumbers.setText("有" + app.getComments().size()
+										+ "人评分");
+								ComplexPreferences complexPreferences = ComplexPreferences
+										.getComplexPreferences(
+												getApplication(),
+												Constants.SharePrefrencesName);
+								complexPreferences.putObject("comments",
+										app.getComments());
+								complexPreferences.commit();
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+
+						@Override
+						public void jsonFail(JSONObject resp) {
+							// TODO Auto-generated method stub
+
+						}
+					});
+		}
+	}
 
 	@Override
 	public void onClick(View v) {
@@ -466,8 +534,10 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 			finish();
 			break;
 		case R.id.rl_detail_comments:
-			Utils.start_Activity(AppDetailActivity.this, CommentActivity.class,
-					new BasicNameValuePair("appid", String.valueOf(appid)));
+			Intent intent = new Intent(AppDetailActivity.this,
+					CommentActivity.class);
+			intent.putExtra("appid", String.valueOf(appid));
+			startActivityForResult(intent, 1);
 			break;
 		case R.id.tv_detail_more:
 			mIntro.setText(app.getIntrodution());
@@ -477,12 +547,12 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 			// TODO Auto-generated method stub
 			RequestParams params = new RequestParams();
 			params.add("app", String.valueOf(appid));
-			params.add("phone", "18268028693");
-			if(isCollected){
+			params.add("phone", PersonInfoLocal.getPhone());
+			if (isCollected) {
 				Utils.showShortToast(getApplicationContext(), "已收藏");
-				return ;
+				return;
 			}
-				
+
 			BaseAsyncHttp.postReq(getApplicationContext(), "/collect/set-app",
 					params, new JSONObjectHttpResponseHandler() {
 

@@ -108,7 +108,7 @@ public class PersonalCenter extends Fragment implements OnClickListener{
 				sex.setImageResource(R.drawable.ic_sex_male);
 			else 
 				sex.setImageResource(R.drawable.ic_sex_female);
-			ImageLoaderUtils.displayAppIcon(PersonInfoLocal.getHeadKey(ctx, telphone), head);
+			ImageLoaderUtils.displayImageView(PersonInfoLocal.getHeadKey(ctx, telphone), head);
 //			Bitmap photo;
 //			try {
 //				photo = BitmapFactory

@@ -52,7 +52,7 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 	private ScrollView slResult, slHistory;
 	private TextView tvClearHistory;
 	private TextView[] tvLables = new TextView[3];
-	private String[] lables = { "娱乐", "视频", "社交" };
+	private String[] lables = { "90后", "工作", "旅游" };
 	private int[] idLables = { R.id.tv_search_label1, R.id.tv_search_label2,
 			R.id.tv_search_label3 };
 	private List<String> history;
@@ -225,8 +225,8 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 		slHistory.setVisibility(View.GONE);
 		resultAdapter.clear();
 		RequestParams params = new RequestParams();
-		params.add("kind", kind);
-		BaseAsyncHttp.postReq(getApplicationContext(), "/app/kind", params,
+		params.add("tag", kind);
+		BaseAsyncHttp.postReq(getApplicationContext(), "/myapp/tag", params,
 				new JSONObjectHttpResponseHandler() {
 
 					@Override
@@ -245,7 +245,7 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 								app.setIntrodution(jsonapp
 										.getString("introduction"));
 								app.setName(jsonapp.getString("name"));
-								app.setId(jsonapp.getInt("id"));
+								app.setId(jsonapp.getInt("appid"));
 								app.setDownloadUrl(jsonapp
 										.getString("android_url"));
 								app.setProfile(jsonapp.getString("profile"));

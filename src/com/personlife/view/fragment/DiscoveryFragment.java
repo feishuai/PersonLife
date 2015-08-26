@@ -106,7 +106,7 @@ public class DiscoveryFragment extends Fragment implements OnClickListener {
 	private void initData() {
 		mImageUrl = "drawable://" + R.drawable.back1;
 		mImageUrls.add(mImageUrl);
-		mImageUrl = "drawable://" + R.drawable.back3;
+		mImageUrl = "drawable://" + R.drawable.back2;
 		mImageUrls.add(mImageUrl);
 		mImageUrl = "drawable://" + R.drawable.back3;
 		mImageUrls.add(mImageUrl);

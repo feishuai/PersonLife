@@ -7,15 +7,15 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="52dp"
         android:layout_margin="5dp" >
 
         <View
             android:id="@+id/view1"
-            android:layout_width="2dp"
-            android:layout_height="20dp"
+            android:layout_width="3dp"
+            android:layout_height="18dp"
             android:layout_alignParentLeft="true"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="6dp"
             android:background="@color/yellow" />
 
         <TextView
@@ -26,6 +26,7 @@
             android:layout_alignTop="@id/view1"
             android:layout_marginLeft="10dp"
             android:text="清晨"
+            android:textColor="@color/black"
             android:textSize="16dp" />
 
         <TextView
@@ -36,8 +37,9 @@
             android:layout_below="@+id/tv_home_kind"
             android:layout_marginTop="5dp"
             android:background="@color/gray1"
+            android:padding="1dp"
             android:text="我的（1）"
-            android:textSize="12dp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_home_more"
@@ -72,7 +74,9 @@
         android:layout_marginTop="5dp"
         android:background="@color/gray1"
         android:text="推荐给您"
-        android:textSize="12dp" />
+        android:layout_marginBottom="1dp"
+        android:padding="1dp"
+        android:textSize="14dp" />
 
     <View
         android:layout_width="fill_parent"
