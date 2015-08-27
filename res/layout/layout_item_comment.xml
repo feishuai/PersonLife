@@ -29,6 +29,7 @@
             android:id="@+id/tv_comment_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:text="新新" />
              <TextView
             android:id="@+id/tv_comment_time"

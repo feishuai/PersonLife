@@ -39,6 +39,8 @@ public class StarRecommendFragment extends Fragment {
 	}
 	public void setAppsList(List<Star> mList) {
 		this.mList = mList;
+		if(starsAdapter!=null)
+			starsAdapter.notifyDataSetChanged();
 	}
 	@Override
 	public View onCreateView(LayoutInflater inflater,

@@ -45,7 +45,7 @@
         android:layout_alignBottom="@+id/iv_circle_staricon"
         android:layout_alignLeft="@+id/tv_circle_signature"
         android:background="@drawable/bg_addfriend"
-        android:gravity="right|center_vertical|end"
+        android:gravity="right|center_vertical"
         android:text="添加关注     "
         android:textSize="16dp"
         android:textColor="@color/white" />

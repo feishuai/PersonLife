@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/iv_tuijian_icon"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="74dp"
+        android:layout_height="74dp"
         android:layout_toRightOf="@+id/cb_tuijian_state"
         android:padding="10dp"
         android:src="@drawable/default_app_icon" />
@@ -74,7 +74,6 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:visibility="gone" />
 
     <TextView

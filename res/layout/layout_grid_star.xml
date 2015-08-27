@@ -5,8 +5,8 @@
 
     <ImageView
         android:id="@+id/iv_grid_staricon"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_centerHorizontal="true"       
         android:scaleType="fitXY" >
     </ImageView>
@@ -17,7 +17,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/iv_grid_staricon"
         android:layout_centerHorizontal="true"
-        
         android:textSize="16dp" >
     </TextView>
 
@@ -27,11 +26,11 @@
         android:layout_height="12dp"
         android:layout_alignLeft="@+id/iv_grid_staricon"
         android:layout_alignParentTop="true"
-        android:background="@color/transparent"
+        android:background="@color/black1"
         android:drawableLeft="@drawable/xiazai"
         android:gravity="center_vertical"
         android:text="11205"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="10dp" />
 
 </RelativeLayout>

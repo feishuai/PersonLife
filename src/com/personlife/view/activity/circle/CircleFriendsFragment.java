@@ -2,8 +2,6 @@ package com.personlife.view.activity.circle;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import org.json.JSONObject;
 
@@ -13,14 +11,17 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
@@ -31,6 +32,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.personlifep.R;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.klinker.android.link_builder.Link;
 import com.klinker.android.link_builder.LinkBuilder;
 import com.loopj.android.http.RequestParams;
@@ -55,11 +57,14 @@ public class CircleFriendsFragment extends Fragment {
 	ListView lv;
 	List<Shuoshuo> mlist;
 	ShuoshuoAdapter mAdapter;
-	Boolean isLoad = false;
+	Star star;
+	Star user;
+	Boolean isLoaded = false;
 
-	public CircleFriendsFragment(List<Shuoshuo> list) {
+	public CircleFriendsFragment(List<Shuoshuo> list, Star star) {
 		// TODO Auto-generated constructor stub
 		this.mlist = list;
+		this.star = star;
 		// initView();
 	}
 
@@ -69,19 +74,20 @@ public class CircleFriendsFragment extends Fragment {
 		layout = inflater.inflate(R.layout.fragment_circle_friends, container,
 				false);
 		mAdapter = new ShuoshuoAdapter(getActivity());
-		isLoad = true;
+		isLoaded = true;
 		initData();
 		initView();
 		return layout;
 	}
 
-	public Boolean getIsLoad() {
-		return isLoad;
+	public Boolean getIsLoaded() {
+		return isLoaded;
 	}
 
 	public void updateData(List<Shuoshuo> list) {
-		mAdapter.setData(list);
-		mAdapter.notifyDataSetChanged();
+		this.mlist = list;
+		if (mAdapter != null)
+			mAdapter.notifyDataSetChanged();
 	}
 
 	public int getListViewLayoutParams() {
@@ -94,7 +100,9 @@ public class CircleFriendsFragment extends Fragment {
 	}
 
 	public void initData() {
-
+		user = ComplexPreferences.getObject(getActivity(), "user",
+				new TypeReference<Star>() {
+				});
 	}
 
 	public void initView() {
@@ -102,9 +110,12 @@ public class CircleFriendsFragment extends Fragment {
 		lv.setAdapter(mAdapter);
 	}
 
-	private void showCommentPopopWindow(View v) {
+	private void showCommentPopopWindow(View v, int msgid, Reply reply,
+			final MyCommentsAdapter adapter) {
 		// TODO Auto-generated method stub
 		final View view = v;
+		final Reply freply = reply;
+		final Reply newreply = new Reply();
 		// 一个自定义的布局，作为显示的内容
 		View contentView = LayoutInflater.from(getActivity()).inflate(
 				R.layout.layout_popup_comment, null);
@@ -113,24 +124,65 @@ public class CircleFriendsFragment extends Fragment {
 				.findViewById(R.id.et_popup_comment);
 		comment.setFocusableInTouchMode(true);
 		comment.requestFocus();
-
-		Timer timer = new Timer();
+		if (freply != null)
+			comment.setHint("回复 " + freply.getFromnickname() + ":");
 		InputMethodManager inputManager = (InputMethodManager) comment
 				.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 		inputManager.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
-
 		TextView sure = (TextView) contentView.findViewById(R.id.tv_popup_sure);
+		final PopupWindow popupWindow = new PopupWindow(contentView,
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
+		final RequestParams request = new RequestParams();
+		request.add("fphone", star.getPhone());
+		request.add("msgid", String.valueOf(msgid));
+		newreply.setFromphone(star.getPhone());
+		newreply.setFromnickname(star.getNickname());
 		sure.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Utils.showShortToast(getActivity(), comment.getText()
-						.toString());
+				String content = comment.getText().toString();
+				if (content.equals("") || content == null) {
+					Utils.showShortToast(getActivity(), "评价不能为空");
+					return;
+				}
+				request.add("content", content);
+				newreply.setContent(content);
+				if (freply == null)
+					request.add("tphone", "");
+				else
+					request.add("tphone", freply.getFromphone());
+				if (freply != null) {
+					newreply.setTophone(freply.getFromphone());
+					newreply.setTonickname(freply.getFromnickname());
+				}
+				BaseAsyncHttp.postReq(getActivity(), "/message/reply", request,
+						new JSONObjectHttpResponseHandler() {
+
+							@Override
+							public void jsonSuccess(JSONObject resp) {
+								// TODO Auto-generated method stub
+								Utils.showShortToast(getActivity(), "评价成功");
+								adapter.getData().add(newreply);
+								adapter.notifyDataSetChanged();
+								popupWindow.dismiss();
+								InputMethodManager imm = (InputMethodManager) comment
+										.getContext()
+										.getSystemService(
+												getActivity().INPUT_METHOD_SERVICE);
+								imm.toggleSoftInput(0,
+										InputMethodManager.HIDE_NOT_ALWAYS);
+							}
+
+							@Override
+							public void jsonFail(JSONObject resp) {
+								// TODO Auto-generated method stub
+								Utils.showShortToast(getActivity(), "评价失败");
+							}
+						});
 			}
 		});
-		final PopupWindow popupWindow = new PopupWindow(contentView,
-				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
 
 		// 使其聚集
 		popupWindow.setFocusable(true);
@@ -139,31 +191,17 @@ public class CircleFriendsFragment extends Fragment {
 		// 这个是为了点击“返回Back”也能使其消失，并且并不会影响你的背景
 		popupWindow.setBackgroundDrawable(new BitmapDrawable());
 
-		// popupWindow.setTouchInterceptor(new OnTouchListener() {
-		//
-		// @Override
-		// public boolean onTouch(View v, MotionEvent event) {
-		//
-		// Log.i("mengdd", "onTouch : ");
-		//
-		// return false;
-		// // 这里如果返回true的话，touch事件将被拦截
-		// // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
-		// }
-		// });
-
-		// 如果不设置PopupWindow的背景，无论是点击外部区域还是Back键都无法dismiss弹框
-		// 我觉得这里是API的一个bug
-		// popupWindow.setBackgroundDrawable(getResources().getDrawable(
-		// R.drawable.selectmenu_bg_downward));
-		timer.schedule(new TimerTask() {
-			public void run() {
-				// 设置好参数之后再show
-				popupWindow.showAsDropDown(view);
-			}
-		},
-
-		998);
+		try {
+			Thread.sleep(200);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// popupWindow.setFocusable(true);
+		popupWindow.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);
+		popupWindow
+				.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+		popupWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
 	}
 
 	class ShuoshuoAdapter extends BaseAdapter {
@@ -226,10 +264,20 @@ public class CircleFriendsFragment extends Fragment {
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-
+			holder.content.setText("           "
+					+ mlist.get(position).getContent());
+			holder.name.setText(mlist.get(position).getNickname());
+			holder.status.setText(mlist.get(position).getKind());
+			ImageLoaderUtils.displayImageView(mlist.get(position).getThumb(),
+					holder.icon);
+			holder.beforetime.setText(Utils.TimeStamp2Date(mlist.get(position)
+					.getCreatedtime()));
 			Drawable drawable = getResources().getDrawable(R.drawable.dianzan1);
 			drawable.setBounds(0, 0, 40, 40);// 第一0是距左边距离，第二0是距上边距离，40分别是长宽
 			holder.person.setCompoundDrawables(drawable, null, null, null);// 只放左边
+			holder.person.setText("");
+			holder.person.setVisibility(View.VISIBLE);
+			holder.isPraised = false;
 			List<Star> stars = mlist.get(position).getStars();
 			if (stars.size() == 0) {
 				holder.person.setVisibility(View.GONE);
@@ -240,6 +288,9 @@ public class CircleFriendsFragment extends Fragment {
 				}
 				holder.person.setText(text + " ");
 			}
+			// 判断用户是否有点赞
+			holder.praise.setImageDrawable(getResources().getDrawable(
+					R.drawable.dianzan1));
 			for (int i = 0; i < stars.size(); i++) {
 				if (stars.get(i).getPhone().equals(PersonInfoLocal.getPhone())) {
 					holder.isPraised = true;
@@ -248,10 +299,14 @@ public class CircleFriendsFragment extends Fragment {
 					break;
 				}
 			}
-			LinkBuilder.on(holder.person).addLinks(getStarsLinks(stars))
-					.build();
-			holder.comments.setAdapter(new MyCommentsAdapter(mlist
-					.get(position).getReplies()));
+			if (stars.size() > 0)
+				LinkBuilder.on(holder.person).addLinks(getStarsLinks(stars))
+						.build();
+			final MyCommentsAdapter commentsAdapter = new MyCommentsAdapter(
+					mlist.get(position).getReplies(), mlist.get(position)
+							.getMsgid());
+			commentsAdapter.setAdapter(commentsAdapter);
+			holder.comments.setAdapter(commentsAdapter);
 			if (mlist.get(position).getApps().size() > 4)
 				holder.apps.setAdapter(new MyAppsAdapter(mlist.get(position)
 						.getApps().subList(0, 4)));
@@ -264,41 +319,12 @@ public class CircleFriendsFragment extends Fragment {
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					String text = holder.person.getText().toString();
-					String nickname = PersonInfoLocal.getNickname();
+					String nickname = star.getNickname();
 					RequestParams request = new RequestParams();
 					request.add("phone", PersonInfoLocal.getPhone());
 					request.add("msgid",
 							String.valueOf(mlist.get(position).getMsgid()));
 					if (holder.isPraised) {
-						if (text.equals(nickname)) {
-							holder.person.setText("");
-							holder.person.setVisibility(View.GONE);
-							return;
-						}
-						if (text.indexOf(nickname) == 0)
-							text = text.replace(nickname + ", ", "");
-						else
-							text = text.replace(", " + nickname, "");
-						BaseAsyncHttp.postReq(getActivity(), "/message/zan",
-								request, new JSONObjectHttpResponseHandler() {
-
-									@Override
-									public void jsonSuccess(JSONObject resp) {
-										// TODO Auto-generated method stub
-									}
-
-									@Override
-									public void jsonFail(JSONObject resp) {
-										// TODO Auto-generated method stub
-
-									}
-								});
-					} else {
-						if (holder.person.getVisibility() == View.GONE) {
-							holder.person.setVisibility(View.VISIBLE);
-							holder.person.setText(nickname);
-						} else
-							holder.person.setText(text + ", " + nickname);
 						BaseAsyncHttp.postReq(getActivity(),
 								"/message/cancel-zan", request,
 								new JSONObjectHttpResponseHandler() {
@@ -313,6 +339,40 @@ public class CircleFriendsFragment extends Fragment {
 										// TODO Auto-generated method stub
 									}
 								});
+						holder.praise.setImageDrawable(getResources()
+								.getDrawable(R.drawable.dianzan1));
+						if (text.equals(nickname + " ")) {
+							holder.person.setText("");
+							holder.person.setVisibility(View.GONE);
+							return;
+						}
+						if (text.indexOf(nickname) == 0)
+							text = text.replace(nickname + ", ", "");
+						else
+							text = text.replace(", " + nickname, "");
+						holder.person.setText(text);
+
+					} else {
+						holder.praise.setImageDrawable(getResources()
+								.getDrawable(R.drawable.dianzan2));
+						if (holder.person.getVisibility() == View.GONE) {
+							holder.person.setVisibility(View.VISIBLE);
+							holder.person.setText(nickname + " ");
+						} else
+							holder.person.setText(text + ", " + nickname);
+						BaseAsyncHttp.postReq(getActivity(), "/message/zan",
+								request, new JSONObjectHttpResponseHandler() {
+									@Override
+									public void jsonSuccess(JSONObject resp) {
+										// TODO Auto-generated method stub
+									}
+
+									@Override
+									public void jsonFail(JSONObject resp) {
+										// TODO Auto-generated method stub
+
+									}
+								});
 					}
 					holder.isPraised = !holder.isPraised;
 				}
@@ -323,7 +383,19 @@ public class CircleFriendsFragment extends Fragment {
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					showCommentPopopWindow(v);
+					showCommentPopopWindow(v, mlist.get(position).getMsgid(),
+							null, commentsAdapter);
+
+				}
+			});
+			holder.pinlun.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					showCommentPopopWindow(v, mlist.get(position).getMsgid(),
+							null, commentsAdapter);
+
 				}
 			});
 			holder.more.setOnClickListener(new OnClickListener() {
@@ -336,6 +408,7 @@ public class CircleFriendsFragment extends Fragment {
 					Intent intent = new Intent(context,
 							ShareAppListActivity.class);
 					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					intent.putExtra("msgid", mlist.get(position).getMsgid());
 					context.startActivity(intent);
 				}
 			});
@@ -404,9 +477,24 @@ public class CircleFriendsFragment extends Fragment {
 
 	class MyCommentsAdapter extends BaseAdapter {
 		List<Reply> replies;
+		MyCommentsAdapter adapter;
+		int msgid;
 
-		public MyCommentsAdapter(List<Reply> replies) {
+		public MyCommentsAdapter(List<Reply> replies, int msgid) {
 			this.replies = replies;
+			this.msgid = msgid;
+		}
+
+		public void setData(List<Reply> replies) {
+			this.replies = replies;
+		}
+
+		public List<Reply> getData() {
+			return this.replies;
+		}
+
+		public void setAdapter(MyCommentsAdapter adapter) {
+			this.adapter = adapter;
 		}
 
 		@Override
@@ -440,12 +528,15 @@ public class CircleFriendsFragment extends Fragment {
 			else
 				comment.setText(reply.getFromnickname() + ":"
 						+ reply.getContent() + " ");
-			LinkBuilder.on(comment).addLinks(getCommentLinks(reply)).build();
+			LinkBuilder.on(comment)
+					.addLinks(getCommentLinks(reply, msgid, adapter, retval))
+					.build();
 			return retval;
 		}
 	}
 
-	private List<Link> getCommentLinks(Reply reply) {
+	private List<Link> getCommentLinks(final Reply reply, final int msgid,
+			final MyCommentsAdapter adapter, final View v) {
 		List<Link> links = new ArrayList<Link>();
 		Link fromstar = new Link(reply.getFromnickname());
 		fromstar.setHighlightAlpha(.4f)
@@ -485,11 +576,8 @@ public class CircleFriendsFragment extends Fragment {
 
 					@Override
 					public void onClick(String clickedText) {
-						Utils.showShortToast(getActivity(), clickedText);
-						// TODO Auto-generated method stub
-						// Utils.start_Activity(getActivity(),
-						// CircleActivity.class, new BasicNameValuePair(
-						// "phone", ""));
+						// Utils.showShortToast(getActivity(), clickedText);
+						showCommentPopopWindow(v, msgid, reply, adapter);
 					}
 				});
 		links.add(content);

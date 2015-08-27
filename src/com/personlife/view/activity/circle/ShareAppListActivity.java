@@ -177,6 +177,7 @@ public class ShareAppListActivity extends Activity implements OnClickListener {
 			// dialogWindow.setAttributes(p);
 
 			dialog.show();
+			break;
 		case R.id.imgbtn_collect:
 			RequestParams params = new RequestParams();
 			params.add("phone", PersonInfoLocal.getPhone());

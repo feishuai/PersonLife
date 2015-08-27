@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/iv_alldown_appicon"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_margin="10dp"
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/iv_alldown_appicon"
-        android:textSize="20dp"
+        android:textSize="18dp"
         android:textColor="@color/black"
         android:text="网易音乐" />
 

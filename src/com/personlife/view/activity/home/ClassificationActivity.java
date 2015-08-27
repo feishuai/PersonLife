@@ -1,7 +1,7 @@
 package com.personlife.view.activity.home;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,31 +10,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.example.personlifep.R;
-import com.example.personlifep.R.color;
-import com.example.personlifep.R.drawable;
-import com.example.personlifep.R.id;
-import com.example.personlifep.R.layout;
-import com.personlife.utils.Utils;
+import com.personlife.utils.ComplexPreferences;
 
 public class ClassificationActivity extends Activity implements OnClickListener {
 	private String[] changjing = { "全部", "清晨", "午后", "黄昏", "出差", "学习", "工作",
 			"午休", "运动", "酒吧", "驾车", "旅游", "地铁", "聚会", "度假", "散步" };
 	private String[] zhuti = { "全部", "游戏", "70后", "80后", "怀旧", "90后", "00后",
 			"儿童", "音乐" };
-	private Boolean[] isSelected ;
+	private Boolean[] isZhutiSelected, isChangjingSelected;
 	private GridView gvchangjing, gvzhuti;
 	private Button mBack;
 	private TextView mTitle;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -50,25 +43,31 @@ public class ClassificationActivity extends Activity implements OnClickListener 
 	}
 
 	private void initData() {
-		isSelected = new Boolean[changjing.length+zhuti.length];
-		for (int i = 0; i < isSelected.length; i++) {
-			isSelected[i] = false;
+		isZhutiSelected = new Boolean[zhuti.length];
+		isChangjingSelected = new Boolean[changjing.length];
+		for (int i = 0; i < isZhutiSelected.length; i++) {
+			isZhutiSelected[i] = false;
+		}
+		for (int i = 0; i < isChangjingSelected.length; i++) {
+			isChangjingSelected[i] = false;
 		}
 		// 添加并且显示
 		gvchangjing.setAdapter(new ButtonAdapter(getApplicationContext(),
-				changjing));
-		gvzhuti.setAdapter(new ButtonAdapter(getApplicationContext(), zhuti));
-		
+				changjing, 0));
+		gvzhuti.setAdapter(new ButtonAdapter(getApplicationContext(), zhuti, 1));
+
 	}
 
 	public class ButtonAdapter extends BaseAdapter {
 		private Context mContext;
-		public String[] strs;
+		private String[] strs;
+		private int dif;
 
 		// Gets the context so it can be used later
-		public ButtonAdapter(Context c, String[] strs) {
+		public ButtonAdapter(Context c, String[] strs, int dif) {
 			mContext = c;
 			this.strs = strs;
+			this.dif = dif;
 		}
 
 		// Total number of things contained within the adapter
@@ -89,7 +88,7 @@ public class ClassificationActivity extends Activity implements OnClickListener 
 
 		public View getView(int position, View convertView, ViewGroup parent) {
 			final Button btn;
-			final int current = position; 
+			final int current = position;
 			convertView = ((LayoutInflater) mContext
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
 					.inflate(R.layout.layout_grid_class, null);
@@ -98,17 +97,48 @@ public class ClassificationActivity extends Activity implements OnClickListener 
 			if (position == 0) {
 				btn.setTextColor(R.color.yellow);
 			}
+			if (dif == 0) {
+				if (isChangjingSelected[current])
+					btn.setBackgroundResource(R.drawable.fenleixuanze);
+			} else {
+				if (isZhutiSelected[current])
+					btn.setBackgroundResource(R.drawable.fenleixuanze);
+			}
 
 			btn.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					isSelected[current] = !isSelected[current];
-					if(isSelected[current])
-						btn.setBackgroundResource(R.drawable.fenleixuanze);
-					else
-						btn.setBackgroundResource(R.color.transparent);
+					if (dif == 0) {
+						if (current == 0) {
+							for (int i = 0; i < isChangjingSelected.length; i++) {
+								isChangjingSelected[i] = true;
+								notifyDataSetChanged();
+							}
+							btn.setBackgroundResource(R.drawable.fenleixuanze);
+							return;
+						}
+						isChangjingSelected[current] = !isChangjingSelected[current];
+						if (isChangjingSelected[current])
+							btn.setBackgroundResource(R.drawable.fenleixuanze);
+						else
+							btn.setBackgroundResource(R.color.transparent);
+					} else {
+						if (current == 0) {
+							for (int i = 0; i < isZhutiSelected.length; i++) {
+								isZhutiSelected[i] = true;
+								notifyDataSetChanged();
+							}
+							btn.setBackgroundResource(R.drawable.fenleixuanze);
+							return;
+						}
+						isZhutiSelected[current] = !isZhutiSelected[current];
+						if (isZhutiSelected[current])
+							btn.setBackgroundResource(R.drawable.fenleixuanze);
+						else
+							btn.setBackgroundResource(R.color.transparent);
+					}
 				}
 			});
 
@@ -121,6 +151,19 @@ public class ClassificationActivity extends Activity implements OnClickListener 
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.txt_left:
+			List<String> tags =new ArrayList<String>();
+			for (int i = 1; i < isChangjingSelected.length; i++) {
+				if(isChangjingSelected[i])
+					tags.add(changjing[i]);
+			}
+			for (int i = 1; i < isZhutiSelected.length; i++) {
+				if(isZhutiSelected[i])
+					tags.add(zhuti[i]);
+			}
+			if(tags.size()>0){
+				ComplexPreferences.putObject(getApplicationContext(), "tags", tags);
+			}
+			setResult(1);
 			finish();
 			break;
 

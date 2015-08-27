@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <LinearLayout
+  <!--   <LinearLayout
         android:id="@+id/quanzi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@color/black2" />
-
+ -->
     <LinearLayout
         android:id="@+id/qq"
         android:layout_width="wrap_content"

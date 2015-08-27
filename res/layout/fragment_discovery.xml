@@ -58,10 +58,10 @@
         <GridView
             android:id="@+id/gridview"
             android:layout_width="fill_parent"
-            android:layout_height="280dp"
+            android:layout_height="310dp"
             android:columnWidth="100dp"
             android:gravity="center"
-            android:horizontalSpacing="6dp"
+            android:horizontalSpacing="4dp"
             android:numColumns="3"
             android:stretchMode="columnWidth"
             android:verticalSpacing="10dp" />

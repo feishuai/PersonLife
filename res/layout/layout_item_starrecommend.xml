@@ -65,7 +65,7 @@
         android:layout_alignTop="@+id/iv_starrecommend_icon"
         android:textSize="12dp"
         android:maxLength="10"
-        android:background="@color/transparent"
+        android:background="@color/black1"
         android:drawableLeft="@drawable/xiazai"
         android:gravity="center_vertical"
         android:text="11200" />

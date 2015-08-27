@@ -72,7 +72,7 @@ public class ImageLoaderUtils {
 					.cacheOnDisc(true) // default
 					.imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2) // default
 					.bitmapConfig(Bitmap.Config.ARGB_8888) // default
-					.displayer(new RoundedBitmapDisplayer(50)) // default
+					.displayer(new RoundedBitmapDisplayer(10)) // default
 					.build();
 			user_icon_options = new DisplayImageOptions.Builder()
 					.showImageOnLoading(R.drawable.head) // resource

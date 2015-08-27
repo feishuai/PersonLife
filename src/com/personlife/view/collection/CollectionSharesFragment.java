@@ -205,6 +205,7 @@ public class CollectionSharesFragment extends Fragment {
 								mList.get(position).getApps());
 						Intent intent = new Intent(context,
 								ShareAppListActivity.class);
+						intent.putExtra("msgid", mList.get(position).getMsgid());
 						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						context.startActivity(intent);
 					}

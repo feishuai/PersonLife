@@ -133,22 +133,6 @@ public class CollectionActivity extends FragmentActivity implements
 									shuoshuoapps.add(app);
 								}
 								shuoshuo.setApps(shuoshuoapps);
-								JSONArray jsonreplies = jsonshuoshuo
-										.getJSONArray("replys");
-								List<Reply> shuoshuoreplies = new ArrayList<Reply>();
-								for (int k = 0; k < jsonreplies.length(); k++) {
-									Reply reply = new Reply();
-									JSONObject jsonreply = jsonreplies
-											.getJSONObject(k);
-									reply.setFromphone(jsonreply.getString("fromphone"));
-									reply.setFromnickname(jsonreply
-											.getString("fromnickname"));
-									reply.setTophone(jsonreply.getString("tophone"));
-									reply.setTonickname(jsonreply
-											.getString("tonickname"));
-									shuoshuoreplies.add(reply);
-								}
-								shuoshuo.setReplies(shuoshuoreplies);
 								mShuoshuos.add(shuoshuo);
 							}
 							sharesfragment.setShuoshuosList(mShuoshuos);

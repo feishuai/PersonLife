@@ -241,7 +241,9 @@ public class CommentActivity extends Activity implements OnClickListener {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == 1)
+		if (resultCode == 1){
+			setResult(1);
 			finish();
+		}
 	}
 }

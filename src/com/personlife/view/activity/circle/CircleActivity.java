@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Dialog;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -18,7 +19,10 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
@@ -28,6 +32,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.personlifep.R;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.loopj.android.http.RequestParams;
 import com.personlife.adapter.ViewPagerTabAdapter;
 import com.personlife.bean.App;
@@ -88,7 +93,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_circle);
-		phone = getIntent().getStringExtra("phone");
+		phone = getIntent().getStringExtra("starphone");
 		mBack = (Button) findViewById(R.id.txt_left);
 		mBack.setVisibility(View.VISIBLE);
 		mBack.setOnClickListener(this);
@@ -116,14 +121,182 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 				.getColorStateList(R.color.bg));
 
 		star = new Star();
-		star.setPhone(PersonInfoLocal.getPhone());
+		star.setPhone(phone);
 		final List<Shuoshuo> shuoshuos = new ArrayList<Shuoshuo>();
-		friendsfragment = new CircleFriendsFragment(shuoshuos);
+		friendsfragment = new CircleFriendsFragment(shuoshuos,
+				(Star)ComplexPreferences.getObject(getApplicationContext(), "user",
+						new TypeReference<Star>() {
+						}));
+		RequestParams request = new RequestParams();
+		request.add("phone", star.getPhone());
+		BaseAsyncHttp.postReq(getApplicationContext(), "/users/getinfo",
+				request, new JSONObjectHttpResponseHandler() {
+
+					@Override
+					public void jsonSuccess(JSONObject resp) {
+						// TODO Auto-generated method stub
+						star.setPhone(resp.optString("phone"));
+						star.setNickname(resp.optString("nickname"));
+						star.setThumb(resp.optString("thumb"));
+						star.setFollower(resp.optString("follower"));
+						star.setShared(resp.optString("shared"));
+						star.setFamous(resp.optInt("famous"));
+						star.setSignature(resp.optString("signature"));
+						star.setFavour(resp.optInt("favour"));
+						ComplexPreferences.putObject(getApplicationContext(),
+								"star", star);
+						updateFriendsCircle();
+						updateProfile();
+					}
+
+					@Override
+					public void jsonFail(JSONObject resp) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+
+		final List<App> apps = new ArrayList<App>();
+		appsfragment = new CircleOtherAppsFragment(apps);
+		star.setApps(apps);
+		BaseAsyncHttp.postReq(getApplicationContext(), "/myapp/get", request,
+				new JSONArrayHttpResponseHandler() {
+
+					@Override
+					public void jsonSuccess(JSONArray resp) {
+						// TODO Auto-generated method stub
+						for (int i = 0; i < resp.length(); i++) {
+							App appInfo = new App();
+							appInfo.setId(resp.optJSONObject(i).optInt("id"));
+							appInfo.setName(resp.optJSONObject(i).optString(
+									"name"));
+							appInfo.setVersion(resp.optJSONObject(i).optString(
+									"version"));
+							appInfo.setDownloadUrl(resp.optJSONObject(i)
+									.optString("android_url"));
+							appInfo.setStars(resp.optJSONObject(i).optInt(
+									"stars"));
+							appInfo.setDowloadcount(resp.optJSONObject(i)
+									.optInt("downloadcount"));
+							appInfo.setIntrodution(resp.optJSONObject(i)
+									.optString("introduction"));
+							appInfo.setUpdateDate(resp.optJSONObject(i)
+									.optLong("updated_at"));
+							appInfo.setSize(resp.optJSONObject(i).optString(
+									"size"));
+							appInfo.setIcon(resp.optJSONObject(i).optString(
+									"icon"));
+							appInfo.setUpdateLog(resp.optJSONObject(i)
+									.optString("updated_log"));
+							appInfo.setProfile(resp.optJSONObject(i).optString(
+									"profile"));
+							appInfo.setDownloadPath(Constants.DownloadPath
+									+ appInfo.getName() + ".apk");
+							apps.add(appInfo);
+							// apps.add(appInfo);
+							// apps.add(appInfo);
+							// apps.add(appInfo);
+							// apps.add(appInfo);
+							// apps.add(appInfo);
+							// apps.add(appInfo);
+						}
+						appsfragment.setData(apps);
+					}
+
+					@Override
+					public void jsonFail(JSONArray resp) {
+						// TODO Auto-generated method stub
+					}
+				});
+
+		fragments = new Fragment[] { friendsfragment, appsfragment };
+
+		// Creating The ViewPagerAdapter and Passing Fragment Manager, Titles
+		// fot the Tabs and Number Of Tabs.
+		adapter = new ViewPagerTabAdapter(getSupportFragmentManager(), Titles,
+				fragments);
+		// Assigning ViewPager View and setting the adapter
+		pager = (ViewPager) findViewById(R.id.pager);
+		pager.setAdapter(adapter);
+
+		// Assiging the Sliding Tab Layout View
+		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+
+		// Setting the ViewPager For the SlidingTabsLayout
+		tabs.setViewPager(pager);
+
+		LayoutParams params = pager.getLayoutParams();
+		params.height = friendsfragment.getListViewLayoutParams();
+		pager.setLayoutParams(params);
+
+		Thread thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Log.i("listview getview", "activity update thread");
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				Message message = new Message();
+				message.what = 1;
+				mHandler.sendMessage(message);
+			}
+		});
+		thread.start();
+
+		tabs.setOnPageChangeListener(new OnPageChangeListener() {
+
+			@Override
+			public void onPageSelected(int arg0) {
+				// TODO Auto-generated method stub
+				Log.i("selected tab", "" + arg0);
+				tabviews[arg0].setTextColor(colors[0]);
+				tabviews[1 - arg0].setTextColor(colors[1]);
+				if (arg0 == 1) {
+					tabviews[1].setCompoundDrawables(drawableWodeApp[1], null,
+							null, null);
+					tabviews[0].setCompoundDrawables(drawableFenxiang[0], null,
+							null, null);
+					LayoutParams params = pager.getLayoutParams();
+					params.height = appsfragment.getListViewLayoutParams();
+					pager.setLayoutParams(params);
+
+				} else {
+					tabviews[0].setCompoundDrawables(drawableFenxiang[1], null,
+							null, null);
+					tabviews[1].setCompoundDrawables(drawableWodeApp[0], null,
+							null, null);
+					LayoutParams params = pager.getLayoutParams();
+					params.height = friendsfragment.getListViewLayoutParams();
+					pager.setLayoutParams(params);
+				}
+			}
+
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+		initData();
+	}
+
+	protected void updateFriendsCircle() {
+		// TODO Auto-generated method stub
+		final List<Shuoshuo> shuoshuos = new ArrayList<Shuoshuo>();
 		RequestParams requestShuoshuo = new RequestParams();
-		requestShuoshuo.add("phone", PersonInfoLocal.getPhone());
+		requestShuoshuo.add("phone", star.getPhone());
 		BaseAsyncHttp.postReq(this, "/users/getmsg", requestShuoshuo,
 				new JSONObjectHttpResponseHandler() {
-
 					@Override
 					public void jsonSuccess(JSONObject resp) {
 						// TODO Auto-generated method stub
@@ -141,6 +314,9 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 										.getInt("created_at"));
 								shuoshuo.setArea(jsonbasic.getString("area"));
 								shuoshuo.setKind(jsonbasic.getString("kind"));
+								shuoshuo.setMsgid(jsonbasic.getInt("id"));
+								shuoshuo.setNickname(star.getNickname());
+								shuoshuo.setThumb(star.getThumb());
 								JSONArray jsonapps = jsonshuoshuo
 										.getJSONArray("apps");
 								List<App> shuoshuoapps = new ArrayList<App>();
@@ -205,31 +381,6 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 							e.printStackTrace();
 						}
 					}
-					@Override
-					public void jsonFail(JSONObject resp) {
-						// TODO Auto-generated method stub
-
-					}
-				});
-
-		RequestParams request = new RequestParams();
-		request.add("phone", star.getPhone());
-		BaseAsyncHttp.postReq(getApplicationContext(), "/users/getinfo",
-				request, new JSONObjectHttpResponseHandler() {
-
-					@Override
-					public void jsonSuccess(JSONObject resp) {
-						// TODO Auto-generated method stub
-						star.setPhone(resp.optString("phone"));
-						star.setNickname(resp.optString("nickname"));
-						star.setThumb(resp.optString("thumb"));
-						star.setFollower(resp.optString("follower"));
-						star.setShared(resp.optString("shared"));
-						star.setFamous(resp.optInt("famous"));
-						star.setSignature(resp.optString("signature"));
-						star.setFavour(resp.optInt("favour"));
-						updateProfile();
-					}
 
 					@Override
 					public void jsonFail(JSONObject resp) {
@@ -237,141 +388,6 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 
 					}
 				});
-
-		final List<App> apps = new ArrayList<App>();
-		appsfragment = new CircleOtherAppsFragment(apps);
-		star.setApps(apps);
-		BaseAsyncHttp.postReq(getApplicationContext(), "/myapp/get", request,
-				new JSONArrayHttpResponseHandler() {
-
-					@Override
-					public void jsonSuccess(JSONArray resp) {
-						// TODO Auto-generated method stub
-						for (int i = 0; i < resp.length(); i++) {
-							App appInfo = new App();
-							appInfo.setId(resp.optJSONObject(i).optInt("id"));
-							appInfo.setName(resp.optJSONObject(i).optString(
-									"name"));
-							appInfo.setVersion(resp.optJSONObject(i).optString(
-									"version"));
-							appInfo.setDownloadUrl(resp.optJSONObject(i)
-									.optString("android_url"));
-							appInfo.setStars(resp.optJSONObject(i).optInt(
-									"stars"));
-							appInfo.setDowloadcount(resp.optJSONObject(i)
-									.optInt("downloadcount"));
-							appInfo.setIntrodution(resp.optJSONObject(i)
-									.optString("introduction"));
-							appInfo.setUpdateDate(resp.optJSONObject(i)
-									.optLong("updated_at"));
-							appInfo.setSize(resp.optJSONObject(i).optString(
-									"size"));
-							appInfo.setIcon(resp.optJSONObject(i).optString(
-									"icon"));
-							appInfo.setUpdateLog(resp.optJSONObject(i)
-									.optString("updated_log"));
-							appInfo.setProfile(resp.optJSONObject(i).optString(
-									"profile"));
-							appInfo.setDownloadPath(Constants.DownloadPath
-									+ appInfo.getName() + ".apk");
-							apps.add(appInfo);
-							apps.add(appInfo);
-							apps.add(appInfo);
-							apps.add(appInfo);
-							apps.add(appInfo);
-							apps.add(appInfo);
-							apps.add(appInfo);
-						}
-						appsfragment.setData(apps);
-					}
-
-					@Override
-					public void jsonFail(JSONArray resp) {
-						// TODO Auto-generated method stub
-					}
-				});
-
-		fragments = new Fragment[] { friendsfragment, appsfragment };
-
-		// Creating The ViewPagerAdapter and Passing Fragment Manager, Titles
-		// fot the Tabs and Number Of Tabs.
-		adapter = new ViewPagerTabAdapter(getSupportFragmentManager(), Titles,
-				fragments);
-		// Assigning ViewPager View and setting the adapter
-		pager = (ViewPager) findViewById(R.id.pager);
-		pager.setAdapter(adapter);
-
-		// Assiging the Sliding Tab Layout View
-		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-
-		// Setting the ViewPager For the SlidingTabsLayout
-		tabs.setViewPager(pager);
-
-		LayoutParams params = pager.getLayoutParams();
-		params.height = friendsfragment.getListViewLayoutParams();
-		pager.setLayoutParams(params);
-
-		Thread thread = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					Log.i("listview getview", "activity update thread");
-					while (!friendsfragment.getIsLoad()) {
-						Thread.sleep(200);
-					}
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				Message message = new Message();
-				message.what = 1;
-				mHandler.sendMessage(message);
-			}
-		});
-		// thread.start();
-
-		tabs.setOnPageChangeListener(new OnPageChangeListener() {
-
-			@Override
-			public void onPageSelected(int arg0) {
-				// TODO Auto-generated method stub
-				Log.i("selected tab", "" + arg0);
-				tabviews[arg0].setTextColor(colors[0]);
-				tabviews[1 - arg0].setTextColor(colors[1]);
-				if (arg0 == 1) {
-					tabviews[1].setCompoundDrawables(drawableWodeApp[1], null,
-							null, null);
-					tabviews[0].setCompoundDrawables(drawableFenxiang[0], null,
-							null, null);
-					LayoutParams params = pager.getLayoutParams();
-					params.height = appsfragment.getListViewLayoutParams();
-					pager.setLayoutParams(params);
-
-				} else {
-					tabviews[0].setCompoundDrawables(drawableFenxiang[1], null,
-							null, null);
-					tabviews[1].setCompoundDrawables(drawableWodeApp[0], null,
-							null, null);
-					LayoutParams params = pager.getLayoutParams();
-					params.height = friendsfragment.getListViewLayoutParams();
-					pager.setLayoutParams(params);
-				}
-			}
-
-			@Override
-			public void onPageScrolled(int arg0, float arg1, int arg2) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onPageScrollStateChanged(int arg0) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-
-		initData();
 	}
 
 	protected void updateProfile() {
@@ -455,6 +471,15 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 							Constants.ShareAllDownloadApps));
 			break;
 		case R.id.imgbtn_share:
+			Dialog dialog = new ShareDialog(CircleActivity.this);
+			Window dialogWindow = dialog.getWindow();
+			WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+			dialogWindow.setGravity(Gravity.RIGHT | Gravity.TOP);
+			lp.x = 5; // 新位置X坐标
+			lp.y = 90; // 新位置Y坐标
+			lp.alpha = 0.7f; // 透明度
+			dialogWindow.setAttributes(lp);
+			dialog.show();
 			break;
 		case R.id.btn_circle_addattention:
 			RequestParams request = new RequestParams();
@@ -473,6 +498,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 								Utils.showShortToast(getApplicationContext(),
 										"已关注");
 							addfriend.setText("已关注");
+							addfriend.setGravity(Gravity.CENTER);
 						}
 
 						@Override

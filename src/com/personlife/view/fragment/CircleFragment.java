@@ -3,6 +3,10 @@ package com.personlife.view.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
@@ -25,11 +29,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.personlifep.R;
+import com.loopj.android.http.RequestParams;
 import com.personlife.adapter.ViewPagerTabAdapter;
 import com.personlife.bean.App;
 import com.personlife.bean.Reply;
 import com.personlife.bean.Shuoshuo;
 import com.personlife.bean.Star;
+import com.personlife.net.BaseAsyncHttp;
+import com.personlife.net.JSONObjectHttpResponseHandler;
+import com.personlife.utils.ComplexPreferences;
+import com.personlife.utils.Constants;
+import com.personlife.utils.ImageLoaderUtils;
+import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.SystemUtils;
 import com.personlife.view.activity.circle.CircleFriendsFragment;
 import com.personlife.view.activity.circle.CircleMyAppsFragment;
@@ -58,6 +69,7 @@ public class CircleFragment extends Fragment implements OnClickListener {
 	Fragment fragments[];
 	CircleFriendsFragment friendsfragment;
 	CircleMyAppsFragment appsfragment;
+	Star star;
 	public Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
@@ -82,7 +94,6 @@ public class CircleFragment extends Fragment implements OnClickListener {
 			layout = ctx.getLayoutInflater().inflate(R.layout.fragment_circle,
 					null);
 			initView();
-			setOnListener();
 			initData();
 		} else {
 			ViewGroup parent = (ViewGroup) layout.getParent();
@@ -113,31 +124,38 @@ public class CircleFragment extends Fragment implements OnClickListener {
 		fenxiang.setVisibility(View.VISIBLE);
 		fenxiangcounts.setVisibility(View.VISIBLE);
 
-		List<Shuoshuo> shuoshuos = new ArrayList<Shuoshuo>();
-		Shuoshuo shuoshuo = new Shuoshuo();
-		List<App> appsshuoshuo = new ArrayList<App>();
-		appsshuoshuo.add(new App());
-		shuoshuo.setApps(appsshuoshuo);
-		List<Star> starsshuoshuo = new ArrayList<Star>();
-		Star starshuoshuo = new Star();
-		starshuoshuo.setPhone("111");
-		starshuoshuo.setNickname("飞帅");
-		starsshuoshuo.add(starshuoshuo);
-		starsshuoshuo.add(starshuoshuo);
-		shuoshuo.setStars(starsshuoshuo);
-		List<Reply> repliesshuoshuo = new ArrayList<Reply>();
-		Reply reply = new Reply();
-		reply.setContent("什么东西");
-		reply.setFromnickname("飞帅");
-		reply.setTonickname("威少");
-		repliesshuoshuo.add(reply);
-		repliesshuoshuo.add(reply);
-		repliesshuoshuo.add(reply);
-		shuoshuo.setReplies(repliesshuoshuo);
-		shuoshuos.add(shuoshuo);
-		shuoshuos.add(shuoshuo);
-		shuoshuos.add(shuoshuo);
-		friendsfragment = new CircleFriendsFragment(shuoshuos);
+		star = new Star();
+		star.setPhone(PersonInfoLocal.getPhone());
+		final List<Shuoshuo> shuoshuos = new ArrayList<Shuoshuo>();
+		friendsfragment = new CircleFriendsFragment(shuoshuos,star);
+
+		RequestParams request = new RequestParams();
+		request.add("phone", star.getPhone());
+		BaseAsyncHttp.postReq(getActivity(), "/users/getinfo", request,
+				new JSONObjectHttpResponseHandler() {
+
+					@Override
+					public void jsonSuccess(JSONObject resp) {
+						// TODO Auto-generated method stub
+						star.setPhone(resp.optString("phone"));
+						star.setNickname(resp.optString("nickname"));
+						star.setThumb(resp.optString("thumb"));
+						star.setFollower(resp.optString("follower"));
+						star.setShared(resp.optString("shared"));
+						star.setFamous(resp.optInt("famous"));
+						star.setSignature(resp.optString("signature"));
+						star.setFavour(resp.optInt("favour"));
+						ComplexPreferences.putObject(getActivity(), "user",
+								star);
+						updateFriendsCircle();
+					}
+
+					@Override
+					public void jsonFail(JSONObject resp) {
+						// TODO Auto-generated method stub
+
+					}
+				});
 
 		List<App> apps = new ArrayList<App>();
 		apps = SystemUtils.getUserApps(getActivity());
@@ -162,15 +180,10 @@ public class CircleFragment extends Fragment implements OnClickListener {
 			public void run() {
 				try {
 					Log.i("listview getview", "activity update thread");
-					while (!friendsfragment.getIsLoad()) {
-						Thread.sleep(100);
+					while (!friendsfragment.getIsLoaded()) {
+						Thread.sleep(400);
 					}
-					// while (true) {
-					// Thread.sleep(200);
-					// Message message = new Message();
-					// message.what = 1;
-					// mHandler.sendMessage(message);
-					// }
+					Thread.sleep(500);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -223,7 +236,115 @@ public class CircleFragment extends Fragment implements OnClickListener {
 		});
 	}
 
-	public void setOnListener() {
+	protected void updateProfile(int msgsize) {
+		// TODO Auto-generated method stub
+		ImageLoaderUtils.displayImageView(star.getThumb(), staricon);
+		starname.setText(star.getNickname());
+		fenxiangcounts.setText("(" + msgsize + ")");
+		dianzancounts.setText("(" + star.getFavour() + ")");
+		signature.setText(star.getSignature());
+	}
+
+	protected void updateFriendsCircle() {
+		// TODO Auto-generated method stub
+		final List<Shuoshuo> shuoshuos = new ArrayList<Shuoshuo>();
+		RequestParams requestShuoshuo = new RequestParams();
+		requestShuoshuo.add("phone", star.getPhone());
+		BaseAsyncHttp.postReq(getActivity(), "/message/get", requestShuoshuo,
+				new JSONObjectHttpResponseHandler() {
+					@Override
+					public void jsonSuccess(JSONObject resp) {
+						// TODO Auto-generated method stub
+						try {
+							JSONArray jsonshuoshuos = resp.getJSONArray("item");
+							for (int i = 0; i < jsonshuoshuos.length(); i++) {
+								Shuoshuo shuoshuo = new Shuoshuo();
+								JSONObject jsonshuoshuo = jsonshuoshuos
+										.getJSONObject(i);
+								shuoshuo.setContent(jsonshuoshuo
+										.getString("content"));
+								shuoshuo.setCreatedtime(jsonshuoshuo
+										.getInt("created_at"));
+								shuoshuo.setArea(jsonshuoshuo.getString("area"));
+								shuoshuo.setKind(jsonshuoshuo.getString("kind"));
+								shuoshuo.setMsgid(jsonshuoshuo.getInt("id"));
+								shuoshuo.setNickname(jsonshuoshuo
+										.getString("nickname"));
+								shuoshuo.setThumb(jsonshuoshuo
+										.getString("thumb"));
+								JSONArray jsonapps = jsonshuoshuo
+										.getJSONArray("apps");
+								List<App> shuoshuoapps = new ArrayList<App>();
+								for (int j = 0; j < jsonapps.length(); j++) {
+									App app = new App();
+									JSONObject jsonapp = jsonapps
+											.getJSONObject(j);
+									app.setIcon(jsonapp.getString("icon"));
+									app.setSize(jsonapp.getString("size"));
+									app.setDowloadcount(jsonapp
+											.getInt("downloadcount"));
+									app.setIntrodution(jsonapp
+											.getString("introduction"));
+									app.setName(jsonapp.getString("name"));
+									app.setId(jsonapp.getInt("id"));
+									app.setDownloadUrl(jsonapp
+											.getString("android_url"));
+									app.setProfile(jsonapp.getString("profile"));
+									app.setDownloadPath(Constants.DownloadPath
+											+ app.getName() + ".apk");
+									shuoshuoapps.add(app);
+								}
+								shuoshuo.setApps(shuoshuoapps);
+								JSONArray jsonreplies = jsonshuoshuo
+										.getJSONArray("replys");
+								List<Reply> shuoshuoreplies = new ArrayList<Reply>();
+								for (int k = 0; k < jsonreplies.length(); k++) {
+									Reply reply = new Reply();
+									JSONObject jsonreply = jsonreplies
+											.getJSONObject(k);
+									reply.setFromphone(jsonreply
+											.getString("fromphone"));
+									reply.setFromnickname(jsonreply
+											.getString("fromnickname"));
+									reply.setTophone(jsonreply
+											.getString("tophone"));
+									reply.setTonickname(jsonreply
+											.getString("tonickname"));
+									reply.setContent(jsonreply
+											.getString("content"));
+									shuoshuoreplies.add(reply);
+								}
+								shuoshuo.setReplies(shuoshuoreplies);
+								List<Star> shuoshuozans = new ArrayList<Star>();
+								JSONArray jsonzans = jsonshuoshuo
+										.getJSONArray("zan");
+								for (int l = 0; l < jsonzans.length(); l++) {
+									Star zan = new Star();
+									JSONObject jsonzan = jsonzans
+											.getJSONObject(l);
+									zan.setPhone(jsonzan.getString("phone"));
+									zan.setNickname(jsonzan
+											.getString("nickname"));
+									shuoshuozans.add(zan);
+								}
+								shuoshuo.setStars(shuoshuozans);
+								shuoshuos.add(shuoshuo);
+							}
+							friendsfragment.updateData(shuoshuos);
+							updateProfile(shuoshuos.size());
+
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+
+					@Override
+					public void jsonFail(JSONObject resp) {
+						// TODO Auto-generated method stub
+					}
+				});
+
 	}
 
 	public void initData() {
