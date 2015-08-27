@@ -41,6 +41,7 @@ import com.personlife.view.fragment.CircleFragment;
 import com.personlife.view.fragment.DiscoveryFragment;
 import com.personlife.view.fragment.HomeFragment;
 import com.personlife.view.fragment.PersonalCenter;
+import com.umeng.analytics.MobclickAgent;
 
 public class MainActivity extends FragmentActivity implements OnClickListener {
 
@@ -83,11 +84,14 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
 	}
 
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
+	public void onResume() {
 		super.onResume();
-		// initdata();
+		MobclickAgent.onResume(this);
+	}
+
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	public void initdataWithPassword() {

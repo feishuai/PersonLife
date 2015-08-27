@@ -1,15 +1,12 @@
 package com.personlife.utils;
 
-import java.lang.reflect.Type;
-
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.snowdream.android.util.Log;
-import com.google.gson.reflect.TypeToken;
 
 public class ComplexPreferences {
 
@@ -18,8 +15,6 @@ public class ComplexPreferences {
 	private SharedPreferences preferences;
 	private SharedPreferences.Editor editor;
 	private static ObjectMapper mapper = new ObjectMapper();
-	Type typeOfObject = new TypeToken<Object>() {
-	}.getType();
 
 	private ComplexPreferences(Context context, String namePreferences, int mode) {
 		this.context = context;
