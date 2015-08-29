@@ -45,19 +45,21 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 	private Button btn_nextstep, btn_send,back;
 	private EditText et_usertel, et_code;
 	private MyCount mc;
+	private String title;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.activity_register1);
 		super.onCreate(savedInstanceState);
 		ActivityCollector.addActivity(this);
+		title=getIntent().getStringExtra("title");
 		initControl();
 		setListener();
 	}
 
 	protected void initControl() {
 		txt_title = (TextView) findViewById(R.id.txt_title);
-		txt_title.setText("注册");
+		txt_title.setText(title);
 		back = (Button) findViewById(R.id.txt_left);
 		back.setVisibility(View.VISIBLE);
 		btn_send = (Button) findViewById(R.id.btn_send);
@@ -106,23 +108,65 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 			
 			String telphone = et_usertel.getText().toString();
 			String code=et_code.getText().toString();
+			if(title.equals("注册")){
+				RequestParams request = new RequestParams();
+				request.put("phone", telphone);
+				request.put("num", code);
+				BaseAsyncHttp.postReq(getApplicationContext(), "/users/verify",
+						request, new JSONObjectHttpResponseHandler() {
+
+							@Override
+							public void jsonSuccess(JSONObject resp) {
+								try {
+									if(resp.getString("flag").equals("1")){
+										PersonInfoLocal.storeRegisterTel(RegisterActivity1.this, et_usertel.getText().toString());
+										Intent intent = new Intent(RegisterActivity1.this,RegisterActivity2.class);
+										intent.putExtra("telphone", et_usertel.getText().toString());
+										startActivity(intent);												
+										
+									}else{
+										Toast.makeText(RegisterActivity1.this, "验证码错误", Toast.LENGTH_SHORT).show();
+									}
+								} catch (JSONException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+							@Override
+							public void jsonFail(JSONObject resp) {
+								// TODO Auto-generated method stub
+							}
+						});
+			}
+			if(title.equals("找回密码")){
+				Intent intent = new Intent(RegisterActivity1.this,FindCodeActivity.class);
+				intent.putExtra("telphone", et_usertel.getText().toString());
+				startActivity(intent);
+			}
+			
+			break;
+		default:
+			break;
+		}
+	}
+
+
+	private void getCode() {
+		if(title.equals("注册")){
+			String telphone = et_usertel.getText().toString();
 			RequestParams request = new RequestParams();
 			request.put("phone", telphone);
-			request.put("num", code);
-			BaseAsyncHttp.postReq(getApplicationContext(), "/users/verify",
+			request.put("find", 0);
+			BaseAsyncHttp.postReq(getApplicationContext(), "/users/send",
 					request, new JSONObjectHttpResponseHandler() {
 
 						@Override
 						public void jsonSuccess(JSONObject resp) {
 							try {
-								if(resp.getString("flag").equals("1")){
-									PersonInfoLocal.storeRegisterTel(RegisterActivity1.this, et_usertel.getText().toString());
-									Intent intent = new Intent(RegisterActivity1.this,RegisterActivity2.class);
-									intent.putExtra("telphone", et_usertel.getText().toString());
-									startActivity(intent);												
-									
+								if(resp.getString("flag").equals("0")){
+									Toast.makeText(RegisterActivity1.this, "您已注册过", Toast.LENGTH_SHORT).show();
 								}else{
-									Toast.makeText(RegisterActivity1.this, "验证码错误", Toast.LENGTH_SHORT).show();
+									Toast.makeText(RegisterActivity1.this, "发送成功", Toast.LENGTH_SHORT).show();
 								}
 							} catch (JSONException e) {
 								// TODO Auto-generated catch block
@@ -132,132 +176,36 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 						@Override
 						public void jsonFail(JSONObject resp) {
 							// TODO Auto-generated method stub
+							Toast.makeText(RegisterActivity1.this, "网络发送失败", Toast.LENGTH_SHORT).show();
 						}
 					});
-			
-			break;
-		default:
-			break;
-		}
-	}
-
-//	private void getRegister() {
-//		final String name = et_usertel.getText().toString();
-//		String code = et_code.getText().toString();
-//		if (TextUtils.isEmpty(code)) {
-//			Utils.showLongToast(RegisterActivity1.this, "请填写手机号码，并获取验证码！");
-//			return;
-//		}
-//		if (TextUtils.isEmpty(name) || TextUtils.isEmpty(pwd)
-//				|| TextUtils.isEmpty(code)) {
-//			Utils.showLongToast(RegisterActivity1.this, "请填写核心信息！");
-//			return;
-//		}
-////		getLoadingDialog("正在注册...  ").show();
-//		btn_nextstep.setEnabled(false);
-//		btn_send.setEnabled(false);
-//		RequestParams params = new RequestParams();
-//		params.put("username", name);
-//		params.put("password", DES.md5Pwd(pwd));
-//		// params.put("checkCode", code);
-////		netClient.post(Constants.RegistURL, params, new BaseJsonRes() {
-////
-////			@Override
-////			public void onMySuccess(String data) {
-////				Utils.putValue(RegisterActivity.this, Constants.UserInfo, data);
-////				Utils.putValue(RegisterActivity.this, Constants.NAME, name);
-////				Utils.putValue(RegisterActivity.this, Constants.PWD,
-////						DES.md5Pwd(pwd));
-////				Utils.putBooleanValue(RegisterActivity.this,
-////						Constants.LoginState, true);
-////				getChatserive(name, DES.md5Pwd(pwd));
-////			}
-////
-////			@Override
-////			public void onMyFailure() {
-////				getLoadingDialog("").dismiss();
-////				btn_register.setEnabled(true);
-////				btn_send.setEnabled(true);
-////			}
-////		});
-//	}
-
-//	private void getChatserive(final String userName, final String password) {
-//		EMChatManager.getInstance().login(userName, password, new EMCallBack() {// 回调
-//					@Override
-//					public void onSuccess() {
-//						runOnUiThread(new Runnable() {
-//							public void run() {
-//								Utils.putBooleanValue(RegisterActivity1.this,
-//										Constants.LoginState, true);
-//								Utils.putValue(RegisterActivity1.this,
-//										Constants.User_ID, userName);
-//								Utils.putValue(RegisterActivity1.this,
-//										Constants.PWD, password);
-//								Log.d("main", "登陆聊天服务器成功！");
-//								// 加载群组和会话
-//								EMGroupManager.getInstance().loadAllGroups();
-//								EMChatManager.getInstance()
-//										.loadAllConversations();
-////								getLoadingDialog("正在登录...").dismiss();
-//								Utils.showLongToast(RegisterActivity1.this,
-//										"注册成功！");
-//								Intent intent = new Intent(
-//										RegisterActivity1.this,
-//										MainActivity.class);
-//								startActivity(intent);
-//								overridePendingTransition(R.anim.push_up_in,
-//										R.anim.push_up_out);
-//								finish();
-//							}
-//						});
-//					}
-//
-//					@Override
-//					public void onProgress(int progress, String status) {
-//
-//					}
-//
-//					@Override
-//					public void onError(int code, String message) {
-//						Log.d("main", "登陆聊天服务器失败！");
-//						runOnUiThread(new Runnable() {
-//							public void run() {
-////								getLoadingDialog("正在注册...").dismiss();
-//								Utils.showLongToast(RegisterActivity1.this,
-//										"注册失败！");
-//							}
-//						});
-//					}
-//				});
-//	}
-
-	private void getCode() {
-		String telphone = et_usertel.getText().toString();
-		RequestParams request = new RequestParams();
-		request.put("phone", telphone);
-		BaseAsyncHttp.postReq(getApplicationContext(), "/users/send",
-				request, new JSONObjectHttpResponseHandler() {
-
-					@Override
-					public void jsonSuccess(JSONObject resp) {
-						try {
-							if(resp.getString("flag").equals("0")){
-								Toast.makeText(RegisterActivity1.this, "您已注册过", Toast.LENGTH_SHORT).show();
-							}else{
-								Toast.makeText(RegisterActivity1.this, "发送成功", Toast.LENGTH_SHORT).show();
+		}else{
+			String telphone = et_usertel.getText().toString();
+			RequestParams request = new RequestParams();
+			request.put("phone", telphone);
+			request.put("find", 1);
+			BaseAsyncHttp.postReq(getApplicationContext(), "/users/send",
+					request, new JSONObjectHttpResponseHandler() {
+						@Override
+						public void jsonSuccess(JSONObject resp) {
+							try {
+								if(resp.getString("flag").equals("0")){
+									Toast.makeText(RegisterActivity1.this, "获取验证码失败", Toast.LENGTH_SHORT).show();
+								}else{
+									Toast.makeText(RegisterActivity1.this, "发送成功", Toast.LENGTH_SHORT).show();
+								}
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
 							}
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
 						}
-					}
-					@Override
-					public void jsonFail(JSONObject resp) {
-						// TODO Auto-generated method stub
-						Toast.makeText(RegisterActivity1.this, "网络发送失败", Toast.LENGTH_SHORT).show();
-					}
-				});
+						@Override
+						public void jsonFail(JSONObject resp) {
+							// TODO Auto-generated method stub
+							Toast.makeText(RegisterActivity1.this, "网络发送失败", Toast.LENGTH_SHORT).show();
+						}
+					});
+		}
 	}
 
 	// 手机号 EditText监听器

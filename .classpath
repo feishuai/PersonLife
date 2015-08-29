@@ -4,7 +4,6 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="gen"/>
 	<classpathentry exported="true" kind="lib" path="libs/afinal-0.3.32-bin.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/android-async-http-1.4.7.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/baidumapapi_v3_2_0.jar"/>
@@ -22,5 +21,6 @@
 	<classpathentry exported="true" kind="lib" path="libs/retrofit-1.9.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/snappydb-0.5.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/universal-image-loader-1.9.4.jar"/>
+	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

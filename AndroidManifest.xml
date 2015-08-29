@@ -224,6 +224,10 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name="com.personlife.view.activity.FindCodeActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.personlife.view.activity.LoginActivity"
             android:screenOrientation="portrait" >
 
@@ -292,6 +296,7 @@
             android:label="@string/title_activity_share_range"
             android:screenOrientation="portrait" >
         </activity>
+        
         <activity
             android:name="com.personlife.view.activity.circle.ShareAppListActivity"
 

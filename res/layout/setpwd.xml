@@ -15,7 +15,7 @@
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
         android:paddingLeft="10dp"
-        
+        android:id="@+id/tishi"
         />
     <LinearLayout 
         android:layout_width="match_parent"
