@@ -226,7 +226,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 								e.printStackTrace();
 							}
 							allapps.addAll(apps);
-							if (position == tags.size())
+							if (position == (tags.size() - 1))
 								ComplexPreferences.putObject(getActivity(),
 										Constants.HomeAllDownloadApps, allapps);
 							holder.tvkind.setText(tags.get(position));

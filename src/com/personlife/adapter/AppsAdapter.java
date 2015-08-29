@@ -171,6 +171,7 @@ public class AppsAdapter extends BaseAdapter {
 											holder.bar.setProgress(values[0]);
 											if (values[0] == 100) {
 												holder.download.setText("已下载");
+												SystemUtils.openAppFronUri(context, mlist.get(position).getDownloadPath());
 											}
 											Log.i("update progress",
 													String.valueOf(values[0]));

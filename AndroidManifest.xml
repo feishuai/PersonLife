@@ -66,7 +66,6 @@
             android:value="PORvHmOSese7U5t6CSbPEnO6" />
 
         <activity
-
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
@@ -230,7 +229,6 @@
         <activity
             android:name="com.personlife.view.activity.LoginActivity"
             android:screenOrientation="portrait" >
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -299,14 +297,16 @@
         
         <activity
             android:name="com.personlife.view.activity.circle.ShareAppListActivity"
-
             android:label="@string/title_activity_share_app_list"
             android:screenOrientation="portrait" >
-            
-            android:label="@string/title_activity_share_app_list" 
-            android:screenOrientation="portrait">
-
         </activity>
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="55df164d67e58e6b77000567" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="wodeapp" />
     </application>
 
 </manifest>
