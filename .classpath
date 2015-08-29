@@ -1,33 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
-<<<<<<< HEAD
 	<classpathentry kind="src" path="src"/>
-=======
->>>>>>> 0d387488d166da9765ae9652ee0f4a20b322c648
-	<classpathentry exported="true" kind="lib" path="libs/afinal-0.3.32-bin.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/android-async-http-1.4.7.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/baidumapapi_v3_2_0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/easemobchat_2.1.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/jackson-annotations-2.5.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/jackson-core-2.5.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/jackson-databind-2.5.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/JsonUtils.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/kryo-2.24.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/kryo-serializers-0.23.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/locSDK_5.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/okhttp-2.4.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/picasso-2.5.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/pinyin4j-2.5.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/retrofit-1.9.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/snappydb-0.5.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/universal-image-loader-1.9.4.jar"/>
-<<<<<<< HEAD
-=======
-	<classpathentry kind="src" path="src"/>
->>>>>>> 0d387488d166da9765ae9652ee0f4a20b322c648
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
