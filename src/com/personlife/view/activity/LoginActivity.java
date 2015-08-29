@@ -122,13 +122,15 @@ public class LoginActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.tv_login_register:
 
-			Intent intent=new Intent(LoginActivity.this,RegisterActivity1.class);
+			Intent intent = new Intent(LoginActivity.this,
+					RegisterActivity1.class);
 			intent.putExtra("title", "注册");
 			startActivity(intent);
 
 			break;
 		case R.id.tv_login_retrieve:
-			Intent intentfind=new Intent(LoginActivity.this,RegisterActivity1.class);
+			Intent intentfind = new Intent(LoginActivity.this,
+					RegisterActivity1.class);
 			intentfind.putExtra("title", "找回密码");
 			startActivity(intentfind);
 			break;
