@@ -37,16 +37,17 @@ public class ComplexPreferences {
 	}
 
 	public void putObject(String key, Object object) {
-		if(object == null){
+		if (object == null) {
 			throw new IllegalArgumentException("object is null");
 		}
-		
-		if(key.equals("") || key == null){
+
+		if (key.equals("") || key == null) {
 			throw new IllegalArgumentException("key is empty or null");
 		}
-		
+
 		try {
-			Log.i("sharepreferences get" +key, mapper.writeValueAsString(object));
+			Log.i("sharepreferences get" + key,
+					mapper.writeValueAsString(object));
 			editor.putString(key, mapper.writeValueAsString(object));
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
@@ -57,32 +58,36 @@ public class ComplexPreferences {
 	public void commit() {
 		editor.commit();
 	}
-	
-	public static void putObject(Context context ,String key, Object object){
-		ComplexPreferences pre = getComplexPreferences(context, Constants.SharePrefrencesName);
+
+	public static void putObject(Context context, String key, Object object) {
+		ComplexPreferences pre = getComplexPreferences(context,
+				Constants.SharePrefrencesName);
 		pre.putObject(key, object);
 		pre.commit();
 	}
-	
+
 	public <T> T getObject(String key, TypeReference valueTypeRef) {
-	
+
 		String json = preferences.getString(key, null);
-		Log.i("sharepreferences get" +key, json);
+		if (json != null)
+			Log.i("sharepreferences get" + key, json);
 		if (json == null) {
 			return null;
 		} else {
-			try{
+			try {
 				return mapper.readValue(json, valueTypeRef);
 			} catch (Exception e) {
-				throw new IllegalArgumentException("Object storaged with key " + key + " is instanceof other class");				
+				throw new IllegalArgumentException("Object storaged with key "
+						+ key + " is instanceof other class");
 			}
 		}
 	}
-	
-	public static <T> T getObject(Context context,String key, TypeReference valueTypeRef){
-		ComplexPreferences pre = getComplexPreferences(context, Constants.SharePrefrencesName);
+
+	public static <T> T getObject(Context context, String key,
+			TypeReference valueTypeRef) {
+		ComplexPreferences pre = getComplexPreferences(context,
+				Constants.SharePrefrencesName);
 		return pre.getObject(key, valueTypeRef);
 	}
-	
-	
+
 }
