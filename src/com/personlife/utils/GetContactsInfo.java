@@ -45,8 +45,7 @@ public class GetContactsInfo {
 		if (cur != null) {
 			while (cur.moveToNext()) {
 				userFriend = new UserFriend();
-				userFriend.setPhone(cur.getString(cur
-						.getColumnIndex(Phone.NUMBER)));// 得到手机号码
+				userFriend.setPhone(cur.getString(cur.getColumnIndex(Phone.NUMBER)));// 得到手机号码
 				
 				userFriend.setNickname(cur.getString(cur
 						.getColumnIndex(Phone.DISPLAY_NAME)));
