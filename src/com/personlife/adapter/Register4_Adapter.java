@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.personlifep.R;
+import com.github.snowdream.android.util.Log;
+import com.personlife.bean.Star;
+import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.widget.CircleImageView;
 
 import android.content.Context;
@@ -21,22 +24,18 @@ import android.widget.TextView;
  */
 public class Register4_Adapter extends BaseAdapter {
 	private LayoutInflater inflater;
-	private List<Picture> pictures;
-
-	public Register4_Adapter(String[] titles, int[] images, Context context) {
-		super();
-		pictures = new ArrayList<Picture>();
+	private List<Star> liststar;
+	private Context context;
+	public Register4_Adapter(Context context,List<Star> liststar) {	
+		this.context=context;
 		inflater = LayoutInflater.from(context);
-		for (int i = 0; i < images.length; i++) {
-			Picture picture = new Picture(titles[i], images[i]);
-			pictures.add(picture);
-		}
+		this.liststar=liststar;
 	}
 
 	@Override
 	public int getCount() {
-		if (null != pictures) {
-			return pictures.size();
+		if (null != liststar) {
+			return liststar.size();
 		} else {
 			return 0;
 		}
@@ -44,7 +43,7 @@ public class Register4_Adapter extends BaseAdapter {
 
 	@Override
 	public Object getItem(int position) {
-		return pictures.get(position);
+		return liststar.get(position);
 	}
 
 	@Override
@@ -64,8 +63,9 @@ public class Register4_Adapter extends BaseAdapter {
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		viewHolder.star_name.setText(pictures.get(position).getTitle());
-		viewHolder.picture.setBackgroundResource(pictures.get(position).getImageId());
+		viewHolder.star_name.setText(liststar.get(position).getNickname());
+		ImageLoaderUtils.displayImageView(liststar.get(position).getThumb(), viewHolder.picture);
+		
 		return convertView;
 	}
 
@@ -74,35 +74,4 @@ public class Register4_Adapter extends BaseAdapter {
 class ViewHolder {
 	public ImageView picture;
 	public TextView star_name;
-}
-
-class Picture {
-	private String title;
-	private int imageId;
-
-	public Picture() {
-		super();
-	}
-
-	public Picture(String title, int imageId) {
-		super();
-		this.title = title;
-		this.imageId = imageId;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public int getImageId() {
-		return imageId;
-	}
-
-	public void setImageId(int imageId) {
-		this.imageId = imageId;
-	}
 }

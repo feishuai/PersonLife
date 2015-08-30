@@ -2,9 +2,17 @@ package com.personlife.view.activity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
+import org.json.JSONArray;
 
 import com.example.personlifep.R;
+import com.loopj.android.http.RequestParams;
 import com.personlife.adapter.Register4_Adapter;
+import com.personlife.adapter.StarRecomAdapter;
+import com.personlife.bean.Star;
+import com.personlife.net.BaseAsyncHttp;
+import com.personlife.net.JSONArrayHttpResponseHandler;
 import com.personlife.utils.ActivityCollector;
 import com.personlife.utils.Utils;
 import com.personlife.view.activity.circle.CircleActivity;
@@ -26,12 +34,13 @@ import android.widget.AdapterView.OnItemClickListener;
  * @author liugang
  * @date 2015年8月12日
  */
-public class RegisterActivity4 extends Activity implements OnClickListener{
+public class RegisterActivity4 extends Activity implements OnClickListener {
 
 	private String telphone;
 	private Button back, finishstep;
 	private TextView tv_title;
 	private GridView star_gridview;
+	private List<Star> liststar = new ArrayList<Star>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,41 +61,65 @@ public class RegisterActivity4 extends Activity implements OnClickListener{
 		tv_title = (TextView) findViewById(R.id.txt_title);
 		tv_title.setText("完善个人信息");
 		star_gridview = (GridView) findViewById(R.id.star_gridview);
-		finishstep=(Button) findViewById(R.id.register4_nextstep);
+		finishstep = (Button) findViewById(R.id.register4_nextstep);
 		finishstep.setOnClickListener(this);
 	}
 
 	public void initdata() {
-		// 图片的文字标题
-		String[] titles = new String[] { "李宇春", "范冰冰", "郑凯", "baby", "谁啊",
-				"不认识", "又来？", "好烦啊", "额囧" };
-		// 图片ID数组
-		int[] images = new int[] { R.drawable.star1, R.drawable.star2,
-				R.drawable.star3, R.drawable.star4, R.drawable.star5,
-				R.drawable.star6, R.drawable.star4, R.drawable.star5,
-				R.drawable.star6 };
-		Register4_Adapter  adapter = new Register4_Adapter(titles, images, this);
-		star_gridview.setAdapter(adapter);
-		star_gridview.setOnItemClickListener(new OnItemClickListener() {
+		// 连网获取新星推荐
+		RequestParams request = new RequestParams();
+		BaseAsyncHttp.postReq(this, "/app/recommend", request,
+				new JSONArrayHttpResponseHandler() {
 
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+					@Override
+					public void jsonSuccess(JSONArray resp) {
+						// TODO Auto-generated method stub
+						for (int i = 0; i < resp.length(); i++) {
+							Star star = new Star();
+							star.setPhone(resp.optJSONObject(i).optString(
+									"phone"));
+							star.setNickname(resp.optJSONObject(i).optString(
+									"nickname"));
+							star.setThumb(resp.optJSONObject(i).optString(
+									"thumb"));
+							star.setFollower(resp.optJSONObject(i).optString(
+									"follower"));
+							star.setShared(resp.optJSONObject(i).optString(
+									"shared"));
+							liststar.add(star);
+						}
+						Register4_Adapter adapter = new Register4_Adapter(getApplicationContext(),liststar);
+						star_gridview.setAdapter(adapter);
+						star_gridview.setOnItemClickListener(new OnItemClickListener() {
+
+							@Override
+							public void onItemClick(AdapterView<?> parent,
+									View view, int position, long id) {
+								// TODO Auto-generated method stub
+							}
+						});
+					}
+
+					@Override
+					public void jsonFail(JSONArray resp) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+		
+		
 	}
 
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		switch(v.getId()){
+		switch (v.getId()) {
 		case R.id.register4_nextstep:
-			
-			Intent intent = new Intent(RegisterActivity4.this,MainActivity.class);
+
+			Intent intent = new Intent(RegisterActivity4.this,
+					MainActivity.class);
 			intent.putExtra("telphone", telphone);
-			startActivity(intent);												
+			startActivity(intent);
 			ActivityCollector.finishAll();
 			break;
 		case R.id.txt_left:

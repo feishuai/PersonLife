@@ -67,8 +67,13 @@ public class ContactAdapter extends BaseAdapter implements SectionIndexer {
 		TextView tvCatalog = ViewHolder.get(convertView,
 				R.id.contactitem_catalog);
 		TextView tvNick = ViewHolder.get(convertView, R.id.contactitem_nick);
-		String catalog = PingYinUtil.converterToFirstSpell(user.getNickname())
-				.substring(0, 1);
+		String catalog;
+		if(null==user.getNickname()){
+			catalog = PingYinUtil.converterToFirstSpell(user.getPhone()).substring(0, 1);
+		}else{
+			catalog = PingYinUtil.converterToFirstSpell(user.getNickname()).substring(0, 1);
+		}
+		
 		if (position == 0) {
 			tvCatalog.setVisibility(View.VISIBLE);
 			tvCatalog.setText(catalog);
@@ -83,10 +88,12 @@ public class ContactAdapter extends BaseAdapter implements SectionIndexer {
 				tvCatalog.setText(catalog);
 			}
 		}
-		
-		ImageLoaderUtils.displayAppIcon(user.getThumb(), ivAvatar);
-		
-		//ivAvatar.setImageResource(R.drawable.head);
+		if(null!=user.getThumb()){
+			ImageLoaderUtils.displayAppIcon(user.getThumb(), ivAvatar);
+		}else{
+			ivAvatar.setImageResource(R.drawable.head);
+		}
+
 		tvNick.setText(user.getNickname());
 		return convertView;
 	}

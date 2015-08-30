@@ -14,144 +14,23 @@
         android:layout_height="24.0dip"
         android:background="@color/black2" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:background="@color/white"
-        android:orientation="horizontal" >
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="vertical" >
 
-        <Button
-            android:id="@+id/interest_1"
-            android:layout_width="0dp"
+        <com.personlife.widget.MyGridView
+            android:id="@+id/gridviewintest_person"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/register_intest1"
-            android:text="看书"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/interest_2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/register_intest2"
-            android:text="旅游"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/interest_3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/register_intest3"
-            android:text="健身"
-            android:textSize="20sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:background="@color/white"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/interest_4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/register_intest3"
-            android:text="上网"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/interest_5"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/register_intest1"
-            android:text="美容"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/interest_6"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/register_intest2"
-            android:text="美妆"
-            android:textSize="20sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:background="@color/white"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/interest_7"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/register_intest2"
-            android:text="人际"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/interest_8"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/register_intest3"
-            android:text="影视"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/interest_9"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/register_intest1"
-            android:text="美食"
-            android:textSize="20sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:background="@color/white"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/interest_10"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/register_intest1"
-            android:text="理财"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/interest_11"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/register_intest3"
-            android:text="音乐"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/interest_12"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/register_intest2"
-            android:text="居家"
-            android:textSize="20sp" />
-    </LinearLayout>
+            android:layout_marginTop="12dp"
+            android:columnWidth="90dp"
+            android:gravity="center"
+            android:horizontalSpacing="10dp"
+            android:numColumns="auto_fit"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="10dp" >
+        </com.personlife.widget.MyGridView>
+    </ScrollView>
 
 </LinearLayout>

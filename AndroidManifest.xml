@@ -50,6 +50,11 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
+    <!-- 读取联系人权限 -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <!-- 拨打电话权限 -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -294,7 +299,6 @@
             android:label="@string/title_activity_share_range"
             android:screenOrientation="portrait" >
         </activity>
-        
         <activity
             android:name="com.personlife.view.activity.circle.ShareAppListActivity"
             android:label="@string/title_activity_share_app_list"

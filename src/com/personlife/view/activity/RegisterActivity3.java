@@ -1,30 +1,38 @@
 package com.personlife.view.activity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.personlifep.R;
 import com.loopj.android.http.RequestParams;
-import com.personlife.common.Utils;
+import com.personlife.bean.Star;
 import com.personlife.net.BaseAsyncHttp;
+import com.personlife.net.JSONArrayHttpResponseHandler;
 import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ActivityCollector;
 import com.personlife.utils.PersonInfoLocal;
-import com.personlife.view.activity.personcenter.MyownActivity;
+import com.personlife.widget.MyGridView;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * 
@@ -35,16 +43,20 @@ public class RegisterActivity3 extends Activity implements OnClickListener {
 
 	private Button back, nextstep;
 	private TextView tv_title;
-	private Button[] re_interests = new Button[12];
-	private boolean[] flag = new boolean[12];
+	public List<Integer> background = new ArrayList<Integer>();
+	public List<Integer> backselected = new ArrayList<Integer>();
+	private List<String> got = new ArrayList<String>();
 	private String telphone;
+	private MyGridView gridView;
+	private boolean[] flag;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register3);
 		ActivityCollector.addActivity(this);
-		Intent intent=getIntent();
+		Intent intent = getIntent();
 		telphone = intent.getStringExtra("telphone");
 		init();
 	}
@@ -54,20 +66,43 @@ public class RegisterActivity3 extends Activity implements OnClickListener {
 		back.setVisibility(View.VISIBLE);
 		back.setOnClickListener(this);
 		tv_title = (TextView) findViewById(R.id.txt_title);
-		tv_title.setText("完善个人信息");				
+		tv_title.setText("完善个人信息");
 		nextstep = (Button) findViewById(R.id.register3_nextstep);
 		nextstep.setOnClickListener(this);
-		int[] r = { R.id.re_interest_1, R.id.re_interest_2, R.id.re_interest_3,
-				R.id.re_interest_4, R.id.re_interest_5, R.id.re_interest_6,
-				R.id.re_interest_7, R.id.re_interest_8, R.id.re_interest_9,
-				R.id.re_interest_10, R.id.re_interest_11, R.id.re_interest_12 };
-		for (int i = 0; i < 12; i++) {
-			re_interests[i] = (Button) findViewById(r[i]);
-			re_interests[i].setOnClickListener(this);
-		}
-		for (int i = 0; i < 12; i++) {
-			flag[i] = false;
-		}
+		gridView = (MyGridView) findViewById(R.id.gridviewintest);
+		background.add(R.drawable.register_intest1);
+		background.add(R.drawable.register_intest2);
+		background.add(R.drawable.register_intest3);
+		backselected.add(R.drawable.register_intest_selected1);
+		backselected.add(R.drawable.register_intest_selected2);
+		backselected.add(R.drawable.register_intest_selected3);
+		RequestParams request = new RequestParams();
+		BaseAsyncHttp.postReq(this, "/app/allkind", request,
+				new JSONArrayHttpResponseHandler() {
+
+					@Override
+					public void jsonSuccess(JSONArray resp) {
+						// TODO Auto-generated method stub
+						for (int i = 0; i < resp.length(); i++) {
+
+							got.add(resp.optJSONObject(i).optString("second"));
+						}
+						flag = new boolean[resp.length()];
+						for (int i = 0; i < resp.length(); i++) {
+							flag[i] = false;
+						}
+						IntestAdapter dapter = new IntestAdapter(
+								getApplicationContext(), got);
+						gridView.setAdapter(dapter);
+
+					}
+
+					@Override
+					public void jsonFail(JSONArray resp) {
+						// TODO Auto-generated method stub
+
+					}
+				});
 	}
 
 	@Override
@@ -77,111 +112,16 @@ public class RegisterActivity3 extends Activity implements OnClickListener {
 		case R.id.txt_left:
 			onBackPressed();
 			break;
-		case R.id.re_interest_1:
-			flag[0] = !flag[0];
-			if (flag[0] == true) {
-				re_interests[0].setBackgroundResource(R.drawable.register_intest_selected1);
-			} else {
-				re_interests[0].setBackgroundResource(R.drawable.register_intest1);
-			}
-			break;
-		case R.id.re_interest_2:
-			flag[1] = !flag[1];
-			if (flag[1] == true) {
-				re_interests[1].setBackgroundResource(R.drawable.register_intest_selected2);
-			} else {
-				re_interests[1].setBackgroundResource(R.drawable.register_intest2);
-			}
-			break;
-		case R.id.re_interest_3:
-			flag[2] = !flag[2];
-			if (flag[2] == true) {
-				re_interests[2].setBackgroundResource(R.drawable.register_intest_selected3);
-			} else {
-				re_interests[2].setBackgroundResource(R.drawable.register_intest3);
-			}
-			break;
-		case R.id.re_interest_4:
-			flag[3] = !flag[3];
-			if (flag[3] == true) {
-				re_interests[3].setBackgroundResource(R.drawable.register_intest_selected3);
-			} else {
-				re_interests[3].setBackgroundResource(R.drawable.register_intest3);
-			}
-			break;
-		case R.id.re_interest_5:
-			flag[4] = !flag[4];
-			if (flag[4] == true) {
-				re_interests[4].setBackgroundResource(R.drawable.register_intest_selected1);
-			} else {
-				re_interests[4].setBackgroundResource(R.drawable.register_intest1);
-			}
-			break;
-		case R.id.re_interest_6:
-			flag[5] = !flag[5];
-			if (flag[5] == true) {
-				re_interests[5].setBackgroundResource(R.drawable.register_intest_selected2);
-			} else {
-				re_interests[5].setBackgroundResource(R.drawable.register_intest2);
-			}
-			break;
-		case R.id.re_interest_7:
-			flag[6] = !flag[6];
-			if (flag[6] == true) {
-				re_interests[6].setBackgroundResource(R.drawable.register_intest_selected2);
-			} else {
-				re_interests[6].setBackgroundResource(R.drawable.register_intest2);
-			}
-			break;
-		case R.id.re_interest_8:
-			flag[7] = !flag[7];
-			if (flag[7] == true) {
-				re_interests[7].setBackgroundResource(R.drawable.register_intest_selected3);
-			} else {
-				re_interests[7].setBackgroundResource(R.drawable.register_intest3);
-			}
-			break;
-		case R.id.re_interest_9:
-			flag[8] = !flag[8];
-			if (flag[8] == true) {
-				re_interests[8].setBackgroundResource(R.drawable.register_intest_selected1);
-			} else {
-				re_interests[8].setBackgroundResource(R.drawable.register_intest1);
-			}
-			break;
-		case R.id.re_interest_10:
-			flag[9] = !flag[9];
-			if (flag[9] == true) {
-				re_interests[9].setBackgroundResource(R.drawable.register_intest_selected1);
-			} else {
-				re_interests[9].setBackgroundResource(R.drawable.register_intest1);
-			}
-			break;
-		case R.id.re_interest_11:
-			flag[10] = !flag[10];
-			if (flag[10] == true) {
-				re_interests[10].setBackgroundResource(R.drawable.register_intest_selected3);
-			} else {
-				re_interests[10].setBackgroundResource(R.drawable.register_intest3);
-			}
-			break;
-		case R.id.re_interest_12:
-			flag[11] = !flag[11];
-			if (flag[11] == true) {
-				re_interests[11].setBackgroundResource(R.drawable.register_intest_selected2);
-			} else {
-				re_interests[11].setBackgroundResource(R.drawable.register_intest2);
-			}
-			break;
+
 		case R.id.register3_nextstep:
-			Set<String> set=new HashSet<String>();
-			for(int i=0;i<12;i++){
-				if(flag[i]==true){
-					set.add(re_interests[i].getText().toString());
+			Set<String> set = new HashSet<String>();
+			for (int i = 0; i < 12; i++) {
+				if (flag[i] == true) {
+					set.add(got.get(i));
 				}
 			}
 			PersonInfoLocal.storeRegisterHobbys(this, telphone, set);
-			Intent intent=new Intent(this, RegisterActivity4.class);
+			Intent intent = new Intent(this, RegisterActivity4.class);
 			intent.putExtra("telphone", telphone);
 			startActivity(intent);
 			RequestParams request = new RequestParams();
@@ -192,28 +132,29 @@ public class RegisterActivity3 extends Activity implements OnClickListener {
 			request.put("area", "");
 			request.put("job", "");
 			StringBuffer sb = new StringBuffer();
-			sb.append("");			
-			if(set!=null){
-				for (String str : set) {  
-					sb.append(str+" ");
+			sb.append("");
+			if (set != null) {
+				for (String str : set) {
+					sb.append(str + " ");
 				}
 			}
-			request.put("hobby",sb.toString() );
+			request.put("hobby", sb.toString());
 			request.put("signature", "");
-			BaseAsyncHttp.postReq(getApplicationContext(),"/users/modify", request,
-					new JSONObjectHttpResponseHandler() {
+			BaseAsyncHttp.postReq(getApplicationContext(), "/users/modify",
+					request, new JSONObjectHttpResponseHandler() {
 
 						@Override
 						public void jsonSuccess(JSONObject resp) {
+							// TODO Auto-generated method stub
 							try {
 								if (resp.get("flag").equals(0)) {
-//									Toast.makeText(MyownActivity.this,
-//											"修改信息失败", Toast.LENGTH_SHORT)
-//											.show();
-								}else{
-//									Toast.makeText(MyownActivity.this,
-//											"修改信息成功", Toast.LENGTH_SHORT)
-//											.show();
+									// Toast.makeText(MyownActivity.this,
+									// "修改信息失败", Toast.LENGTH_SHORT)
+									// .show();
+								} else {
+									// Toast.makeText(MyownActivity.this,
+									// "修改信息成功", Toast.LENGTH_SHORT)
+									// .show();
 								}
 							} catch (JSONException e) {
 								// TODO Auto-generated catch block
@@ -224,14 +165,82 @@ public class RegisterActivity3 extends Activity implements OnClickListener {
 						@Override
 						public void jsonFail(JSONObject resp) {
 							// TODO Auto-generated method stub
-//							Toast.makeText(MyownActivity.this,
-//									"Fail修改信息失败", Toast.LENGTH_SHORT)
-//									.show();
+							// Toast.makeText(MyownActivity.this,
+							// "Fail修改信息失败", Toast.LENGTH_SHORT)
+							// .show();
 						}
 					});
 			break;
 		}
-		
-			
+
+	}
+
+	class IntestAdapter extends BaseAdapter {
+
+		private Context context;
+		private List<String> list;
+
+		public IntestAdapter(Context ctx, List<String> list) {
+			context = ctx;
+			this.list = list;
+		}
+
+		@Override
+		public int getCount() {
+			// TODO Auto-generated method stub
+			if (null != list) {
+				return list.size();
+			} else
+				return 0;
+		}
+
+		@Override
+		public Object getItem(int position) {
+			// TODO Auto-generated method stub
+			return list.get(position);
+		}
+
+		@Override
+		public long getItemId(int position) {
+			// TODO Auto-generated method stub
+			return position;
+		}
+
+		@Override
+		public View getView(final int position, View convertView,
+				ViewGroup parent) {
+			// TODO Auto-generated method stub
+			final ViewHolder viewholder;
+			if (convertView == null) {
+				convertView = LayoutInflater.from(context).inflate(
+						R.layout.interest_item, null);
+				viewholder = new ViewHolder();
+				viewholder.item = (Button) convertView
+						.findViewById(R.id.intestitem);
+				convertView.setTag(viewholder);
+			} else
+				viewholder = (ViewHolder) convertView.getTag();
+			viewholder.item.setText(list.get(position));
+			viewholder.item.setBackgroundResource(background.get(position % 3));
+			viewholder.item.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					flag[position] = !flag[position];
+					if (flag[position] == true) {
+						viewholder.item.setBackgroundResource(backselected
+								.get(position % 3));
+					} else
+						viewholder.item.setBackgroundResource(background
+								.get(position % 3));
+				}
+			});
+			return convertView;
+		}
+
+		class ViewHolder {
+			Button item;
+		}
 	}
 }

@@ -38,6 +38,7 @@ import com.personlife.bean.UserFriend;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.FriendsUtils;
+import com.personlife.utils.GetContactsInfo;
 import com.personlife.utils.SideBar;
 import com.personlife.utils.Utils;
 import com.personlife.view.activity.personinfo.UserDetail;
@@ -119,7 +120,7 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 
 	private void initData() {
 		
-		
+		final GetContactsInfo contact=new GetContactsInfo(ctx);
 		RequestParams params = new RequestParams();
 		params.put("phone", telphone);
 			
@@ -139,8 +140,13 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 							FriendsUtils.userFriends.add(userFriend);
 
 						}
-						lvContact.setAdapter(new ContactAdapter(getActivity(),
-								FriendsUtils.userFriends));
+						FriendsUtils.userFriends.addAll(new GetContactsInfo(ctx).getLocalUserFriends());
+						FriendsUtils.userFriends.addAll(new GetContactsInfo(ctx).getSIMUserFriends());
+						lvContact.setAdapter(new ContactAdapter(getActivity(),FriendsUtils.userFriends));
+						
+//						
+//						lvContact.setAdapter(new ContactAdapter(getActivity(),contact.getLocalUserFriends()));
+						
 					}
 
 					@Override
