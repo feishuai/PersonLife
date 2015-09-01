@@ -87,21 +87,45 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		taglist = new ArrayList<String>();
 		allapps = new ArrayList<App>();
 		userapps = new ArrayList<App>();
+		kindsAdapter = new KindsAdapter(getActivity(), taglist);
+		mLvApps.setAdapter(kindsAdapter);
+		userapps = SystemUtils.getUserApps(getActivity());
+
 		if (ComplexPreferences.getObject(getActivity(), "tags",
 				new TypeReference<ArrayList<String>>() {
 				}) == null) {
-			taglist.add("清晨");
-			taglist.add("午后");
-			ComplexPreferences.putObject(getActivity(), "tags", taglist);
-		} else
+			RequestParams params = new RequestParams();
+			BaseAsyncHttp.postReq(getActivity(), "/myapp/tag8", params,
+					new JSONArrayHttpResponseHandler() {
+						@Override
+						public void jsonSuccess(JSONArray resp) {
+							// TODO Auto-generated method stub
+							try {
+								for (int i = 0; i < resp.length(); i++) {
+									String tag = resp.getString(i);
+									taglist.add(tag);
+								}
+								updateView();
+								ComplexPreferences.putObject(getActivity(), "tags", taglist);
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+
+						@Override
+						public void jsonFail(JSONArray resp) {
+							// TODO Auto-generated method stub
+						}
+					});
+
+		} else {
 			taglist = ComplexPreferences.getObject(getActivity(), "tags",
 					new TypeReference<ArrayList<String>>() {
 					});
-		userapps = SystemUtils.getUserApps(getActivity());
+			updateView();
+		}
 
-		kindsAdapter = new KindsAdapter(getActivity(), taglist);
-		mLvApps.setAdapter(kindsAdapter);
-		updateView();
 	}
 
 	protected void updateView() {
@@ -213,7 +237,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 									app.setIntrodution(jsonapp
 											.getString("introduction"));
 									app.setName(jsonapp.getString("name"));
-									app.setId(jsonapp.getInt("appid"));
+									app.setId(jsonapp.getInt("id"));
 									app.setDownloadUrl(jsonapp
 											.getString("android_url"));
 									app.setProfile(jsonapp.getString("profile"));
@@ -225,10 +249,10 @@ public class HomeFragment extends Fragment implements OnClickListener {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
-							allapps.addAll(apps);
+//							allapps.addAll(apps);
 							if (position == (tags.size() - 1))
 								ComplexPreferences.putObject(getActivity(),
-										Constants.HomeAllDownloadApps, allapps);
+										Constants.HomeAllDownloadApps, apps);
 							holder.tvkind.setText(tags.get(position));
 							holder.counts.setText("我的（" + 2 + "）");
 							holder.lvapps.setAdapter(new AppsAdapter(context,

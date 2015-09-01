@@ -75,9 +75,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		Intent intent = getIntent();
 		telphone = intent.getStringExtra("telphone");
 		if (PersonInfoLocal.getPersonPassword(this, telphone).length() != 0) {
-
 			initdataWithPassword();
-
 		} else {
 			initdataWithNoPassword();
 		}

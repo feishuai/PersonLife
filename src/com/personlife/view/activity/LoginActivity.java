@@ -39,8 +39,6 @@ public class LoginActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		ImageLoaderUtils.InitConfig(getApplicationContext());
-		PushManager.startWork(getApplicationContext(),
-                PushConstants.LOGIN_TYPE_API_KEY,"0q0u5yGZiI7GaQWF5T68CsmS");
 		ActivityCollector.addActivity(this);
 		editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
 		pref = PreferenceManager.getDefaultSharedPreferences(this);

@@ -77,7 +77,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 			case 1:
 				Log.i("listview getview", "activity main thread");
 				LayoutParams params = pager.getLayoutParams();
-				params.height = friendsfragment.getListViewLayoutParams();
+				params.height = friendsfragment.getListViewLayoutParams()+160;
 				Log.i("listview getview", "activity main thread height"
 						+ String.valueOf(params.height));
 				pager.setLayoutParams(params);
@@ -192,13 +192,13 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 									"profile"));
 							appInfo.setDownloadPath(Constants.DownloadPath
 									+ appInfo.getName() + ".apk");
-							apps.add(appInfo);
-							// apps.add(appInfo);
-							// apps.add(appInfo);
-							// apps.add(appInfo);
-							// apps.add(appInfo);
-							// apps.add(appInfo);
-							// apps.add(appInfo);
+//							apps.add(appInfo);
+//							 apps.add(appInfo);
+//							 apps.add(appInfo);
+//							 apps.add(appInfo);
+//							 apps.add(appInfo);
+//							 apps.add(appInfo);
+//							 apps.add(appInfo);
 						}
 						appsfragment.setData(apps);
 					}
@@ -234,7 +234,10 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 			public void run() {
 				try {
 					Log.i("listview getview", "activity update thread");
-					Thread.sleep(2000);
+					while (!friendsfragment.getIsLoaded()) {
+						Thread.sleep(400);
+					}
+					Thread.sleep(500);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -269,7 +272,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 					tabviews[1].setCompoundDrawables(drawableWodeApp[0], null,
 							null, null);
 					LayoutParams params = pager.getLayoutParams();
-					params.height = friendsfragment.getListViewLayoutParams();
+					params.height = friendsfragment.getListViewLayoutParams()+160;
 					pager.setLayoutParams(params);
 				}
 			}

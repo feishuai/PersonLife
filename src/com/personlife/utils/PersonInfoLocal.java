@@ -16,6 +16,10 @@ public class PersonInfoLocal {
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
 		return pref.getString("telphone", "");
 	}
+	public static String getIsFirstLogin(Context context){
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+		return pref.getString("islogin", "0");
+	}
 	public static void storeRegisterTel(Context ctx,String phone){
 		SharedPreferences.Editor editor = ctx.getSharedPreferences(phone, ctx.MODE_PRIVATE).edit();
 		editor.putString("telephone", phone);
