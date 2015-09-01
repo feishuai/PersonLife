@@ -483,7 +483,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 			break;
 		case R.id.btn_circle_addattention:
 			RequestParams request = new RequestParams();
-			request.add("myphone", PersonInfoLocal.getPhone());
+			request.add("myphone", PersonInfoLocal.getPhone(getApplicationContext()));
 			request.add("fphone", star.getPhone());
 			BaseAsyncHttp.postReq(this, "/follow/set", request,
 					new JSONObjectHttpResponseHandler() {

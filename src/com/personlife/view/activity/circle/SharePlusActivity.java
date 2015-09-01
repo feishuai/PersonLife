@@ -107,7 +107,7 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 			
 			
 			RequestParams params = new RequestParams();
-			params.add("phone", PersonInfoLocal.getPhone());
+			params.add("phone", PersonInfoLocal.getPhone(getApplicationContext()));
 			params.add("content", content);
 			params.add("kind", sharekinds[selectedkind]);
 			params.add("area", ranges[selectedRange]);

@@ -79,7 +79,7 @@ public class CollectionStarsFragment extends Fragment {
 		int n = deletedList.size();
 		for (int i = 0; i < n; i++) {
 			RequestParams params = new RequestParams();
-			params.add("myphone", PersonInfoLocal.getPhone());
+			params.add("myphone", PersonInfoLocal.getPhone(getActivity()));
 			params.add("fphone", deletedList.get(i).getPhone());
 
 			BaseAsyncHttp.postReq(getActivity(), "/follow/cancel", params,

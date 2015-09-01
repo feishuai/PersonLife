@@ -180,7 +180,7 @@ public class ShareAppListActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.imgbtn_collect:
 			RequestParams params = new RequestParams();
-			params.add("phone", PersonInfoLocal.getPhone());
+			params.add("phone", PersonInfoLocal.getPhone(getApplicationContext()));
 			params.add("msg", String.valueOf(msgid));
 			BaseAsyncHttp.postReq(getApplicationContext(), "/collect/set-msg",
 					params, new JSONObjectHttpResponseHandler() {

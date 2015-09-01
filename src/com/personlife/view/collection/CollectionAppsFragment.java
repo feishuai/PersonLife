@@ -75,7 +75,7 @@ public class CollectionAppsFragment extends Fragment {
 		int n = deletedList.size();
 		for (int i = 0; i < n; i++) {
 			RequestParams params = new RequestParams();
-			params.add("phone", PersonInfoLocal.getPhone());
+			params.add("phone", PersonInfoLocal.getPhone(getActivity()));
 			params.add("app", String.valueOf(deletedList.get(i).getId()));
 
 			BaseAsyncHttp.postReq(getActivity(), "/collect/cancel-app", params,
