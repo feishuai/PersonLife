@@ -90,7 +90,7 @@ public class RegisterActivity4 extends Activity implements OnClickListener {
 									"shared"));
 							liststar.add(star);
 						}
-						Register4_Adapter adapter = new Register4_Adapter(getApplicationContext(),liststar);
+						Register4_Adapter adapter = new Register4_Adapter(getApplicationContext(),liststar,telphone);
 						star_gridview.setAdapter(adapter);
 						star_gridview.setOnItemClickListener(new OnItemClickListener() {
 
