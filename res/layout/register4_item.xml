@@ -5,13 +5,35 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
     android:orientation="vertical" >
-
-    <ImageView
+	<FrameLayout 
+    android:layout_width="100dp"
+    android:layout_height="100dp">
+    <com.personlife.widget.CircleImageView
         android:id="@+id/register4_grid_staricon"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
+        android:src="@drawable/star1"
         />
+      <com.personlife.widget.CircleImageView
+        android:id="@+id/register4_grid_starbackground"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@color/transparent2"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:clickable="false"
+       /> 
+    <ImageView
+        android:id="@+id/register4_grid_starxuanzhong"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:layout_gravity="center"
+        android:src="@drawable/mingxingxuanzhong"
+        android:background="@color/transparent"
+        android:visibility="visible"
+        />
+	</FrameLayout>
 
     <TextView
         android:id="@+id/register4_grid_starname"

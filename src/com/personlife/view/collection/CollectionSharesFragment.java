@@ -77,7 +77,7 @@ public class CollectionSharesFragment extends Fragment {
 		int n = deletedList.size();
 		for (int i = 0; i < n; i++) {
 			RequestParams params = new RequestParams();
-			params.add("phone", PersonInfoLocal.getPhone());
+			params.add("phone", PersonInfoLocal.getPhone(getActivity()));
 			params.add("msg", String.valueOf(deletedList.get(i).getMsgid()));
 			BaseAsyncHttp.postReq(getActivity(), "/collect/cancel-msg", params,
 					new JSONObjectHttpResponseHandler() {

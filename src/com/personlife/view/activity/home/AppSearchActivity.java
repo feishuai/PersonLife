@@ -34,6 +34,7 @@ import com.example.personlifep.R;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.loopj.android.http.RequestParams;
 import com.personlife.adapter.AppListAdapter;
+import com.personlife.adapter.AppsAdapter;
 import com.personlife.bean.App;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONArrayHttpResponseHandler;
@@ -59,6 +60,7 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 	private List<App> apps;
 	private HistoryAdapter historyAdapter;
 	private ResultAdapter resultAdapter;
+	private AppsAdapter appsAdapter;
 	Button mBack;
 	TextView mTitle, clear;
 
@@ -99,8 +101,10 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 		}
 
 		apps = new ArrayList<App>();
-		resultAdapter = new ResultAdapter(apps);
-		lvResult.setAdapter(resultAdapter);
+//		resultAdapter = new ResultAdapter(apps);
+//		lvResult.setAdapter(resultAdapter);
+		appsAdapter = new AppsAdapter(getApplicationContext(), apps);
+		lvResult.setAdapter(appsAdapter);
 
 		ComplexPreferences pre = ComplexPreferences.getComplexPreferences(this,
 				Constants.SharePrefrencesName);
@@ -172,7 +176,8 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 		llLabel.setVisibility(View.GONE);
 		slResult.setVisibility(View.VISIBLE);
 		slHistory.setVisibility(View.GONE);
-		resultAdapter.clear();
+//		resultAdapter.clear();
+		appsAdapter.clear();
 		RequestParams params = new RequestParams();
 		params.add("name", key);
 		BaseAsyncHttp.postReq(getApplicationContext(), "/app/search", params,
@@ -197,14 +202,17 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 										.getString("introduction"));
 								app.setName(jsonapp.getString("name"));
 								app.setId(jsonapp.getInt("id"));
+								app.setProfile(jsonapp.getString("profile"));
 								app.setDownloadUrl(jsonapp
 										.getString("android_url"));
 								app.setDownloadPath(Constants.DownloadPath
 										+ app.getName() + ".apk");
 								applist.add(app);
 							}
-							resultAdapter.setData(applist);
-							resultAdapter.notifyDataSetChanged();
+//							resultAdapter.setData(applist);
+//							resultAdapter.notifyDataSetChanged();
+							appsAdapter.setData(applist);
+							appsAdapter.notifyDataSetChanged();
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -223,7 +231,7 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 		llLabel.setVisibility(View.GONE);
 		slResult.setVisibility(View.VISIBLE);
 		slHistory.setVisibility(View.GONE);
-		resultAdapter.clear();
+		appsAdapter.clear();
 		RequestParams params = new RequestParams();
 		params.add("tag", kind);
 		BaseAsyncHttp.postReq(getApplicationContext(), "/myapp/tag", params,
@@ -253,8 +261,8 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 										+ app.getName() + ".apk");
 								applist.add(app);
 							}
-							resultAdapter.setData(applist);
-							resultAdapter.notifyDataSetChanged();
+							appsAdapter.setData(applist);
+							appsAdapter.notifyDataSetChanged();
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

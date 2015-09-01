@@ -80,7 +80,7 @@ public class CommentAppActivity extends Activity implements OnClickListener {
 		params.add("appid", getIntent().getStringExtra("appid"));
 		params.add("comments", comments);
 		params.add("commentstars", String.valueOf(counts));
-		params.add("phone", PersonInfoLocal.getPhone());
+		params.add("phone", PersonInfoLocal.getPhone(getApplicationContext()));
 		params.add("title", "真的是很好用的");
 		Log.i("submit comment param is ", params.toString());
 		BaseAsyncHttp.postReq(getApplicationContext(), "/app/submitcomment", params,

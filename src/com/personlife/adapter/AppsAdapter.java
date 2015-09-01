@@ -222,4 +222,9 @@ public class AppsAdapter extends BaseAdapter {
 		Button download;
 		ProgressBar bar;
 	}
+	
+	public void clear() {
+		mlist.clear();
+		notifyDataSetChanged();
+	}
 }

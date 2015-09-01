@@ -125,7 +125,7 @@ public class CircleFragment extends Fragment implements OnClickListener {
 		fenxiangcounts.setVisibility(View.VISIBLE);
 
 		star = new Star();
-		star.setPhone(PersonInfoLocal.getPhone());
+		star.setPhone(PersonInfoLocal.getPhone(getActivity()));
 		final List<Shuoshuo> shuoshuos = new ArrayList<Shuoshuo>();
 		friendsfragment = new CircleFriendsFragment(shuoshuos,star);
 

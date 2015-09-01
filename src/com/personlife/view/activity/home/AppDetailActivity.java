@@ -547,7 +547,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 			// TODO Auto-generated method stub
 			RequestParams params = new RequestParams();
 			params.add("app", String.valueOf(appid));
-			params.add("phone", PersonInfoLocal.getPhone());
+			params.add("phone", PersonInfoLocal.getPhone(getApplicationContext()));
 			if (isCollected) {
 				Utils.showShortToast(getApplicationContext(), "已收藏");
 				return;
