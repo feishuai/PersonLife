@@ -33,6 +33,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 /**
  * 
@@ -49,6 +50,7 @@ public class RegisterActivity3 extends Activity implements OnClickListener {
 	private String telphone;
 	private MyGridView gridView;
 	private boolean[] flag;
+	private int size;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +89,7 @@ public class RegisterActivity3 extends Activity implements OnClickListener {
 
 							got.add(resp.optJSONObject(i).optString("second"));
 						}
+						size=resp.length();
 						flag = new boolean[resp.length()];
 						for (int i = 0; i < resp.length(); i++) {
 							flag[i] = false;
@@ -114,62 +117,70 @@ public class RegisterActivity3 extends Activity implements OnClickListener {
 			break;
 
 		case R.id.register3_nextstep:
+			int isselect=0;
 			Set<String> set = new HashSet<String>();
-			for (int i = 0; i < 12; i++) {
+			for (int i = 0; i < size; i++) {
 				if (flag[i] == true) {
 					set.add(got.get(i));
+					isselect=1;
 				}
 			}
-			PersonInfoLocal.storeRegisterHobbys(this, telphone, set);
-			Intent intent = new Intent(this, RegisterActivity4.class);
-			intent.putExtra("telphone", telphone);
-			startActivity(intent);
-			RequestParams request = new RequestParams();
-			request.put("phone", telphone);
-			request.put("nickname", PersonInfoLocal.getNcikName(this, telphone));
-			request.put("thumb", PersonInfoLocal.getHeadKey(this, telphone));
-			request.put("gender", "");
-			request.put("area", "");
-			request.put("job", "");
-			StringBuffer sb = new StringBuffer();
-			sb.append("");
-			if (set != null) {
-				for (String str : set) {
-					sb.append(str + " ");
+			if(isselect==0){
+				Toast.makeText(RegisterActivity3.this, "请选择爱好",Toast.LENGTH_SHORT).show();
+			}else{
+				PersonInfoLocal.storeRegisterHobbys(this, telphone, set);
+				Intent intent = new Intent(this, RegisterActivity4.class);
+				intent.putExtra("telphone", telphone);
+				startActivity(intent);
+				RequestParams request = new RequestParams();
+				request.put("phone", telphone);
+				request.put("nickname", PersonInfoLocal.getNcikName(this, telphone));
+				request.put("thumb", PersonInfoLocal.getHeadKey(this, telphone));
+				request.put("gender", "");
+				request.put("area", "");
+				request.put("job", "");
+				StringBuffer sb = new StringBuffer();
+				sb.append("");
+				if (set != null) {
+					for (String str : set) {
+						sb.append(str + " ");
+					}
 				}
-			}
-			request.put("hobby", sb.toString());
-			request.put("signature", "");
-			BaseAsyncHttp.postReq(getApplicationContext(), "/users/modify",
-					request, new JSONObjectHttpResponseHandler() {
+				request.put("hobby", sb.toString());
+				request.put("signature", "");
+				BaseAsyncHttp.postReq(getApplicationContext(), "/users/modify",
+						request, new JSONObjectHttpResponseHandler() {
 
-						@Override
-						public void jsonSuccess(JSONObject resp) {
-							// TODO Auto-generated method stub
-							try {
-								if (resp.get("flag").equals(0)) {
-									// Toast.makeText(MyownActivity.this,
-									// "修改信息失败", Toast.LENGTH_SHORT)
-									// .show();
-								} else {
-									// Toast.makeText(MyownActivity.this,
-									// "修改信息成功", Toast.LENGTH_SHORT)
-									// .show();
+							@Override
+							public void jsonSuccess(JSONObject resp) {
+								// TODO Auto-generated method stub
+								try {
+									if (resp.get("flag").equals(0)) {
+										// Toast.makeText(MyownActivity.this,
+										// "修改信息失败", Toast.LENGTH_SHORT)
+										// .show();
+									} else {
+										// Toast.makeText(MyownActivity.this,
+										// "修改信息成功", Toast.LENGTH_SHORT)
+										// .show();
+									}
+								} catch (JSONException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
 								}
-							} catch (JSONException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
 							}
-						}
 
-						@Override
-						public void jsonFail(JSONObject resp) {
-							// TODO Auto-generated method stub
-							// Toast.makeText(MyownActivity.this,
-							// "Fail修改信息失败", Toast.LENGTH_SHORT)
-							// .show();
-						}
-					});
+							@Override
+							public void jsonFail(JSONObject resp) {
+								// TODO Auto-generated method stub
+								// Toast.makeText(MyownActivity.this,
+								// "Fail修改信息失败", Toast.LENGTH_SHORT)
+								// .show();
+							}
+						});
+			}
+			
+			
 			break;
 		}
 

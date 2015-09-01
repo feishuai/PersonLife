@@ -8,6 +8,9 @@
         android:minSdkVersion="8"
         android:targetSdkVersion="21" />
 
+    <uses-permission android:name="android.permission.SEND_SMS"></uses-permission>
+<uses-permission android:name="android.permission.READ_SMS"></uses-permission>
+<uses-permission android:name="android.permission.RECEIVE_SMS"></uses-permission>
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -238,6 +241,10 @@
             android:screenOrientation="portrait" >
         </activity>
         
+        <activity
+            android:name="com.personlife.view.activity.personcenter.LocalPhoneContact"
+            android:screenOrientation="portrait" >
+        </activity>
         <activity
             android:name="com.personlife.view.activity.LoginActivity"
             android:screenOrientation="portrait" >

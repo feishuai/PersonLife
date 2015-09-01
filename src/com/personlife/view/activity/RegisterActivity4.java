@@ -20,7 +20,9 @@ import com.personlife.view.activity.circle.CircleActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -42,6 +44,9 @@ public class RegisterActivity4 extends Activity implements OnClickListener {
 	private TextView tv_title;
 	private GridView star_gridview;
 	private List<Star> liststar = new ArrayList<Star>();
+
+	private SharedPreferences.Editor editor;
+	private SharedPreferences pref;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -90,16 +95,19 @@ public class RegisterActivity4 extends Activity implements OnClickListener {
 									"shared"));
 							liststar.add(star);
 						}
-						Register4_Adapter adapter = new Register4_Adapter(getApplicationContext(),liststar,telphone);
+						Register4_Adapter adapter = new Register4_Adapter(
+								getApplicationContext(), liststar, telphone);
 						star_gridview.setAdapter(adapter);
-						star_gridview.setOnItemClickListener(new OnItemClickListener() {
+						star_gridview
+								.setOnItemClickListener(new OnItemClickListener() {
 
-							@Override
-							public void onItemClick(AdapterView<?> parent,
-									View view, int position, long id) {
-								// TODO Auto-generated method stub
-							}
-						});
+									@Override
+									public void onItemClick(
+											AdapterView<?> parent, View view,
+											int position, long id) {
+										// TODO Auto-generated method stub
+									}
+								});
 					}
 
 					@Override
@@ -108,8 +116,7 @@ public class RegisterActivity4 extends Activity implements OnClickListener {
 
 					}
 				});
-		
-		
+
 	}
 
 	@Override
@@ -121,6 +128,11 @@ public class RegisterActivity4 extends Activity implements OnClickListener {
 			Intent intent = new Intent(RegisterActivity4.this,
 					MainActivity.class);
 			intent.putExtra("telphone", telphone);
+			editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+			pref = PreferenceManager.getDefaultSharedPreferences(this);
+			editor.putString("islogin", "1");
+			editor.putString("telphone", telphone);
+			editor.commit();
 			startActivity(intent);
 			ActivityCollector.finishAll();
 			break;

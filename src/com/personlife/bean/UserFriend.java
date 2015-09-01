@@ -9,6 +9,7 @@ public class UserFriend {
 	private String phone;
 	private String thumb;
 	private String nickname;
+	private int isRegister;
 	public UserFriend(){
 		
 	}
@@ -18,6 +19,13 @@ public class UserFriend {
 		this.nickname=n;
 	}
 	
+	
+	public int getIsRegister() {
+		return isRegister;
+	}
+	public void setIsRegister(int isRegister) {
+		this.isRegister = isRegister;
+	}
 	public String getPhone() {
 		return phone;
 	}
@@ -36,5 +44,15 @@ public class UserFriend {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
+	@Override
+	public boolean equals(Object o) {
+		// TODO Auto-generated method stub
+		if(!(o instanceof UserFriend)){
+			return false;
+		}
+		UserFriend userFriend=(UserFriend) o;
+		return userFriend.getPhone().equals(this.phone);
+	}
+	
 	
 }

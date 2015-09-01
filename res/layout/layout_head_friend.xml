@@ -34,6 +34,24 @@
         android:layout_height="1dp"
         android:background="@color/black2" />
 
-    
+    <LinearLayout
+        android:id="@+id/layout_phonecontact"
+        style="@style/MMListItem"
+        android:layout_height="50dip"
+        android:background="@drawable/setting_item_selector"
+        android:paddingLeft="15dip" >
+
+        <TextView
+            style="@style/MMFontTitleInList"
+            android:layout_marginLeft="13dp"
+            android:singleLine="true"
+            android:text="手机通讯录"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black2" />
 
 </LinearLayout>

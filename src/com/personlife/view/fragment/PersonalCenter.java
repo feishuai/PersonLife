@@ -217,7 +217,7 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 			// new BasicNameValuePair("NAME", "通知"));
 			break;
 		case R.id.txt_yinsi_anquan:
-			Intent intentyinsi=new Intent(getActivity(), SecureActivity.class);
+			Intent intentyinsi = new Intent(getActivity(), SecureActivity.class);
 			intentyinsi.putExtra("telphone", telphone);
 			startActivity(intentyinsi);
 			break;
@@ -242,7 +242,7 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 			// text是分享文本，所有平台都需要这个字段
 			oks.setText("我是分享文本");
 			// imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
-//			oks.setImagePath("/sdcard/test.jpg");// 确保SDcard下面存在此张图片
+			// oks.setImagePath("/sdcard/test.jpg");// 确保SDcard下面存在此张图片
 			// url仅在微信（包括好友和朋友圈）中使用
 			oks.setUrl("http://sharesdk.cn");
 			// comment是我对这条分享的评论，仅在人人网和QQ空间使用

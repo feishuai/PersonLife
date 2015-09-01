@@ -7,6 +7,7 @@ import org.json.JSONArray;
 
 import com.easemob.util.ImageUtils;
 import com.example.personlifep.R;
+import com.github.snowdream.android.util.Log;
 import com.loopj.android.http.RequestParams;
 import com.personlife.bean.UserFriend;
 import com.personlife.net.BaseAsyncHttp;
@@ -78,6 +79,7 @@ public class NewFriendsAdapter extends BaseAdapter {
 				request.put("myphone", mytelphone);
 				request.put("fphone", mList.get(position).getPhone());
 				request.put("agree", 1);
+				Log.i("gfdshdgfhe",mytelphone+mList.get(position).getPhone());
 				BaseAsyncHttp.postReq(context, "/friend/acceptadd", request,
 						new JSONArrayHttpResponseHandler() {
 

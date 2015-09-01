@@ -120,7 +120,7 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 
 	private void initData() {
 		
-		final GetContactsInfo contact=new GetContactsInfo(ctx);
+		
 		RequestParams params = new RequestParams();
 		params.put("phone", telphone);
 			
@@ -139,14 +139,8 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 							userFriend.setThumb(jsons.optJSONObject(i).optString("thumb"));
 							FriendsUtils.userFriends.add(userFriend);
 
-						}
-						FriendsUtils.userFriends.addAll(new GetContactsInfo(ctx).getLocalUserFriends());
-						FriendsUtils.userFriends.addAll(new GetContactsInfo(ctx).getSIMUserFriends());
-						lvContact.setAdapter(new ContactAdapter(getActivity(),FriendsUtils.userFriends));
-						
-//						
-//						lvContact.setAdapter(new ContactAdapter(getActivity(),contact.getLocalUserFriends()));
-						
+						}						
+						lvContact.setAdapter(new ContactAdapter(getActivity(),FriendsUtils.userFriends));															
 					}
 
 					@Override
@@ -161,10 +155,9 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 	
 	private void setOnListener() {
 		lvContact.setOnItemClickListener(this);
-		layout.findViewById(R.id.layout_addfriend)
-				.setOnClickListener(this);
+		layout.findViewById(R.id.layout_addfriend).setOnClickListener(this);
 		layout.findViewById(R.id.layout_search).setOnClickListener(this);
-
+		layout.findViewById(R.id.layout_phonecontact).setOnClickListener(this);
 	}
 
 	@Override
@@ -176,10 +169,13 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 		case R.id.layout_addfriend:// 添加好友
 			Intent intent=new Intent(getActivity(),NewFriendsListActivity.class);
 			intent.putExtra("telphone", telphone);
-			startActivity(intent);
-			
+			startActivity(intent);			
 			break;
-
+		case R.id.layout_phonecontact:
+			Intent intent1=new Intent(getActivity(),LocalPhoneContact.class);
+			intent1.putExtra("telphone", telphone);
+			startActivity(intent1);
+			break;
 		default:
 			break;
 		}
@@ -187,7 +183,7 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		UserFriend user = FriendsUtils.userFriends.get(arg2 - 1);
+		UserFriend user = FriendsUtils.userFriends.get(arg2-1);
 		if (user != null) {
 			 Intent intent = new Intent(getActivity(),UserDetail.class);
 			 intent.putExtra("fromwhere", "friend");
