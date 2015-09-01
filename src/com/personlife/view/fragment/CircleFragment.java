@@ -76,7 +76,7 @@ public class CircleFragment extends Fragment implements OnClickListener {
 			case 1:
 				Log.i("listview getview", "activity main thread");
 				LayoutParams params = pager.getLayoutParams();
-				params.height = friendsfragment.getListViewLayoutParams();
+				params.height = friendsfragment.getListViewLayoutParams()+400;
 				pager.setLayoutParams(params);
 				break;
 			default:
@@ -217,7 +217,7 @@ public class CircleFragment extends Fragment implements OnClickListener {
 					tabviews[1].setCompoundDrawables(drawableWodeApp[0], null,
 							null, null);
 					LayoutParams params = pager.getLayoutParams();
-					params.height = friendsfragment.getListViewLayoutParams();
+					params.height = friendsfragment.getListViewLayoutParams()+400;
 					pager.setLayoutParams(params);
 				}
 			}

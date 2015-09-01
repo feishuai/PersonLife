@@ -28,6 +28,7 @@ import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONArrayHttpResponseHandler;
 import com.personlife.utils.ComplexPreferences;
 import com.personlife.utils.Constants;
+import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.Utils;
 import com.personlife.view.activity.circle.ShareAppListActivity;
 import com.personlife.view.activity.circle.ShareDialog;
@@ -64,7 +65,7 @@ public class GuessActivity extends Activity implements OnClickListener {
 		mBack.setVisibility(View.VISIBLE);
 		mBack.setOnClickListener(this);
 		mTitle = (TextView) findViewById(R.id.txt_title);
-		btnShare = (ImageButton)findViewById(R.id.imgbtn_share);
+		btnShare = (ImageButton) findViewById(R.id.imgbtn_share);
 		btnShare.setVisibility(View.VISIBLE);
 		btnShare.setOnClickListener(this);
 		downloadButton = (Button) findViewById(R.id.txt_download);
@@ -75,7 +76,8 @@ public class GuessActivity extends Activity implements OnClickListener {
 		xiazai.setBounds(0, 0, xiazai.getMinimumWidth(),
 				xiazai.getMinimumHeight());
 		downloadButton.setCompoundDrawables(xiazai, null, null, null);
-		downloadButton.setTextColor(getResources().getColorStateList(R.color.bg));
+		downloadButton.setTextColor(getResources()
+				.getColorStateList(R.color.bg));
 		initData();
 	}
 
@@ -85,50 +87,54 @@ public class GuessActivity extends Activity implements OnClickListener {
 		back1.setBackground(getResources().getDrawable(urls[kind]));
 		back2.setBackground(getResources().getDrawable(icons[kind]));
 		tvContent.setText(contents[kind]);
+		RequestParams request = new RequestParams();
+		request.add("phone", PersonInfoLocal.getPhone(getApplicationContext()));
 		switch (kind) {
 		case 0:
-		case 1:
-		case 2:
-			RequestParams request = new RequestParams();
 			BaseAsyncHttp.postReq(this, "/app/guess", request,
 					new JSONArrayHttpResponseHandler() {
-
 						@Override
 						public void jsonSuccess(JSONArray resp) {
 							// TODO Auto-generated method stub
-							for (int i = 0; i < resp.length(); i++) {
-								App appInfo = new App();
-								appInfo.setId(resp.optJSONObject(i)
-										.optInt("id"));
-								appInfo.setName(resp.optJSONObject(i)
-										.optString("name"));
-								appInfo.setVersion(resp.optJSONObject(i)
-										.optString("version"));
-								appInfo.setDownloadUrl(resp.optJSONObject(i)
-										.optString("android_url"));
-								appInfo.setStars(resp.optJSONObject(i).optInt(
-										"stars"));
-								appInfo.setDowloadcount(resp.optJSONObject(i)
-										.optInt("downloadcount"));
-								appInfo.setIntrodution(resp.optJSONObject(i)
-										.optString("introduction"));
-								appInfo.setUpdateDate(resp.optJSONObject(i)
-										.optLong("updated_at"));
-								appInfo.setSize(resp.optJSONObject(i)
-										.optString("size"));
-								appInfo.setIcon(resp.optJSONObject(i)
-										.optString("icon"));
-								appInfo.setUpdateLog(resp.optJSONObject(i)
-										.optString("updated_log"));
-								appInfo.setProfile(resp.optJSONObject(i)
-										.optString("profile"));
-								appInfo.setDownloadPath(Constants.DownloadPath
-										+ appInfo.getName() + ".apk");
-								mList.add(appInfo);
-								aApps = new AppListAdapter(
-										getApplicationContext(), mList);
-								lv.setAdapter(aApps);
-							}
+							aApps = new AppListAdapter(getApplicationContext(),
+									getApps(resp));
+							lv.setAdapter(aApps);
+						}
+
+						@Override
+						public void jsonFail(JSONArray resp) {
+							// TODO Auto-generated method stub
+
+						}
+					});
+			break;
+		case 1:
+			BaseAsyncHttp.postReq(this, "/app/work", request,
+					new JSONArrayHttpResponseHandler() {
+						@Override
+						public void jsonSuccess(JSONArray resp) {
+							// TODO Auto-generated method stub
+							aApps = new AppListAdapter(getApplicationContext(),
+									getApps(resp));
+							lv.setAdapter(aApps);
+						}
+
+						@Override
+						public void jsonFail(JSONArray resp) {
+							// TODO Auto-generated method stub
+
+						}
+					});
+			break;
+		case 2:
+			BaseAsyncHttp.postReq(this, "/friend/like", request,
+					new JSONArrayHttpResponseHandler() {
+						@Override
+						public void jsonSuccess(JSONArray resp) {
+							// TODO Auto-generated method stub
+							aApps = new AppListAdapter(getApplicationContext(),
+									getApps(resp));
+							lv.setAdapter(aApps);
 						}
 
 						@Override
@@ -139,6 +145,32 @@ public class GuessActivity extends Activity implements OnClickListener {
 					});
 			break;
 		}
+	}
+
+	public List<App> getApps(JSONArray resp) {
+		List<App> apps = new ArrayList<App>();
+		for (int i = 0; i < resp.length(); i++) {
+			App appInfo = new App();
+			appInfo.setId(resp.optJSONObject(i).optInt("id"));
+			appInfo.setName(resp.optJSONObject(i).optString("name"));
+			appInfo.setVersion(resp.optJSONObject(i).optString("version"));
+			appInfo.setDownloadUrl(resp.optJSONObject(i).optString(
+					"android_url"));
+			appInfo.setStars(resp.optJSONObject(i).optInt("stars"));
+			appInfo.setDowloadcount(resp.optJSONObject(i).optInt(
+					"downloadcount"));
+			appInfo.setIntrodution(resp.optJSONObject(i).optString(
+					"introduction"));
+			appInfo.setUpdateDate(resp.optJSONObject(i).optLong("updated_at"));
+			appInfo.setSize(resp.optJSONObject(i).optString("size"));
+			appInfo.setIcon(resp.optJSONObject(i).optString("icon"));
+			appInfo.setUpdateLog(resp.optJSONObject(i).optString("updated_log"));
+			appInfo.setProfile(resp.optJSONObject(i).optString("profile"));
+			appInfo.setDownloadPath(Constants.DownloadPath + appInfo.getName()
+					+ ".apk");
+			apps.add(appInfo);
+		}
+		return apps;
 	}
 
 	@Override
@@ -192,7 +224,7 @@ public class GuessActivity extends Activity implements OnClickListener {
 			 */
 			lp.x = 5; // 新位置X坐标
 			lp.y = 90; // 新位置Y坐标
-//			lp.width = 300; // 宽度
+			// lp.width = 300; // 宽度
 			// lp.height = 300; // 高度
 			lp.alpha = 0.7f; // 透明度
 
