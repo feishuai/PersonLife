@@ -14,6 +14,7 @@ import com.personlife.bean.Star;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONArrayHttpResponseHandler;
 import com.personlife.utils.ActivityCollector;
+import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.utils.Utils;
 import com.personlife.view.activity.circle.CircleActivity;
 
@@ -47,6 +48,7 @@ public class RegisterActivity4 extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register4);
+		ImageLoaderUtils.InitConfig(getApplicationContext());
 		ActivityCollector.addActivity(this);
 		Intent intent = getIntent();
 		telphone = intent.getStringExtra("telphone");

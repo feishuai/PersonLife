@@ -8,7 +8,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -23,6 +22,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.baidu.android.pushservice.PushConstants;
+import com.baidu.android.pushservice.PushManager;
 import com.example.personlifep.R;
 import com.loopj.android.http.RequestParams;
 import com.personlife.net.BaseAsyncHttp;
@@ -69,7 +70,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		setContentView(R.layout.activity_main);
 		ImageLoaderUtils.InitConfig(getApplicationContext());
 		ActivityCollector.addActivity(this);
-
+		PushManager.startWork(getApplicationContext(),
+                PushConstants.LOGIN_TYPE_API_KEY,"0q0u5yGZiI7GaQWF5T68CsmS");
 		Intent intent = getIntent();
 		telphone = intent.getStringExtra("telphone");
 		if (PersonInfoLocal.getPersonPassword(this, telphone).length() != 0) {
