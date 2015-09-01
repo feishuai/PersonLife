@@ -114,6 +114,7 @@ public class SetPassword extends Activity implements OnClickListener{
 							}
 						});
 			}
+			break;
 		}
 			
 	}

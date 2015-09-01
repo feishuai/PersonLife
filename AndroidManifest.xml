@@ -231,6 +231,7 @@
             android:name="com.personlife.view.activity.FindCodeActivity"
             android:screenOrientation="portrait" >
         </activity>
+        
         <activity
             android:name="com.personlife.view.activity.LoginActivity"
             android:screenOrientation="portrait" >
