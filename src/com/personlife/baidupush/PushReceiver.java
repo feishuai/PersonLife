@@ -2,7 +2,6 @@ package com.personlife.baidupush;
 
 import java.util.List;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,7 +13,7 @@ import android.util.Log;
 import com.baidu.android.pushservice.PushMessageReceiver;
 import com.loopj.android.http.RequestParams;
 import com.personlife.net.BaseAsyncHttp;
-import com.personlife.net.JSONArrayHttpResponseHandler;
+import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.PersonInfoLocal;
 import com.personlife.view.activity.MainActivity;
 
@@ -79,15 +78,15 @@ public class PushReceiver extends PushMessageReceiver {
 			request.add("phone", PersonInfoLocal.getPhone(context));
 			request.add("platform", "android");
 			request.add("channel",String.valueOf(channelId));
-			BaseAsyncHttp.postReq(context, "/app/guess", request,
-					new JSONArrayHttpResponseHandler() {
+			BaseAsyncHttp.postReq(context, "/users/channel", request,
+					new JSONObjectHttpResponseHandler() {
 						@Override
-						public void jsonSuccess(JSONArray resp) {
+						public void jsonSuccess(JSONObject resp) {
 							// TODO Auto-generated method stub
 							Log.d(TAG, "update channelId success");
 						}
 						@Override
-						public void jsonFail(JSONArray resp) {
+						public void jsonFail(JSONObject resp) {
 							// TODO Auto-generated method stub
 						}
 					});

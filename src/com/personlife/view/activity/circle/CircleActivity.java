@@ -67,6 +67,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 	String phone;
 	Star star;
 	Boolean isPraised = false;
+	Boolean isAdded = false;
 	CircleFriendsFragment friendsfragment;
 	CircleOtherAppsFragment appsfragment;
 	private Button downloadButton;// 一键下载 按钮
@@ -77,7 +78,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 			case 1:
 				Log.i("listview getview", "activity main thread");
 				LayoutParams params = pager.getLayoutParams();
-				params.height = friendsfragment.getListViewLayoutParams()+160;
+				params.height = friendsfragment.getListViewLayoutParams() + 160;
 				Log.i("listview getview", "activity main thread height"
 						+ String.valueOf(params.height));
 				pager.setLayoutParams(params);
@@ -124,8 +125,8 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 		star.setPhone(phone);
 		final List<Shuoshuo> shuoshuos = new ArrayList<Shuoshuo>();
 		friendsfragment = new CircleFriendsFragment(shuoshuos,
-				(Star)ComplexPreferences.getObject(getApplicationContext(), "user",
-						new TypeReference<Star>() {
+				(Star) ComplexPreferences.getObject(getApplicationContext(),
+						"user", new TypeReference<Star>() {
 						}));
 		RequestParams request = new RequestParams();
 		request.add("phone", star.getPhone());
@@ -192,13 +193,13 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 									"profile"));
 							appInfo.setDownloadPath(Constants.DownloadPath
 									+ appInfo.getName() + ".apk");
-//							apps.add(appInfo);
-//							 apps.add(appInfo);
-//							 apps.add(appInfo);
-//							 apps.add(appInfo);
-//							 apps.add(appInfo);
-//							 apps.add(appInfo);
-//							 apps.add(appInfo);
+							// apps.add(appInfo);
+							// apps.add(appInfo);
+							// apps.add(appInfo);
+							// apps.add(appInfo);
+							// apps.add(appInfo);
+							// apps.add(appInfo);
+							// apps.add(appInfo);
 						}
 						appsfragment.setData(apps);
 					}
@@ -272,7 +273,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 					tabviews[1].setCompoundDrawables(drawableWodeApp[0], null,
 							null, null);
 					LayoutParams params = pager.getLayoutParams();
-					params.height = friendsfragment.getListViewLayoutParams()+160;
+					params.height = friendsfragment.getListViewLayoutParams() + 160;
 					pager.setLayoutParams(params);
 				}
 			}
@@ -486,29 +487,51 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 			break;
 		case R.id.btn_circle_addattention:
 			RequestParams request = new RequestParams();
-			request.add("myphone", PersonInfoLocal.getPhone(getApplicationContext()));
+			request.add("myphone",
+					PersonInfoLocal.getPhone(getApplicationContext()));
 			request.add("fphone", star.getPhone());
-			BaseAsyncHttp.postReq(this, "/follow/set", request,
-					new JSONObjectHttpResponseHandler() {
-						@Override
-						public void jsonSuccess(JSONObject resp) {
-							// TODO Auto-generated method stub
-							int flag = resp.optInt("flag");
-							if (flag == 1)
-								Utils.showShortToast(getApplicationContext(),
-										"关注成功");
-							else
-								Utils.showShortToast(getApplicationContext(),
-										"已关注");
-							addfriend.setText("已关注");
-							addfriend.setGravity(Gravity.CENTER);
-						}
+			if (!isAdded)
+				BaseAsyncHttp.postReq(this, "/follow/set", request,
+						new JSONObjectHttpResponseHandler() {
+							@Override
+							public void jsonSuccess(JSONObject resp) {
+								// TODO Auto-generated method stub
+								int flag = resp.optInt("flag");
+								if (flag == 1)
+									Utils.showShortToast(
+											getApplicationContext(), "关注成功");
+								else
+									Utils.showShortToast(
+											getApplicationContext(), "已关注");
+								addfriend.setText("已关注");
+								addfriend.setGravity(Gravity.CENTER);
+								isAdded = true;
+							}
 
-						@Override
-						public void jsonFail(JSONObject resp) {
-							// TODO Auto-generated method stub
-						}
-					});
+							@Override
+							public void jsonFail(JSONObject resp) {
+								// TODO Auto-generated method stub
+							}
+						});
+			else
+				BaseAsyncHttp.postReq(this, "/follow/cancel", request,
+						new JSONObjectHttpResponseHandler() {
+
+							@Override
+							public void jsonSuccess(JSONObject resp) {
+								// TODO Auto-generated method stub
+								Utils.showShortToast(getApplicationContext(),
+										"取消关注");
+								addfriend.setText("添加关注");
+								isAdded = false;
+							}
+
+							@Override
+							public void jsonFail(JSONObject resp) {
+								// TODO Auto-generated method stub
+
+							}
+						});
 			break;
 		case R.id.iv_circle_dianzan:
 			if (!isPraised) {
