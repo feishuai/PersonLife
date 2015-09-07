@@ -16,6 +16,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.example.personlifep.R;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.personlife.utils.ComplexPreferences;
 
 public class ClassificationActivity extends Activity implements OnClickListener {
@@ -27,6 +28,7 @@ public class ClassificationActivity extends Activity implements OnClickListener 
 	private GridView gvchangjing, gvzhuti;
 	private Button mBack;
 	private TextView mTitle;
+	private List<String> selectedtags;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,9 @@ public class ClassificationActivity extends Activity implements OnClickListener 
 	}
 
 	private void initData() {
+		selectedtags = ComplexPreferences.getObject(getApplicationContext(),
+				"tags", new TypeReference<ArrayList<String>>() {
+				});
 		isZhutiSelected = new Boolean[zhuti.length];
 		isChangjingSelected = new Boolean[changjing.length];
 		for (int i = 0; i < isZhutiSelected.length; i++) {
@@ -50,6 +55,21 @@ public class ClassificationActivity extends Activity implements OnClickListener 
 		}
 		for (int i = 0; i < isChangjingSelected.length; i++) {
 			isChangjingSelected[i] = false;
+		}
+		for (int i = 0; i < selectedtags.size(); i++) {
+			String tag = selectedtags.get(i);
+			for (int j = 0; j < changjing.length; j++) {
+				if (changjing[j].equals(tag)) {
+					isChangjingSelected[j] = true;
+					return;
+				}
+			}
+			for (int j = 0; j < zhuti.length; j++) {
+				if (zhuti[j].equals(tag)) {
+					isZhutiSelected[j] = true;
+					return;
+				}
+			}
 		}
 		// 添加并且显示
 		gvchangjing.setAdapter(new ButtonAdapter(getApplicationContext(),
@@ -151,17 +171,18 @@ public class ClassificationActivity extends Activity implements OnClickListener 
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.txt_left:
-			List<String> tags =new ArrayList<String>();
+			List<String> tags = new ArrayList<String>();
 			for (int i = 1; i < isChangjingSelected.length; i++) {
-				if(isChangjingSelected[i])
+				if (isChangjingSelected[i])
 					tags.add(changjing[i]);
 			}
 			for (int i = 1; i < isZhutiSelected.length; i++) {
-				if(isZhutiSelected[i])
+				if (isZhutiSelected[i])
 					tags.add(zhuti[i]);
 			}
-			if(tags.size()>0){
-				ComplexPreferences.putObject(getApplicationContext(), "tags", tags);
+			if (tags.size() > 0) {
+				ComplexPreferences.putObject(getApplicationContext(), "tags",
+						tags);
 			}
 			setResult(1);
 			finish();
