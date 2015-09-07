@@ -160,11 +160,11 @@
                 android:gravity="center_vertical"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:text="隐私与安全"
+                android:text="修改密码"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
-            <View
+      <!--       <View
                 android:layout_width="match_parent"
                 android:layout_height="1.0dip"
                 android:background="@color/black2" />
@@ -181,7 +181,7 @@
                 android:paddingRight="16dp"
                 android:text="通用设置"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="16sp" /> -->
 
             <View
                 android:layout_width="match_parent"

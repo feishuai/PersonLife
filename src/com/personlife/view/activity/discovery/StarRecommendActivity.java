@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -28,6 +29,7 @@ import com.personlife.bean.Star;
 import com.personlife.bean.User;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONArrayHttpResponseHandler;
+import com.personlife.utils.Utils;
 import com.personlife.widget.CircleImageView;
 import com.personlife.widget.PagerSlidingTabStrip;
 
@@ -35,6 +37,7 @@ public class StarRecommendActivity extends FragmentActivity implements
 		OnClickListener {
 	private TextView mTitle;
 	private Button mBack;
+	private ImageButton mSearch;
 	TextView tabviews[];
 	ViewPager pager;
 	ViewPagerTabAdapter adapter;
@@ -59,7 +62,15 @@ public class StarRecommendActivity extends FragmentActivity implements
 		mBack.setOnClickListener(this);
 		mTitle = (TextView) findViewById(R.id.txt_title);
 		mTitle.setText("新星推荐");
-
+		mSearch = (ImageButton) findViewById(R.id.img_right);
+		mSearch.setVisibility(View.VISIBLE);
+		mSearch.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Utils.start_Activity(StarRecommendActivity.this, StarSearchActivity.class);
+			}
+		});
 		mStars = new ArrayList<Star>();
 		mStars.add(new Star());
 		mStars.add(new Star());

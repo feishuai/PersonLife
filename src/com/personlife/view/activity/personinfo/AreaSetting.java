@@ -3,28 +3,9 @@ package com.personlife.view.activity.personinfo;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-import com.baidu.location.LocationClientOption.LocationMode;
-import com.example.personlifep.R;
-
-
-
-
-
-
-
-
-import com.personlife.utils.ActivityCollector;
-import com.personlife.utils.PersonInfoLocal;
-
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -32,7 +13,15 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.location.LocationClientOption.LocationMode;
+import com.example.personlifep.R;
+import com.personlife.utils.ActivityCollector;
+import com.personlife.utils.PersonInfoLocal;
 
 
 /**  

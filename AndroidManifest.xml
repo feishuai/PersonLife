@@ -8,9 +8,12 @@
         android:minSdkVersion="8"
         android:targetSdkVersion="21" />
 
-    <uses-permission android:name="android.permission.SEND_SMS"></uses-permission>
-<uses-permission android:name="android.permission.READ_SMS"></uses-permission>
-<uses-permission android:name="android.permission.RECEIVE_SMS"></uses-permission>
+    <uses-permission android:name="android.permission.SEND_SMS" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.READ_SMS" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.RECEIVE_SMS" >
+    </uses-permission>
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -240,7 +243,6 @@
             android:name="com.personlife.view.activity.FindCodeActivity"
             android:screenOrientation="portrait" >
         </activity>
-        
         <activity
             android:name="com.personlife.view.activity.personcenter.LocalPhoneContact"
             android:screenOrientation="portrait" >
@@ -382,10 +384,15 @@
                 <action android:name="com.baidu.android.pushservice.action.MESSAGE" />
                 <!-- 接收bind,unbind,fetch,delete等反馈消息 -->
                 <action android:name="com.baidu.android.pushservice.action.RECEIVE" />
-                <!-- 接收通知点击事件，和通知自定义内容 --> 
+                <!-- 接收通知点击事件，和通知自定义内容 -->
                 <action android:name="com.baidu.android.pushservice.action.notification.CLICK" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name="com.personlife.view.activity.discovery.StarSearchActivity"
+            android:label="@string/title_activity_star_search" >
+        </activity>
     </application>
 
 </manifest>

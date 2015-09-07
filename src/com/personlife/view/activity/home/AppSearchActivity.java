@@ -3,7 +3,6 @@ package com.personlife.view.activity.home;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,12 +27,10 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
 
 import com.example.personlifep.R;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.loopj.android.http.RequestParams;
-import com.personlife.adapter.AppListAdapter;
 import com.personlife.adapter.AppsAdapter;
 import com.personlife.bean.App;
 import com.personlife.net.BaseAsyncHttp;
@@ -179,7 +176,7 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 //		resultAdapter.clear();
 		appsAdapter.clear();
 		RequestParams params = new RequestParams();
-		params.add("name", key);
+		params.add("name", key.trim());
 		BaseAsyncHttp.postReq(getApplicationContext(), "/app/search", params,
 				new JSONArrayHttpResponseHandler() {
 
@@ -233,34 +230,33 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 		slHistory.setVisibility(View.GONE);
 		appsAdapter.clear();
 		RequestParams params = new RequestParams();
-		params.add("tag", kind);
+		params.add("tag", kind.trim());
 		BaseAsyncHttp.postReq(getApplicationContext(), "/myapp/tag", params,
-				new JSONObjectHttpResponseHandler() {
+				new JSONArrayHttpResponseHandler() {
 
 					@Override
-					public void jsonSuccess(JSONObject resp) {
+					public void jsonSuccess(JSONArray resp) {
 						// TODO Auto-generated method stub
 						List<App> applist = new ArrayList<App>();
 						try {
-							JSONArray jsonapps = resp.getJSONArray("item");
-							for (int i = 0; i < jsonapps.length(); i++) {
-								App app = new App();
-								JSONObject jsonapp = jsonapps.getJSONObject(i);
-								app.setIcon(jsonapp.getString("icon"));
-								app.setSize(jsonapp.getString("size"));
-								app.setDowloadcount(jsonapp
-										.getInt("downloadcount"));
-								app.setIntrodution(jsonapp
-										.getString("introduction"));
-								app.setName(jsonapp.getString("name"));
-								app.setId(jsonapp.getInt("appid"));
-								app.setDownloadUrl(jsonapp
-										.getString("android_url"));
-								app.setProfile(jsonapp.getString("profile"));
-								app.setDownloadPath(Constants.DownloadPath
-										+ app.getName() + ".apk");
-								applist.add(app);
-							}
+								for (int i = 0; i < resp.length() ; i++) {
+									App app = new App();
+									JSONObject jsonapp = resp.getJSONObject(i);
+									app.setIcon(jsonapp.getString("icon"));
+									app.setSize(jsonapp.getString("size"));
+									app.setDowloadcount(jsonapp
+											.getInt("downloadcount"));
+									app.setIntrodution(jsonapp
+											.getString("introduction"));
+									app.setName(jsonapp.getString("name"));
+									app.setId(jsonapp.getInt("id"));
+									app.setDownloadUrl(jsonapp
+											.getString("android_url"));
+									app.setProfile(jsonapp.getString("profile"));
+									app.setDownloadPath(Constants.DownloadPath
+											+ app.getName() + ".apk");
+									applist.add(app);
+								}
 							appsAdapter.setData(applist);
 							appsAdapter.notifyDataSetChanged();
 						} catch (JSONException e) {
@@ -270,7 +266,7 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 					}
 
 					@Override
-					public void jsonFail(JSONObject resp) {
+					public void jsonFail(JSONArray resp) {
 						// TODO Auto-generated method stub
 
 					}

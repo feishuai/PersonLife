@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.personlife.bean.App;
 
 /**
@@ -83,10 +84,15 @@ public class SystemUtils {
 			mList.add(app);
 		}
 		userApps = mList;
+		ComplexPreferences.putObject(context,
+				"userapps", mList);
 		return mList;
 	}
 
 	public static List<App> getUserApps(Context context) {
+		userApps = ComplexPreferences.getObject(context, "userapps",
+				new TypeReference<ArrayList<App>>() {
+				});
 		if (userApps == null)
 			return getAppsNoSystom(context);
 		return userApps;

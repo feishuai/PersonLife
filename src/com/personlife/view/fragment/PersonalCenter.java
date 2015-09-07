@@ -180,7 +180,7 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 		layout.findViewById(R.id.txt_connection).setOnClickListener(this);
 		layout.findViewById(R.id.txt_tongzhi).setOnClickListener(this);
 		layout.findViewById(R.id.txt_yinsi_anquan).setOnClickListener(this);
-		layout.findViewById(R.id.txt_tongyongsetting).setOnClickListener(this);
+//		layout.findViewById(R.id.txt_tongyongsetting).setOnClickListener(this);
 		layout.findViewById(R.id.txt_yijianfankui).setOnClickListener(this);
 		layout.findViewById(R.id.txt_aboutus).setOnClickListener(this);
 		layout.findViewById(R.id.txt_downloadlist).setOnClickListener(this);
@@ -221,10 +221,10 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 			intentyinsi.putExtra("telphone", telphone);
 			startActivity(intentyinsi);
 			break;
-		case R.id.txt_tongyongsetting:
+//		case R.id.txt_tongyongsetting:
 			// Utils.start_Activity(getActivity(), SettingActivity.class,
 			// new BasicNameValuePair("NAME", "通用设置"));
-			break;
+//			break;
 		case R.id.txt_tuijian:
 
 			ShareSDK.initSDK(ctx);

@@ -46,7 +46,7 @@ public class ComplexPreferences {
 		}
 
 		try {
-			Log.i("sharepreferences get" + key,
+			Log.i("sharepreferences put " + key,
 					mapper.writeValueAsString(object));
 			editor.putString(key, mapper.writeValueAsString(object));
 		} catch (JsonProcessingException e) {
@@ -70,7 +70,7 @@ public class ComplexPreferences {
 
 		String json = preferences.getString(key, null);
 		if (json != null)
-			Log.i("sharepreferences get" + key, json);
+			Log.i("sharepreferences get " + key, json);
 		if (json == null) {
 			return null;
 		} else {

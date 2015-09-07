@@ -26,7 +26,7 @@
         android:layout_height="12dp"
         android:layout_alignLeft="@+id/iv_grid_staricon"
         android:layout_alignParentTop="true"
-        android:background="@color/black1"
+        android:background="@color/transparent2"
         android:drawableLeft="@drawable/xiazai"
         android:gravity="center_vertical"
         android:text="11205"

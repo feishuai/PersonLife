@@ -1,7 +1,10 @@
 package com.personlife.view.fragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,9 +33,12 @@ import com.personlife.adapter.AppsAdapter;
 import com.personlife.bean.App;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONArrayHttpResponseHandler;
+import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ComplexPreferences;
 import com.personlife.utils.Constants;
 import com.personlife.utils.DrawableStringUtils;
+import com.personlife.utils.ImageLoaderUtils;
+import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.SystemUtils;
 import com.personlife.view.activity.home.AppSearchActivity;
 import com.personlife.view.activity.home.ClassificationActivity;
@@ -87,9 +93,11 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		taglist = new ArrayList<String>();
 		allapps = new ArrayList<App>();
 		userapps = new ArrayList<App>();
-		kindsAdapter = new KindsAdapter(getActivity(), taglist);
+		kindsAdapter = new KindsAdapter(getActivity(), taglist,
+				new HashMap<String, List<App>>());
 		mLvApps.setAdapter(kindsAdapter);
-		userapps = SystemUtils.getUserApps(getActivity());
+		if (userapps.size() == 0)
+			userapps = SystemUtils.getUserApps(getActivity());
 
 		if (ComplexPreferences.getObject(getActivity(), "tags",
 				new TypeReference<ArrayList<String>>() {
@@ -106,7 +114,8 @@ public class HomeFragment extends Fragment implements OnClickListener {
 									taglist.add(tag);
 								}
 								updateView();
-								ComplexPreferences.putObject(getActivity(), "tags", taglist);
+								ComplexPreferences.putObject(getActivity(),
+										"tags", taglist);
 							} catch (JSONException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -130,8 +139,50 @@ public class HomeFragment extends Fragment implements OnClickListener {
 
 	protected void updateView() {
 		// TODO Auto-generated method stub
-		kindsAdapter.setData(taglist);
-		kindsAdapter.notifyDataSetChanged();
+		RequestParams request = new RequestParams();
+		for (int i = 0; i < taglist.size(); i++) {
+			request.add("tag[" + i + "]", taglist.get(i));
+		}
+		BaseAsyncHttp.postReq(getActivity().getApplicationContext(),
+				"/myapp/tag-to-apps", request,
+				new JSONObjectHttpResponseHandler() {
+
+					@Override
+					public void jsonSuccess(JSONObject resp) {
+						Map<String, List<App>> maps = new HashMap<String, List<App>>();
+						for (int i = 0; i < taglist.size(); i++) {
+							String tag = taglist.get(i);
+							JSONArray jsonapps = resp.optJSONArray(tag);
+							List<App> apps = new ArrayList<App>();
+							for (int j = 0; j < jsonapps.length() && j < 3; j++) {
+								App app = new App();
+								JSONObject jsonapp = jsonapps.optJSONObject(j);
+								app.setIcon(jsonapp.optString("icon"));
+								app.setSize(jsonapp.optString("size"));
+								app.setDowloadcount(jsonapp
+										.optInt("downloadcount"));
+								app.setIntrodution(jsonapp
+										.optString("introduction"));
+								app.setName(jsonapp.optString("name"));
+								app.setId(jsonapp.optInt("id"));
+								app.setDownloadUrl(jsonapp
+										.optString("android_url"));
+								app.setProfile(jsonapp.optString("profile"));
+								app.setDownloadPath(Constants.DownloadPath
+										+ app.getName() + ".apk");
+								apps.add(app);
+							}
+							maps.put(tag, apps);
+							kindsAdapter.setData(taglist, maps);
+							kindsAdapter.notifyDataSetChanged();
+						}
+					}
+
+					@Override
+					public void jsonFail(JSONObject resp) {
+						// TODO Auto-generated method stub
+					}
+				});
 	}
 
 	@Override
@@ -173,10 +224,13 @@ public class HomeFragment extends Fragment implements OnClickListener {
 
 		private Context context;
 		private List<String> tags;
+		private Map<String, List<App>> maps;
 
-		public KindsAdapter(Context context, List<String> tags) {
+		public KindsAdapter(Context context, List<String> tags,
+				Map<String, List<App>> maps) {
 			this.context = context;
 			this.tags = tags;
+			this.maps = maps;
 		}
 
 		@Override
@@ -217,61 +271,25 @@ public class HomeFragment extends Fragment implements OnClickListener {
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			final List<App> apps = new ArrayList<App>();
-			RequestParams params = new RequestParams();
-			params.add("tag", tags.get(position));
-			BaseAsyncHttp.postReq(getActivity(), "/myapp/tag", params,
-					new JSONArrayHttpResponseHandler() {
+			List<App> apps = new ArrayList<App>();
+			apps = maps.get(tags.get(position));
+			if (position == 0)
+				allapps.clear();
+			allapps.addAll(apps);
+			if (position == (tags.size() - 1))
+				ComplexPreferences.putObject(getActivity(),
+						Constants.HomeAllDownloadApps, allapps);
+			holder.tvkind.setText(tags.get(position));
+			holder.counts.setText("我的（" + 3 + "）");
+			holder.lvapps.setAdapter(new AppsAdapter(context, apps));
+			int tribe = position * 3;
+			if ((tribe + 3) > userapps.size())
+				holder.hlvMyapps.setAdapter(new MyAppsAdapter(userapps.subList(
+						0, 3)));
+			else
+				holder.hlvMyapps.setAdapter(new MyAppsAdapter(userapps.subList(
+						position * 3, position * 3 + 3)));
 
-						@Override
-						public void jsonSuccess(JSONArray resp) {
-							// TODO Auto-generated method stub
-							try {
-								for (int i = 0; i < resp.length() && i < 3; i++) {
-									App app = new App();
-									JSONObject jsonapp = resp.getJSONObject(i);
-									app.setIcon(jsonapp.getString("icon"));
-									app.setSize(jsonapp.getString("size"));
-									app.setDowloadcount(jsonapp
-											.getInt("downloadcount"));
-									app.setIntrodution(jsonapp
-											.getString("introduction"));
-									app.setName(jsonapp.getString("name"));
-									app.setId(jsonapp.getInt("id"));
-									app.setDownloadUrl(jsonapp
-											.getString("android_url"));
-									app.setProfile(jsonapp.getString("profile"));
-									app.setDownloadPath(Constants.DownloadPath
-											+ app.getName() + ".apk");
-									apps.add(app);
-								}
-							} catch (JSONException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-//							allapps.addAll(apps);
-							if (position == (tags.size() - 1))
-								ComplexPreferences.putObject(getActivity(),
-										Constants.HomeAllDownloadApps, apps);
-							holder.tvkind.setText(tags.get(position));
-							holder.counts.setText("我的（" + 2 + "）");
-							holder.lvapps.setAdapter(new AppsAdapter(context,
-									apps));
-							int tribe = position * 3;
-							if ((tribe + 3) > userapps.size())
-								holder.hlvMyapps.setAdapter(new MyAppsAdapter(
-										userapps.subList(0, 3)));
-							else
-								holder.hlvMyapps.setAdapter(new MyAppsAdapter(
-										userapps.subList(position * 3,
-												position * 3 + 3)));
-						}
-
-						@Override
-						public void jsonFail(JSONArray resp) {
-							// TODO Auto-generated method stub
-						}
-					});
 			holder.more.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -285,8 +303,9 @@ public class HomeFragment extends Fragment implements OnClickListener {
 			return convertView;
 		}
 
-		public void setData(List<String> tags) {
+		public void setData(List<String> tags, Map<String, List<App>> maps) {
 			this.tags = tags;
+			this.maps = maps;
 		}
 
 		class ViewHolder {

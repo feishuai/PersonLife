@@ -30,7 +30,7 @@ import com.umeng.analytics.MobclickAgent;
 public class LoginActivity extends Activity implements OnClickListener {
 	TextView username, password;
 	TextView login, register, retrieve;
-	ImageButton weibologin;
+//	ImageButton weibologin;
 	private SharedPreferences.Editor editor;
 	private SharedPreferences pref;
 
@@ -59,11 +59,11 @@ public class LoginActivity extends Activity implements OnClickListener {
 		login = (TextView) findViewById(R.id.tv_login_login);
 		register = (TextView) findViewById(R.id.tv_login_register);
 		retrieve = (TextView) findViewById(R.id.tv_login_retrieve);
-		weibologin = (ImageButton) findViewById(R.id.weibologin);
+//		weibologin = (ImageButton) findViewById(R.id.weibologin);
 		login.setOnClickListener(this);
 		register.setOnClickListener(this);
 		retrieve.setOnClickListener(this);
-		weibologin.setOnClickListener(this);
+//		weibologin.setOnClickListener(this);
 	}
 
 	@Override
@@ -138,8 +138,8 @@ public class LoginActivity extends Activity implements OnClickListener {
 			intentfind.putExtra("title", "找回密码");
 			startActivity(intentfind);
 			break;
-		case R.id.weibologin:
-			break;
+//		case R.id.weibologin:
+//			break;
 		default:
 			System.out.println("view is clicked");
 			break;

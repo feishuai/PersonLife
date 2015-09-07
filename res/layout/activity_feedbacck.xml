@@ -12,15 +12,15 @@
 			android:layout_width="match_parent"
 			android:layout_height="24.0dip" />
     <EditText 
-        
+        android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="64dip"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"	       
+        android:layout_height="160dp"
+        android:padding="10dp"	       
         android:textColor="@color/black"
         android:background="@color/white"
         android:focusable="true"
-        android:maxLength="56"     
+        android:maxLength="100"     
+        android:gravity="left|top"
         />"
 
 </LinearLayout>
