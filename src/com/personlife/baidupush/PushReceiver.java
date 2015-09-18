@@ -1,5 +1,7 @@
 package com.personlife.baidupush;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONException;
@@ -7,15 +9,21 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract.CommonDataKinds.Contactables;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.baidu.android.pushservice.PushMessageReceiver;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.loopj.android.http.RequestParams;
+import com.personlife.bean.SystemNotification;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONObjectHttpResponseHandler;
+import com.personlife.utils.ComplexPreferences;
+import com.personlife.utils.Constants;
 import com.personlife.utils.PersonInfoLocal;
 import com.personlife.view.activity.MainActivity;
+import com.personlife.view.activity.personcenter.TongzhiActivity;
 
 /*
  * Push消息处理receiver。请编写您需要的回调函数， 一般来说： onBind是必须的，用来处理startWork返回值；
@@ -73,11 +81,11 @@ public class PushReceiver extends PushMessageReceiver {
 		Log.d(TAG, responseString);
 
 		if (errorCode == 0) {
-			// 绑定成功   上传channelId到服务器
+			// 绑定成功 上传channelId到服务器
 			RequestParams request = new RequestParams();
 			request.add("phone", PersonInfoLocal.getPhone(context));
 			request.add("platform", "android");
-			request.add("channel",String.valueOf(channelId));
+			request.add("channel", String.valueOf(channelId));
 			BaseAsyncHttp.postReq(context, "/users/channel", request,
 					new JSONObjectHttpResponseHandler() {
 						@Override
@@ -85,6 +93,7 @@ public class PushReceiver extends PushMessageReceiver {
 							// TODO Auto-generated method stub
 							Log.d(TAG, "update channelId success");
 						}
+
 						@Override
 						public void jsonFail(JSONObject resp) {
 							// TODO Auto-generated method stub
@@ -149,7 +158,9 @@ public class PushReceiver extends PushMessageReceiver {
 		String notifyString = "通知点击 title=\"" + title + "\" description=\""
 				+ description + "\" customContent=" + customContentString;
 		Log.d(TAG, notifyString);
-
+		Intent intent = new Intent(context, TongzhiActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		context.startActivity(intent);
 		// 自定义内容获取方式，mykey和myvalue对应通知推送时自定义内容中设置的键和值
 		if (!TextUtils.isEmpty(customContentString)) {
 			JSONObject customJson = null;
@@ -190,7 +201,20 @@ public class PushReceiver extends PushMessageReceiver {
 				+ "\" description=\"" + description + "\" customContent="
 				+ customContentString;
 		Log.d(TAG, notifyString);
-
+		ArrayList<SystemNotification> tongzhi = ComplexPreferences.getObject(
+				context, Constants.SYSTEMNOTIFICATION,
+				new TypeReference<ArrayList<SystemNotification>>() {
+				});
+		if (tongzhi == null) {
+			tongzhi = new ArrayList<SystemNotification>();
+		}
+		SystemNotification notification = new SystemNotification();
+		notification.setTitle(title);
+		notification.setContent(description);
+		notification.setTime(System.currentTimeMillis());
+		tongzhi.add(notification);
+		ComplexPreferences.putObject(context, Constants.SYSTEMNOTIFICATION,
+				tongzhi);
 		// 自定义内容获取方式，mykey和myvalue对应通知推送时自定义内容中设置的键和值
 		if (!TextUtils.isEmpty(customContentString)) {
 			JSONObject customJson = null;

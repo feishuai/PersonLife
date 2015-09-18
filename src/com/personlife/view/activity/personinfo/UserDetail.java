@@ -10,11 +10,13 @@ import com.personlife.adapter.ContactAdapter;
 import com.personlife.adapter.UserAdapter;
 import com.personlife.bean.User;
 import com.personlife.bean.UserFriend;
+import com.personlife.common.Utils;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ActivityCollector;
 import com.personlife.utils.FriendsUtils;
 import com.personlife.utils.ImageLoaderUtils;
+import com.personlife.view.activity.circle.CircleActivity;
 import com.personlife.view.activity.personcenter.SearchUser;
 
 import android.app.Activity;
@@ -33,7 +35,7 @@ public class UserDetail extends Activity implements OnClickListener {
 	private TextView txt_title, tv_name, tv_region, tv_sign;
 	private Button back;
 	private String UserPhone;
-	private Button btn_sendmsg;
+	private Button btn_sendmsg,btnCircle;
 	private ImageView sex, head;
 	private String phone;
 	private String mytelphone;
@@ -48,6 +50,7 @@ public class UserDetail extends Activity implements OnClickListener {
 		phone = intent.getStringExtra("phone");
 		mytelphone = intent.getStringExtra("mytelphone");
 		where = intent.getStringExtra("fromwhere");
+		btnCircle = (Button) findViewById(R.id.btn_circle);
 		if (where.equals("search")) {
 			initview();
 			setListener();
@@ -155,6 +158,7 @@ public class UserDetail extends Activity implements OnClickListener {
 	protected void setListener() {
 		back.setOnClickListener(this);
 		btn_sendmsg.setOnClickListener(this);
+		btnCircle.setOnClickListener(this);
 	}
 
 	@Override
@@ -162,6 +166,11 @@ public class UserDetail extends Activity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.txt_left:
 			finish();
+			break;
+		case R.id.btn_circle:
+			Intent intent=new Intent(UserDetail.this,CircleActivity.class);
+			intent.putExtra("starphone", phone);
+			UserDetail.this.startActivity(intent);
 			break;
 		case R.id.btn_sendmsg:
 			RequestParams request = new RequestParams();
@@ -184,8 +193,6 @@ public class UserDetail extends Activity implements OnClickListener {
 						}
 					});
 
-			break;
-		default:
 			break;
 		}
 	}

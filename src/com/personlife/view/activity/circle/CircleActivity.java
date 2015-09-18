@@ -144,6 +144,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 						star.setFamous(resp.optInt("famous"));
 						star.setSignature(resp.optString("signature"));
 						star.setFavour(resp.optInt("favour"));
+						star.setFamous(resp.optInt("famous"));
 						ComplexPreferences.putObject(getApplicationContext(),
 								"star", star);
 						updateFriendsCircle();
@@ -401,6 +402,8 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 		starname.setText(star.getNickname());
 		follows.setText("(" + star.getFavour() + ")");
 		signature.setText(star.getSignature());
+		if (star.getFamous() == 0)
+			addfriend.setText("添加好友");
 	}
 
 	@Override
@@ -490,48 +493,80 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 			request.add("myphone",
 					PersonInfoLocal.getPhone(getApplicationContext()));
 			request.add("fphone", star.getPhone());
-			if (!isAdded)
-				BaseAsyncHttp.postReq(this, "/follow/set", request,
-						new JSONObjectHttpResponseHandler() {
-							@Override
-							public void jsonSuccess(JSONObject resp) {
-								// TODO Auto-generated method stub
-								int flag = resp.optInt("flag");
-								if (flag == 1)
+			if (star.getFamous() == 1)
+				if (!isAdded)
+					BaseAsyncHttp.postReq(this, "/follow/set", request,
+							new JSONObjectHttpResponseHandler() {
+								@Override
+								public void jsonSuccess(JSONObject resp) {
+									// TODO Auto-generated method stub
+									int flag = resp.optInt("flag");
+									if (flag == 1)
+										Utils.showShortToast(
+												getApplicationContext(), "关注成功");
+									else
+										Utils.showShortToast(
+												getApplicationContext(), "已关注");
+									addfriend.setText("已关注");
+									addfriend.setGravity(Gravity.CENTER);
+									isAdded = true;
+								}
+
+								@Override
+								public void jsonFail(JSONObject resp) {
+									// TODO Auto-generated method stub
+								}
+							});
+				else
+					BaseAsyncHttp.postReq(this, "/follow/cancel", request,
+							new JSONObjectHttpResponseHandler() {
+
+								@Override
+								public void jsonSuccess(JSONObject resp) {
+									// TODO Auto-generated method stub
 									Utils.showShortToast(
-											getApplicationContext(), "关注成功");
-								else
-									Utils.showShortToast(
-											getApplicationContext(), "已关注");
-								addfriend.setText("已关注");
-								addfriend.setGravity(Gravity.CENTER);
-								isAdded = true;
-							}
+											getApplicationContext(), "取消关注");
+									addfriend.setText("添加关注");
+									isAdded = false;
+								}
 
-							@Override
-							public void jsonFail(JSONObject resp) {
-								// TODO Auto-generated method stub
-							}
-						});
-			else
-				BaseAsyncHttp.postReq(this, "/follow/cancel", request,
-						new JSONObjectHttpResponseHandler() {
+								@Override
+								public void jsonFail(JSONObject resp) {
+									// TODO Auto-generated method stub
 
-							@Override
-							public void jsonSuccess(JSONObject resp) {
-								// TODO Auto-generated method stub
-								Utils.showShortToast(getApplicationContext(),
-										"取消关注");
-								addfriend.setText("添加关注");
-								isAdded = false;
-							}
+								}
+							});
+			RequestParams addrequest = new RequestParams();
+			addrequest.add("myid",
+					PersonInfoLocal.getPhone(getApplicationContext()));
+			addrequest.add("friendid", star.getPhone());
+			if (star.getFamous() == 0)
+				if (!isAdded)
+					BaseAsyncHttp.postReq(this, "/friend/requestadd", request,
+							new JSONObjectHttpResponseHandler() {
+								@Override
+								public void jsonSuccess(JSONObject resp) {
+									// TODO Auto-generated method stub
+									int flag = resp.optInt("flag");
+									if (flag == 0)
+										Utils.showShortToast(
+												getApplicationContext(),
+												"已发送请求");
+									else
+										Utils.showShortToast(
+												getApplicationContext(), "已是好友");
+									addfriend.setText("已请求");
+									addfriend.setGravity(Gravity.CENTER);
+									isAdded = true;
+								}
 
-							@Override
-							public void jsonFail(JSONObject resp) {
-								// TODO Auto-generated method stub
-
-							}
-						});
+								@Override
+								public void jsonFail(JSONObject resp) {
+									// TODO Auto-generated method stub
+								}
+							});
+				else
+					Utils.showShortToast(getApplicationContext(), "已发送请求");
 			break;
 		case R.id.iv_circle_dianzan:
 			if (!isPraised) {

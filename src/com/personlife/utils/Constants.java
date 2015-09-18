@@ -9,6 +9,7 @@ public interface Constants {
 	String SelectedApp = "selectedApp";
 	String DownloadApps = "downloadapps";
 	String HomeAllDownloadApps = "homealldownloadapps";
+	String SYSTEMNOTIFICATION = "systemnotifications";
 	String ShareAllDownloadApps = "sharealldownloadapps";
 	String OnFailure = "网络出现问题，请连接网络";
 	String Download = "download";

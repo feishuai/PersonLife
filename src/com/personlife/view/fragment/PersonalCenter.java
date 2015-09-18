@@ -59,7 +59,7 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 
 	private Activity ctx;
 	private View layout;
-	private TextView username, personsign;
+	private TextView username, personsign,info,tongzhi;
 	private ImageView sex;
 	private ImageView head;
 	private Uri imageUri;
@@ -184,6 +184,7 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 		layout.findViewById(R.id.txt_yijianfankui).setOnClickListener(this);
 		layout.findViewById(R.id.txt_aboutus).setOnClickListener(this);
 		layout.findViewById(R.id.txt_downloadlist).setOnClickListener(this);
+		layout.findViewById(R.id.txt_info).setOnClickListener(this);
 	}
 
 	@Override
@@ -212,9 +213,11 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 			intent_connection.putExtra("telphone", telphone);
 			startActivity(intent_connection);
 			break;
+		case R.id.txt_info:
+			
+			break;
 		case R.id.txt_tongzhi:
-			// Utils.start_Activity(getActivity(), TongzhiActivity.class,
-			// new BasicNameValuePair("NAME", "通知"));
+			 Utils.start_Activity(getActivity(), TongzhiActivity.class);
 			break;
 		case R.id.txt_yinsi_anquan:
 			Intent intentyinsi = new Intent(getActivity(), SecureActivity.class);

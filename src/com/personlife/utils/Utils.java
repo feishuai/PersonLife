@@ -98,9 +98,15 @@ public class Utils {
 		return new SimpleDateFormat("yyyy-MM-dd").format(new Date(
 				timestamp * 1000));
 	}
+
+	public static String TimeStamp2SystemNotificationDate(long timestamp) {
+		return new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(
+				timestamp));
+	}
+
 	public static String TimeStamp2DateChinese(long timestamp) {
 		return new SimpleDateFormat("yyyy年MM月dd日").format(new Date(
 				timestamp * 1000));
 	}
-	
+
 }

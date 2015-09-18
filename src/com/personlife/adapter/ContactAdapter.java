@@ -60,7 +60,6 @@ public class ContactAdapter extends BaseAdapter implements SectionIndexer {
 		if (convertView == null) {
 			convertView = LayoutInflater.from(mContext).inflate(
 					R.layout.contact_item, null);
-
 		}
 		ImageView ivAvatar = ViewHolder.get(convertView,
 				R.id.contactitem_avatar_iv);

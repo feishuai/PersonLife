@@ -31,6 +31,7 @@
                     android:layout_height="80.0dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
+                    android:layout_centerVertical="true"
                     android:src="@drawable/head" />
 
                 <TextView
@@ -130,6 +131,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="4.0dip"
                 android:background="@color/black2" />
+             <TextView
+                android:id="@+id/txt_info"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/right"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:text="消息列表"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1.0dip"
+                android:background="@color/black2" />
 
             <TextView
                 android:id="@+id/txt_tongzhi"
@@ -141,7 +160,7 @@
                 android:gravity="center_vertical"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:text="通知"
+                android:text="系统通知"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
