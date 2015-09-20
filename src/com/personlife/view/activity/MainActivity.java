@@ -38,9 +38,9 @@ import com.personlife.utils.Utils;
 import com.personlife.view.activity.circle.SharePlusActivity;
 import com.personlife.view.activity.home.AllDownloadActivity;
 import com.personlife.view.activity.home.AppSearchActivity;
-import com.personlife.view.fragment.CircleFragment;
 import com.personlife.view.fragment.DiscoveryFragment;
 import com.personlife.view.fragment.HomeFragment;
+import com.personlife.view.fragment.NewCircleFragment;
 import com.personlife.view.fragment.PersonalCenter;
 import com.umeng.analytics.MobclickAgent;
 
@@ -60,7 +60,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 	private HomeFragment homefragment;
 	private DiscoveryFragment discoveryfragment;
 	private String telphone;
-	private CircleFragment circlefragment;
+	private NewCircleFragment circlefragment;
 
 	private String headkey;
 
@@ -187,7 +187,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
 		homefragment = new HomeFragment();
 		discoveryfragment = new DiscoveryFragment(telphone);
-		circlefragment = new CircleFragment();
+		circlefragment = new NewCircleFragment();
 		fragments = new Fragment[] { homefragment, circlefragment,
 				discoveryfragment, personalCenter };
 		// 添加显示第一个fragment

@@ -7,6 +7,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.Uri;
+import android.os.Bundle;
+import android.telephony.SmsManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.personlifep.R;
 import com.loopj.android.http.RequestParams;
 import com.personlife.bean.UserFriend;
@@ -15,24 +35,6 @@ import com.personlife.net.JSONArrayHttpResponseHandler;
 import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.FriendsUtils;
 import com.personlife.utils.GetContactsInfo;
-import com.personlife.utils.ImageLoaderUtils;
-import com.personlife.view.activity.personinfo.UserDetail;
-
-import android.app.Activity;
-import android.content.Context;
-import android.os.Bundle;
-import android.telephony.SmsManager;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * 
@@ -54,6 +56,34 @@ public class LocalPhoneContact extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_localcontact);
 		telphone = getIntent().getStringExtra("telphone");
 		initView();
+		initMessage();
+	}
+
+	private void initMessage() {
+		// 处理返回的发送状态
+		String SENT_SMS_ACTION = "SENT_SMS_ACTION";
+		Intent sentIntent = new Intent(SENT_SMS_ACTION);
+		PendingIntent sentPI = PendingIntent.getBroadcast(getApplicationContext(), 0,
+				sentIntent, 0);
+		// register the Broadcast Receivers
+		getApplicationContext().registerReceiver(new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context _context, Intent _intent) {
+				switch (getResultCode()) {
+				case Activity.RESULT_OK:
+					Toast.makeText(getApplicationContext(), "邀请短信发送成功",
+							Toast.LENGTH_SHORT).show();
+					break;
+				case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+				case SmsManager.RESULT_ERROR_RADIO_OFF:
+				case SmsManager.RESULT_ERROR_NULL_PDU:
+					Toast.makeText(getApplicationContext(), "邀请短信发送失败",
+							Toast.LENGTH_SHORT).show();
+					break;
+				}
+			}
+		}, new IntentFilter(SENT_SMS_ACTION));
+
 	}
 
 	public void initView() {
@@ -213,10 +243,9 @@ public class LocalPhoneContact extends Activity implements OnClickListener {
 									}
 								});
 					} else {
-						// 直接调用短信接口发短信
-						SmsManager smsManager = SmsManager.getDefault();
-						smsManager.sendTextMessage(mList.get(position)
-								.getPhone(), null, "邀请你加入定制生活大家庭", null, null);
+			            Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:"+mList.get(position).getPhone()));            
+			            intent.putExtra("sms_body", "邀请你加入定制生活大家庭");            
+			            startActivity(intent);  
 					}
 
 				}
