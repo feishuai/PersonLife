@@ -73,16 +73,17 @@ public class DiscoveryFragment extends Fragment implements OnClickListener {
 	private ImageView[] mImageViews;
 	private List<String> mImageUrls = new ArrayList<String>();
 	private String mImageUrl;
-	private List<Star> liststar=new ArrayList<Star>();
+	private List<Star> liststar = new ArrayList<Star>();
 	private static final int MSG_CHANGE_PHOTO = 1;
 	/** 图片自动切换时间 */
 	private static final int PHOTO_CHANGE_TIME = 3000;
 	private String telphone;
-	
-	public DiscoveryFragment(String tel){
+
+	public DiscoveryFragment(String tel) {
 		super();
-		this.telphone=tel;
+		this.telphone = tel;
 	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -122,50 +123,61 @@ public class DiscoveryFragment extends Fragment implements OnClickListener {
 				.findViewById(R.id.index_product_images_container);
 		mIndicator = (LinearLayout) layout
 				.findViewById(R.id.index_product_images_indicator);
-		//连网获取新星推荐
-		RequestParams request=new RequestParams();
-		BaseAsyncHttp.postReq(ctx, "/app/recommend", request, new JSONArrayHttpResponseHandler() {
-			
-			@Override
-			public void jsonSuccess(JSONArray resp) {
-				// TODO Auto-generated method stub
-				for(int i=0;i<resp.length();i++){
-					Star star=new Star();
-					star.setPhone(resp.optJSONObject(i).optString("phone"));
-					star.setNickname(resp.optJSONObject(i).optString("nickname"));
-					star.setThumb(resp.optJSONObject(i).optString("thumb"));
-					star.setFollower(resp.optJSONObject(i).optString("follower"));
-					star.setShared(resp.optJSONObject(i).optString("shared"));
-					liststar.add(star);
-				}
-				StarRecomAdapter staradapter=new StarRecomAdapter(ctx, liststar);
-				gridview.setAdapter(staradapter);
-				gridview.setOnItemClickListener(new OnItemClickListener() {
+		// 连网获取新星推荐
+		RequestParams request = new RequestParams();
+		BaseAsyncHttp.postReq(ctx, "/app/recommend", request,
+				new JSONArrayHttpResponseHandler() {
 
 					@Override
-					public void onItemClick(AdapterView<?> parent, View view,
-							int position, long id) {
+					public void jsonSuccess(JSONArray resp) {
 						// TODO Auto-generated method stub
-						Star star=(Star) parent.getItemAtPosition(position);
-						
-						Intent intent=new Intent(ctx, CircleActivity.class);
-						intent.putExtra("starphone", star.getPhone());
-						intent.putExtra("starnickname", star.getNickname());
-						intent.putExtra("starthumb", star.getThumb());
-						intent.putExtra("starfollowers", star.getFollower());
-						startActivity(intent);
-						
+						for (int i = 0; i < resp.length(); i++) {
+							Star star = new Star();
+							star.setPhone(resp.optJSONObject(i).optString(
+									"phone"));
+							star.setNickname(resp.optJSONObject(i).optString(
+									"nickname"));
+							star.setThumb(resp.optJSONObject(i).optString(
+									"thumb"));
+							star.setFollower(resp.optJSONObject(i).optString(
+									"follower"));
+							star.setShared(resp.optJSONObject(i).optString(
+									"shared"));
+							liststar.add(star);
+						}
+						StarRecomAdapter staradapter = new StarRecomAdapter(
+								ctx, liststar);
+						gridview.setAdapter(staradapter);
+						gridview.setOnItemClickListener(new OnItemClickListener() {
+
+							@Override
+							public void onItemClick(AdapterView<?> parent,
+									View view, int position, long id) {
+								// TODO Auto-generated method stub
+								Star star = (Star) parent
+										.getItemAtPosition(position);
+
+								Intent intent = new Intent(ctx,
+										CircleActivity.class);
+								intent.putExtra("starphone", star.getPhone());
+								intent.putExtra("starnickname",
+										star.getNickname());
+								intent.putExtra("starthumb", star.getThumb());
+								intent.putExtra("starfollowers",
+										star.getFollower());
+								startActivity(intent);
+
+							}
+						});
+					}
+
+					@Override
+					public void jsonFail(JSONArray resp) {
+						// TODO Auto-generated method stub
+
 					}
 				});
-			}
-			
-			@Override
-			public void jsonFail(JSONArray resp) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		//个性化推荐列表
+		// 个性化推荐列表
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		ArrayList<HashMap<String, Object>> lstRecommend = new ArrayList<HashMap<String, Object>>();
 		map = new HashMap<String, Object>();
@@ -322,14 +334,14 @@ public class DiscoveryFragment extends Fragment implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		switch(v.getId()){
+		switch (v.getId()) {
 		case R.id.tv_discovery_more:
-			Utils.start_Activity(getActivity(), StarRecommendActivity.class, null);
+			Utils.start_Activity(getActivity(), StarRecommendActivity.class,
+					null);
 			break;
 		}
 
 	}
-
 
 	public class MyAdapter extends PagerAdapter {
 

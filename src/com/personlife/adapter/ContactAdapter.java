@@ -27,7 +27,6 @@ import android.widget.ImageView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
-
 public class ContactAdapter extends BaseAdapter implements SectionIndexer {
 	private Context mContext;
 	private List<UserFriend> UserFriendInfos;// 好友信息
@@ -67,12 +66,14 @@ public class ContactAdapter extends BaseAdapter implements SectionIndexer {
 				R.id.contactitem_catalog);
 		TextView tvNick = ViewHolder.get(convertView, R.id.contactitem_nick);
 		String catalog;
-		if(null==user.getNickname()){
-			catalog = PingYinUtil.converterToFirstSpell(user.getPhone()).substring(0, 1);
-		}else{
-			catalog = PingYinUtil.converterToFirstSpell(user.getNickname()).substring(0, 1);
+		if (null == user.getNickname()) {
+			catalog = PingYinUtil.converterToFirstSpell(user.getPhone())
+					.substring(0, 1);
+		} else {
+			catalog = PingYinUtil.converterToFirstSpell(user.getNickname())
+					.substring(0, 1);
 		}
-		
+
 		if (position == 0) {
 			tvCatalog.setVisibility(View.VISIBLE);
 			tvCatalog.setText(catalog);
@@ -87,9 +88,9 @@ public class ContactAdapter extends BaseAdapter implements SectionIndexer {
 				tvCatalog.setText(catalog);
 			}
 		}
-		if(null!=user.getThumb()){
+		if (null != user.getThumb()) {
 			ImageLoaderUtils.displayAppIcon(user.getThumb(), ivAvatar);
-		}else{
+		} else {
 			ivAvatar.setImageResource(R.drawable.head);
 		}
 

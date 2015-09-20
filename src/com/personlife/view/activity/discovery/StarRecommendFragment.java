@@ -28,20 +28,22 @@ public class StarRecommendFragment extends Fragment {
 	private MyListView lv;
 	List<Star> mList;
 	StarsAdapter starsAdapter;
-	
-	
+
 	public StarRecommendFragment(List<Star> mList) {
 		// TODO Auto-generated constructor stub
 		this.mList = mList;
 	}
+
 	public List<Star> getAppsList() {
 		return mList;
 	}
+
 	public void setAppsList(List<Star> mList) {
 		this.mList = mList;
-		if(starsAdapter!=null)
+		if (starsAdapter != null)
 			starsAdapter.notifyDataSetChanged();
 	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,8 +52,7 @@ public class StarRecommendFragment extends Fragment {
 		initView();
 		return layout;
 	}
-	
-	
+
 	public void initView() {
 		lv = (MyListView) layout.findViewById(R.id.lv_starrecommend_stars);
 		starsAdapter = new StarsAdapter(getActivity());
@@ -106,20 +107,24 @@ public class StarRecommendFragment extends Fragment {
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			ImageLoaderUtils.displayImageView(mList.get(position).getThumb(), holder.icon);
+			ImageLoaderUtils.displayImageView(mList.get(position).getThumb(),
+					holder.icon);
 			holder.name.setText(mList.get(position).getNickname());
 			holder.fanscounts.setText(mList.get(position).getFollower());
 			holder.downloadcounts.setText(mList.get(position).getShared());
 			holder.home.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					Intent intent=new Intent(getActivity(),CircleActivity.class);
+					Intent intent = new Intent(getActivity(),
+							CircleActivity.class);
 					intent.putExtra("starphone", mList.get(position).getPhone());
-					intent.putExtra("starnickname", mList.get(position).getNickname());
+					intent.putExtra("starnickname", mList.get(position)
+							.getNickname());
 					intent.putExtra("starthumb", mList.get(position).getThumb());
-					intent.putExtra("starfollowers", mList.get(position).getFollower());
+					intent.putExtra("starfollowers", mList.get(position)
+							.getFollower());
 					startActivity(intent);
 				}
 			});
@@ -135,5 +140,5 @@ public class StarRecommendFragment extends Fragment {
 			ImageButton home;
 		}
 	}
-	
+
 }

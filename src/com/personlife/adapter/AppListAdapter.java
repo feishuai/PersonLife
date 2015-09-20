@@ -137,7 +137,7 @@ public class AppListAdapter extends BaseAdapter {
 												holder.status.setText("等待安装");
 											}
 										}
-										
+
 										@Override
 										public void onStop(
 												DownloadTask downloadTask) {
@@ -206,11 +206,10 @@ public class AppListAdapter extends BaseAdapter {
 
 			@Override
 			public void onClick(View v) {
-				 Intent intent = new Intent(context, AppDetailActivity.class);
-				 intent.putExtra(Constants.AppId, mlist.get(position)
-				 .getId());
-				 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				 context.startActivity(intent);
+				Intent intent = new Intent(context, AppDetailActivity.class);
+				intent.putExtra(Constants.AppId, mlist.get(position).getId());
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				context.startActivity(intent);
 			}
 		});
 		return convertView;

@@ -59,7 +59,6 @@ public class ShareAppListActivity extends Activity implements OnClickListener {
 	AppsAdapter appsadapter;
 	int msgid;
 
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -85,7 +84,6 @@ public class ShareAppListActivity extends Activity implements OnClickListener {
 		downloadButton.setCompoundDrawables(xiazai, null, null, null);
 		downloadButton.setTextColor(getResources()
 				.getColorStateList(R.color.bg));
-
 
 		msgid = getIntent().getIntExtra("msgid", 1);
 		lvApps = (MyListView) findViewById(R.id.lv_tuijian_apps);
@@ -157,7 +155,7 @@ public class ShareAppListActivity extends Activity implements OnClickListener {
 			 */
 			lp.x = 5; // 新位置X坐标
 			lp.y = 90; // 新位置Y坐标
-//			lp.width = 300; // 宽度
+			// lp.width = 300; // 宽度
 			// lp.height = 300; // 高度
 			lp.alpha = 0.7f; // 透明度
 
@@ -180,7 +178,8 @@ public class ShareAppListActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.imgbtn_collect:
 			RequestParams params = new RequestParams();
-			params.add("phone", PersonInfoLocal.getPhone(getApplicationContext()));
+			params.add("phone",
+					PersonInfoLocal.getPhone(getApplicationContext()));
 			params.add("msg", String.valueOf(msgid));
 			BaseAsyncHttp.postReq(getApplicationContext(), "/collect/set-msg",
 					params, new JSONObjectHttpResponseHandler() {

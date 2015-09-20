@@ -61,6 +61,7 @@ public class NewCircleFragment extends Fragment {
 	Star star;
 	Boolean isLoaded = false;
 	String phone;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -93,7 +94,7 @@ public class NewCircleFragment extends Fragment {
 
 		initData();
 		initView();
-		
+
 		return layout;
 	}
 
@@ -399,7 +400,8 @@ public class NewCircleFragment extends Fragment {
 			holder.praise.setImageDrawable(getResources().getDrawable(
 					R.drawable.dianzan1));
 			for (int i = 0; i < stars.size(); i++) {
-				if (stars.get(i).getPhone().equals(PersonInfoLocal.getPhone(getActivity()))) {
+				if (stars.get(i).getPhone()
+						.equals(PersonInfoLocal.getPhone(getActivity()))) {
 					holder.isPraised = true;
 					holder.praise.setImageDrawable(getResources().getDrawable(
 							R.drawable.dianzan2));
@@ -428,7 +430,8 @@ public class NewCircleFragment extends Fragment {
 					String text = holder.person.getText().toString();
 					String nickname = star.getNickname();
 					RequestParams request = new RequestParams();
-					request.add("phone", PersonInfoLocal.getPhone(getActivity()));
+					request.add("phone",
+							PersonInfoLocal.getPhone(getActivity()));
 					request.add("msgid",
 							String.valueOf(mlist.get(position).getMsgid()));
 					if (holder.isPraised) {

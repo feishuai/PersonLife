@@ -84,8 +84,7 @@ public class SystemUtils {
 			mList.add(app);
 		}
 		userApps = mList;
-		ComplexPreferences.putObject(context,
-				"userapps", mList);
+		ComplexPreferences.putObject(context, "userapps", mList);
 		return mList;
 	}
 

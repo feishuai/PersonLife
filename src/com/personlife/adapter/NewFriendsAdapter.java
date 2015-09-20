@@ -79,7 +79,7 @@ public class NewFriendsAdapter extends BaseAdapter {
 				request.put("myphone", mytelphone);
 				request.put("fphone", mList.get(position).getPhone());
 				request.put("agree", 1);
-				Log.i("gfdshdgfhe",mytelphone+mList.get(position).getPhone());
+				Log.i("gfdshdgfhe", mytelphone + mList.get(position).getPhone());
 				BaseAsyncHttp.postReq(context, "/friend/acceptadd", request,
 						new JSONArrayHttpResponseHandler() {
 

@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.personlifep.R;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.personlife.common.Utils;
 import com.personlife.utils.ComplexPreferences;
 
 public class ClassificationActivity extends Activity implements OnClickListener {
@@ -61,13 +62,13 @@ public class ClassificationActivity extends Activity implements OnClickListener 
 			for (int j = 0; j < changjing.length; j++) {
 				if (changjing[j].equals(tag)) {
 					isChangjingSelected[j] = true;
-					return;
+					break;
 				}
 			}
 			for (int j = 0; j < zhuti.length; j++) {
 				if (zhuti[j].equals(tag)) {
 					isZhutiSelected[j] = true;
-					return;
+					break;
 				}
 			}
 		}

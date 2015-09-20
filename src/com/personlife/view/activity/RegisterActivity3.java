@@ -89,7 +89,7 @@ public class RegisterActivity3 extends Activity implements OnClickListener {
 
 							got.add(resp.optJSONObject(i).optString("second"));
 						}
-						size=resp.length();
+						size = resp.length();
 						flag = new boolean[resp.length()];
 						for (int i = 0; i < resp.length(); i++) {
 							flag[i] = false;
@@ -117,24 +117,26 @@ public class RegisterActivity3 extends Activity implements OnClickListener {
 			break;
 
 		case R.id.register3_nextstep:
-			int isselect=0;
+			int isselect = 0;
 			Set<String> set = new HashSet<String>();
 			for (int i = 0; i < size; i++) {
 				if (flag[i] == true) {
 					set.add(got.get(i));
-					isselect=1;
+					isselect = 1;
 				}
 			}
-			if(isselect==0){
-				Toast.makeText(RegisterActivity3.this, "请选择爱好",Toast.LENGTH_SHORT).show();
-			}else{
+			if (isselect == 0) {
+				Toast.makeText(RegisterActivity3.this, "请选择爱好",
+						Toast.LENGTH_SHORT).show();
+			} else {
 				PersonInfoLocal.storeRegisterHobbys(this, telphone, set);
 				Intent intent = new Intent(this, RegisterActivity4.class);
 				intent.putExtra("telphone", telphone);
 				startActivity(intent);
 				RequestParams request = new RequestParams();
 				request.put("phone", telphone);
-				request.put("nickname", PersonInfoLocal.getNcikName(this, telphone));
+				request.put("nickname",
+						PersonInfoLocal.getNcikName(this, telphone));
 				request.put("thumb", PersonInfoLocal.getHeadKey(this, telphone));
 				request.put("gender", "");
 				request.put("area", "");
@@ -179,8 +181,7 @@ public class RegisterActivity3 extends Activity implements OnClickListener {
 							}
 						});
 			}
-			
-			
+
 			break;
 		}
 

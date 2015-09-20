@@ -1,6 +1,5 @@
 package com.personlife.widget;
 
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;

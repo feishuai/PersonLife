@@ -4,23 +4,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 public interface Holder {
 
-  void addHeader(View view);
+	void addHeader(View view);
 
-  void addFooter(View view);
+	void addFooter(View view);
 
-  void setBackgroundColor(int colorResource);
+	void setBackgroundColor(int colorResource);
 
-  View getView(LayoutInflater inflater, ViewGroup parent);
+	View getView(LayoutInflater inflater, ViewGroup parent);
 
-  void setOnKeyListener(View.OnKeyListener keyListener);
+	void setOnKeyListener(View.OnKeyListener keyListener);
 
-  View getInflatedView();
+	View getInflatedView();
 
-  View getHeader();
+	View getHeader();
 
-  View getFooter();
+	View getFooter();
 
 }

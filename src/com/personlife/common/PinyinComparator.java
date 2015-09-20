@@ -5,7 +5,6 @@ import java.util.Comparator;
 import com.personlife.bean.User;
 import com.personlife.bean.UserFriend;
 
-
 public class PinyinComparator implements Comparator {
 
 	@Override

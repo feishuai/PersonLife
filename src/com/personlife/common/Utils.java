@@ -30,7 +30,6 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-
 public class Utils {
 	public static void showLongToast(Context context, String pMsg) {
 		Toast.makeText(context, pMsg, Toast.LENGTH_LONG).show();

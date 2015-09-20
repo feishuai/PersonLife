@@ -2,10 +2,9 @@ package com.personlife.personinfo.carema;
 
 import android.widget.BaseAdapter;
 
-
 public interface HolderAdapter extends Holder {
 
-  void setAdapter(BaseAdapter adapter);
+	void setAdapter(BaseAdapter adapter);
 
-  void setOnItemClickListener(OnHolderListener listener);
+	void setOnItemClickListener(OnHolderListener listener);
 }

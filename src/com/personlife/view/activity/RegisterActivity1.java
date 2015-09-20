@@ -42,7 +42,7 @@ import com.personlife.utils.PersonInfoLocal;
 //注册
 public class RegisterActivity1 extends Activity implements OnClickListener {
 	private TextView txt_title;
-	private Button btn_nextstep, btn_send,back;
+	private Button btn_nextstep, btn_send, back;
 	private EditText et_usertel, et_code;
 	private MyCount mc;
 	private String title;
@@ -52,7 +52,7 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_register1);
 		super.onCreate(savedInstanceState);
 		ActivityCollector.addActivity(this);
-		title=getIntent().getStringExtra("title");
+		title = getIntent().getStringExtra("title");
 		initControl();
 		setListener();
 	}
@@ -99,16 +99,17 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 			getCode();
 			break;
 		case R.id.btn_nextstep:
-//			getRegister();
-			
-//			Intent intent = new Intent(RegisterActivity1.this,RegisterActivity2.class);
-//			intent.putExtra("telphone", et_usertel.getText().toString());
-//			startActivity(intent);												
-//			finish();
-			
+			// getRegister();
+
+			// Intent intent = new
+			// Intent(RegisterActivity1.this,RegisterActivity2.class);
+			// intent.putExtra("telphone", et_usertel.getText().toString());
+			// startActivity(intent);
+			// finish();
+
 			String telphone = et_usertel.getText().toString();
-			String code=et_code.getText().toString();
-			if(title.equals("注册")){
+			String code = et_code.getText().toString();
+			if (title.equals("注册")) {
 				RequestParams request = new RequestParams();
 				request.put("phone", telphone);
 				request.put("num", code);
@@ -118,41 +119,51 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 							@Override
 							public void jsonSuccess(JSONObject resp) {
 								try {
-									if(resp.getString("flag").equals("1")){
-										PersonInfoLocal.storeRegisterTel(RegisterActivity1.this, et_usertel.getText().toString());
-										Intent intent = new Intent(RegisterActivity1.this,RegisterActivity2.class);
-										intent.putExtra("telphone", et_usertel.getText().toString());
-										startActivity(intent);												
-										
-									}else{
-										Toast.makeText(RegisterActivity1.this, "验证码错误", Toast.LENGTH_SHORT).show();
+									if (resp.getString("flag").equals("1")) {
+										PersonInfoLocal
+												.storeRegisterTel(
+														RegisterActivity1.this,
+														et_usertel.getText()
+																.toString());
+										Intent intent = new Intent(
+												RegisterActivity1.this,
+												RegisterActivity2.class);
+										intent.putExtra("telphone", et_usertel
+												.getText().toString());
+										startActivity(intent);
+
+									} else {
+										Toast.makeText(RegisterActivity1.this,
+												"验证码错误", Toast.LENGTH_SHORT)
+												.show();
 									}
 								} catch (JSONException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
 							}
+
 							@Override
 							public void jsonFail(JSONObject resp) {
 								// TODO Auto-generated method stub
 							}
 						});
 			}
-			if(title.equals("找回密码")){
-				Intent intent = new Intent(RegisterActivity1.this,FindCodeActivity.class);
+			if (title.equals("找回密码")) {
+				Intent intent = new Intent(RegisterActivity1.this,
+						FindCodeActivity.class);
 				intent.putExtra("telphone", et_usertel.getText().toString());
 				startActivity(intent);
 			}
-			
+
 			break;
 		default:
 			break;
 		}
 	}
 
-
 	private void getCode() {
-		if(title.equals("注册")){
+		if (title.equals("注册")) {
 			String telphone = et_usertel.getText().toString();
 			RequestParams request = new RequestParams();
 			request.put("phone", telphone);
@@ -163,23 +174,27 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 						@Override
 						public void jsonSuccess(JSONObject resp) {
 							try {
-								if(resp.getString("flag").equals("0")){
-									Toast.makeText(RegisterActivity1.this, "您已注册过", Toast.LENGTH_SHORT).show();
-								}else{
-									Toast.makeText(RegisterActivity1.this, "发送成功", Toast.LENGTH_SHORT).show();
+								if (resp.getString("flag").equals("0")) {
+									Toast.makeText(RegisterActivity1.this,
+											"您已注册过", Toast.LENGTH_SHORT).show();
+								} else {
+									Toast.makeText(RegisterActivity1.this,
+											"发送成功", Toast.LENGTH_SHORT).show();
 								}
 							} catch (JSONException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						}
+
 						@Override
 						public void jsonFail(JSONObject resp) {
 							// TODO Auto-generated method stub
-							Toast.makeText(RegisterActivity1.this, "网络发送失败", Toast.LENGTH_SHORT).show();
+							Toast.makeText(RegisterActivity1.this, "网络发送失败",
+									Toast.LENGTH_SHORT).show();
 						}
 					});
-		}else{
+		} else {
 			String telphone = et_usertel.getText().toString();
 			RequestParams request = new RequestParams();
 			request.put("phone", telphone);
@@ -189,20 +204,25 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 						@Override
 						public void jsonSuccess(JSONObject resp) {
 							try {
-								if(resp.getString("flag").equals("0")){
-									Toast.makeText(RegisterActivity1.this, "获取验证码失败", Toast.LENGTH_SHORT).show();
-								}else{
-									Toast.makeText(RegisterActivity1.this, "发送成功", Toast.LENGTH_SHORT).show();
+								if (resp.getString("flag").equals("0")) {
+									Toast.makeText(RegisterActivity1.this,
+											"获取验证码失败", Toast.LENGTH_SHORT)
+											.show();
+								} else {
+									Toast.makeText(RegisterActivity1.this,
+											"发送成功", Toast.LENGTH_SHORT).show();
 								}
 							} catch (JSONException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						}
+
 						@Override
 						public void jsonFail(JSONObject resp) {
 							// TODO Auto-generated method stub
-							Toast.makeText(RegisterActivity1.this, "网络发送失败", Toast.LENGTH_SHORT).show();
+							Toast.makeText(RegisterActivity1.this, "网络发送失败",
+									Toast.LENGTH_SHORT).show();
 						}
 					});
 		}
@@ -232,7 +252,7 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 							R.drawable.btn_bg_green));
 					btn_send.setTextColor(0xFFFFFFFF);
 					btn_send.setEnabled(true);
-					
+
 				} else {
 					et_usertel.requestFocus();
 					Utils.showLongToast(getApplicationContext(), "请输入正确的手机号码！");
@@ -265,9 +285,8 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 				int count) {
 			boolean Sign1 = et_code.getText().length() == 4;
 			boolean Sign2 = et_usertel.getText().length() > 0;
-			
 
-			if (Sign1 & Sign2 ) {
+			if (Sign1 & Sign2) {
 				btn_nextstep.setBackgroundDrawable(getResources().getDrawable(
 						R.drawable.btn_enable_green));
 				btn_nextstep.setTextColor(0xFFFFFFFF);
@@ -297,14 +316,14 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 		public void onTick(long millisUntilFinished) {
 			btn_send.setEnabled(false);
 			btn_send.setText("(" + millisUntilFinished / 1000 + ")秒");
-			btn_send.setEnabled(false);			
+			btn_send.setEnabled(false);
 		}
 	}
 
-//	private void initUserList() {
-//		Intent intent = new Intent(RegisterActivity1.this, MainActivity.class);
-//		startActivity(intent);
-//		overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
-//		finish();
-//	}
+	// private void initUserList() {
+	// Intent intent = new Intent(RegisterActivity1.this, MainActivity.class);
+	// startActivity(intent);
+	// overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+	// finish();
+	// }
 }

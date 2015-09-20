@@ -11,10 +11,11 @@ public class Comment {
 	private String usernickname;
 	private String comments;
 	private long created_at;
-	
-	public Comment(){
-		
+
+	public Comment() {
+
 	}
+
 	public Comment(String title, int stars, String username, String content,
 			int createdDate) {
 		super();
@@ -28,15 +29,19 @@ public class Comment {
 	public int getAppid() {
 		return appid;
 	}
+
 	public void setAppid(int appid) {
 		this.appid = appid;
 	}
+
 	public String getUsername() {
 		return username;
 	}
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
 	public String getTitle() {
 		return title;
 	}

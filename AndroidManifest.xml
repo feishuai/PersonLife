@@ -393,6 +393,10 @@
             android:name="com.personlife.view.activity.discovery.StarSearchActivity"
             android:label="@string/title_activity_star_search" >
         </activity>
+        <activity
+            android:name="com.personlife.view.activity.personcenter.MessageActivity"
+            android:label="@string/title_activity_message" >
+        </activity>
     </application>
 
 </manifest>

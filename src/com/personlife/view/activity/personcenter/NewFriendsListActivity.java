@@ -29,7 +29,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 //新朋友
 public class NewFriendsListActivity extends Activity implements OnClickListener {
 	private TextView txt_title;
@@ -37,11 +36,12 @@ public class NewFriendsListActivity extends Activity implements OnClickListener 
 	private ListView mlistview;
 	private String telphone;
 	private List<UserFriend> mList;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_listview);		
-		telphone=getIntent().getStringExtra("telphone");
+		setContentView(R.layout.activity_listview);
+		telphone = getIntent().getStringExtra("telphone");
 		initControl();
 	}
 
@@ -51,7 +51,7 @@ public class NewFriendsListActivity extends Activity implements OnClickListener 
 		back = (Button) findViewById(R.id.txt_left);
 		back.setVisibility(View.VISIBLE);
 		back.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -60,7 +60,7 @@ public class NewFriendsListActivity extends Activity implements OnClickListener 
 			}
 		});
 		mlistview = (ListView) findViewById(R.id.listview);
-		RequestParams request=new RequestParams();
+		RequestParams request = new RequestParams();
 		request.put("phone", telphone);
 		BaseAsyncHttp.postReq(this, "/friend/listenadd", request,
 				new JSONArrayHttpResponseHandler() {
@@ -77,11 +77,12 @@ public class NewFriendsListActivity extends Activity implements OnClickListener 
 									"nickname"));
 							friend.setThumb(resp.optJSONObject(i).optString(
 									"thumb"));
-							
+
 							mList.add(friend);
 
 						}
-						mlistview.setAdapter(new NewFriendsAdapter(NewFriendsListActivity.this,mList,telphone));			
+						mlistview.setAdapter(new NewFriendsAdapter(
+								NewFriendsListActivity.this, mList, telphone));
 					}
 
 					@Override
@@ -90,13 +91,13 @@ public class NewFriendsListActivity extends Activity implements OnClickListener 
 
 					}
 				});
-		
+
 	}
 
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

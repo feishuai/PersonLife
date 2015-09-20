@@ -27,13 +27,14 @@ import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.Utils;
 
 public class CommentAppActivity extends Activity implements OnClickListener {
-	Button mBack,save;
+	Button mBack, save;
 	TextView mTitle;
 	RatingBar stars;
 	EditText content;
-	
+
 	String comments;
 	int counts;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -41,8 +42,8 @@ public class CommentAppActivity extends Activity implements OnClickListener {
 		mBack = (Button) findViewById(R.id.txt_left);
 		save = (Button) findViewById(R.id.txt_save);
 		mTitle = (TextView) findViewById(R.id.txt_title);
-		stars = (RatingBar)findViewById(R.id.rb_comment_stars);
-		content = (EditText)findViewById(R.id.dt_comment_content);
+		stars = (RatingBar) findViewById(R.id.rb_comment_stars);
+		content = (EditText) findViewById(R.id.dt_comment_content);
 		mBack.setVisibility(View.VISIBLE);
 		save.setVisibility(View.VISIBLE);
 		mTitle.setVisibility(View.GONE);
@@ -53,23 +54,24 @@ public class CommentAppActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		switch(v.getId()){
+		switch (v.getId()) {
 		case R.id.txt_left:
 			finish();
 			break;
 		case R.id.txt_save:
-			counts = (int)stars.getRating();
+			counts = (int) stars.getRating();
 			comments = content.getText().toString();
-			if(counts==0){
+			if (counts == 0) {
 				Utils.showShortToast(getApplication(), "请给出评分");
-				return ;
+				return;
 			}
-			if(comments.length() < 5){
+			if (comments.length() < 5) {
 				Utils.showShortToast(getApplication(), "请输入最少5个字的评价");
 				return;
 			}
 			submitComment();
-//			Toast.makeText(getApplicationContext(), con + counts, Toast.LENGTH_SHORT).show();
+			// Toast.makeText(getApplicationContext(), con + counts,
+			// Toast.LENGTH_SHORT).show();
 			break;
 		}
 	}
@@ -83,12 +85,12 @@ public class CommentAppActivity extends Activity implements OnClickListener {
 		params.add("phone", PersonInfoLocal.getPhone(getApplicationContext()));
 		params.add("title", "真的是很好用的");
 		Log.i("submit comment param is ", params.toString());
-		BaseAsyncHttp.postReq(getApplicationContext(), "/app/submitcomment", params,
-				new JSONObjectHttpResponseHandler() {
+		BaseAsyncHttp.postReq(getApplicationContext(), "/app/submitcomment",
+				params, new JSONObjectHttpResponseHandler() {
 
 					@Override
 					public void jsonSuccess(JSONObject resp) {
-						if(resp.optInt("flag")==1){
+						if (resp.optInt("flag") == 1) {
 							Utils.showShortToast(getApplication(), "提交评论成功");
 							CommentAppActivity.this.setResult(1);
 							CommentAppActivity.this.finish();

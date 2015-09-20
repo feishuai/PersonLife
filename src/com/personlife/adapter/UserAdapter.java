@@ -16,10 +16,10 @@ import com.personlife.bean.User;
 import com.personlife.common.ViewHolder;
 import com.personlife.utils.ImageLoaderUtils;
 
-/**  
- *   
- * @author liugang  
- * @date 2015年7月19日   
+/**
+ * 
+ * @author liugang
+ * @date 2015年7月19日
  */
 public class UserAdapter extends BaseAdapter implements SectionIndexer {
 	private Context mContext;
@@ -28,7 +28,7 @@ public class UserAdapter extends BaseAdapter implements SectionIndexer {
 	public UserAdapter(Context mContext, List<User> UserInfos) {
 		this.mContext = mContext;
 		this.UserInfos = UserInfos;
-		
+
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class UserAdapter extends BaseAdapter implements SectionIndexer {
 		}
 		ImageView ivAvatar = ViewHolder.get(convertView,
 				R.id.contactitem_avatar_iv);
-		
+
 		TextView tvNick = ViewHolder.get(convertView, R.id.contactitem_nick);
 		ImageLoaderUtils.displayAppIcon(user.getHeadUrl(), ivAvatar);
 		tvNick.setText(user.getUserName());

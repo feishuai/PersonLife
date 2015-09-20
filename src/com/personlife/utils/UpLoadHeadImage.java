@@ -25,7 +25,7 @@ import com.qiniu.util.Auth;
 public class UpLoadHeadImage {
 	private static String result = null;
 
-	public static String uploadImg(final Context ctx,final String telphone) {
+	public static String uploadImg(final Context ctx, final String telphone) {
 		UploadManager uploadManager = new UploadManager();
 		File data = new File(Environment.getExternalStorageDirectory(),
 				telphone + ".jpg");
@@ -37,7 +37,7 @@ public class UpLoadHeadImage {
 		String token = auth.uploadToken(bucketName);
 
 		uploadManager.put(data, key, token, new UpCompletionHandler() {
-			
+
 			@Override
 			public void complete(String arg0, ResponseInfo arg1, JSONObject arg2) {
 				// TODO Auto-generated method stub
@@ -45,14 +45,14 @@ public class UpLoadHeadImage {
 					result = arg2.getString("key").toString();
 					Log.i("keyd zhiaagandghl", result);
 					PersonInfoLocal.storeHeadkey(ctx, telphone,
-							 "http://7xkbeq.com1.z0.glb.clouddn.com/"+result);
+							"http://7xkbeq.com1.z0.glb.clouddn.com/" + result);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 		}, null);
-		
+
 		return result;
 	}
 }

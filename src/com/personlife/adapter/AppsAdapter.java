@@ -88,10 +88,12 @@ public class AppsAdapter extends BaseAdapter {
 				holder.icon);
 		holder.appname.setText(mlist.get(position).getName());
 		int counts = mlist.get(position).getDowloadcount();
-		if(counts>10000)
-			holder.status.setText(counts/10000+"万人下载 "+mlist.get(position).getSize());
+		if (counts > 10000)
+			holder.status.setText(counts / 10000 + "万人下载 "
+					+ mlist.get(position).getSize());
 		else
-			holder.status.setText(counts+"人下载 "+mlist.get(position).getSize());
+			holder.status.setText(counts + "人下载 "
+					+ mlist.get(position).getSize());
 		holder.intro.setText(mlist.get(position).getProfile());
 		if (DownloadTaskManager.getDownloadTaskManager(context)
 				.isHasDownloaded(mlist.get(position))) {
@@ -171,16 +173,23 @@ public class AppsAdapter extends BaseAdapter {
 											holder.bar.setProgress(values[0]);
 											if (values[0] == 100) {
 												holder.download.setText("已下载");
-												SystemUtils.openAppFronUri(context, mlist.get(position).getDownloadPath());
+												SystemUtils
+														.openAppFronUri(
+																context,
+																mlist.get(
+																		position)
+																		.getDownloadPath());
 											}
 											Log.i("update progress",
 													String.valueOf(values[0]));
 										}
-									     @Override
-									        public void onStop(DownloadTask downloadTask) {
-									            super.onStop(downloadTask);
-									            holder.download.setText("继续");
-									        }
+
+										@Override
+										public void onStop(
+												DownloadTask downloadTask) {
+											super.onStop(downloadTask);
+											holder.download.setText("继续");
+										}
 									});
 					return;
 				}
@@ -222,7 +231,7 @@ public class AppsAdapter extends BaseAdapter {
 		Button download;
 		ProgressBar bar;
 	}
-	
+
 	public void clear() {
 		mlist.clear();
 		notifyDataSetChanged();

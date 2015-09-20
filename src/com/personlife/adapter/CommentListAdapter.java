@@ -18,16 +18,16 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-
 public class CommentListAdapter extends BaseAdapter {
 
 	private Context context;
 	private List<Comment> mlist;
+
 	public CommentListAdapter(Context context, List<Comment> mlist) {
 		this.context = context;
 		this.mlist = mlist;
 	}
+
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
@@ -56,12 +56,12 @@ public class CommentListAdapter extends BaseAdapter {
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
 					.inflate(R.layout.layout_item_comment, null);
 			holder = new ViewHolder();
-//			holder.title = (TextView) convertView
-//					.findViewById(R.id.tv_comment_title);
-//			holder.createdDate = (TextView) convertView
-//					.findViewById(R.id.tv_comment_createdDate);
-//			holder.username = (TextView) convertView
-//					.findViewById(R.id.tv_comment_username);
+			// holder.title = (TextView) convertView
+			// .findViewById(R.id.tv_comment_title);
+			// holder.createdDate = (TextView) convertView
+			// .findViewById(R.id.tv_comment_createdDate);
+			// holder.username = (TextView) convertView
+			// .findViewById(R.id.tv_comment_username);
 			holder.content = (TextView) convertView
 					.findViewById(R.id.tv_comment_content);
 			holder.stars = (RatingBar) convertView
@@ -70,14 +70,17 @@ public class CommentListAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		holder.title.setText(String.format("%d��%s",position+1,mlist.get(position).getTitle()));
-//		holder.stars.setProgress(mlist.get(position).getStars());
-//		holder.content.setText(mlist.get(position).getContent());
-//		holder.username.setText(mlist.get(position).getUsername());
-//		Date createdDate = mlist.get(position).getCreatedDate();
-//		holder.createdDate.setText(String.format("%d��%d��%d��", createdDate.getYear(),createdDate.getMonth(),createdDate.getDay()));
+		holder.title.setText(String.format("%d��%s", position + 1,
+				mlist.get(position).getTitle()));
+		// holder.stars.setProgress(mlist.get(position).getStars());
+		// holder.content.setText(mlist.get(position).getContent());
+		// holder.username.setText(mlist.get(position).getUsername());
+		// Date createdDate = mlist.get(position).getCreatedDate();
+		// holder.createdDate.setText(String.format("%d��%d��%d��",
+		// createdDate.getYear(),createdDate.getMonth(),createdDate.getDay()));
 		return convertView;
 	}
+
 	public void setData(List<Comment> list) {
 		mlist = list;
 	}

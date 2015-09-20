@@ -38,5 +38,6 @@
     <string name="title_activity_share_range">ShareRangeActivity</string>
     <string name="title_activity_share_app_list">ShareAppListActivity</string>
     <string name="title_activity_star_search">StarSearchActivity</string>
+    <string name="title_activity_message">MessageActivity</string>
 
 </resources>

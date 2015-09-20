@@ -85,11 +85,14 @@ public class SecureActivity extends Activity {
 									try {
 										if (resp.get("flag").equals(1)) {
 											PersonInfoLocal
-													.storeLoginTelAndPass(SecureActivity.this,
-															telphone,first.getText().toString());
+													.storeLoginTelAndPass(
+															SecureActivity.this,
+															telphone, first
+																	.getText()
+																	.toString());
 											onBackPressed();
 											finish();
-											
+
 										} else {
 											Toast.makeText(SecureActivity.this,
 													"哎呀，失败了，再试一次吧",

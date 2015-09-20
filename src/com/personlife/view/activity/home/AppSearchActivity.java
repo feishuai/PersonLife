@@ -98,8 +98,8 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 		}
 
 		apps = new ArrayList<App>();
-//		resultAdapter = new ResultAdapter(apps);
-//		lvResult.setAdapter(resultAdapter);
+		// resultAdapter = new ResultAdapter(apps);
+		// lvResult.setAdapter(resultAdapter);
 		appsAdapter = new AppsAdapter(getApplicationContext(), apps);
 		lvResult.setAdapter(appsAdapter);
 
@@ -173,7 +173,7 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 		llLabel.setVisibility(View.GONE);
 		slResult.setVisibility(View.VISIBLE);
 		slHistory.setVisibility(View.GONE);
-//		resultAdapter.clear();
+		// resultAdapter.clear();
 		appsAdapter.clear();
 		RequestParams params = new RequestParams();
 		params.add("name", key.trim());
@@ -206,8 +206,8 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 										+ app.getName() + ".apk");
 								applist.add(app);
 							}
-//							resultAdapter.setData(applist);
-//							resultAdapter.notifyDataSetChanged();
+							// resultAdapter.setData(applist);
+							// resultAdapter.notifyDataSetChanged();
 							appsAdapter.setData(applist);
 							appsAdapter.notifyDataSetChanged();
 						} catch (JSONException e) {
@@ -239,24 +239,24 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 						// TODO Auto-generated method stub
 						List<App> applist = new ArrayList<App>();
 						try {
-								for (int i = 0; i < resp.length() ; i++) {
-									App app = new App();
-									JSONObject jsonapp = resp.getJSONObject(i);
-									app.setIcon(jsonapp.getString("icon"));
-									app.setSize(jsonapp.getString("size"));
-									app.setDowloadcount(jsonapp
-											.getInt("downloadcount"));
-									app.setIntrodution(jsonapp
-											.getString("introduction"));
-									app.setName(jsonapp.getString("name"));
-									app.setId(jsonapp.getInt("id"));
-									app.setDownloadUrl(jsonapp
-											.getString("android_url"));
-									app.setProfile(jsonapp.getString("profile"));
-									app.setDownloadPath(Constants.DownloadPath
-											+ app.getName() + ".apk");
-									applist.add(app);
-								}
+							for (int i = 0; i < resp.length(); i++) {
+								App app = new App();
+								JSONObject jsonapp = resp.getJSONObject(i);
+								app.setIcon(jsonapp.getString("icon"));
+								app.setSize(jsonapp.getString("size"));
+								app.setDowloadcount(jsonapp
+										.getInt("downloadcount"));
+								app.setIntrodution(jsonapp
+										.getString("introduction"));
+								app.setName(jsonapp.getString("name"));
+								app.setId(jsonapp.getInt("id"));
+								app.setDownloadUrl(jsonapp
+										.getString("android_url"));
+								app.setProfile(jsonapp.getString("profile"));
+								app.setDownloadPath(Constants.DownloadPath
+										+ app.getName() + ".apk");
+								applist.add(app);
+							}
 							appsAdapter.setData(applist);
 							appsAdapter.notifyDataSetChanged();
 						} catch (JSONException e) {
@@ -395,7 +395,8 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 			convertView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(AppSearchActivity.this, AppDetailActivity.class);
+					Intent intent = new Intent(AppSearchActivity.this,
+							AppDetailActivity.class);
 					intent.putExtra(Constants.AppId, apps.get(position).getId());
 					AppSearchActivity.this.startActivity(intent);
 				}

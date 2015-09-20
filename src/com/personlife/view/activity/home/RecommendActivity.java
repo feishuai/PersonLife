@@ -56,7 +56,7 @@ public class RecommendActivity extends Activity implements OnClickListener {
 		appsadapter = new AppsAdapter(getApplicationContext(), apps);
 		lvApps.setAdapter(appsadapter);
 		kind = getIntent().getStringExtra("kind");
-		
+
 		RequestParams params = new RequestParams();
 		params.add("tag", kind);
 		BaseAsyncHttp.postReq(getApplicationContext(), "/myapp/tag", params,
@@ -115,7 +115,8 @@ public class RecommendActivity extends Activity implements OnClickListener {
 			finish();
 			break;
 		case R.id.et_tuijian_search:
-			Intent intent = new Intent(RecommendActivity.this, AppSearchActivity.class);
+			Intent intent = new Intent(RecommendActivity.this,
+					AppSearchActivity.class);
 			startActivity(intent);
 			break;
 		}

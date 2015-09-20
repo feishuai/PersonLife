@@ -40,173 +40,188 @@ import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.personlife.widget.CircleImageView;
 
-
 public class ImageLoaderUtils {
 
 	// 图片加载类
-		public static DisplayImageOptions binner_options;
-		public static DisplayImageOptions icon_options;
-		private static DisplayImageOptions user_icon_options;
-		private static DisplayImageOptions girl_options;
-		// Imageload缓存目录
-		private static File cacheDir = new File(getHJYCacheDir() + "/Imageload");
+	public static DisplayImageOptions binner_options;
+	public static DisplayImageOptions icon_options;
+	private static DisplayImageOptions user_icon_options;
+	private static DisplayImageOptions girl_options;
+	// Imageload缓存目录
+	private static File cacheDir = new File(getHJYCacheDir() + "/Imageload");
 
-		static {
-			
-			binner_options = new DisplayImageOptions.Builder()
-					.showImageOnLoading(R.drawable.large_logo_default_4) // resource
-					// or
-					.showImageForEmptyUri(R.drawable.large_logo_default_4) // resource
-					.showImageOnFail(R.drawable.large_logo_default_4) // resource or
-					.cacheInMemory(false) // default
-					.cacheOnDisc(true) // default
-					.imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2) // default
-					.bitmapConfig(Bitmap.Config.ARGB_8888) // default
-					.displayer(new SimpleBitmapDisplayer()) // default
-					.build();
-			icon_options = new DisplayImageOptions.Builder()
-					.showImageOnLoading(R.drawable.ic_stub) // resource
-					.showImageForEmptyUri(R.drawable.ic_empty) // resource
-					.showImageOnFail(R.drawable.ic_error) // resource or
-					.cacheInMemory(true) // default
-					.cacheOnDisc(true) // default
-					.imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2) // default
-					.bitmapConfig(Bitmap.Config.ARGB_8888) // default
-					.displayer(new RoundedBitmapDisplayer(10)) // default
-					.build();
-			user_icon_options = new DisplayImageOptions.Builder()
-					.showImageOnLoading(R.drawable.head) // resource
-					.showImageForEmptyUri(R.drawable.head) // resource
-					.showImageOnFail(R.drawable.head) // resource
-					.cacheInMemory(true) // default
-					.cacheOnDisc(true) // default
-					.imageScaleType(ImageScaleType.NONE) // default
-					.bitmapConfig(Bitmap.Config.ARGB_8888) // default
-					.displayer(new SimpleBitmapDisplayer()) // default
-					.build();
-		}
-		public static void InitConfig(Context context){
-			ActivityManager am = (ActivityManager) context
-					.getSystemService(Context.ACTIVITY_SERVICE);
-			int memClass = am.getMemoryClass();
-			int cacheSize = 1024 * 1024 * memClass / 4; // 硬引用缓存容量，为系统可用内存的1/4
-			ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-					context).threadPoolSize(4)
-					.threadPriority(Thread.NORM_PRIORITY + 1)
-					.tasksProcessingOrder(QueueProcessingType.FIFO)
-					.denyCacheImageMultipleSizesInMemory()
-					.memoryCache(new LruMemoryCache(cacheSize))
-					.memoryCacheSize(cacheSize)
-					.discCache(new UnlimitedDiskCache(cacheDir))
-					.discCacheSize(30 * 1024 * 1024).discCacheFileCount(500)
-					.imageDownloader(new BaseImageDownloader(context, 5*1000, 20*1000))
-					.writeDebugLogs().build();
-			Log.i("cacheDir is ",cacheDir.toString());
-			ImageLoader.getInstance().init(config);
+	static {
 
-		}
-		public static void displayAppIcon(String uri, ImageView imageView){
-			ImageLoader.getInstance().displayImage(uri, imageView, icon_options);
-		}
-		
-		public static void displayImageView(String uri, ImageView imageView){
-			ImageLoader.getInstance().displayImage(uri, imageView, binner_options);
-		}
-		public static void displayCircleImageViewBackgroud(String uri,final CircleImageView imageview){
-			ImageLoader.getInstance().loadImage(uri, icon_options, new ImageLoadingListener() {
-				
-				@Override
-				public void onLoadingStarted(String arg0, View arg1) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void onLoadingComplete(String arg0, View arg1, Bitmap arg2) {
-					// TODO Auto-generated method stub
-					imageview.setBackground(new BitmapDrawable(arg2));
-				}
-				
-				@Override
-				public void onLoadingCancelled(String arg0, View arg1) {
-					// TODO Auto-generated method stub
-					
-				}
-			});
-		}
-		public static void displayCircleImageViewSrc(String uri,final CircleImageView imageview){
-			ImageLoader.getInstance().loadImage(uri, icon_options, new ImageLoadingListener() {
-				
-				@Override
-				public void onLoadingStarted(String arg0, View arg1) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void onLoadingComplete(String arg0, View arg1, Bitmap arg2) {
-					// TODO Auto-generated method stub
-					imageview.setImageBitmap(arg2);
-				}
-				
-				@Override
-				public void onLoadingCancelled(String arg0, View arg1) {
-					// TODO Auto-generated method stub
-					
-				}
-			});
-		}
-		public static String getHJYCacheDir() {
-			if (Environment.getExternalStorageState().equals(
-					Environment.MEDIA_MOUNTED))
-				return Environment.getExternalStorageDirectory().toString()
-						+ "/personlife/Cache";
-			else
-				return "/System/personlife/Cache";
-		}
+		binner_options = new DisplayImageOptions.Builder()
+				.showImageOnLoading(R.drawable.large_logo_default_4) // resource
+				// or
+				.showImageForEmptyUri(R.drawable.large_logo_default_4) // resource
+				.showImageOnFail(R.drawable.large_logo_default_4) // resource or
+				.cacheInMemory(false) // default
+				.cacheOnDisc(true) // default
+				.imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2) // default
+				.bitmapConfig(Bitmap.Config.ARGB_8888) // default
+				.displayer(new SimpleBitmapDisplayer()) // default
+				.build();
+		icon_options = new DisplayImageOptions.Builder()
+				.showImageOnLoading(R.drawable.ic_stub) // resource
+				.showImageForEmptyUri(R.drawable.ic_empty) // resource
+				.showImageOnFail(R.drawable.ic_error) // resource or
+				.cacheInMemory(true) // default
+				.cacheOnDisc(true) // default
+				.imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2) // default
+				.bitmapConfig(Bitmap.Config.ARGB_8888) // default
+				.displayer(new RoundedBitmapDisplayer(10)) // default
+				.build();
+		user_icon_options = new DisplayImageOptions.Builder()
+				.showImageOnLoading(R.drawable.head) // resource
+				.showImageForEmptyUri(R.drawable.head) // resource
+				.showImageOnFail(R.drawable.head) // resource
+				.cacheInMemory(true) // default
+				.cacheOnDisc(true) // default
+				.imageScaleType(ImageScaleType.NONE) // default
+				.bitmapConfig(Bitmap.Config.ARGB_8888) // default
+				.displayer(new SimpleBitmapDisplayer()) // default
+				.build();
+	}
 
-		public static String getHJYDownLoadDir() {
-			if (Environment.getExternalStorageState().equals(
-					Environment.MEDIA_MOUNTED))
-				return Environment.getExternalStorageDirectory().toString()
-						+ "/Walk/Download";
-			else {
-				return "/System/com.Juns.Walk/Walk/Download";
-			}
-		}
+	public static void InitConfig(Context context) {
+		ActivityManager am = (ActivityManager) context
+				.getSystemService(Context.ACTIVITY_SERVICE);
+		int memClass = am.getMemoryClass();
+		int cacheSize = 1024 * 1024 * memClass / 4; // 硬引用缓存容量，为系统可用内存的1/4
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+				context)
+				.threadPoolSize(4)
+				.threadPriority(Thread.NORM_PRIORITY + 1)
+				.tasksProcessingOrder(QueueProcessingType.FIFO)
+				.denyCacheImageMultipleSizesInMemory()
+				.memoryCache(new LruMemoryCache(cacheSize))
+				.memoryCacheSize(cacheSize)
+				.discCache(new UnlimitedDiskCache(cacheDir))
+				.discCacheSize(30 * 1024 * 1024)
+				.discCacheFileCount(500)
+				.imageDownloader(
+						new BaseImageDownloader(context, 5 * 1000, 20 * 1000))
+				.writeDebugLogs().build();
+		Log.i("cacheDir is ", cacheDir.toString());
+		ImageLoader.getInstance().init(config);
 
-		public static void deleteCacheDirFile(String filePath,
-				boolean deleteThisPath) throws IOException {
-			if (!TextUtils.isEmpty(filePath)) {
-				File file = new File(filePath);
-				if (file.isDirectory()) {// 处理目录
-					File files[] = file.listFiles();
-					for (int i = 0; i < files.length; i++) {
-						deleteCacheDirFile(files[i].getAbsolutePath(), true);
+	}
+
+	public static void displayAppIcon(String uri, ImageView imageView) {
+		ImageLoader.getInstance().displayImage(uri, imageView, icon_options);
+	}
+
+	public static void displayImageView(String uri, ImageView imageView) {
+		ImageLoader.getInstance().displayImage(uri, imageView, binner_options);
+	}
+
+	public static void displayCircleImageViewBackgroud(String uri,
+			final CircleImageView imageview) {
+		ImageLoader.getInstance().loadImage(uri, icon_options,
+				new ImageLoadingListener() {
+
+					@Override
+					public void onLoadingStarted(String arg0, View arg1) {
+						// TODO Auto-generated method stub
+
 					}
+
+					@Override
+					public void onLoadingFailed(String arg0, View arg1,
+							FailReason arg2) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onLoadingComplete(String arg0, View arg1,
+							Bitmap arg2) {
+						// TODO Auto-generated method stub
+						imageview.setBackground(new BitmapDrawable(arg2));
+					}
+
+					@Override
+					public void onLoadingCancelled(String arg0, View arg1) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+	}
+
+	public static void displayCircleImageViewSrc(String uri,
+			final CircleImageView imageview) {
+		ImageLoader.getInstance().loadImage(uri, icon_options,
+				new ImageLoadingListener() {
+
+					@Override
+					public void onLoadingStarted(String arg0, View arg1) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onLoadingFailed(String arg0, View arg1,
+							FailReason arg2) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onLoadingComplete(String arg0, View arg1,
+							Bitmap arg2) {
+						// TODO Auto-generated method stub
+						imageview.setImageBitmap(arg2);
+					}
+
+					@Override
+					public void onLoadingCancelled(String arg0, View arg1) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+	}
+
+	public static String getHJYCacheDir() {
+		if (Environment.getExternalStorageState().equals(
+				Environment.MEDIA_MOUNTED))
+			return Environment.getExternalStorageDirectory().toString()
+					+ "/personlife/Cache";
+		else
+			return "/System/personlife/Cache";
+	}
+
+	public static String getHJYDownLoadDir() {
+		if (Environment.getExternalStorageState().equals(
+				Environment.MEDIA_MOUNTED))
+			return Environment.getExternalStorageDirectory().toString()
+					+ "/Walk/Download";
+		else {
+			return "/System/com.Juns.Walk/Walk/Download";
+		}
+	}
+
+	public static void deleteCacheDirFile(String filePath,
+			boolean deleteThisPath) throws IOException {
+		if (!TextUtils.isEmpty(filePath)) {
+			File file = new File(filePath);
+			if (file.isDirectory()) {// 处理目录
+				File files[] = file.listFiles();
+				for (int i = 0; i < files.length; i++) {
+					deleteCacheDirFile(files[i].getAbsolutePath(), true);
 				}
-				if (deleteThisPath) {
-					if (!file.isDirectory()) {// 如果是文件，删除
+			}
+			if (deleteThisPath) {
+				if (!file.isDirectory()) {// 如果是文件，删除
+					file.delete();
+				} else {// 目录
+					if (file.listFiles().length == 0) {// 目录下没有文件或者目录，删除
 						file.delete();
-					} else {// 目录
-						if (file.listFiles().length == 0) {// 目录下没有文件或者目录，删除
-							file.delete();
-						}
 					}
 				}
 			}
 		}
+	}
 
 }

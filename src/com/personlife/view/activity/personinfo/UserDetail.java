@@ -35,7 +35,7 @@ public class UserDetail extends Activity implements OnClickListener {
 	private TextView txt_title, tv_name, tv_region, tv_sign;
 	private Button back;
 	private String UserPhone;
-	private Button btn_sendmsg,btnCircle;
+	private Button btn_sendmsg, btnCircle;
 	private ImageView sex, head;
 	private String phone;
 	private String mytelphone;
@@ -168,7 +168,7 @@ public class UserDetail extends Activity implements OnClickListener {
 			finish();
 			break;
 		case R.id.btn_circle:
-			Intent intent=new Intent(UserDetail.this,CircleActivity.class);
+			Intent intent = new Intent(UserDetail.this, CircleActivity.class);
 			intent.putExtra("starphone", phone);
 			UserDetail.this.startActivity(intent);
 			break;
@@ -176,13 +176,15 @@ public class UserDetail extends Activity implements OnClickListener {
 			RequestParams request = new RequestParams();
 			request.put("myphone", mytelphone);
 			request.put("fphone", phone);
-			BaseAsyncHttp.postReq(getApplicationContext(), "/friend/requestadd",
-					request, new JSONObjectHttpResponseHandler() {
+			BaseAsyncHttp.postReq(getApplicationContext(),
+					"/friend/requestadd", request,
+					new JSONObjectHttpResponseHandler() {
 
 						@Override
 						public void jsonSuccess(JSONObject resp) {
 							// TODO Auto-generated method stub
-							Toast.makeText(UserDetail.this, "发送好友请求成功", Toast.LENGTH_SHORT).show();
+							Toast.makeText(UserDetail.this, "发送好友请求成功",
+									Toast.LENGTH_SHORT).show();
 
 						}
 

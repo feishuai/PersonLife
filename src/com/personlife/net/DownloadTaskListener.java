@@ -9,6 +9,7 @@ import com.personlife.utils.Constants;
 public class DownloadTaskListener extends
 		DownloadListener<Integer, DownloadTask> {
 	int progress = 100;
+
 	/**
 	 * The download task has been added to the sqlite.
 	 * <p/>
@@ -68,7 +69,7 @@ public class DownloadTaskListener extends
 	@Override
 	public void onProgressUpdate(Integer... values) {
 		super.onProgressUpdate(values);
-		if(values.length==1)
+		if (values.length == 1)
 			progress = values[0];
 	}
 
@@ -114,6 +115,6 @@ public class DownloadTaskListener extends
 	public void onFinish() {
 		super.onFinish();
 		Log.i(Constants.Download, "download finish");
-		//下载结束后的操作
+		// 下载结束后的操作
 	}
 }

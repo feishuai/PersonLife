@@ -14,7 +14,6 @@ import android.widget.ListView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
-
 public class SideBar extends View {
 	private char[] l;
 	private SectionIndexer sectionIndexter = null;

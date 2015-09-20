@@ -47,11 +47,11 @@ import static com.mob.tools.utils.R.getBitmapRes;
 import static com.mob.tools.utils.R.getStringRes;
 
 /** 获取好友或关注列表 */
-public class FollowListPage extends FollowerListFakeActivity implements OnClickListener, OnItemClickListener {
+public class FollowListPage extends FollowerListFakeActivity implements
+		OnClickListener, OnItemClickListener {
 	private TitleLayout llTitle;
 	private FollowAdapter adapter;
 	private int lastPosition = -1;
-
 
 	public void onCreate() {
 		LinearLayout llPage = new LinearLayout(getContext());
@@ -127,14 +127,15 @@ public class FollowListPage extends FollowerListFakeActivity implements OnClickL
 		finish();
 	}
 
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
 		String name = platform.getName();
 		if (isRadioMode(name)) {
-			if(lastPosition >= 0) {
+			if (lastPosition >= 0) {
 				Following lastFollwing = adapter.getItem(lastPosition);
 				lastFollwing.checked = false;
 			}
-			lastPosition  = position;
+			lastPosition = position;
 		}
 		Following following = adapter.getItem(position);
 		following.checked = !following.checked;
@@ -164,11 +165,13 @@ public class FollowListPage extends FollowerListFakeActivity implements OnClickL
 
 			int resId = getBitmapRes(getContext(), "auth_follow_cb_chd");
 			if (resId > 0) {
-				bmChd = BitmapFactory.decodeResource(view.getResources(), resId);
+				bmChd = BitmapFactory
+						.decodeResource(view.getResources(), resId);
 			}
 			resId = getBitmapRes(getContext(), "auth_follow_cb_unc");
 			if (resId > 0) {
-				bmUnch = BitmapFactory.decodeResource(view.getResources(), resId);
+				bmUnch = BitmapFactory.decodeResource(view.getResources(),
+						resId);
 			}
 		}
 
@@ -193,12 +196,15 @@ public class FollowListPage extends FollowerListFakeActivity implements OnClickL
 				convertView = llItem;
 
 				int dp_52 = com.mob.tools.utils.R.dipToPx(getContext(), 52);
-				int dp_10 = com.mob.tools.utils.R.dipToPx(parent.getContext(), 10);
-				int dp_5 = com.mob.tools.utils.R.dipToPx(parent.getContext(), 5);
+				int dp_10 = com.mob.tools.utils.R.dipToPx(parent.getContext(),
+						10);
+				int dp_5 = com.mob.tools.utils.R
+						.dipToPx(parent.getContext(), 5);
 
-				if(!simpleMode) {
+				if (!simpleMode) {
 					item.aivIcon = new AsyncImageView(getContext());
-					LinearLayout.LayoutParams lpIcon = new LinearLayout.LayoutParams(dp_52, dp_52);
+					LinearLayout.LayoutParams lpIcon = new LinearLayout.LayoutParams(
+							dp_52, dp_52);
 					lpIcon.gravity = Gravity.CENTER_VERTICAL;
 					lpIcon.setMargins(dp_10, dp_5, dp_10, dp_5);
 					item.aivIcon.setLayoutParams(lpIcon);
@@ -219,12 +225,12 @@ public class FollowListPage extends FollowerListFakeActivity implements OnClickL
 				item.tvName.setTextColor(0xff000000);
 				item.tvName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
 				item.tvName.setSingleLine();
-				if(simpleMode) {
+				if (simpleMode) {
 					item.tvName.setPadding(dp_10, 0, 0, 0);
 				}
 				llText.addView(item.tvName);
 
-				if(!simpleMode) {
+				if (!simpleMode) {
 					item.tvSign = new TextView(parent.getContext());
 					item.tvSign.setTextColor(0x7f000000);
 					item.tvSign.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
@@ -245,20 +251,21 @@ public class FollowListPage extends FollowerListFakeActivity implements OnClickL
 
 			Following following = getItem(position);
 			item.tvName.setText(following.screenName);
-			if(!simpleMode) {
+			if (!simpleMode) {
 				item.tvSign.setText(following.description);
 			}
 			item.ivCheck.setImageBitmap(following.checked ? bmChd : bmUnch);
-			if(!simpleMode) {
+			if (!simpleMode) {
 				if (isFling()) {
-					Bitmap bm = BitmapProcessor.getBitmapFromCache(following.icon);
+					Bitmap bm = BitmapProcessor
+							.getBitmapFromCache(following.icon);
 					if (bm != null && !bm.isRecycled()) {
 						item.aivIcon.setImageBitmap(bm);
 					} else {
 						item.aivIcon.execute(null, 0);
 					}
 				} else {
-					item.aivIcon.execute(following.icon,0);
+					item.aivIcon.execute(following.icon, 0);
 				}
 			}
 
@@ -300,10 +307,12 @@ public class FollowListPage extends FollowerListFakeActivity implements OnClickL
 			UIHandler.sendEmptyMessage(-1, this);
 		}
 
-		public void onComplete(Platform plat, int action, HashMap<String, Object> res) {
-			FollowersResult followersResult = parseFollowers(platform.getName(), res, map);
+		public void onComplete(Platform plat, int action,
+				HashMap<String, Object> res) {
+			FollowersResult followersResult = parseFollowers(
+					platform.getName(), res, map);
 
-			if(followersResult == null) {
+			if (followersResult == null) {
 				UIHandler.sendEmptyMessage(FOLLOW_LIST_EMPTY, this);
 				return;
 			}
@@ -324,7 +333,7 @@ public class FollowListPage extends FollowerListFakeActivity implements OnClickL
 		public boolean handleMessage(Message msg) {
 			if (msg.what < 0) {
 				((Activity) getContext()).finish();
-			} else if(msg.what == FOLLOW_LIST_EMPTY) {
+			} else if (msg.what == FOLLOW_LIST_EMPTY) {
 				notifyDataSetChanged();
 			} else {
 				if (curPage <= 0) {
@@ -387,8 +396,8 @@ public class FollowListPage extends FollowerListFakeActivity implements OnClickL
 			int dp_10 = com.mob.tools.utils.R.dipToPx(getContext(), 10);
 			tvHeader.setPadding(dp_10, dp_10, dp_10, dp_10);
 			tvHeader.setTextColor(0xff000000);
-			LayoutParams lpTv = new LayoutParams(
-					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			LayoutParams lpTv = new LayoutParams(LayoutParams.WRAP_CONTENT,
+					LayoutParams.WRAP_CONTENT);
 			lpTv.gravity = Gravity.CENTER_VERTICAL;
 			llInner.addView(tvHeader, lpTv);
 		}

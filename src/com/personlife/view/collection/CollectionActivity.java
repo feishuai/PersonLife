@@ -85,7 +85,8 @@ public class CollectionActivity extends FragmentActivity implements
 		sharesfragment = new CollectionSharesFragment(mShuoshuos);
 
 		RequestParams requestShuoshuo = new RequestParams();
-		requestShuoshuo.add("phone", PersonInfoLocal.getPhone(getApplicationContext()));
+		requestShuoshuo.add("phone",
+				PersonInfoLocal.getPhone(getApplicationContext()));
 		BaseAsyncHttp.postReq(this, "/collect/get-msg", requestShuoshuo,
 				new JSONObjectHttpResponseHandler() {
 
@@ -194,7 +195,8 @@ public class CollectionActivity extends FragmentActivity implements
 		starsfragment = new CollectionStarsFragment(mStars);
 
 		RequestParams request = new RequestParams();
-		request.put("myphone", PersonInfoLocal.getPhone(getApplicationContext()));
+		request.put("myphone",
+				PersonInfoLocal.getPhone(getApplicationContext()));
 		BaseAsyncHttp.postReq(this, "/follow/get", request,
 				new JSONArrayHttpResponseHandler() {
 

@@ -48,17 +48,19 @@ import com.personlife.view.activity.personinfo.UserDetail;
 public class Fragment_Friends extends Fragment implements OnClickListener,
 		OnItemClickListener {
 	private Activity ctx;
-	private View layout,layout_head;
+	private View layout, layout_head;
 	private ListView lvContact;
 	private SideBar indexBar;
 	private TextView mDialogText;
 	private WindowManager mWindowManager;
 	private String telphone;
+
 	public Fragment_Friends(String tel) {
 		// TODO Auto-generated constructor stub
 		super();
-		telphone=tel;
+		telphone = tel;
 	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -119,14 +121,12 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 	}
 
 	private void initData() {
-		
-		
+
 		RequestParams params = new RequestParams();
 		params.put("phone", telphone);
-			
-		
-		BaseAsyncHttp.postReq(getActivity().getApplicationContext(),"/friend/getall", params,
-				new JSONObjectHttpResponseHandler() {
+
+		BaseAsyncHttp.postReq(getActivity().getApplicationContext(),
+				"/friend/getall", params, new JSONObjectHttpResponseHandler() {
 
 					@Override
 					public void jsonSuccess(JSONObject resp) {
@@ -134,13 +134,17 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 						JSONArray jsons = resp.optJSONArray("items");
 						for (int i = 0; i < jsons.length(); i++) {
 							UserFriend userFriend = new UserFriend();
-							userFriend.setPhone(jsons.optJSONObject(i).optString("phone"));
-							userFriend.setNickname(jsons.optJSONObject(i).optString("nickname"));
-							userFriend.setThumb(jsons.optJSONObject(i).optString("thumb"));
+							userFriend.setPhone(jsons.optJSONObject(i)
+									.optString("phone"));
+							userFriend.setNickname(jsons.optJSONObject(i)
+									.optString("nickname"));
+							userFriend.setThumb(jsons.optJSONObject(i)
+									.optString("thumb"));
 							FriendsUtils.userFriends.add(userFriend);
 
-						}						
-						lvContact.setAdapter(new ContactAdapter(getActivity(),FriendsUtils.userFriends));															
+						}
+						lvContact.setAdapter(new ContactAdapter(getActivity(),
+								FriendsUtils.userFriends));
 					}
 
 					@Override
@@ -150,9 +154,8 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 					}
 				});
 
-		
 	}
-	
+
 	private void setOnListener() {
 		lvContact.setOnItemClickListener(this);
 		layout.findViewById(R.id.layout_addfriend).setOnClickListener(this);
@@ -167,12 +170,13 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 			Utils.start_Activity(getActivity(), SearchFriendActivity.class);
 			break;
 		case R.id.layout_addfriend:// 添加好友
-			Intent intent=new Intent(getActivity(),NewFriendsListActivity.class);
+			Intent intent = new Intent(getActivity(),
+					NewFriendsListActivity.class);
 			intent.putExtra("telphone", telphone);
-			startActivity(intent);			
+			startActivity(intent);
 			break;
 		case R.id.layout_phonecontact:
-			Intent intent1=new Intent(getActivity(),LocalPhoneContact.class);
+			Intent intent1 = new Intent(getActivity(), LocalPhoneContact.class);
 			intent1.putExtra("telphone", telphone);
 			startActivity(intent1);
 			break;
@@ -183,14 +187,14 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		UserFriend user = FriendsUtils.userFriends.get(arg2-1);
+		UserFriend user = FriendsUtils.userFriends.get(arg2 - 1);
 		if (user != null) {
-			 Intent intent = new Intent(getActivity(),UserDetail.class);
-			 intent.putExtra("fromwhere", "friend");
-			 intent.putExtra("phone", user.getPhone());
-			 getActivity().startActivity(intent);
-//			 getActivity().overridePendingTransition(R.anim.push_left_in,
-//			 R.anim.push_left_out);
+			Intent intent = new Intent(getActivity(), UserDetail.class);
+			intent.putExtra("fromwhere", "friend");
+			intent.putExtra("phone", user.getPhone());
+			getActivity().startActivity(intent);
+			// getActivity().overridePendingTransition(R.anim.push_left_in,
+			// R.anim.push_left_out);
 		}
 
 	}

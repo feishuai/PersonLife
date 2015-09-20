@@ -71,7 +71,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		ImageLoaderUtils.InitConfig(getApplicationContext());
 		ActivityCollector.addActivity(this);
 		PushManager.startWork(getApplicationContext(),
-                PushConstants.LOGIN_TYPE_API_KEY,"0q0u5yGZiI7GaQWF5T68CsmS");
+				PushConstants.LOGIN_TYPE_API_KEY, "0q0u5yGZiI7GaQWF5T68CsmS");
 		Intent intent = getIntent();
 		telphone = intent.getStringExtra("telphone");
 		if (PersonInfoLocal.getPersonPassword(this, telphone).length() != 0) {

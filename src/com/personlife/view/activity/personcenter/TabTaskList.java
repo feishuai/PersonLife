@@ -139,7 +139,7 @@ public class TabTaskList extends Fragment implements OnClickListener {
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			
+
 			long size = DownloadTaskManager.getDownloadTaskManager(context)
 					.getDownloadTaskByApp(mlist.get(position)).getSize();
 			if (size > 0) {
@@ -155,7 +155,7 @@ public class TabTaskList extends Fragment implements OnClickListener {
 							.getStatus() == DownloadStatus.STATUS_RUNNING) {
 						holder.download.setText("暂停");
 						holder.status.setText("正在下载");
-					}else{
+					} else {
 						holder.status.setText("已暂停");
 						holder.download.setText("继续");
 						holder.bar.setProgress(progress);
@@ -236,14 +236,14 @@ public class TabTaskList extends Fragment implements OnClickListener {
 
 				@Override
 				public void onClick(View v) {
-					 Intent intent = new Intent(context, AppDetailActivity.class);
-					 intent.putExtra(Constants.AppId, mlist.get(position)
-					 .getId());
-					 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					 context.startActivity(intent);
+					Intent intent = new Intent(context, AppDetailActivity.class);
+					intent.putExtra(Constants.AppId, mlist.get(position)
+							.getId());
+					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					context.startActivity(intent);
 				}
 			});
-			
+
 			return convertView;
 		}
 

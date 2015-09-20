@@ -63,8 +63,8 @@ public class LocalPhoneContact extends Activity implements OnClickListener {
 		// 处理返回的发送状态
 		String SENT_SMS_ACTION = "SENT_SMS_ACTION";
 		Intent sentIntent = new Intent(SENT_SMS_ACTION);
-		PendingIntent sentPI = PendingIntent.getBroadcast(getApplicationContext(), 0,
-				sentIntent, 0);
+		PendingIntent sentPI = PendingIntent.getBroadcast(
+				getApplicationContext(), 0, sentIntent, 0);
 		// register the Broadcast Receivers
 		getApplicationContext().registerReceiver(new BroadcastReceiver() {
 			@Override
@@ -243,9 +243,11 @@ public class LocalPhoneContact extends Activity implements OnClickListener {
 									}
 								});
 					} else {
-			            Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:"+mList.get(position).getPhone()));            
-			            intent.putExtra("sms_body", "邀请你加入定制生活大家庭");            
-			            startActivity(intent);  
+						Intent intent = new Intent(Intent.ACTION_SENDTO, Uri
+								.parse("smsto:"
+										+ mList.get(position).getPhone()));
+						intent.putExtra("sms_body", "邀请你加入定制生活大家庭");
+						startActivity(intent);
 					}
 
 				}

@@ -76,7 +76,7 @@ public class CircleFragment extends Fragment implements OnClickListener {
 			case 1:
 				Log.i("listview getview", "activity main thread");
 				LayoutParams params = pager.getLayoutParams();
-				params.height = friendsfragment.getListViewLayoutParams()+400;
+				params.height = friendsfragment.getListViewLayoutParams() + 400;
 				pager.setLayoutParams(params);
 				break;
 			default:
@@ -127,7 +127,7 @@ public class CircleFragment extends Fragment implements OnClickListener {
 		star = new Star();
 		star.setPhone(PersonInfoLocal.getPhone(getActivity()));
 		final List<Shuoshuo> shuoshuos = new ArrayList<Shuoshuo>();
-		friendsfragment = new CircleFriendsFragment(shuoshuos,star);
+		friendsfragment = new CircleFriendsFragment(shuoshuos, star);
 
 		RequestParams request = new RequestParams();
 		request.add("phone", star.getPhone());
@@ -217,7 +217,7 @@ public class CircleFragment extends Fragment implements OnClickListener {
 					tabviews[1].setCompoundDrawables(drawableWodeApp[0], null,
 							null, null);
 					LayoutParams params = pager.getLayoutParams();
-					params.height = friendsfragment.getListViewLayoutParams()+400;
+					params.height = friendsfragment.getListViewLayoutParams() + 400;
 					pager.setLayoutParams(params);
 				}
 			}

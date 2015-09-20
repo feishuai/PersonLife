@@ -13,7 +13,7 @@ public class BaseAsyncHttp {
 	public static final String HOST = "http://183.129.190.82:50001/v1";
 
 	// public static final String HOST = "http://10.10.105.180:9000/v1";
-//	private static AsyncHttpClient client = new AsyncHttpClient();
+	// private static AsyncHttpClient client = new AsyncHttpClient();
 
 	public static void postReq(Context context, String host, String url,
 			RequestParams params, JsonHttpResponseHandler hander) {

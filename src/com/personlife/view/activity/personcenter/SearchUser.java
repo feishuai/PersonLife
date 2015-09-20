@@ -52,25 +52,26 @@ public class SearchUser extends Activity implements OnClickListener {
 	private MyListView mListView;
 	private List<User> users;
 	private String telphone;
-	private int isFriend=0;
+	private int isFriend = 0;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.search_user);
 		ActivityCollector.addActivity(this);
-		telphone=getIntent().getStringExtra("telphone");
+		telphone = getIntent().getStringExtra("telphone");
 		initView();
 	}
 
 	private void initView() {
 		mListView = (MyListView) findViewById(R.id.result_search_list);
 		users = new ArrayList<User>();
-		title=(TextView) findViewById(R.id.txt_title);
+		title = (TextView) findViewById(R.id.txt_title);
 		title.setText("添加好友");
 		cancel = (Button) findViewById(R.id.txt_left);
 		cancel.setVisibility(View.VISIBLE);
 		cancel.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -91,44 +92,53 @@ public class SearchUser extends Activity implements OnClickListener {
 				case EditorInfo.IME_ACTION_NEXT:
 				case EditorInfo.IME_ACTION_DONE:
 					users.clear();
-					mListView.setAdapter(new UserAdapter(SearchUser.this, users));
+					mListView
+							.setAdapter(new UserAdapter(SearchUser.this, users));
 					// 添加搜索
 					RequestParams params = new RequestParams();
 					params.put("myphone", telphone);
 					params.put("fphone", v.getText().toString());
-					
-					BaseAsyncHttp.postReq(getApplicationContext(),"/users/search", params,
+
+					BaseAsyncHttp.postReq(getApplicationContext(),
+							"/users/search", params,
 							new JSONObjectHttpResponseHandler() {
 
 								@Override
 								public void jsonSuccess(JSONObject resp) {
 									// TODO Auto-generated method stub
-									if(resp.optString("nickname").equals("")){
-										
-										Toast.makeText(getApplicationContext(), "所搜索用户不存在", Toast.LENGTH_SHORT).show();
-									}else{
+									if (resp.optString("nickname").equals("")) {
+
+										Toast.makeText(getApplicationContext(),
+												"所搜索用户不存在", Toast.LENGTH_SHORT)
+												.show();
+									} else {
 										User user = new User();
 										user.setId(resp.optString("id"));
-										user.setUserName(resp.optString("nickname"));
+										user.setUserName(resp
+												.optString("nickname"));
 										user.setHeadUrl(resp.optString("thumb"));
-										user.setTelephone(resp.optString("phone"));
+										user.setTelephone(resp
+												.optString("phone"));
 										user.setSex(resp.optString("gender"));
 										user.setLocation(resp.optString("area"));
 										user.setJob(resp.optString("job"));
 										user.setHobby(resp.optString("hobby"));
-										user.setSignature(resp.optString("signature"));
-										isFriend=resp.optInt("isfriend");
-										Log.i("sdangmanm,vznlfawlkej",isFriend+"");
+										user.setSignature(resp
+												.optString("signature"));
+										isFriend = resp.optInt("isfriend");
+										Log.i("sdangmanm,vznlfawlkej", isFriend
+												+ "");
 										users.add(user);
-										mListView.setAdapter(new UserAdapter(SearchUser.this, users));
+										mListView.setAdapter(new UserAdapter(
+												SearchUser.this, users));
 									}
-									
+
 								}
 
 								@Override
 								public void jsonFail(JSONObject resp) {
 									// TODO Auto-generated method stub
-									
+
 								}
 							});
 
@@ -145,24 +155,23 @@ public class SearchUser extends Activity implements OnClickListener {
 				// TODO Auto-generated method stub
 				User user = users.get(position);
 				if (user != null) {
-					 Intent intent = new Intent(SearchUser.this,UserDetail.class);
-					 intent.putExtra("nickname", user.getUserName());
-					 intent.putExtra("phone", user.getTelephone());
-					 intent.putExtra("mytelphone", telphone);
-					 intent.putExtra("thumb", user.getHeadUrl());
-					 intent.putExtra("gender", user.getSex());
-					 intent.putExtra("area", user.getLocation());
-					 intent.putExtra("signature", user.getSignature());
-					 intent.putExtra("isFriend", isFriend);
-					 intent.putExtra("fromwhere", "search");
-					 startActivity(intent);
+					Intent intent = new Intent(SearchUser.this,
+							UserDetail.class);
+					intent.putExtra("nickname", user.getUserName());
+					intent.putExtra("phone", user.getTelephone());
+					intent.putExtra("mytelphone", telphone);
+					intent.putExtra("thumb", user.getHeadUrl());
+					intent.putExtra("gender", user.getSex());
+					intent.putExtra("area", user.getLocation());
+					intent.putExtra("signature", user.getSignature());
+					intent.putExtra("isFriend", isFriend);
+					intent.putExtra("fromwhere", "search");
+					startActivity(intent);
 
 				}
 			}
 		});
 	}
-
-
 
 	// private void initData() {
 	// // TODO Auto-generated method stub
@@ -175,9 +184,9 @@ public class SearchUser extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
-//		case R.id.txt_left:
-//			this.finish();
-//			break;
+		// case R.id.txt_left:
+		// this.finish();
+		// break;
 		default:
 			break;
 		}

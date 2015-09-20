@@ -57,7 +57,7 @@ public class StarSearchActivity extends Activity implements OnClickListener {
 			finish();
 			break;
 		case R.id.btn_search_concel:
-			if(search.getText().toString().equals("")){
+			if (search.getText().toString().equals("")) {
 				Utils.showShortToast(getApplicationContext(), "请先输入查询内容");
 				return;
 			}
@@ -86,8 +86,9 @@ public class StarSearchActivity extends Activity implements OnClickListener {
 							}
 							starAdapter.setData(list_all);
 							starAdapter.notifyDataSetChanged();
-							if(list_all.size()==0)
-								Utils.showShortToast(getApplicationContext(), "没有结果");
+							if (list_all.size() == 0)
+								Utils.showShortToast(getApplicationContext(),
+										"没有结果");
 						}
 
 						@Override

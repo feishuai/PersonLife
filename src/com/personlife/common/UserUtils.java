@@ -8,8 +8,6 @@ import com.personlife.utils.Constants;
 import android.content.Context;
 import android.text.TextUtils;
 
-
-
 public class UserUtils {
 	/**
 	 * 获取用户信息

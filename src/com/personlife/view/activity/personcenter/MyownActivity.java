@@ -78,7 +78,7 @@ import android.widget.Toast;
 public class MyownActivity extends Activity implements
 		android.content.DialogInterface.OnClickListener {
 
-	private Button tv_back,login_out;
+	private Button tv_back, login_out;
 	private TextView tv_title, nickname, sex, area, profession, interests,
 			sign;
 	private CircleImageView picture;
@@ -89,17 +89,18 @@ public class MyownActivity extends Activity implements
 	private Bitmap bitmap;
 
 	private String telphone;
-	private String returnPath=null;
+	private String returnPath = null;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.myownactivity);
 		ActivityCollector.addActivity(this);
-		Intent intent=getIntent();
-		telphone=intent.getStringExtra("telphone");
+		Intent intent = getIntent();
+		telphone = intent.getStringExtra("telphone");
 		init();
-		
+
 	}
 
 	@Override
@@ -109,41 +110,47 @@ public class MyownActivity extends Activity implements
 		init();
 		update();
 	}
-	public void update(){
+
+	public void update() {
 		RequestParams request = new RequestParams();
 		request.put("phone", telphone);
-		request.put("nickname", PersonInfoLocal.getNcikName(MyownActivity.this, telphone));
-		request.put("thumb", PersonInfoLocal.getHeadKey(MyownActivity.this, telphone));
-		request.put("gender", PersonInfoLocal.getSex(MyownActivity.this, telphone));
-		request.put("area", PersonInfoLocal.getLocation(MyownActivity.this, telphone));
+		request.put("nickname",
+				PersonInfoLocal.getNcikName(MyownActivity.this, telphone));
+		request.put("thumb",
+				PersonInfoLocal.getHeadKey(MyownActivity.this, telphone));
+		request.put("gender",
+				PersonInfoLocal.getSex(MyownActivity.this, telphone));
+		request.put("area",
+				PersonInfoLocal.getLocation(MyownActivity.this, telphone));
 		request.put("job", PersonInfoLocal.getJob(MyownActivity.this, telphone));
 		StringBuffer sb = new StringBuffer();
 		sb.append("");
 		Set<String> set = new HashSet<String>();
-		set=PersonInfoLocal.getHobbys(MyownActivity.this, telphone);
+		set = PersonInfoLocal.getHobbys(MyownActivity.this, telphone);
 
-		if(set!=null){
-			for (String str : set) {  
-				sb.append(str+" ");
-			}  
+		if (set != null) {
+			for (String str : set) {
+				sb.append(str + " ");
+			}
 
 		}
-		request.put("hobby",sb.toString() );
-		request.put("signature", PersonInfoLocal.getSignature(MyownActivity.this, telphone));
-		BaseAsyncHttp.postReq(getApplicationContext(),"/users/modify", request,
-				new JSONObjectHttpResponseHandler() {
+		request.put("hobby", sb.toString());
+		request.put("signature",
+				PersonInfoLocal.getSignature(MyownActivity.this, telphone));
+		BaseAsyncHttp.postReq(getApplicationContext(), "/users/modify",
+				request, new JSONObjectHttpResponseHandler() {
 
 					@Override
 					public void jsonSuccess(JSONObject resp) {
 						try {
 							if (resp.get("flag").equals(0)) {
-//								Toast.makeText(MyownActivity.this,
-//										"修改信息失败", Toast.LENGTH_SHORT)
-//										.show();
-							}else{
-//								Toast.makeText(MyownActivity.this,
-//										"修改信息成功", Toast.LENGTH_SHORT)
-//										.show();
+								// Toast.makeText(MyownActivity.this,
+								// "修改信息失败", Toast.LENGTH_SHORT)
+								// .show();
+							} else {
+								// Toast.makeText(MyownActivity.this,
+								// "修改信息成功", Toast.LENGTH_SHORT)
+								// .show();
 							}
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
@@ -154,13 +161,14 @@ public class MyownActivity extends Activity implements
 					@Override
 					public void jsonFail(JSONObject resp) {
 						// TODO Auto-generated method stub
-//						Toast.makeText(MyownActivity.this,
-//								"Fail修改信息失败", Toast.LENGTH_SHORT)
-//								.show();
+						// Toast.makeText(MyownActivity.this,
+						// "Fail修改信息失败", Toast.LENGTH_SHORT)
+						// .show();
 					}
 				});
-		
+
 	}
+
 	public void init() {
 
 		picture = (CircleImageView) findViewById(R.id.touxiangpicture);
@@ -182,59 +190,64 @@ public class MyownActivity extends Activity implements
 			}
 		});
 		login_out.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				
-				if(PersonInfoLocal.getPersonPassword(MyownActivity.this, telphone).equals("")){
-					Intent intent=new Intent(MyownActivity.this,SetPassword.class);
+
+				if (PersonInfoLocal.getPersonPassword(MyownActivity.this,
+						telphone).equals("")) {
+					Intent intent = new Intent(MyownActivity.this,
+							SetPassword.class);
 					intent.putExtra("telphone", telphone);
 					startActivity(intent);
-					
-				}else{
-					SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MyownActivity.this).edit();
+
+				} else {
+					SharedPreferences.Editor editor = PreferenceManager
+							.getDefaultSharedPreferences(MyownActivity.this)
+							.edit();
 					editor.putString("islogin", "0");
 					editor.commit();
-					Utils.start_Activity(MyownActivity.this,LoginActivity.class);
+					Utils.start_Activity(MyownActivity.this,
+							LoginActivity.class);
 					ActivityCollector.finishAll();
 				}
-				
+
 			}
 		});
 		tv_title = (TextView) findViewById(R.id.txt_title);
 		tv_title.setText("个人信息");
-		
+
 		nickname.setText(PersonInfoLocal.getNcikName(this, telphone));
 		sex.setText(PersonInfoLocal.getSex(this, telphone));
 		area.setText(PersonInfoLocal.getLocation(this, telphone));
 		profession.setText(PersonInfoLocal.getJob(this, telphone));
 		StringBuffer sb = new StringBuffer();
 		sb.append("");
-		Set<String> set = new HashSet<String>();		
-		set=PersonInfoLocal.getHobbys(MyownActivity.this, telphone);
-//		Iterator it = set.iterator();
-		if(set!=null){
-			for (String str : set) {  
-				sb.append(str+" ");
-			}  
-//			while (it.hasNext()) {  
-//				  String str = (String) it.next();  
-//				  sb.append(str+" "); 
-//				}  
+		Set<String> set = new HashSet<String>();
+		set = PersonInfoLocal.getHobbys(MyownActivity.this, telphone);
+		// Iterator it = set.iterator();
+		if (set != null) {
+			for (String str : set) {
+				sb.append(str + " ");
+			}
+			// while (it.hasNext()) {
+			// String str = (String) it.next();
+			// sb.append(str+" ");
+			// }
 		}
 		interests.setText(sb.toString());
 		sign.setText(PersonInfoLocal.getSignature(MyownActivity.this, telphone));
 		File outputImage = new File(Environment.getExternalStorageDirectory(),
-				telphone+".jpg");
-		
+				telphone + ".jpg");
+
 		imageUri = Uri.fromFile(outputImage);
 
 		try {
 			bitmap = BitmapFactory.decodeStream(getContentResolver()
 					.openInputStream(imageUri));
 			picture.setImageBitmap(bitmap);
-			
+
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -248,33 +261,33 @@ public class MyownActivity extends Activity implements
 			showDialog();
 			break;
 		case R.id.person_nicheng:
-			Intent intent1 =new Intent(this, NickName.class);
+			Intent intent1 = new Intent(this, NickName.class);
 			intent1.putExtra("telphone", telphone);
 			startActivity(intent1);
 			break;
 		case R.id.person_sex:
-			Intent intent2 =new Intent(this, UserSex.class);
+			Intent intent2 = new Intent(this, UserSex.class);
 			intent2.putExtra("telphone", telphone);
 			startActivity(intent2);
 			break;
 		case R.id.person_area:
-			Intent intent3 =new Intent(this, AreaSetting.class);
+			Intent intent3 = new Intent(this, AreaSetting.class);
 			intent3.putExtra("telphone", telphone);
 			startActivity(intent3);
 			break;
 		case R.id.person_zhiye:
-			Intent intent4 =new Intent(this, Profession.class);
+			Intent intent4 = new Intent(this, Profession.class);
 			intent4.putExtra("telphone", telphone);
 			startActivity(intent4);
 
 			break;
 		case R.id.person_interesting:
-			Intent intent5 =new Intent(this, Interests.class);
+			Intent intent5 = new Intent(this, Interests.class);
 			intent5.putExtra("telphone", telphone);
 			startActivity(intent5);
 			break;
 		case R.id.person_sign:
-			Intent intent6 =new Intent(this, PersonalSign.class);
+			Intent intent6 = new Intent(this, PersonalSign.class);
 			intent6.putExtra("telphone", telphone);
 			startActivity(intent6);
 			break;
@@ -383,12 +396,12 @@ public class MyownActivity extends Activity implements
 					Bitmap smallBitmap = zoomBitmap(bitmap, 60, 60);
 					bitmap.recycle();
 					savePhotoToSDCard(Environment.getExternalStorageDirectory()
-							.toString(), telphone+".jpg", smallBitmap);
+							.toString(), telphone + ".jpg", smallBitmap);
 					picture.setImageBitmap(smallBitmap);
-					returnPath=UpLoadHeadImage.uploadImg(this,telphone);
-					
-//					PersonInfoLocal.storeHeadkey(this, telphone,
-//							 "http://7xkbeq.com1.z0.glb.clouddn.com/"+returnPath);
+					returnPath = UpLoadHeadImage.uploadImg(this, telphone);
+
+					// PersonInfoLocal.storeHeadkey(this, telphone,
+					// "http://7xkbeq.com1.z0.glb.clouddn.com/"+returnPath);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -405,11 +418,11 @@ public class MyownActivity extends Activity implements
 					photo.recycle();
 					picture.setImageBitmap(smallBitmap);
 					savePhotoToSDCard(Environment.getExternalStorageDirectory()
-							.toString(), telphone+".jpg", smallBitmap);
-					returnPath=UpLoadHeadImage.uploadImg(this,telphone);
-					
-//					 PersonInfoLocal.storeHeadkey(this, telphone,
-//							 "http://7xkbeq.com1.z0.glb.clouddn.com/"+returnPath);
+							.toString(), telphone + ".jpg", smallBitmap);
+					returnPath = UpLoadHeadImage.uploadImg(this, telphone);
+
+					// PersonInfoLocal.storeHeadkey(this, telphone,
+					// "http://7xkbeq.com1.z0.glb.clouddn.com/"+returnPath);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

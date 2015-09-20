@@ -23,6 +23,7 @@ import com.personlife.view.activity.MainActivity;
 import com.personlife.view.activity.personcenter.AboutUsActivity;
 import com.personlife.view.activity.personcenter.ConnectionActivity;
 import com.personlife.view.activity.personcenter.FeedBackActivity;
+import com.personlife.view.activity.personcenter.MessageActivity;
 import com.personlife.view.activity.personcenter.MyCollectionActivity;
 import com.personlife.view.activity.personcenter.MyownActivity;
 import com.personlife.view.activity.personcenter.SecureActivity;
@@ -59,7 +60,7 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 
 	private Activity ctx;
 	private View layout;
-	private TextView username, personsign,info,tongzhi;
+	private TextView username, personsign, info, tongzhi;
 	private ImageView sex;
 	private ImageView head;
 	private Uri imageUri;
@@ -180,11 +181,11 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 		layout.findViewById(R.id.txt_connection).setOnClickListener(this);
 		layout.findViewById(R.id.txt_tongzhi).setOnClickListener(this);
 		layout.findViewById(R.id.txt_yinsi_anquan).setOnClickListener(this);
-//		layout.findViewById(R.id.txt_tongyongsetting).setOnClickListener(this);
+		// layout.findViewById(R.id.txt_tongyongsetting).setOnClickListener(this);
 		layout.findViewById(R.id.txt_yijianfankui).setOnClickListener(this);
 		layout.findViewById(R.id.txt_aboutus).setOnClickListener(this);
 		layout.findViewById(R.id.txt_downloadlist).setOnClickListener(this);
-		layout.findViewById(R.id.txt_info).setOnClickListener(this);
+		layout.findViewById(R.id.txt_message).setOnClickListener(this);
 	}
 
 	@Override
@@ -213,21 +214,21 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 			intent_connection.putExtra("telphone", telphone);
 			startActivity(intent_connection);
 			break;
-		case R.id.txt_info:
-			
+		case R.id.txt_message:
+			Utils.start_Activity(getActivity(), MessageActivity.class);
 			break;
 		case R.id.txt_tongzhi:
-			 Utils.start_Activity(getActivity(), TongzhiActivity.class);
+			Utils.start_Activity(getActivity(), TongzhiActivity.class);
 			break;
 		case R.id.txt_yinsi_anquan:
 			Intent intentyinsi = new Intent(getActivity(), SecureActivity.class);
 			intentyinsi.putExtra("telphone", telphone);
 			startActivity(intentyinsi);
 			break;
-//		case R.id.txt_tongyongsetting:
-			// Utils.start_Activity(getActivity(), SettingActivity.class,
-			// new BasicNameValuePair("NAME", "通用设置"));
-//			break;
+		// case R.id.txt_tongyongsetting:
+		// Utils.start_Activity(getActivity(), SettingActivity.class,
+		// new BasicNameValuePair("NAME", "通用设置"));
+		// break;
 		case R.id.txt_tuijian:
 
 			ShareSDK.initSDK(ctx);

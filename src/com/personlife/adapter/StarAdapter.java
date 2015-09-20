@@ -22,7 +22,8 @@ public class StarAdapter extends BaseAdapter {
 
 	private Context context;
 	private List<Star> mList;
-	public StarAdapter(Context context,List<Star> mList) {
+
+	public StarAdapter(Context context, List<Star> mList) {
 		this.context = context;
 		this.mList = mList;
 	}
@@ -43,8 +44,7 @@ public class StarAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(final int position, View convertView,
-			ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder holder = null;
 		if (convertView == null) {
 			convertView = ((LayoutInflater) context
@@ -67,29 +67,34 @@ public class StarAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		ImageLoaderUtils.displayImageView(mList.get(position).getThumb(), holder.icon);
+		ImageLoaderUtils.displayImageView(mList.get(position).getThumb(),
+				holder.icon);
 		holder.name.setText(mList.get(position).getNickname());
 		holder.fanscounts.setText(mList.get(position).getFollower());
 		holder.downloadcounts.setText(mList.get(position).getShared());
 		holder.home.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent intent=new Intent(context,CircleActivity.class);
+				Intent intent = new Intent(context, CircleActivity.class);
 				intent.putExtra("starphone", mList.get(position).getPhone());
-				intent.putExtra("starnickname", mList.get(position).getNickname());
+				intent.putExtra("starnickname", mList.get(position)
+						.getNickname());
 				intent.putExtra("starthumb", mList.get(position).getThumb());
-				intent.putExtra("starfollowers", mList.get(position).getFollower());
+				intent.putExtra("starfollowers", mList.get(position)
+						.getFollower());
 				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				context.startActivity(intent);
 			}
 		});
 		return convertView;
 	}
-	public void setData(List<Star> list){
+
+	public void setData(List<Star> list) {
 		this.mList = list;
 	}
+
 	class ViewHolder {
 		ImageView icon;
 		TextView downloadcounts;

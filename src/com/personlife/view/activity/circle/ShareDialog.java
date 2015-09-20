@@ -29,8 +29,8 @@ public class ShareDialog extends Dialog implements
 		// TODO Auto-generated constructor stub
 		setContentView(R.layout.dialog_layout_share);
 		this.context = context;
-//		layout_quanzi = (LinearLayout) findViewById(R.id.quanzi);
-//		layout_quanzi.setOnClickListener(this);
+		// layout_quanzi = (LinearLayout) findViewById(R.id.quanzi);
+		// layout_quanzi.setOnClickListener(this);
 		layout_wx = (LinearLayout) findViewById(R.id.wxchat);
 		layout_wx.setOnClickListener(this);
 		layout_sina = (LinearLayout) findViewById(R.id.sina);
@@ -46,15 +46,15 @@ public class ShareDialog extends Dialog implements
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.wxchat:
-			
-			ShareParams weixin=new ShareParams();
+
+			ShareParams weixin = new ShareParams();
 			weixin.setText("heh");
-			Platform wei=ShareSDK.getPlatform(Wechat.NAME);
+			Platform wei = ShareSDK.getPlatform(Wechat.NAME);
 			wei.share(weixin);
 			dismiss();
 			break;
 		case R.id.qq:
-			
+
 			ShareParams sp = new ShareParams();
 			sp.setTitle("测试分享的标题");
 			sp.setTitleUrl("http://sharesdk.cn"); // 标题的超链接
@@ -69,7 +69,7 @@ public class ShareDialog extends Dialog implements
 			dismiss();
 			break;
 		case R.id.sina:
-			
+
 			ShareParams sinasp = new ShareParams();
 
 			sinasp.setText("测试分享的文本");
@@ -79,8 +79,8 @@ public class ShareDialog extends Dialog implements
 			dismiss();
 
 			break;
-//		case R.id.quanzi:
-//			Toast.makeText(context, "圈子", Toast.LENGTH_SHORT).show();
+		// case R.id.quanzi:
+		// Toast.makeText(context, "圈子", Toast.LENGTH_SHORT).show();
 		default:
 			break;
 		}

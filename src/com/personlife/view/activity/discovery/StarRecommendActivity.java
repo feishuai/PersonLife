@@ -68,13 +68,14 @@ public class StarRecommendActivity extends FragmentActivity implements
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Utils.start_Activity(StarRecommendActivity.this, StarSearchActivity.class);
+				Utils.start_Activity(StarRecommendActivity.this,
+						StarSearchActivity.class);
 			}
 		});
 		mStars = new ArrayList<Star>();
 		mStars.add(new Star());
 		mStars.add(new Star());
-		allstarfragment = new StarRecommendFragment(mStars);		
+		allstarfragment = new StarRecommendFragment(mStars);
 		lasteststarfragment = new StarRecommendFragment(mStars);
 		hoteststarfragment = new StarRecommendFragment(mStars);
 		RequestParams request = new RequestParams();
@@ -100,7 +101,7 @@ public class StarRecommendActivity extends FragmentActivity implements
 							list_all.add(star);
 
 						}
-						allstarfragment.setAppsList(list_all);					
+						allstarfragment.setAppsList(list_all);
 					}
 
 					@Override
@@ -131,7 +132,7 @@ public class StarRecommendActivity extends FragmentActivity implements
 							list_new.add(star);
 
 						}
-						lasteststarfragment.setAppsList(list_new);					
+						lasteststarfragment.setAppsList(list_new);
 					}
 
 					@Override
@@ -163,7 +164,7 @@ public class StarRecommendActivity extends FragmentActivity implements
 
 						}
 						hoteststarfragment.setAppsList(list_hot);
-						
+
 					}
 
 					@Override
@@ -174,12 +175,12 @@ public class StarRecommendActivity extends FragmentActivity implements
 				});
 		fragments = new Fragment[] { allstarfragment, lasteststarfragment,
 				hoteststarfragment };
-		
+
 		// Creating The ViewPagerAdapter and Passing Fragment Manager, Titles
 		// fot the Tabs and Number Of Tabs.
 		adapter = new ViewPagerTabAdapter(getSupportFragmentManager(), Titles,
 				fragments);
-		
+
 		// Assigning ViewPager View and setting the adapter
 		pager = (ViewPager) findViewById(R.id.pager_starrecommend);
 		pager.setAdapter(adapter);

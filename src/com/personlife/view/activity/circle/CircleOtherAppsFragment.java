@@ -56,11 +56,13 @@ public class CircleOtherAppsFragment extends Fragment {
 				.setListViewHeightBasedOnChildren1(lv);
 		return listViewHeight;
 	}
-	public void setData(List<App> apps){
+
+	public void setData(List<App> apps) {
 		this.apps = apps;
-		if(appsAdapter != null)
+		if (appsAdapter != null)
 			appsAdapter.notifyDataSetChanged();
 	}
+
 	public void initView() {
 		lv = (MyListView) layout.findViewById(R.id.lv_circle_apps);
 		lv.setAdapter(appsAdapter);

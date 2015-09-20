@@ -2,10 +2,10 @@ package com.personlife.bean;
 
 import java.util.List;
 
-/**  
- *   
- * @author liugang  
- * @date 2015年8月13日   
+/**
+ * 
+ * @author liugang
+ * @date 2015年8月13日
  */
 public class Star {
 	private String phone;
@@ -19,9 +19,10 @@ public class Star {
 	private int sharecounts;
 	private List<Shuoshuo> shuoshuos;
 	private List<App> apps;
-	public Star(){
+
+	public Star() {
 	}
-	
+
 	public int getFamous() {
 		return famous;
 	}
@@ -65,39 +66,49 @@ public class Star {
 	public String getSignature() {
 		return signature;
 	}
+
 	public void setSignature(String signature) {
 		this.signature = signature;
 	}
+
 	public String getPhone() {
 		return phone;
 	}
+
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+
 	public String getNickname() {
 		return nickname;
 	}
+
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
+
 	public String getThumb() {
 		return thumb;
 	}
+
 	public void setThumb(String thumb) {
 		this.thumb = thumb;
 	}
-	
+
 	public String getFollower() {
 		return follower;
 	}
+
 	public void setFollower(String follower) {
 		this.follower = follower;
 	}
+
 	public String getShared() {
 		return shared;
 	}
+
 	public void setShared(String shared) {
 		this.shared = shared;
 	}
-	
+
 }

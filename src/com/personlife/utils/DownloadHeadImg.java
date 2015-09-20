@@ -42,7 +42,7 @@ public class DownloadHeadImg {
 				// TODO Auto-generated method stub
 
 			}
-			
+
 			@Override
 			public void onSuccess(int arg0, Header[] arg1, byte[] arg2) {
 				// TODO Auto-generated method stub
@@ -50,7 +50,8 @@ public class DownloadHeadImg {
 						.getPath() + "/" + filename + ".jpg";
 				// TODO Auto-generated method stub
 
-				Bitmap photoBitmap = BitmapFactory.decodeByteArray(arg2, 0, arg2.length);
+				Bitmap photoBitmap = BitmapFactory.decodeByteArray(arg2, 0,
+						arg2.length);
 
 				File photoFile = new File(tempPath);
 				// 若存在则删除
@@ -67,8 +68,8 @@ public class DownloadHeadImg {
 				try {
 					fileOutputStream = new FileOutputStream(photoFile);
 					if (photoBitmap != null) {
-						if (photoBitmap.compress(Bitmap.CompressFormat.JPEG, 100,
-								fileOutputStream)) {
+						if (photoBitmap.compress(Bitmap.CompressFormat.JPEG,
+								100, fileOutputStream)) {
 							fileOutputStream.flush();
 						}
 					}
@@ -86,10 +87,10 @@ public class DownloadHeadImg {
 						e.printStackTrace();
 					}
 				}
-				
+
 			}
 
 		});
-		
+
 	}
 }

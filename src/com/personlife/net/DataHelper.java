@@ -17,7 +17,8 @@ import com.personlife.bean.App;
 public class DataHelper {
 	public static List<String> getAllkind(Context context) {
 		final List<String> kinds = new ArrayList<String>();
-		new AsyncHttpClient().post("/app/allkind", new JsonHttpResponseHandler());
+		new AsyncHttpClient().post("/app/allkind",
+				new JsonHttpResponseHandler());
 		BaseAsyncHttp.postReq(context, "/app/allkind", null,
 				new JSONArrayHttpResponseHandler() {
 
@@ -59,7 +60,7 @@ public class DataHelper {
 							for (int i = 0; i < jsonapps.length(); i++) {
 								App app = new App();
 								JSONObject jsonapp = jsonapps.getJSONObject(i);
-								
+
 							}
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block

@@ -95,8 +95,7 @@ public class AllDownloadActivity extends Activity implements OnClickListener {
 		// + app.getName() + ".apk");
 		// apps.add(app);
 		// }
-		 appsAdapter = new AppsAdapter(
-		 getApplicationContext(), apps);
+		appsAdapter = new AppsAdapter(getApplicationContext(), apps);
 		lvApps.setAdapter(appsAdapter);
 		// } catch (JSONException e) {
 		// // TODO Auto-generated catch block

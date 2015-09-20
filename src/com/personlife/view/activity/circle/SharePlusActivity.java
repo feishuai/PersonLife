@@ -44,10 +44,10 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 	String[] ranges = { "所有人可见", "仅好友可见", "仅自己可见" };
 	int selectedkind = 0;
 	int selectedRange = 0;
-	List<App>selectedApps ;
+	List<App> selectedApps;
 	App defaultapp;
 	AppIconAdapter appsAdapter;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -65,7 +65,7 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 		mBack.setVisibility(View.VISIBLE);
 		save.setVisibility(View.VISIBLE);
 		mTitle.setVisibility(View.GONE);
-		
+
 		mBack.setText("取消");
 		save.setText("发表");
 
@@ -77,12 +77,14 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 		btnFenxiang.setOnClickListener(this);
 		btnShoucang.setOnClickListener(this);
 		tvRange.setOnClickListener(this);
-		
+
 		selectedApps = new ArrayList<App>();
 		defaultapp = new App();
-		defaultapp.setDrawableString(DrawableStringUtils.drawableToString(getResources().getDrawable(R.drawable.fabiaofenxiang1)));
+		defaultapp.setDrawableString(DrawableStringUtils
+				.drawableToString(getResources().getDrawable(
+						R.drawable.fabiaofenxiang1)));
 		selectedApps.add(defaultapp);
-		
+
 		appsAdapter = new AppIconAdapter(getApplicationContext(), selectedApps);
 		gvApps.setAdapter(appsAdapter);
 	}
@@ -96,44 +98,48 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 			break;
 		case R.id.txt_save:
 			String content = etContent.getText().toString();
-			if(content.length()<5){
+			if (content.length() < 5) {
 				Utils.showShortToast(getApplicationContext(), "请至少输入5个字");
-				return ;
+				return;
 			}
-			if(selectedApps.size()<2){
+			if (selectedApps.size() < 2) {
 				Utils.showShortToast(getApplicationContext(), "请至少选择1个要分享的应用");
-				return ;
+				return;
 			}
-			
-			
+
 			RequestParams params = new RequestParams();
-			params.add("phone", PersonInfoLocal.getPhone(getApplicationContext()));
+			params.add("phone",
+					PersonInfoLocal.getPhone(getApplicationContext()));
 			params.add("content", content);
 			params.add("kind", sharekinds[selectedkind]);
 			params.add("area", ranges[selectedRange]);
 			for (int i = 0; i < selectedApps.size(); i++) {
-//				params.add("apps["+i+"][id]", String.valueOf(selectedApps.get(i).getId())); //getId为空
-				params.add("apps["+i+"][id]", String.valueOf(i+1));
+				// params.add("apps["+i+"][id]",
+				// String.valueOf(selectedApps.get(i).getId())); //getId为空
+				params.add("apps[" + i + "][id]", String.valueOf(i + 1));
 			}
-			BaseAsyncHttp.postReq(getApplicationContext(), "/message/send", params,
-					new JSONObjectHttpResponseHandler() {
+			BaseAsyncHttp.postReq(getApplicationContext(), "/message/send",
+					params, new JSONObjectHttpResponseHandler() {
 
 						@Override
 						public void jsonSuccess(JSONObject resp) {
 							// TODO Auto-generated method stub
-							Utils.showShortToast(getApplicationContext(), "发表分享成功");
+							Utils.showShortToast(getApplicationContext(),
+									"发表分享成功");
 							finish();
 						}
 
 						@Override
 						public void jsonFail(JSONObject resp) {
 							// TODO Auto-generated method stub
-							Utils.showShortToast(getApplicationContext(), "网络故障，发表分享失败");
+							Utils.showShortToast(getApplicationContext(),
+									"网络故障，发表分享失败");
 						}
 					});
 			break;
 		case R.id.tv_shareplus_range:
-			Intent intent = new Intent(SharePlusActivity.this, ShareRangeActivity.class);
+			Intent intent = new Intent(SharePlusActivity.this,
+					ShareRangeActivity.class);
 			startActivityForResult(intent, 2);
 			break;
 		case R.id.btn_shareplus_xiazai:
@@ -164,13 +170,18 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 		Log.i("resultCode", String.valueOf(resultCode));
 		switch (resultCode) {
 		case 1:
-			 ComplexPreferences complexPreferences = ComplexPreferences.getComplexPreferences(this, Constants.SharePrefrencesName);
-			 if(complexPreferences.getObject("selectedApps", new TypeReference<ArrayList<App>>(){})!=null){
-				 selectedApps = complexPreferences.getObject("selectedApps", new TypeReference<ArrayList<App>>(){});
-				 selectedApps.add(defaultapp);
-				 appsAdapter.setData(selectedApps);
-				 appsAdapter.notifyDataSetChanged();
-			 }
+			ComplexPreferences complexPreferences = ComplexPreferences
+					.getComplexPreferences(this, Constants.SharePrefrencesName);
+			if (complexPreferences.getObject("selectedApps",
+					new TypeReference<ArrayList<App>>() {
+					}) != null) {
+				selectedApps = complexPreferences.getObject("selectedApps",
+						new TypeReference<ArrayList<App>>() {
+						});
+				selectedApps.add(defaultapp);
+				appsAdapter.setData(selectedApps);
+				appsAdapter.notifyDataSetChanged();
+			}
 			break;
 		case 2:
 			selectedRange = data.getIntExtra("rangeIndex", 0);
@@ -179,6 +190,7 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 			break;
 		}
 	}
+
 	public class AppIconAdapter extends BaseAdapter {
 		private Context context;
 		public List<App> apps;
@@ -188,9 +200,11 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 			context = c;
 			this.apps = apps;
 		}
-		public void setData(List<App> apps){
+
+		public void setData(List<App> apps) {
 			this.apps = apps;
 		}
+
 		// Total number of things contained within the adapter
 		public int getCount() {
 			return apps.size();
@@ -209,19 +223,22 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 
 		public View getView(int position, View convertView, ViewGroup parent) {
 			final int current = position;
-			
+
 			convertView = ((LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
 					.inflate(R.layout.layout_grid_appicon, null);
-			
-			ImageView btn = (ImageView) convertView.findViewById(R.id.iv_shareplus_appicon);
-			btn.setBackground(DrawableStringUtils.stringToDrawable(apps.get(position).getDrawableString()));
+
+			ImageView btn = (ImageView) convertView
+					.findViewById(R.id.iv_shareplus_appicon);
+			btn.setBackground(DrawableStringUtils.stringToDrawable(apps.get(
+					position).getDrawableString()));
 			btn.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					if(current == (getCount()-1)){
-						Intent intent = new Intent(SharePlusActivity.this, AppListActivity.class);
+					if (current == (getCount() - 1)) {
+						Intent intent = new Intent(SharePlusActivity.this,
+								AppListActivity.class);
 						startActivityForResult(intent, 1);
 					}
 				}
