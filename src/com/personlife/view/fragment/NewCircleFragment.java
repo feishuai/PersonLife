@@ -65,7 +65,7 @@ public class NewCircleFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		layout = inflater.inflate(R.layout.fragment_circle_friends, container,
+		layout = inflater.inflate(R.layout.fragment_circle_newfriends, container,
 				false);
 		mAdapter = new ShuoshuoAdapter(getActivity());
 		star = new Star();

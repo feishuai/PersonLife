@@ -8,8 +8,13 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.framework.Platform.ShareParams;
 import cn.sharesdk.onekeyshare.OnekeyShare;
+import cn.sharesdk.sina.weibo.SinaWeibo;
+import cn.sharesdk.tencent.qzone.QZone;
+import cn.sharesdk.wechat.friends.Wechat;
 
 import com.example.personlifep.R;
 import com.loopj.android.http.RequestParams;
@@ -80,6 +85,7 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 			ctx = this.getActivity();
 			layout = ctx.getLayoutInflater().inflate(
 					R.layout.fragment_personalcenter, null);
+			ShareSDK.initSDK(getActivity());
 			initViews();
 			setOnListener();
 		} else {
@@ -186,6 +192,9 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 		layout.findViewById(R.id.txt_aboutus).setOnClickListener(this);
 		layout.findViewById(R.id.txt_downloadlist).setOnClickListener(this);
 		layout.findViewById(R.id.txt_message).setOnClickListener(this);
+		layout.findViewById(R.id.sina).setOnClickListener(this);
+		layout.findViewById(R.id.wxchat).setOnClickListener(this);
+		layout.findViewById(R.id.qq).setOnClickListener(this);
 	}
 
 	@Override
@@ -206,7 +215,6 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 					CollectionActivity.class);
 			intent_c.putExtra("telphone", telphone);
 			startActivity(intent_c);
-
 			break;
 		case R.id.txt_connection:
 			Intent intent_connection = new Intent(getActivity(),
@@ -229,36 +237,61 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 		// Utils.start_Activity(getActivity(), SettingActivity.class,
 		// new BasicNameValuePair("NAME", "通用设置"));
 		// break;
-		case R.id.txt_tuijian:
+		// case R.id.txt_tuijian:
+		//
+		// ShareSDK.initSDK(ctx);
+		// OnekeyShare oks = new OnekeyShare();
+		// // 关闭sso授权
+		// oks.disableSSOWhenAuthorize();
+		//
+		// // 分享时Notification的图标和文字 2.5.9以后的版本不调用此方法
+		// // oks.setNotification(R.drawable.ic_launcher,
+		// // getString(R.string.app_name));
+		// // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
+		// oks.setTitle(getString(R.string.share));
+		// // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
+		// oks.setTitleUrl("http://sharesdk.cn");
+		// // text是分享文本，所有平台都需要这个字段
+		// oks.setText("我是分享文本");
+		// // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+		// // oks.setImagePath("/sdcard/test.jpg");// 确保SDcard下面存在此张图片
+		// // url仅在微信（包括好友和朋友圈）中使用
+		// oks.setUrl("http://sharesdk.cn");
+		// // comment是我对这条分享的评论，仅在人人网和QQ空间使用
+		// oks.setComment("我是测试评论文本");
+		// // site是分享此内容的网站名称，仅在QQ空间使用
+		// oks.setSite(getString(R.string.app_name));
+		// // siteUrl是分享此内容的网站地址，仅在QQ空间使用
+		// oks.setSiteUrl("http://sharesdk.cn");
+		//
+		// // 启动分享GUI
+		// oks.show(ctx);
+		//
+		// break;
+		case R.id.wxchat:
 
-			ShareSDK.initSDK(ctx);
-			OnekeyShare oks = new OnekeyShare();
-			// 关闭sso授权
-			oks.disableSSOWhenAuthorize();
+			ShareParams weixin = new ShareParams();
+			weixin.setText("heh");
+			Platform wei = ShareSDK.getPlatform(Wechat.NAME);
+			wei.share(weixin);
+			break;
+		case R.id.qq:
 
-			// 分享时Notification的图标和文字 2.5.9以后的版本不调用此方法
-			// oks.setNotification(R.drawable.ic_launcher,
-			// getString(R.string.app_name));
-			// title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
-			oks.setTitle(getString(R.string.share));
-			// titleUrl是标题的网络链接，仅在人人网和QQ空间使用
-			oks.setTitleUrl("http://sharesdk.cn");
-			// text是分享文本，所有平台都需要这个字段
-			oks.setText("我是分享文本");
-			// imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
-			// oks.setImagePath("/sdcard/test.jpg");// 确保SDcard下面存在此张图片
-			// url仅在微信（包括好友和朋友圈）中使用
-			oks.setUrl("http://sharesdk.cn");
-			// comment是我对这条分享的评论，仅在人人网和QQ空间使用
-			oks.setComment("我是测试评论文本");
-			// site是分享此内容的网站名称，仅在QQ空间使用
-			oks.setSite(getString(R.string.app_name));
-			// siteUrl是分享此内容的网站地址，仅在QQ空间使用
-			oks.setSiteUrl("http://sharesdk.cn");
-
-			// 启动分享GUI
-			oks.show(ctx);
-
+			ShareParams sp = new ShareParams();
+			sp.setTitle("测试分享的标题");
+			sp.setTitleUrl("http://sharesdk.cn"); // 标题的超链接
+			sp.setText("测试分享的文本");
+			sp.setImageUrl("http://www.someserver.com/测试图片网络地址.jpg");
+			sp.setSite("发布分享的网站名称");
+			sp.setSiteUrl("发布分享网站的地址");
+			Platform qzone = ShareSDK.getPlatform(QZone.NAME);
+			qzone.share(sp);
+			break;
+		case R.id.sina:
+			ShareParams sinasp = new ShareParams();
+			sinasp.setText("测试分享的文本");
+			Platform sina = ShareSDK.getPlatform(SinaWeibo.NAME);
+			sina.share(sinasp);
 			break;
 		case R.id.txt_yijianfankui:
 			Utils.start_Activity(getActivity(), FeedBackActivity.class,
