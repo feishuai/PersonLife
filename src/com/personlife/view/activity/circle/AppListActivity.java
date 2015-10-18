@@ -20,11 +20,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.personlifep.R;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.personlife.bean.App;
 import com.personlife.utils.ComplexPreferences;
 import com.personlife.utils.Constants;
 import com.personlife.utils.DrawableStringUtils;
-import com.personlife.utils.SystemUtils;
 import com.personlife.widget.MyListView;
 
 public class AppListActivity extends Activity implements OnClickListener {
@@ -55,7 +55,9 @@ public class AppListActivity extends Activity implements OnClickListener {
 
 	private void initData() {
 		selectedApps = new ArrayList<App>();
-		apps = SystemUtils.getUserApps(getApplicationContext());
+		apps = ComplexPreferences.getObject(getApplicationContext(),
+				Constants.ExistedApp, new TypeReference<ArrayList<App>>() {
+				});
 		appsAdapter = new AppsAdapter(getApplicationContext(), apps);
 		lvApps.setAdapter(appsAdapter);
 	}

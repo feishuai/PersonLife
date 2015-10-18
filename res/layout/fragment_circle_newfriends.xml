@@ -10,20 +10,29 @@
         android:layout_height="6dp"
         android:background="@color/black2" />
 
-    <ScrollView
+ <!--    <ScrollView
         android:id="@+id/act_solution_2_sv"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:scrollbars="none"
-        android:background="@color/white" >
+        android:background="@color/white"
+        android:scrollbars="none" > -->
 
-        <com.personlife.widget.MyListView
-            android:id="@+id/lv_circle_shuoshuo"
+        <com.personlife.widget.pullrefresh.PullRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="@color/black2"
-            android:dividerHeight="6dp" >
-        </com.personlife.widget.MyListView>
-    </ScrollView>
+            android:layout_height="match_parent" >
 
+            <com.personlife.widget.MyListView
+                android:id="@+id/lv_circle_shuoshuo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@color/black2"
+                android:dividerHeight="6dp" >
+            </com.personlife.widget.MyListView>
+
+            <!-- ListView、ScrollView、RecyclerView、Other -->
+
+        </com.personlife.widget.pullrefresh.PullRefreshLayout>
+ <!--    </ScrollView>
+ -->
 </LinearLayout>

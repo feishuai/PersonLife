@@ -52,6 +52,7 @@ import com.personlife.view.activity.circle.ShareAppListActivity;
 import com.personlife.widget.ClearEditText;
 import com.personlife.widget.HorizontialListView;
 import com.personlife.widget.MyListView;
+import com.personlife.widget.pullrefresh.PullRefreshLayout;
 
 public class NewCircleFragment extends Fragment {
 	View layout;
@@ -61,7 +62,7 @@ public class NewCircleFragment extends Fragment {
 	Star star;
 	Boolean isLoaded = false;
 	String phone;
-
+	PullRefreshLayout prlayout;
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -91,9 +92,24 @@ public class NewCircleFragment extends Fragment {
 
 					}
 				});
-
 		initData();
 		initView();
+		prlayout = (PullRefreshLayout) layout.findViewById(R.id.swipeRefreshLayout);
+		// listen refresh event
+		prlayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
+		    @Override
+		    public void onRefresh() {
+		        // start refresh
+		    	 prlayout.postDelayed(new Runnable() {
+	                    @Override
+	                    public void run() {
+	                        prlayout.setRefreshing(false);
+	                    }
+	                }, 3000);
+		    	 initData();
+		    }
+		});
+
 
 		return layout;
 	}

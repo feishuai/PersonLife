@@ -7,6 +7,7 @@ public interface Constants {
 	String SharePrefrencesName = "pfy";
 	String DownloadPath = "/mnt/sdcard/Download/";
 	String SelectedApp = "selectedApp";
+	String ExistedApp = "exitedApp";
 	String DownloadApps = "downloadapps";
 	String HomeAllDownloadApps = "homealldownloadapps";
 	String SYSTEMNOTIFICATION = "systemnotifications";

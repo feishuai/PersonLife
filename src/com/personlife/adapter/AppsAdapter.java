@@ -89,8 +89,8 @@ public class AppsAdapter extends BaseAdapter {
 		holder.appname.setText(mlist.get(position).getName());
 		int counts = mlist.get(position).getDowloadcount();
 		if (counts > 10000)
-			holder.status.setText(counts / 10000 + "万人下载 "
-					+ mlist.get(position).getSize());
+			holder.status.setText(counts / 10000 + "万人下载  "
+					+ mlist.get(position).getStars()+"分");
 		else
 			holder.status.setText(counts + "人下载 "
 					+ mlist.get(position).getSize());

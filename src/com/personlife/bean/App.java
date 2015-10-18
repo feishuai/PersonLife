@@ -8,7 +8,7 @@ import android.graphics.drawable.Drawable;
 public class App {
 	private int id;
 	private String name;
-	private int stars;
+	private float stars;
 	private int dowloadcount;
 	private String profile;
 	private String tag;
@@ -116,11 +116,11 @@ public class App {
 		this.name = name;
 	}
 
-	public int getStars() {
+	public float getStars() {
 		return stars;
 	}
 
-	public void setStars(int stars) {
+	public void setStars(float stars) {
 		this.stars = stars;
 	}
 

@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,9 +37,8 @@ import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ComplexPreferences;
 import com.personlife.utils.Constants;
 import com.personlife.utils.DrawableStringUtils;
-import com.personlife.utils.ImageLoaderUtils;
-import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.SystemUtils;
+import com.personlife.utils.Utils;
 import com.personlife.view.activity.home.AppSearchActivity;
 import com.personlife.view.activity.home.ClassificationActivity;
 import com.personlife.view.activity.home.RecommendActivity;
@@ -139,6 +138,11 @@ public class HomeFragment extends Fragment implements OnClickListener {
 
 	protected void updateView() {
 		// TODO Auto-generated method stub
+		
+		final ProgressDialog pd = new ProgressDialog(getActivity());
+		pd.setCanceledOnTouchOutside(false);
+		pd.setMessage("正在加载");
+		pd.show();
 		RequestParams request = new RequestParams();
 		for (int i = 0; i < taglist.size(); i++) {
 			request.add("tag[" + i + "]", taglist.get(i));
@@ -170,9 +174,11 @@ public class HomeFragment extends Fragment implements OnClickListener {
 								app.setProfile(jsonapp.optString("profile"));
 								app.setDownloadPath(Constants.DownloadPath
 										+ app.getName() + ".apk");
+								app.setStars((float)jsonapp.optDouble("stars"));
 								apps.add(app);
 							}
 							maps.put(tag, apps);
+							pd.dismiss();
 							kindsAdapter.setData(taglist, maps);
 							kindsAdapter.notifyDataSetChanged();
 						}
@@ -181,6 +187,8 @@ public class HomeFragment extends Fragment implements OnClickListener {
 					@Override
 					public void jsonFail(JSONObject resp) {
 						// TODO Auto-generated method stub
+						pd.dismiss();
+						Utils.showShortToast(getActivity(), "获取数据出错");
 					}
 				});
 	}

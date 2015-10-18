@@ -53,7 +53,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 	TextView mTitle, mName, mSizeAndCounts, mIntro, mLog, mMore, mTime,
 			mNumbers;
 	RelativeLayout mComments;
-	RatingBar mStars;
+//	RatingBar mStars;
 	App app;
 	List<String> urlsapp;
 	List<App> likesapp;
@@ -80,7 +80,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 		mIcon = (ImageView) findViewById(R.id.iv_app_icon);
 		mName = (TextView) findViewById(R.id.tv_app_appname);
 		mComments = (RelativeLayout) findViewById(R.id.rl_detail_comments);
-		mStars = (RatingBar) findViewById(R.id.rb_app_rating);
+//		mStars = (RatingBar) findViewById(R.id.rb_app_rating);
 		mSizeAndCounts = (TextView) findViewById(R.id.tv_app_sizeanddownloadcounts);
 		mDownload = (Button) findViewById(R.id.btn_app_download);
 		mIntro = (TextView) findViewById(R.id.tv_detail_intro);
@@ -136,10 +136,10 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 							app.setDownloadUrl(jsonapp.getString("android_url"));
 							JSONArray jsonurls = resp
 									.getJSONArray("picture_urls");
-							app.setStars(jsonapp.getInt("stars"));
 							app.setUpdateLog(jsonapp.getString("updated_log"));
 							app.setUpdateDate(jsonapp.getLong("updated_at"));
 							app.setProfile(jsonapp.getString("profile"));
+							app.setStars((float)jsonapp.optDouble("stars"));
 							urlsapp.clear();
 							for (int i = 0; i < jsonurls.length(); i++) {
 								urlsapp.add(jsonurls.getJSONObject(i)
@@ -235,7 +235,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 		mNumbers.setText("有" + app.getComments().size() + "人评分");
 		mSizeAndCounts.setText("");
 		mTime.setText(Utils.TimeStamp2DateChinese(app.getUpdateDate()));
-		mStars.setRating(app.getStars());
+//		mStars.setRating(app.getStars());
 		mLog.setText(app.getUpdateLog());
 
 		ComplexPreferences complexPreferences = ComplexPreferences
@@ -246,11 +246,11 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 
 		int downloadcounts = app.getDowloadcount();
 		if (downloadcounts > 10000)
-			mSizeAndCounts.setText(app.getSize() + "," + downloadcounts / 10000
+			mSizeAndCounts.setText(app.getStars() + "分," + downloadcounts / 10000
 					+ "万人下载");
 		else
 			mSizeAndCounts
-					.setText(app.getSize() + "," + downloadcounts + "人下载");
+					.setText(app.getStars() + "分," + downloadcounts + "人下载");
 
 		int numbersOfDisplay = 20;
 		if (app.getIntrodution().length() < numbersOfDisplay) {

@@ -18,11 +18,11 @@
             android:layout_height="60dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="16dp"
             android:scaleType="centerCrop"
             android:src="@drawable/default_app_icon" />
 
-        <RatingBar
+       <!--  <RatingBar
             android:id="@+id/rb_app_rating"
             style="@style/RatingBar"
             android:layout_width="wrap_content"
@@ -31,16 +31,7 @@
             android:layout_toRightOf="@+id/iv_app_icon"
             android:isIndicator="true"
             android:numStars="5"
-            android:rating="3" />
-
-        <TextView
-            android:id="@+id/tv_app_sizeanddownloadcounts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/rb_app_rating"
-            android:layout_below="@+id/rb_app_rating"
-            android:text="12.3MB,1000人下载"
-            android:textSize="15dp" />
+            android:rating="3" /> -->
 
         <Button
             android:id="@+id/btn_app_download"
@@ -68,10 +59,22 @@
             android:id="@+id/tv_app_appname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/rb_app_rating"
             android:layout_alignTop="@+id/iv_app_icon"
+            android:layout_toRightOf="@+id/iv_app_icon"
+            android:layout_marginTop="10dp"
             android:text="网易云音乐"
             android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/tv_app_sizeanddownloadcounts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_app_appname"
+            android:layout_alignLeft="@+id/tv_app_appname"
+            android:layout_marginTop="4dp"
+            android:text="4分,1000人下载"
+            android:textSize="15dp" />
+
     </RelativeLayout>
 
 </LinearLayout>

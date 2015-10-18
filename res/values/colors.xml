@@ -31,7 +31,6 @@
     <color name="white_blue">#ff99ccff</color>
     <color name="white_gray">#ffcccc99</color>
     <color name="qjjl_top">#ffffffcc</color>
-    <color name="red">#FC2828</color>
     <color name="red1">#ffe36c09</color>
     <color name="red3">#ffc0504d</color>
     <color name="orange1">#ffff7d27</color>
@@ -50,7 +49,6 @@
     <color name="list_bg3">#ffffcccc</color>
     <color name="list_pressed">#ffa0a0a3</color>
     <color name="title_back">#ff293852</color>
-    <color name="blue">#ff3300ff</color>
     <color name="greeny">#ff11aca6</color>
     <color name="orange3">#ffffd1b3</color>
     <color name="notice_detail_pressedc">#ff99cccc</color>
@@ -112,7 +110,6 @@
     <color name="card_shadow">#D4D4D4</color>
     <color name="black_overlay">#60000000</color>
     <color name="white_overlay">#40FFFFFF</color>
-    <color name="yellow">#FFCC00</color>
     <color name="bg">#23c89e</color>
 
 </resources>

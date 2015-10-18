@@ -31,6 +31,7 @@ import com.personlife.utils.ComplexPreferences;
 import com.personlife.utils.Constants;
 import com.personlife.utils.DrawableStringUtils;
 import com.personlife.utils.PersonInfoLocal;
+import com.personlife.utils.SystemUtils;
 import com.personlife.utils.Utils;
 
 public class SharePlusActivity extends Activity implements OnClickListener {
@@ -47,6 +48,8 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 	List<App> selectedApps;
 	App defaultapp;
 	AppIconAdapter appsAdapter;
+	List<App> existedApps;
+	List<App> systemApps;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +90,39 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 
 		appsAdapter = new AppIconAdapter(getApplicationContext(), selectedApps);
 		gvApps.setAdapter(appsAdapter);
+
+		systemApps = SystemUtils.getUserApps(getApplicationContext());
+		existedApps = new ArrayList<App>();
+		RequestParams params = new RequestParams();
+		for (int i = 0; i < systemApps.size(); i++) {
+			params.add("packages[" + i + "]", systemApps.get(i)
+					.getPackageName());
+		}
+		BaseAsyncHttp.postReq(getApplicationContext(), "/message/before-send",
+				params, new JSONObjectHttpResponseHandler() {
+
+					@Override
+					public void jsonSuccess(JSONObject resp) {
+						// TODO Auto-generated method stub
+						for (int i = 0; i < systemApps.size(); i++) {
+							App app = systemApps.get(i);
+							String packagename = app.getPackageName();
+							JSONObject appjson = resp
+									.optJSONObject(packagename);
+							if (appjson.optInt("exist") == 1) {
+								app.setId(appjson.optInt("appid"));
+								existedApps.add(app);
+							}
+							ComplexPreferences.putObject(getApplicationContext(), Constants.ExistedApp, existedApps);
+						}
+					}
+
+					@Override
+					public void jsonFail(JSONObject resp) {
+						// TODO Auto-generated method stub
+						Utils.showShortToast(getApplicationContext(), "网络故障");
+					}
+				});
 	}
 
 	@Override
@@ -116,7 +152,7 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 			for (int i = 0; i < selectedApps.size(); i++) {
 				// params.add("apps["+i+"][id]",
 				// String.valueOf(selectedApps.get(i).getId())); //getId为空
-				params.add("apps[" + i + "][id]", String.valueOf(i + 1));
+				params.add("apps[" + i + "][id]", String.valueOf(selectedApps.get(i).getId()));
 			}
 			BaseAsyncHttp.postReq(getApplicationContext(), "/message/send",
 					params, new JSONObjectHttpResponseHandler() {
