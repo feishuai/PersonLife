@@ -293,6 +293,19 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 					return;
 				}
 				if (mDownload.getText().toString().equals("下载")) {
+					RequestParams request = new RequestParams();
+					request.add("appid", String.valueOf(appid));
+					BaseAsyncHttp.postReq(getApplicationContext(),
+							"/myapp/download", request,
+							new JSONObjectHttpResponseHandler() {
+								@Override
+								public void jsonSuccess(JSONObject resp) {
+								}
+
+								@Override
+								public void jsonFail(JSONObject resp) {
+								}
+							});
 					if (DownloadTaskManager.getDownloadTaskManager(
 							getApplicationContext()).isHasDownloaded(app)) {
 						mDownload.setText("继续");

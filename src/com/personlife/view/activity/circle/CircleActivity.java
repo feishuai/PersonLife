@@ -76,11 +76,8 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case 1:
-				Log.i("listview getview", "activity main thread");
 				LayoutParams params = pager.getLayoutParams();
 				params.height = friendsfragment.getListViewLayoutParams() + 160;
-				Log.i("listview getview", "activity main thread height"
-						+ String.valueOf(params.height));
 				pager.setLayoutParams(params);
 				break;
 			default:
@@ -318,10 +315,13 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 								shuoshuo.setCreatedtime(jsonbasic
 										.getInt("created_at"));
 								shuoshuo.setArea(jsonbasic.getString("area"));
-								shuoshuo.setKind(jsonbasic.getString("kind"));
 								shuoshuo.setMsgid(jsonbasic.getInt("id"));
 								shuoshuo.setNickname(star.getNickname());
 								shuoshuo.setThumb(star.getThumb());
+								shuoshuo.setScore(jsonshuoshuo
+										.optInt("appstars"));
+								shuoshuo.setLabels(jsonshuoshuo
+										.optString("appkinds"));
 								JSONArray jsonapps = jsonshuoshuo
 										.getJSONArray("apps");
 								List<App> shuoshuoapps = new ArrayList<App>();

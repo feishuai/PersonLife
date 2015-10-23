@@ -266,7 +266,6 @@ public class CircleFragment extends Fragment implements OnClickListener {
 								shuoshuo.setCreatedtime(jsonshuoshuo
 										.getInt("created_at"));
 								shuoshuo.setArea(jsonshuoshuo.getString("area"));
-								shuoshuo.setKind(jsonshuoshuo.getString("kind"));
 								shuoshuo.setMsgid(jsonshuoshuo.getInt("id"));
 								shuoshuo.setNickname(jsonshuoshuo
 										.getString("nickname"));

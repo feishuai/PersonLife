@@ -108,7 +108,6 @@ public class CollectionActivity extends FragmentActivity implements
 								shuoshuo.setCollecttime(jsonshuoshuo
 										.getInt("created_at"));
 								shuoshuo.setMsgid(jsonshuoshuo.getInt("msg"));
-								shuoshuo.setKind(jsonshuoshuo.getString("kind"));
 								shuoshuo.setPhone(jsonshuoshuo
 										.getString("phone"));
 								JSONArray jsonapps = jsonshuoshuo

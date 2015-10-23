@@ -78,8 +78,10 @@ public class MessageActivity extends Activity implements OnClickListener {
 									getApplicationContext(), Constants.MESSAGE,
 									new TypeReference<ArrayList<Message>>() {
 									});
-						ComplexPreferences.putObject(getApplicationContext(),
-								Constants.MESSAGE, messages);
+						if (messages != null)
+							ComplexPreferences.putObject(
+									getApplicationContext(), Constants.MESSAGE,
+									messages);
 						listview.setAdapter(messageApdapter);
 					}
 

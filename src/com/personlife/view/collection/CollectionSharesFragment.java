@@ -147,20 +147,14 @@ public class CollectionSharesFragment extends Fragment {
 						.findViewById(R.id.tv_shuoshuo_name);
 				holder.beforetime = (TextView) convertView
 						.findViewById(R.id.tv_shuoshuo_beforetime);
-				holder.status = (TextView) convertView
-						.findViewById(R.id.tv_shuoshuo_status);
 				holder.icon = (ImageView) convertView
 						.findViewById(R.id.iv_shuoshuo_icon);
 				holder.content = (TextView) convertView
 						.findViewById(R.id.tv_shuoshuo_content);
-				holder.apps = (HorizontialListView) convertView
-						.findViewById(R.id.hlv_shuoshuo_apps);
 				holder.comment = (ImageView) convertView
 						.findViewById(R.id.iv_shuoshuo_pinglun);
 				holder.praise = (ImageView) convertView
 						.findViewById(R.id.iv_shuoshuo_dianzan);
-				holder.more = (ImageView) convertView
-						.findViewById(R.id.iv_shuoshuo_more);
 				holder.comments = (MyListView) convertView
 						.findViewById(R.id.lv_shuoshuo_comment);
 				holder.person = (TextView) convertView
@@ -189,7 +183,6 @@ public class CollectionSharesFragment extends Fragment {
 					.getCollecttime()));
 			ImageLoaderUtils.displayImageView(mList.get(position).getThumb(),
 					holder.icon);
-			holder.status.setText(mList.get(position).getKind());
 			if (isDelete)
 				holder.state.setVisibility(View.VISIBLE);
 			else

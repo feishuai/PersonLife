@@ -1,8 +1,13 @@
 package com.personlife.view.activity.circle;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import net.tsz.afinal.core.Arrays;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -19,12 +24,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.serializer.AppendableSerializer;
 import com.example.personlifep.R;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.loopj.android.http.RequestParams;
 import com.personlife.bean.App;
+import com.personlife.bean.Comment;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ComplexPreferences;
@@ -36,20 +44,18 @@ import com.personlife.utils.Utils;
 
 public class SharePlusActivity extends Activity implements OnClickListener {
 	Button mBack, save;
-	TextView mTitle;
+	TextView mTitle,hasLabel;
 	EditText etContent;
-	GridView gvApps;
-	Button btnXiazai, btnFenxiang, btnShoucang;
-	TextView tvRange;
-	String sharekinds[] = { "下载", "分享", "收藏" };
-	String[] ranges = { "所有人可见", "仅好友可见", "仅自己可见" };
-	int selectedkind = 0;
-	int selectedRange = 0;
-	List<App> selectedApps;
+	GridView gvLabels;
+	App selectedApp;
 	App defaultapp;
-	AppIconAdapter appsAdapter;
 	List<App> existedApps;
 	List<App> systemApps;
+	ImageView appicon;
+	List<String> selectedLabels;
+	List<String> appLabels;
+	RatingBar stars;
+	LabelAdapter labelAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +64,11 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 		mBack = (Button) findViewById(R.id.txt_left);
 		save = (Button) findViewById(R.id.txt_save);
 		etContent = (EditText) findViewById(R.id.dt_shareplus_content);
-		gvApps = (GridView) findViewById(R.id.gv_shareplus_apps);
-		btnXiazai = (Button) findViewById(R.id.btn_shareplus_xiazai);
-		btnFenxiang = (Button) findViewById(R.id.btn_shareplus_fenxiang);
-		btnShoucang = (Button) findViewById(R.id.btn_shareplus_shoucang);
-		tvRange = (TextView) findViewById(R.id.tv_shareplus_range);
+		gvLabels = (GridView) findViewById(R.id.gv_shareplus_labels);
 		mTitle = (TextView) findViewById(R.id.txt_title);
+		appicon = (ImageView) findViewById(R.id.iv_shareplus_app);
+		stars = (RatingBar) findViewById(R.id.rb_shareplus_stars);
+		hasLabel = (TextView) findViewById(R.id.tv_shareplus_hasLabel);
 
 		mBack.setVisibility(View.VISIBLE);
 		save.setVisibility(View.VISIBLE);
@@ -72,24 +77,14 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 		mBack.setText("取消");
 		save.setText("发表");
 
-		btnXiazai.setBackgroundResource(R.drawable.xuanzhong); // 默认选中下载
-
 		mBack.setOnClickListener(this);
 		save.setOnClickListener(this);
-		btnXiazai.setOnClickListener(this);
-		btnFenxiang.setOnClickListener(this);
-		btnShoucang.setOnClickListener(this);
-		tvRange.setOnClickListener(this);
+		appicon.setOnClickListener(this);
 
-		selectedApps = new ArrayList<App>();
-		defaultapp = new App();
-		defaultapp.setDrawableString(DrawableStringUtils
-				.drawableToString(getResources().getDrawable(
-						R.drawable.fabiaofenxiang1)));
-		selectedApps.add(defaultapp);
-
-		appsAdapter = new AppIconAdapter(getApplicationContext(), selectedApps);
-		gvApps.setAdapter(appsAdapter);
+		selectedApp = new App();
+		selectedLabels = new ArrayList<String>();
+		labelAdapter = new LabelAdapter(getApplicationContext(), new ArrayList<String>());
+		gvLabels.setAdapter(labelAdapter);
 
 		systemApps = SystemUtils.getUserApps(getApplicationContext());
 		existedApps = new ArrayList<App>();
@@ -113,7 +108,9 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 								app.setId(appjson.optInt("appid"));
 								existedApps.add(app);
 							}
-							ComplexPreferences.putObject(getApplicationContext(), Constants.ExistedApp, existedApps);
+							ComplexPreferences.putObject(
+									getApplicationContext(),
+									Constants.ExistedApp, existedApps);
 						}
 					}
 
@@ -138,22 +135,25 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 				Utils.showShortToast(getApplicationContext(), "请至少输入5个字");
 				return;
 			}
-			if (selectedApps.size() < 2) {
-				Utils.showShortToast(getApplicationContext(), "请至少选择1个要分享的应用");
+			int counts = (int) stars.getRating();
+			if (counts == 0) {
+				Utils.showShortToast(getApplication(), "请给出评分");
 				return;
 			}
-
+			if (appLabels.size() > 0 && selectedLabels.size() == 0) {
+				Utils.showShortToast(getApplicationContext(), "请至少选择一个标签");
+				return;
+			}
 			RequestParams params = new RequestParams();
 			params.add("phone",
 					PersonInfoLocal.getPhone(getApplicationContext()));
 			params.add("content", content);
-			params.add("kind", sharekinds[selectedkind]);
-			params.add("area", ranges[selectedRange]);
-			for (int i = 0; i < selectedApps.size(); i++) {
-				// params.add("apps["+i+"][id]",
-				// String.valueOf(selectedApps.get(i).getId())); //getId为空
-				params.add("apps[" + i + "][id]", String.valueOf(selectedApps.get(i).getId()));
+			params.add("appstars", String.valueOf(counts));
+			for (int i = 0; i < selectedLabels.size(); i++) {
+				params.add("appkinds[" + i + "]", selectedLabels.get(i));
 			}
+			params.add("apps[0][id]", String.valueOf(selectedApp.getId()));
+			Log.d("params", params.toString());
 			BaseAsyncHttp.postReq(getApplicationContext(), "/message/send",
 					params, new JSONObjectHttpResponseHandler() {
 
@@ -173,30 +173,11 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 						}
 					});
 			break;
-		case R.id.tv_shareplus_range:
+		case R.id.iv_shareplus_app:
 			Intent intent = new Intent(SharePlusActivity.this,
-					ShareRangeActivity.class);
-			startActivityForResult(intent, 2);
+					AppListActivity.class);
+			startActivityForResult(intent, 1);
 			break;
-		case R.id.btn_shareplus_xiazai:
-			selectedkind = 0;
-			btnXiazai.setBackgroundResource(R.drawable.xuanzhong);
-			btnFenxiang.setBackgroundResource(R.color.transparent);
-			btnShoucang.setBackgroundResource(R.color.transparent);
-			break;
-		case R.id.btn_shareplus_fenxiang:
-			selectedkind = 1;
-			btnXiazai.setBackgroundResource(R.color.transparent);
-			btnFenxiang.setBackgroundResource(R.drawable.xuanzhong);
-			btnShoucang.setBackgroundResource(R.color.transparent);
-			break;
-		case R.id.btn_shareplus_shoucang:
-			selectedkind = 2;
-			btnXiazai.setBackgroundResource(R.color.transparent);
-			btnFenxiang.setBackgroundResource(R.color.transparent);
-			btnShoucang.setBackgroundResource(R.drawable.xuanzhong);
-			break;
-
 		}
 	}
 
@@ -206,44 +187,58 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 		Log.i("resultCode", String.valueOf(resultCode));
 		switch (resultCode) {
 		case 1:
-			ComplexPreferences complexPreferences = ComplexPreferences
-					.getComplexPreferences(this, Constants.SharePrefrencesName);
-			if (complexPreferences.getObject("selectedApps",
-					new TypeReference<ArrayList<App>>() {
-					}) != null) {
-				selectedApps = complexPreferences.getObject("selectedApps",
-						new TypeReference<ArrayList<App>>() {
-						});
-				selectedApps.add(defaultapp);
-				appsAdapter.setData(selectedApps);
-				appsAdapter.notifyDataSetChanged();
-			}
-			break;
-		case 2:
-			selectedRange = data.getIntExtra("rangeIndex", 0);
-			tvRange.setText(ranges[selectedRange]);
-		default:
+			selectedApp = ComplexPreferences.getObject(getApplicationContext(),
+					Constants.SelectedSharedApp, new TypeReference<App>() {
+					});
+			appicon.setBackground(DrawableStringUtils
+					.stringToDrawable(selectedApp.getDrawableString()));
+			RequestParams params = new RequestParams();
+			params.add("appid", String.valueOf(selectedApp.getId()));
+			BaseAsyncHttp.postReq(getApplicationContext(), "/app/getapp", params,
+					new JSONObjectHttpResponseHandler() {
+
+						@Override
+						public void jsonSuccess(JSONObject resp) {
+							// TODO Auto-generated method stub
+							JSONObject jsonapp = resp.optJSONObject("basic");
+							String label = jsonapp.optString("kind");
+							Log.d("labels", label);
+							if(!label.equals("")){
+								selectedLabels.clear();
+								gvLabels.setVisibility(View.VISIBLE);
+								hasLabel.setVisibility(View.VISIBLE);
+								appLabels = Arrays.asList(label.trim().split(" "));
+								labelAdapter.setData(appLabels);
+								labelAdapter.notifyDataSetChanged();
+							}else{
+								gvLabels.setVisibility(View.GONE);
+								hasLabel.setVisibility(View.GONE);
+							}
+						}
+
+						@Override
+						public void jsonFail(JSONObject resp) {
+							// TODO Auto-generated method stub
+
+						}
+					});
 			break;
 		}
 	}
 
-	public class AppIconAdapter extends BaseAdapter {
-		private Context context;
-		public List<App> apps;
+	class LabelAdapter extends BaseAdapter {
+		private Context mContext;
+		private List<String> labels;
 
 		// Gets the context so it can be used later
-		public AppIconAdapter(Context c, List<App> apps) {
-			context = c;
-			this.apps = apps;
-		}
-
-		public void setData(List<App> apps) {
-			this.apps = apps;
+		public LabelAdapter(Context mContent, List<String> labels) {
+			this.mContext = mContent;
+			this.labels = labels;
 		}
 
 		// Total number of things contained within the adapter
 		public int getCount() {
-			return apps.size();
+			return labels.size();
 		}
 
 		// Require for structure, not really used in my code.
@@ -258,29 +253,30 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 		}
 
 		public View getView(int position, View convertView, ViewGroup parent) {
-			final int current = position;
-
-			convertView = ((LayoutInflater) context
+			final Button btn;
+			convertView = ((LayoutInflater) mContext
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-					.inflate(R.layout.layout_grid_appicon, null);
-
-			ImageView btn = (ImageView) convertView
-					.findViewById(R.id.iv_shareplus_appicon);
-			btn.setBackground(DrawableStringUtils.stringToDrawable(apps.get(
-					position).getDrawableString()));
+					.inflate(R.layout.layout_grid_class, null);
+			btn = (Button) convertView.findViewById(R.id.btn_class_kind);
+			btn.setText(labels.get(position));
+			final int pos = position;
 			btn.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					if (current == (getCount() - 1)) {
-						Intent intent = new Intent(SharePlusActivity.this,
-								AppListActivity.class);
-						startActivityForResult(intent, 1);
+					if (selectedLabels.contains(labels.get(pos))) {
+						selectedLabels.remove(labels.get(pos));
+						btn.setBackgroundResource(R.color.transparent);
+					} else {
+						selectedLabels.add(labels.get(pos));
+						btn.setBackgroundResource(R.drawable.fenleixuanze);
 					}
 				}
 			});
-
 			return convertView;
+		}
+		public void setData(List<String> labels){
+			this.labels = labels;
 		}
 	}
 }

@@ -4,19 +4,36 @@ import java.util.List;
 
 public class Shuoshuo {
 	private String nickname;
-	private String kind;
 	private String area;
 	private String content;
 	private String phone;
 	private String thumb;
+	private String labels;
 	private int collecttime;
 	private int createdtime;
 	private int msgid;
+	private int score;
 	private List<App> apps;
 	private List<Reply> replies;
 	private List<Star> stars;
 
 	public Shuoshuo() {
+	}
+	
+	public String getLabels() {
+		return labels;
+	}
+
+	public void setLabels(String labels) {
+		this.labels = labels;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 	public int getCreatedtime() {
@@ -41,14 +58,6 @@ public class Shuoshuo {
 
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
-	}
-
-	public String getKind() {
-		return kind;
-	}
-
-	public void setKind(String kind) {
-		this.kind = kind;
 	}
 
 	public String getArea() {

@@ -25,6 +25,7 @@ import com.personlife.bean.App;
 import com.personlife.utils.ComplexPreferences;
 import com.personlife.utils.Constants;
 import com.personlife.utils.DrawableStringUtils;
+import com.personlife.utils.Utils;
 import com.personlife.widget.MyListView;
 
 public class AppListActivity extends Activity implements OnClickListener {
@@ -58,7 +59,7 @@ public class AppListActivity extends Activity implements OnClickListener {
 		apps = ComplexPreferences.getObject(getApplicationContext(),
 				Constants.ExistedApp, new TypeReference<ArrayList<App>>() {
 				});
-		appsAdapter = new AppsAdapter(getApplicationContext(), apps);
+		appsAdapter = new AppsAdapter(getApplicationContext());
 		lvApps.setAdapter(appsAdapter);
 	}
 
@@ -67,14 +68,14 @@ public class AppListActivity extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.txt_left:
-			setResult(RESULT_CANCELED);
-			finish();
-			break;
 		case R.id.txt_save:
-			ComplexPreferences complexPreferences = ComplexPreferences
-					.getComplexPreferences(this, Constants.SharePrefrencesName);
-			complexPreferences.putObject("selectedApps", selectedApps);
-			complexPreferences.commit();
+			if (appsAdapter.getSelectedIndex() < 0) {
+				Utils.showShortToast(getApplicationContext(), "请选择一个应用");
+				return;
+			}
+			ComplexPreferences.putObject(getApplicationContext(),
+					Constants.SelectedSharedApp,
+					apps.get(appsAdapter.getSelectedIndex()));
 			setResult(1);
 			finish();
 			break;
@@ -84,17 +85,16 @@ public class AppListActivity extends Activity implements OnClickListener {
 	class AppsAdapter extends BaseAdapter {
 
 		private Context context;
-		private List<App> mlist;
 		private Boolean isAll = false;
+		private int selectedIndex = -1;
 
-		public AppsAdapter(Context context, List<App> mlist) {
+		public AppsAdapter(Context context) {
 			this.context = context;
-			this.mlist = mlist;
 		}
 
 		@Override
 		public int getCount() {
-			return mlist.size();
+			return apps.size();
 		}
 
 		@Override
@@ -128,36 +128,55 @@ public class AppListActivity extends Activity implements OnClickListener {
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			Log.i("adapter size is", String.valueOf(mlist.size()));
 			holder.size.setVisibility(View.GONE);
 			holder.appicon.setImageDrawable(DrawableStringUtils
-					.stringToDrawable(mlist.get(position).getDrawableString()));
-			holder.appname.setText(mlist.get(position).getName());
-
-			holder.check
-					.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
-						@Override
-						public void onCheckedChanged(CompoundButton buttonView,
-								boolean isChecked) {
-							// TODO Auto-generated method stub
-							Log.i("check changed" + position + " state",
-									String.valueOf(isChecked));
-							if (isChecked) {
-								if (!selectedApps.contains(mlist.get(position)))
-									selectedApps.add(mlist.get(position));
-							} else {
-								selectedApps.remove(mlist.get(position));
-							}
-							mTitle.setText("已选" + selectedApps.size() + "项");
-						}
-					});
-
+					.stringToDrawable(apps.get(position).getDrawableString()));
+			holder.appname.setText(apps.get(position).getName());
+			if (selectedIndex == position)
+				holder.check.setChecked(true);
+			else
+				holder.check.setChecked(false);
+			// holder.check
+			// .setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			//
+			// @Override
+			// public void onCheckedChanged(CompoundButton buttonView,
+			// boolean isChecked) {
+			// if (isChecked) {
+			// if (!selectedApps.contains(mlist.get(position)))
+			// selectedApps.add(mlist.get(position));
+			// } else {
+			// selectedApps.remove(mlist.get(position));
+			// }
+			// mTitle.setText("已选" + selectedApps.size() + "项");
+			// Log.d(AppListActivity.class.getClass().getName(),
+			// String.valueOf(position));
+			// if (isChecked)
+			// if(selectedIndex != position){
+			// selectedIndex = position;
+			// notifyDataSetChanged();
+			// }
+			// }
+			// });
+			convertView.setClickable(false);
+			holder.check.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Log.d(AppListActivity.class.getClass().getName(),
+							String.valueOf(position));
+					selectedIndex = position;
+					notifyDataSetChanged();
+				}
+			});
 			return convertView;
 		}
 
 		public void setAll() {
 			this.isAll = true;
+		}
+
+		public int getSelectedIndex() {
+			return selectedIndex;
 		}
 
 		class ViewHolder {

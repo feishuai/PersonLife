@@ -1,7 +1,12 @@
 package com.personlife.adapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,11 +26,12 @@ import com.example.personlifep.R;
 import com.github.snowdream.android.app.DownloadListener;
 import com.github.snowdream.android.app.DownloadStatus;
 import com.github.snowdream.android.app.DownloadTask;
+import com.loopj.android.http.RequestParams;
 import com.personlife.bean.App;
-
 import com.personlife.common.Utils;
+import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.DownloadTaskManager;
-
+import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.Constants;
 import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.utils.SystemUtils;
@@ -89,11 +95,10 @@ public class AppsAdapter extends BaseAdapter {
 		holder.appname.setText(mlist.get(position).getName());
 		int counts = mlist.get(position).getDowloadcount();
 		if (counts > 10000)
-			holder.status.setText(counts / 10000 + "万人下载  "
-					+ mlist.get(position).getStars()+"分");
+			holder.status.setText(counts / 10000 + "万人下载  ");
 		else
-			holder.status.setText(counts + "人下载 "
-					+ mlist.get(position).getSize());
+			holder.status.setText(counts + "人下载 ");
+		holder.status.append(mlist.get(position).getStars()+"分");
 		holder.intro.setText(mlist.get(position).getProfile());
 		if (DownloadTaskManager.getDownloadTaskManager(context)
 				.isHasDownloaded(mlist.get(position))) {
@@ -112,7 +117,6 @@ public class AppsAdapter extends BaseAdapter {
 		}
 
 		holder.download.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -121,6 +125,20 @@ public class AppsAdapter extends BaseAdapter {
 					return;
 				}
 				if (holder.download.getText().toString().equals("下载")) {
+					
+					RequestParams request = new RequestParams();
+					request.add("appid", String.valueOf(mlist.get(position).getId()));
+					BaseAsyncHttp.postReq(context.getApplicationContext(),
+							"/myapp/download", request,
+							new JSONObjectHttpResponseHandler() {
+								@Override
+								public void jsonSuccess(JSONObject resp) {
+								}
+
+								@Override
+								public void jsonFail(JSONObject resp) {
+								}
+							});
 					if (DownloadTaskManager.getDownloadTaskManager(context)
 							.isHasDownloaded(mlist.get(position))) {
 						holder.download.setText("继续");

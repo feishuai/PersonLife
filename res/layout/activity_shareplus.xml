@@ -3,7 +3,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/white"
-    android:gravity="center_horizontal"
     android:orientation="vertical" >
 
     <include layout="@layout/layout_title" />
@@ -27,105 +26,52 @@
         <requestFocus />
     </EditText>
 
-    <GridView
-            android:id="@+id/gv_shareplus_apps"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:horizontalSpacing="2dp"
-            android:numColumns="6"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="2dp" >
-    </GridView>
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="2dp"
-        android:background="@color/black2" />
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
+    <ImageView
+        android:id="@+id/iv_shareplus_app"
+        android:layout_width="60dp"
         android:layout_height="60dp"
-        android:padding="10dp" >
+        android:layout_marginLeft="8dp"
+        android:background="@drawable/fabiaofenxiang1" />
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="选择类型"
-            android:textColor="@color/black"
-            android:textSize="18dp" />
+    <RatingBar
+        android:id="@+id/rb_shareplus_stars"
+        style="@style/RatingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:numStars="5"
+        android:paddingBottom="2dp"
+        android:paddingTop="6dp"
+        android:rating="0" />
 
-        <Button
-            android:id="@+id/btn_shareplus_xiazai"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_toLeftOf="@+id/btn_shareplus_fenxiang"
-            android:background="@color/transparent"
-            android:gravity="center"
-            android:text="下载"
-            android:textColor="@color/red"
-            android:textSize="16dp" />
-
-        <Button
-            android:id="@+id/btn_shareplus_fenxiang"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="10dp"
-            android:layout_toLeftOf="@+id/btn_shareplus_shoucang"
-            android:background="@color/transparent"
-            android:gravity="center"
-            android:text="分享"
-            android:textColor="@color/greenn"
-            android:textSize="16dp" />
-
-        <Button
-            android:id="@+id/btn_shareplus_shoucang"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="10dp"
-            android:background="@color/transparent"
-            android:gravity="center"
-            android:text="收藏"
-            android:textColor="@color/black"
-            android:textSize="16dp" />
-    </RelativeLayout>
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="4dp"
-        android:background="@color/black2" />
-
-    <RelativeLayout
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="6dp"
+        android:text="请按星星给予评分" />
+    <com.personlife.widget.MyGridView
+        android:id="@+id/gv_shareplus_labels"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:padding="10dp" >
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="谁可以看"
-            android:textColor="@color/black"
-            android:textSize="18dp" />
-
-        <TextView
-            android:id="@+id/tv_shareplus_range"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:textSize="18dp"
-            android:text="所有人可见 >" />
-    </RelativeLayout>
-     <View
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@color/black2" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:horizontalSpacing="2dp"
+        android:numColumns="4"
+        android:stretchMode="columnWidth"
+        android:background="@color/black2"
+        android:verticalSpacing="2dp"
+        android:visibility="gone" >
+    </com.personlife.widget.MyGridView>
+    <TextView
+        android:id="@+id/tv_shareplus_hasLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="2dp"
+        android:visibility="gone"
+        android:textSize="16dp"
+        android:textColor="@color/black"
+        android:text="请选择标签" />
 </LinearLayout>

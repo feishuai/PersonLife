@@ -82,6 +82,7 @@ public class RecommendActivity extends Activity implements OnClickListener {
 								app.setProfile(jsonapp.getString("profile"));
 								app.setDownloadPath(Constants.DownloadPath
 										+ app.getName() + ".apk");
+								app.setStars((float)jsonapp.optDouble("stars"));
 								apps.add(app);
 							}
 							updateView();

@@ -33,6 +33,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.personlifep.R;
+import com.github.snowdream.android.app.DownloadListener;
+import com.github.snowdream.android.app.DownloadTask;
 import com.klinker.android.link_builder.Link;
 import com.klinker.android.link_builder.LinkBuilder;
 import com.loopj.android.http.RequestParams;
@@ -41,6 +43,7 @@ import com.personlife.bean.Reply;
 import com.personlife.bean.Shuoshuo;
 import com.personlife.bean.Star;
 import com.personlife.net.BaseAsyncHttp;
+import com.personlife.net.DownloadTaskManager;
 import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ComplexPreferences;
 import com.personlife.utils.Constants;
@@ -49,6 +52,7 @@ import com.personlife.utils.ListViewUtils;
 import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.Utils;
 import com.personlife.view.activity.circle.ShareAppListActivity;
+import com.personlife.view.activity.home.AppDetailActivity;
 import com.personlife.widget.ClearEditText;
 import com.personlife.widget.HorizontialListView;
 import com.personlife.widget.MyListView;
@@ -63,11 +67,12 @@ public class NewCircleFragment extends Fragment {
 	Boolean isLoaded = false;
 	String phone;
 	PullRefreshLayout prlayout;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		layout = inflater.inflate(R.layout.fragment_circle_newfriends, container,
-				false);
+		layout = inflater.inflate(R.layout.fragment_circle_newfriends,
+				container, false);
 		mAdapter = new ShuoshuoAdapter(getActivity());
 		star = new Star();
 		star.setPhone(PersonInfoLocal.getPhone(getActivity()));
@@ -94,22 +99,22 @@ public class NewCircleFragment extends Fragment {
 				});
 		initData();
 		initView();
-		prlayout = (PullRefreshLayout) layout.findViewById(R.id.swipeRefreshLayout);
+		prlayout = (PullRefreshLayout) layout
+				.findViewById(R.id.swipeRefreshLayout);
 		// listen refresh event
 		prlayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
-		    @Override
-		    public void onRefresh() {
-		        // start refresh
-		    	 prlayout.postDelayed(new Runnable() {
-	                    @Override
-	                    public void run() {
-	                        prlayout.setRefreshing(false);
-	                    }
-	                }, 3000);
-		    	 initData();
-		    }
+			@Override
+			public void onRefresh() {
+				// start refresh
+				prlayout.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						prlayout.setRefreshing(false);
+					}
+				}, 3000);
+				initData();
+			}
 		});
-
 
 		return layout;
 	}
@@ -149,12 +154,15 @@ public class NewCircleFragment extends Fragment {
 								shuoshuo.setCreatedtime(jsonshuoshuo
 										.getInt("created_at"));
 								shuoshuo.setArea(jsonshuoshuo.getString("area"));
-								shuoshuo.setKind(jsonshuoshuo.getString("kind"));
 								shuoshuo.setMsgid(jsonshuoshuo.getInt("id"));
 								shuoshuo.setNickname(jsonshuoshuo
 										.getString("nickname"));
 								shuoshuo.setThumb(jsonshuoshuo
 										.getString("thumb"));
+								shuoshuo.setScore(jsonshuoshuo
+										.optInt("appstars"));
+								shuoshuo.setLabels(jsonshuoshuo
+										.optString("appkinds"));
 								JSONArray jsonapps = jsonshuoshuo
 										.getJSONArray("apps");
 								List<App> shuoshuoapps = new ArrayList<App>();
@@ -232,6 +240,31 @@ public class NewCircleFragment extends Fragment {
 		lv = (ListView) layout.findViewById(R.id.lv_circle_shuoshuo);
 		mlist = new ArrayList<Shuoshuo>();
 		lv.setAdapter(mAdapter);
+		RequestParams request = new RequestParams();
+		request.add("phone", star.getPhone());
+		BaseAsyncHttp.postReq(getActivity(), "/users/getinfo", request,
+				new JSONObjectHttpResponseHandler() {
+
+					@Override
+					public void jsonSuccess(JSONObject resp) {
+						// TODO Auto-generated method stub
+						star.setPhone(resp.optString("phone"));
+						star.setNickname(resp.optString("nickname"));
+						star.setThumb(resp.optString("thumb"));
+						star.setFollower(resp.optString("follower"));
+						star.setShared(resp.optString("shared"));
+						star.setFamous(resp.optInt("famous"));
+						star.setSignature(resp.optString("signature"));
+						star.setFavour(resp.optInt("favour"));
+						ComplexPreferences.putObject(getActivity(), "user",
+								star);
+					}
+
+					@Override
+					public void jsonFail(JSONObject resp) {
+						// TODO Auto-generated method stub
+					}
+				});
 	}
 
 	private void showCommentPopopWindow(View v, int msgid, Reply reply,
@@ -364,36 +397,41 @@ public class NewCircleFragment extends Fragment {
 						.findViewById(R.id.tv_shuoshuo_name);
 				holder.beforetime = (TextView) convertView
 						.findViewById(R.id.tv_shuoshuo_beforetime);
-				holder.status = (TextView) convertView
-						.findViewById(R.id.tv_shuoshuo_status);
-				holder.icon = (ImageView) convertView
+				holder.score = (TextView) convertView
+						.findViewById(R.id.tv_shuoshuo_score);
+				holder.labels = (TextView) convertView
+						.findViewById(R.id.tv_shuoshuo_labels);
+				holder.staricon = (ImageView) convertView
 						.findViewById(R.id.iv_shuoshuo_icon);
+				holder.appicon = (ImageView) convertView
+						.findViewById(R.id.iv_shuoshuo_appicon);
 				holder.content = (TextView) convertView
 						.findViewById(R.id.tv_shuoshuo_content);
-				holder.apps = (HorizontialListView) convertView
-						.findViewById(R.id.hlv_shuoshuo_apps);
 				holder.comment = (ImageView) convertView
 						.findViewById(R.id.iv_shuoshuo_pinglun);
 				holder.praise = (ImageView) convertView
 						.findViewById(R.id.iv_shuoshuo_dianzan);
-				holder.more = (ImageView) convertView
-						.findViewById(R.id.iv_shuoshuo_more);
 				holder.comments = (MyListView) convertView
 						.findViewById(R.id.lv_shuoshuo_comment);
 				holder.person = (TextView) convertView
 						.findViewById(R.id.tv_shuoshuo_praise);
 				holder.pinlun = (ClearEditText) convertView
 						.findViewById(R.id.et_shuoshuo_comment);
+				holder.download = (ImageView) convertView
+						.findViewById(R.id.iv_shuoshuo_download);
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			holder.content.setText("           "
+			holder.content.setText("        "
 					+ mlist.get(position).getContent());
 			holder.name.setText(mlist.get(position).getNickname());
-			holder.status.setText(mlist.get(position).getKind());
+			holder.score.setText(mlist.get(position).getScore() + "分");
+			holder.labels.setText(mlist.get(position).getLabels());
 			ImageLoaderUtils.displayImageView(mlist.get(position).getThumb(),
-					holder.icon);
+					holder.staricon);
+			final App app = mlist.get(position).getApps().get(0);
+			ImageLoaderUtils.displayImageView(app.getIcon(), holder.appicon);
 			holder.beforetime.setText(Utils.TimeStamp2Date(mlist.get(position)
 					.getCreatedtime()));
 			Drawable drawable = getResources().getDrawable(R.drawable.dianzan1);
@@ -432,12 +470,6 @@ public class NewCircleFragment extends Fragment {
 							.getMsgid());
 			commentsAdapter.setAdapter(commentsAdapter);
 			holder.comments.setAdapter(commentsAdapter);
-			if (mlist.get(position).getApps().size() > 4)
-				holder.apps.setAdapter(new MyAppsAdapter(mlist.get(position)
-						.getApps().subList(0, 4)));
-			else
-				holder.apps.setAdapter(new MyAppsAdapter(mlist.get(position)
-						.getApps()));
 			holder.praise.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -524,18 +556,52 @@ public class NewCircleFragment extends Fragment {
 
 				}
 			});
-			holder.more.setOnClickListener(new OnClickListener() {
+			holder.appicon.setOnClickListener(new OnClickListener() {
+
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					ComplexPreferences.putObject(getActivity(),
-							Constants.ShareAllDownloadApps, mlist.get(position)
-									.getApps());
-					Intent intent = new Intent(getActivity(),
-							ShareAppListActivity.class);
+					Intent intent = new Intent(context, AppDetailActivity.class);
+					intent.putExtra(Constants.AppId, app.getId());
 					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					intent.putExtra("msgid", mlist.get(position).getMsgid());
 					context.startActivity(intent);
+
+				}
+			});
+			holder.download.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					if (!DownloadTaskManager.getDownloadTaskManager(context)
+							.isHasDownloaded(app)) {
+					RequestParams request = new RequestParams();
+					request.add("phone", PersonInfoLocal.getPhone(context));
+					request.add("appid", String.valueOf(app.getId()));
+					BaseAsyncHttp.postReq(context.getApplicationContext(),
+							"/myapp/download", request,
+							new JSONObjectHttpResponseHandler() {
+								@Override
+								public void jsonSuccess(JSONObject resp) {
+								}
+
+								@Override
+								public void jsonFail(JSONObject resp) {
+								}
+							});
+					DownloadTaskManager
+							.getDownloadTaskManager(context)
+							.startNewDownload(
+									context,
+									app,
+									new DownloadListener<Integer, DownloadTask>() {
+										@Override
+										public void onProgressUpdate(
+												Integer... values) {
+											super.onProgressUpdate(values);
+										}
+									});
+					}
+					Utils.showShortToast(context, "正在下载中");
 				}
 			});
 			return convertView;
@@ -546,13 +612,12 @@ public class NewCircleFragment extends Fragment {
 		}
 
 		class ViewHolder {
-			ImageView icon;
+			ImageView staricon, appicon;
 			TextView name, person;
 			TextView beforetime;
-			TextView status;
+			TextView score, labels;
 			TextView content;
-			HorizontialListView apps;
-			ImageView comment, praise, more;
+			ImageView comment, praise, download;
 			MyListView comments;
 			ClearEditText pinlun;
 			Boolean isPraised = false;
