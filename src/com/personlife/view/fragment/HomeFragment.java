@@ -56,7 +56,9 @@ public class HomeFragment extends Fragment implements OnClickListener {
 	private List<App> userapps;
 	private List<String> taglist;
 	KindsAdapter kindsAdapter;
-	List<App> allapps;
+	List<App> allapps, systemApps;
+	List<App> localApps;
+	Map<String, ArrayList<App>> tag2Apps;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -92,6 +94,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		taglist = new ArrayList<String>();
 		allapps = new ArrayList<App>();
 		userapps = new ArrayList<App>();
+		tag2Apps = new HashMap<String, ArrayList<App>>();
 		kindsAdapter = new KindsAdapter(getActivity(), taglist,
 				new HashMap<String, List<App>>());
 		mLvApps.setAdapter(kindsAdapter);
@@ -112,7 +115,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 									String tag = resp.getString(i);
 									taglist.add(tag);
 								}
-								updateView();
+								updateLocalApp();
 								ComplexPreferences.putObject(getActivity(),
 										"tags", taglist);
 							} catch (JSONException e) {
@@ -131,14 +134,62 @@ public class HomeFragment extends Fragment implements OnClickListener {
 			taglist = ComplexPreferences.getObject(getActivity(), "tags",
 					new TypeReference<ArrayList<String>>() {
 					});
-			updateView();
+			updateLocalApp();
 		}
 
 	}
 
-	protected void updateView() {
+	public void updateLocalApp() {
+		systemApps = SystemUtils.getUserApps(getActivity());
+		localApps = new ArrayList<App>();
+		RequestParams params = new RequestParams();
+		for (int i = 0; i < systemApps.size(); i++) {
+			params.add("packages[" + i + "]", systemApps.get(i)
+					.getPackageName());
+		}
+		BaseAsyncHttp.postReq(getActivity(), "/message/before-send", params,
+				new JSONObjectHttpResponseHandler() {
+
+					@Override
+					public void jsonSuccess(JSONObject resp) {
+						// TODO Auto-generated method stub
+						for (int i = 0; i < systemApps.size(); i++) {
+							App app = systemApps.get(i);
+							String packagename = app.getPackageName();
+							JSONObject appjson = resp
+									.optJSONObject(packagename);
+							if (appjson.optInt("exist") == 1) {
+								app.setId(appjson.optInt("appid"));
+								app.setTag(appjson.optString("tag"));
+								localApps.add(app);
+							}
+						}
+
+						for (int i = 0; i < localApps.size(); i++) {
+							String tag = localApps.get(i).getTag();
+							String[] tags = tag.split(" ");
+							for (String tagitem : tags) {
+								ArrayList<App> apps = tag2Apps.get(tagitem);
+								if (apps == null)
+									apps = new ArrayList<App>();
+								apps.add(localApps.get(i));
+								tag2Apps.put(tagitem, apps);
+							}
+						}
+						updateView();
+					}
+
+					@Override
+					public void jsonFail(JSONObject resp) {
+						// TODO Auto-generated method stub
+						Utils.showShortToast(getActivity(), "网络故障");
+					}
+				});
+	}
+
+	public void updateView() {
 		// TODO Auto-generated method stub
-		
+
 		final ProgressDialog pd = new ProgressDialog(getActivity());
 		pd.setCanceledOnTouchOutside(false);
 		pd.setMessage("正在加载");
@@ -174,7 +225,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 								app.setProfile(jsonapp.optString("profile"));
 								app.setDownloadPath(Constants.DownloadPath
 										+ app.getName() + ".apk");
-								app.setStars((float)jsonapp.optDouble("stars"));
+								app.setStars((float) jsonapp.optDouble("stars"));
 								apps.add(app);
 							}
 							maps.put(tag, apps);
@@ -288,16 +339,14 @@ public class HomeFragment extends Fragment implements OnClickListener {
 				ComplexPreferences.putObject(getActivity(),
 						Constants.HomeAllDownloadApps, allapps);
 			holder.tvkind.setText(tags.get(position));
-			holder.counts.setText("我的（" + 3 + "）");
+			ArrayList<App> myapps = tag2Apps.get(tags.get(position));
+			int myappssize = 0;
+			if (myapps != null)
+				myappssize = myapps.size();
+			holder.counts.setText("我的（" + String.valueOf(myappssize) + "）");
 			holder.lvapps.setAdapter(new AppsAdapter(context, apps));
-			int tribe = position * 3;
-			if ((tribe + 3) > userapps.size())
-				holder.hlvMyapps.setAdapter(new MyAppsAdapter(userapps.subList(
-						0, 3)));
-			else
-				holder.hlvMyapps.setAdapter(new MyAppsAdapter(userapps.subList(
-						position * 3, position * 3 + 3)));
-
+			holder.hlvMyapps.setAdapter(new MyAppsAdapter(tag2Apps.get(tags
+					.get(position))));
 			holder.more.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -334,6 +383,8 @@ public class HomeFragment extends Fragment implements OnClickListener {
 
 		@Override
 		public int getCount() {
+			if (apps == null)
+				return 0;
 			return apps.size();
 		}
 

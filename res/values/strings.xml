@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">定制生活</string>
+    <string name="app_name">我的App</string>
     <string name="title_button">一键下载</string>
     <string name="back">返回</string>
     <string name="cancle">取消</string>

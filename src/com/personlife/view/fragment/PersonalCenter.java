@@ -21,6 +21,7 @@ import com.loopj.android.http.RequestParams;
 import com.personlife.bean.UserInfo;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONObjectHttpResponseHandler;
+import com.personlife.utils.Constants;
 import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.Utils;
@@ -269,27 +270,28 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 		//
 		// break;
 		case R.id.wxchat:
-
 			ShareParams weixin = new ShareParams();
-			weixin.setText("heh");
+			weixin.setTitle("请下载我的App");
+			weixin.setText("我们这里有最精彩的应用，快快来加入我们吧！");
+			weixin.setUrl(Constants.AppDownloadUrl);
+			weixin.setImageUrl(Constants.AppIconUrl);
+			weixin.setShareType(Platform.SHARE_WEBPAGE);
 			Platform wei = ShareSDK.getPlatform(Wechat.NAME);
 			wei.share(weixin);
 			break;
 		case R.id.qq:
-
 			ShareParams sp = new ShareParams();
-			sp.setTitle("测试分享的标题");
-			sp.setTitleUrl("http://sharesdk.cn"); // 标题的超链接
-			sp.setText("测试分享的文本");
-			sp.setImageUrl("http://www.someserver.com/测试图片网络地址.jpg");
-			sp.setSite("发布分享的网站名称");
-			sp.setSiteUrl("发布分享网站的地址");
+			sp.setTitle("请下载我的App");
+			sp.setTitleUrl("http://fir.im/p352"); // 标题的超链接
+			sp.setText("我们这里有最精彩的应用，快快来加入我们吧！");
+			sp.setImageUrl(Constants.AppIconUrl);
 			Platform qzone = ShareSDK.getPlatform(QZone.NAME);
 			qzone.share(sp);
 			break;
 		case R.id.sina:
 			ShareParams sinasp = new ShareParams();
-			sinasp.setText("测试分享的文本");
+			sinasp.setText("请下载我的App");
+			sinasp.setImageUrl(Constants.AppIconUrl);
 			Platform sina = ShareSDK.getPlatform(SinaWeibo.NAME);
 			sina.share(sinasp);
 			break;

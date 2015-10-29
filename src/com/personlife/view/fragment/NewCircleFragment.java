@@ -238,6 +238,8 @@ public class NewCircleFragment extends Fragment {
 
 	public void initView() {
 		lv = (ListView) layout.findViewById(R.id.lv_circle_shuoshuo);
+		View listheader = LayoutInflater.from(getActivity()).inflate(R.layout.layout_picture, null);
+		lv.addHeaderView(listheader);
 		mlist = new ArrayList<Shuoshuo>();
 		lv.setAdapter(mAdapter);
 		RequestParams request = new RequestParams();
@@ -295,7 +297,7 @@ public class NewCircleFragment extends Fragment {
 		newreply.setFromphone(star.getPhone());
 		newreply.setFromnickname(star.getNickname());
 		sure.setOnClickListener(new OnClickListener() {
-
+			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -434,7 +436,7 @@ public class NewCircleFragment extends Fragment {
 			ImageLoaderUtils.displayImageView(app.getIcon(), holder.appicon);
 			holder.beforetime.setText(Utils.TimeStamp2Date(mlist.get(position)
 					.getCreatedtime()));
-			Drawable drawable = getResources().getDrawable(R.drawable.dianzan1);
+			Drawable drawable = getResources().getDrawable(R.drawable.dianzan2);
 			drawable.setBounds(0, 0, 40, 40);// 第一0是距左边距离，第二0是距上边距离，40分别是长宽
 			holder.person.setCompoundDrawables(drawable, null, null, null);// 只放左边
 			holder.person.setText("");
@@ -475,6 +477,7 @@ public class NewCircleFragment extends Fragment {
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
+					Log.i("isPraised", String.valueOf(holder.isPraised));
 					String text = holder.person.getText().toString();
 					String nickname = star.getNickname();
 					RequestParams request = new RequestParams();

@@ -51,27 +51,61 @@
         android:layout_gravity="center_horizontal"
         android:paddingBottom="6dp"
         android:text="请按星星给予评分" />
+
     <com.personlife.widget.MyGridView
         android:id="@+id/gv_shareplus_labels"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:background="@color/black2"
         android:gravity="center"
         android:horizontalSpacing="2dp"
         android:numColumns="4"
         android:stretchMode="columnWidth"
-        android:background="@color/black2"
         android:verticalSpacing="2dp"
         android:visibility="gone" >
     </com.personlife.widget.MyGridView>
+
     <TextView
         android:id="@+id/tv_shareplus_hasLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="2dp"
-        android:visibility="gone"
-        android:textSize="16dp"
+        android:text="请选择标签"
         android:textColor="@color/black"
-        android:text="请选择标签" />
+        android:textSize="16dp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:layout_marginLeft="20dp" >
+
+    <ImageView
+        android:id="@+id/qq"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16dp"
+        android:src="@drawable/qqlogin" />
+
+    <ImageView
+        android:id="@+id/wechat"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16dp"
+        android:src="@drawable/weixinlogin" />
+
+    <ImageView
+        android:id="@+id/sina"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/weibologin" />
+    </LinearLayout>
+
 </LinearLayout>

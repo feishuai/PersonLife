@@ -9,6 +9,10 @@ public interface Constants {
 	String SelectedApp = "selectedApp";
 	String SelectedSharedApp = "selectedsharedApp";
 	String ExistedApp = "exitedApp";
+	String LocalApp = "localApp";
+	String PrefixShareUrl = "http://120.26.218.252:8080/web/pic.html?appid=";
+	String AppDownloadUrl = "http://fir.im/p352";
+	String AppIconUrl = "http://7xkbeq.com1.z0.glb.clouddn.com/Fj8LalLkZ5gQydNoRN06uC6YlZH2";
 	String DownloadApps = "downloadapps";
 	String HomeAllDownloadApps = "homealldownloadapps";
 	String SYSTEMNOTIFICATION = "systemnotifications";

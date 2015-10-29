@@ -273,7 +273,7 @@ public class CircleFriendsFragment extends Fragment {
 			ImageLoaderUtils.displayImageView(app.getIcon(), holder.appicon);
 			holder.beforetime.setText(Utils.TimeStamp2Date(mlist.get(position)
 					.getCreatedtime()));
-			Drawable drawable = getResources().getDrawable(R.drawable.dianzan1);
+			Drawable drawable = getResources().getDrawable(R.drawable.dianzan2);
 			drawable.setBounds(0, 0, 40, 40);// 第一0是距左边距离，第二0是距上边距离，40分别是长宽
 			holder.person.setCompoundDrawables(drawable, null, null, null);// 只放左边
 			holder.person.setText("");

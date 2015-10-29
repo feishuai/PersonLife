@@ -48,7 +48,12 @@ public class ShareDialog extends Dialog implements
 		case R.id.wxchat:
 
 			ShareParams weixin = new ShareParams();
-			weixin.setText("heh");
+			weixin.setTitle("请下载我的App");
+			weixin.setTitleUrl("http://fir.im/p352"); // 标题的超链接
+			weixin.setText("我们这里有最精彩的应用");
+			weixin.setImageUrl("http://firicon.fir.im/176a4c92446810853e8c58cd6de9f9608a0115ad");
+			weixin.setSite("发布分享的网站名称");
+			weixin.setSiteUrl("发布分享网站的地址");
 			Platform wei = ShareSDK.getPlatform(Wechat.NAME);
 			wei.share(weixin);
 			dismiss();
@@ -56,10 +61,10 @@ public class ShareDialog extends Dialog implements
 		case R.id.qq:
 
 			ShareParams sp = new ShareParams();
-			sp.setTitle("测试分享的标题");
-			sp.setTitleUrl("http://sharesdk.cn"); // 标题的超链接
+			sp.setTitle("请下载我们的App");
+			sp.setTitleUrl("http://fir.im/p352"); // 标题的超链接
 			sp.setText("测试分享的文本");
-			sp.setImageUrl("http://www.someserver.com/测试图片网络地址.jpg");
+			sp.setImageUrl("http://firicon.fir.im/176a4c92446810853e8c58cd6de9f9608a0115ad");
 			sp.setSite("发布分享的网站名称");
 			sp.setSiteUrl("发布分享网站的地址");
 
