@@ -269,10 +269,10 @@ public class NewCircleFragment extends Fragment {
 				});
 	}
 
-	private void showCommentPopopWindow(View v, int msgid, Reply reply,
+	private void showCommentPopopWindow(int msgid, Reply reply,
 			final MyCommentsAdapter adapter) {
 		// TODO Auto-generated method stub
-		final View view = v;
+//		initData();
 		final Reply freply = reply;
 		final Reply newreply = new Reply();
 		// 一个自定义的布局，作为显示的内容
@@ -287,7 +287,10 @@ public class NewCircleFragment extends Fragment {
 			comment.setHint("回复 " + freply.getFromnickname() + ":");
 		InputMethodManager inputManager = (InputMethodManager) comment
 				.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+//		inputManager.showSoftInputFromInputMethod(comment.getWindowToken(), 0);
 		inputManager.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
+//		inputManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+		
 		TextView sure = (TextView) contentView.findViewById(R.id.tv_popup_sure);
 		final PopupWindow popupWindow = new PopupWindow(contentView,
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
@@ -360,7 +363,7 @@ public class NewCircleFragment extends Fragment {
 		popupWindow.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);
 		popupWindow
 				.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-		popupWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
+		popupWindow.showAtLocation(lv, Gravity.BOTTOM, 0, 0);
 	}
 
 	class ShuoshuoAdapter extends BaseAdapter {
@@ -464,6 +467,7 @@ public class NewCircleFragment extends Fragment {
 					break;
 				}
 			}
+//			Log.i("praise size is "+position, mlist.get(position).getStars().size()+" "+holder.isPraised);
 			if (stars.size() > 0)
 				LinkBuilder.on(holder.person).addLinks(getStarsLinks(stars))
 						.build();
@@ -505,14 +509,13 @@ public class NewCircleFragment extends Fragment {
 						if (text.equals(nickname + " ")) {
 							holder.person.setText("");
 							holder.person.setVisibility(View.GONE);
-							return;
 						}
 						if (text.indexOf(nickname) == 0)
 							text = text.replace(nickname + ", ", "");
 						else
 							text = text.replace(", " + nickname, "");
 						holder.person.setText(text);
-
+						mlist.get(position).getStars().remove(star);
 					} else {
 						holder.praise.setImageDrawable(getResources()
 								.getDrawable(R.drawable.dianzan2));
@@ -534,6 +537,7 @@ public class NewCircleFragment extends Fragment {
 
 									}
 								});
+						mlist.get(position).getStars().add(star);
 					}
 					holder.isPraised = !holder.isPraised;
 				}
@@ -544,7 +548,7 @@ public class NewCircleFragment extends Fragment {
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					showCommentPopopWindow(v, mlist.get(position).getMsgid(),
+					showCommentPopopWindow( mlist.get(position).getMsgid(),
 							null, commentsAdapter);
 
 				}
@@ -554,7 +558,7 @@ public class NewCircleFragment extends Fragment {
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					showCommentPopopWindow(v, mlist.get(position).getMsgid(),
+					showCommentPopopWindow(mlist.get(position).getMsgid(),
 							null, commentsAdapter);
 
 				}
@@ -771,7 +775,7 @@ public class NewCircleFragment extends Fragment {
 					@Override
 					public void onClick(String clickedText) {
 						// Utils.showShortToast(getActivity(), clickedText);
-						showCommentPopopWindow(v, msgid, reply, adapter);
+						showCommentPopopWindow(msgid, reply, adapter);
 					}
 				});
 		links.add(content);

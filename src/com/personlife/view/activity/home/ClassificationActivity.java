@@ -35,7 +35,7 @@ public class ClassificationActivity extends Activity implements OnClickListener 
 	private List<String> keys = new ArrayList<String>();
 	private Button mBack;
 	private TextView mTitle;
-	private List<String> selectedtags;
+	private List<String> selectedtags, newselectedtags;
 	private ColorStateList yellowColorStateList;
 	private ListView listview;
 
@@ -49,6 +49,7 @@ public class ClassificationActivity extends Activity implements OnClickListener 
 		mBack.setOnClickListener(this);
 		mTitle.setText("全部分类");
 		listview = (ListView) findViewById(R.id.listview);
+		newselectedtags = new ArrayList<String>();
 		yellowColorStateList = getResources().getColorStateList(R.color.yellow);
 		RequestParams params = new RequestParams();
 		BaseAsyncHttp.postReq(getApplicationContext(), "/app/tag-commend",
@@ -168,8 +169,10 @@ public class ClassificationActivity extends Activity implements OnClickListener 
 				btn.setTextColor(yellowColorStateList);
 			} else {
 				btn.setText(tags.get(position - 1));
-				if (selectedtags.contains(tags.get(position - 1)))
+				if (selectedtags.contains(tags.get(position - 1))) {
 					btn.setBackgroundResource(R.drawable.fenleixuanze);
+					newselectedtags.add(tags.get(position - 1));
+				}
 			}
 			if (allselected) {
 				btn.setBackgroundResource(R.drawable.fenleixuanze);
@@ -182,21 +185,21 @@ public class ClassificationActivity extends Activity implements OnClickListener 
 					if (current == 0) {
 						if (!allselected) {
 							allselected = true;
-							selectedtags.removeAll(tags);
-							selectedtags.addAll(tags);
+							newselectedtags.removeAll(tags);
+							newselectedtags.addAll(tags);
 							notifyDataSetChanged();
 						} else {
 							allselected = false;
-							selectedtags.removeAll(tags);
+							newselectedtags.removeAll(tags);
 							notifyDataSetChanged();
 						}
 						return;
 					} else {
-						if (selectedtags.contains(tags.get(current - 1))) {
-							selectedtags.remove(tags.get(current - 1));
+						if (newselectedtags.contains(tags.get(current - 1))) {
+							newselectedtags.remove(tags.get(current - 1));
 							btn.setBackgroundResource(R.color.transparent);
 						} else {
-							selectedtags.add(tags.get(current - 1));
+							newselectedtags.add(tags.get(current - 1));
 							btn.setBackgroundResource(R.drawable.fenleixuanze);
 						}
 					}
@@ -212,7 +215,7 @@ public class ClassificationActivity extends Activity implements OnClickListener 
 		switch (v.getId()) {
 		case R.id.txt_left:
 			ComplexPreferences.putObject(getApplicationContext(), "tags",
-					selectedtags);
+					newselectedtags);
 			setResult(1);
 			finish();
 			break;

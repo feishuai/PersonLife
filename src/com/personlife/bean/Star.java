@@ -22,7 +22,11 @@ public class Star {
 
 	public Star() {
 	}
-
+	
+	public Star(String phone){
+		this.phone = phone;
+	}
+	
 	public int getFamous() {
 		return famous;
 	}
@@ -109,6 +113,19 @@ public class Star {
 
 	public void setShared(String shared) {
 		this.shared = shared;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		// TODO Auto-generated method stub
+		if (o == null || this.phone == null)
+			return false;
+		if (o instanceof Star) {
+			Star newStar = (Star) o;
+			if (this.phone.equals(newStar.getPhone()))
+				return true;
+		}
+		return false;
 	}
 
 }

@@ -191,13 +191,6 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 									"profile"));
 							appInfo.setDownloadPath(Constants.DownloadPath
 									+ appInfo.getName() + ".apk");
-							// apps.add(appInfo);
-							// apps.add(appInfo);
-							// apps.add(appInfo);
-							// apps.add(appInfo);
-							// apps.add(appInfo);
-							// apps.add(appInfo);
-							// apps.add(appInfo);
 						}
 						appsfragment.setData(apps);
 					}

@@ -341,13 +341,13 @@ public class CircleFriendsFragment extends Fragment {
 						if (text.equals(nickname + " ")) {
 							holder.person.setText("");
 							holder.person.setVisibility(View.GONE);
-							return;
 						}
 						if (text.indexOf(nickname) == 0)
 							text = text.replace(nickname + ", ", "");
 						else
 							text = text.replace(", " + nickname, "");
 						holder.person.setText(text);
+						mlist.get(position).getStars().remove(user);
 
 					} else {
 						holder.praise.setImageDrawable(getResources()
@@ -370,6 +370,7 @@ public class CircleFriendsFragment extends Fragment {
 
 									}
 								});
+						mlist.get(position).getStars().add(user);
 					}
 					holder.isPraised = !holder.isPraised;
 				}
