@@ -51,10 +51,9 @@ import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.utils.ListViewUtils;
 import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.Utils;
-import com.personlife.view.activity.circle.ShareAppListActivity;
+import com.personlife.view.activity.circle.CircleActivity;
 import com.personlife.view.activity.home.AppDetailActivity;
 import com.personlife.widget.ClearEditText;
-import com.personlife.widget.HorizontialListView;
 import com.personlife.widget.MyListView;
 import com.personlife.widget.pullrefresh.PullRefreshLayout;
 
@@ -163,6 +162,8 @@ public class NewCircleFragment extends Fragment {
 										.optInt("appstars"));
 								shuoshuo.setLabels(jsonshuoshuo
 										.optString("appkinds"));
+								shuoshuo.setPhone(jsonshuoshuo
+										.optString("phone"));
 								JSONArray jsonapps = jsonshuoshuo
 										.getJSONArray("apps");
 								List<App> shuoshuoapps = new ArrayList<App>();
@@ -238,7 +239,8 @@ public class NewCircleFragment extends Fragment {
 
 	public void initView() {
 		lv = (ListView) layout.findViewById(R.id.lv_circle_shuoshuo);
-		View listheader = LayoutInflater.from(getActivity()).inflate(R.layout.layout_picture, null);
+		View listheader = LayoutInflater.from(getActivity()).inflate(
+				R.layout.layout_picture, null);
 		lv.addHeaderView(listheader);
 		mlist = new ArrayList<Shuoshuo>();
 		lv.setAdapter(mAdapter);
@@ -272,7 +274,7 @@ public class NewCircleFragment extends Fragment {
 	private void showCommentPopopWindow(int msgid, Reply reply,
 			final MyCommentsAdapter adapter) {
 		// TODO Auto-generated method stub
-//		initData();
+		// initData();
 		final Reply freply = reply;
 		final Reply newreply = new Reply();
 		// 一个自定义的布局，作为显示的内容
@@ -287,10 +289,11 @@ public class NewCircleFragment extends Fragment {
 			comment.setHint("回复 " + freply.getFromnickname() + ":");
 		InputMethodManager inputManager = (InputMethodManager) comment
 				.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-//		inputManager.showSoftInputFromInputMethod(comment.getWindowToken(), 0);
+		// inputManager.showSoftInputFromInputMethod(comment.getWindowToken(),
+		// 0);
 		inputManager.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
-//		inputManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-		
+		// inputManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+
 		TextView sure = (TextView) contentView.findViewById(R.id.tv_popup_sure);
 		final PopupWindow popupWindow = new PopupWindow(contentView,
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
@@ -300,7 +303,7 @@ public class NewCircleFragment extends Fragment {
 		newreply.setFromphone(star.getPhone());
 		newreply.setFromnickname(star.getNickname());
 		sure.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -467,7 +470,8 @@ public class NewCircleFragment extends Fragment {
 					break;
 				}
 			}
-//			Log.i("praise size is "+position, mlist.get(position).getStars().size()+" "+holder.isPraised);
+			// Log.i("praise size is "+position,
+			// mlist.get(position).getStars().size()+" "+holder.isPraised);
 			if (stars.size() > 0)
 				LinkBuilder.on(holder.person).addLinks(getStarsLinks(stars))
 						.build();
@@ -476,6 +480,17 @@ public class NewCircleFragment extends Fragment {
 							.getMsgid());
 			commentsAdapter.setAdapter(commentsAdapter);
 			holder.comments.setAdapter(commentsAdapter);
+			holder.staricon.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Intent intent = new Intent(getActivity(), CircleActivity.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					intent.putExtra("starphone", mlist.get(position).getPhone());
+					startActivity(intent);
+				}
+			});
 			holder.praise.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -548,7 +563,7 @@ public class NewCircleFragment extends Fragment {
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					showCommentPopopWindow( mlist.get(position).getMsgid(),
+					showCommentPopopWindow(mlist.get(position).getMsgid(),
 							null, commentsAdapter);
 
 				}
@@ -575,40 +590,53 @@ public class NewCircleFragment extends Fragment {
 
 				}
 			});
+			
+			if (DownloadTaskManager.getDownloadTaskManager(context)
+					.isHasDownloaded(app)) {
+				holder.isDownloaded = true;
+			}
+
+			if (holder.isDownloaded)
+				holder.download.setImageResource(R.drawable.download1);
+			else
+				holder.download.setImageResource(R.drawable.download);
+			
 			holder.download.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					if (!DownloadTaskManager.getDownloadTaskManager(context)
-							.isHasDownloaded(app)) {
-					RequestParams request = new RequestParams();
-					request.add("phone", PersonInfoLocal.getPhone(context));
-					request.add("appid", String.valueOf(app.getId()));
-					BaseAsyncHttp.postReq(context.getApplicationContext(),
-							"/myapp/download", request,
-							new JSONObjectHttpResponseHandler() {
-								@Override
-								public void jsonSuccess(JSONObject resp) {
-								}
+					if (!holder.isDownloaded) {
+						RequestParams request = new RequestParams();
+						request.add("phone", PersonInfoLocal.getPhone(context));
+						request.add("appid", String.valueOf(app.getId()));
+						BaseAsyncHttp.postReq(context.getApplicationContext(),
+								"/myapp/download", request,
+								new JSONObjectHttpResponseHandler() {
+									@Override
+									public void jsonSuccess(JSONObject resp) {
+									}
 
-								@Override
-								public void jsonFail(JSONObject resp) {
-								}
-							});
-					DownloadTaskManager
-							.getDownloadTaskManager(context)
-							.startNewDownload(
-									context,
-									app,
-									new DownloadListener<Integer, DownloadTask>() {
-										@Override
-										public void onProgressUpdate(
-												Integer... values) {
-											super.onProgressUpdate(values);
-										}
-									});
-					}
-					Utils.showShortToast(context, "正在下载中");
+									@Override
+									public void jsonFail(JSONObject resp) {
+									}
+								});
+						DownloadTaskManager
+								.getDownloadTaskManager(context)
+								.startNewDownload(
+										context,
+										app,
+										new DownloadListener<Integer, DownloadTask>() {
+											@Override
+											public void onProgressUpdate(
+													Integer... values) {
+												super.onProgressUpdate(values);
+											}
+										});
+						Utils.showLongToast(context, "该应用正在下载中！");
+						holder.download.setImageResource(R.drawable.download1);
+						holder.isDownloaded = true;
+					}else
+						Utils.showLongToast(context, "该应用已在下载！");
 				}
 			});
 			return convertView;
@@ -628,6 +656,7 @@ public class NewCircleFragment extends Fragment {
 			MyListView comments;
 			ClearEditText pinlun;
 			Boolean isPraised = false;
+			Boolean isDownloaded = false;
 		}
 	}
 

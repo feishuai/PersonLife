@@ -50,7 +50,7 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 	private ScrollView slResult, slHistory;
 	private TextView tvClearHistory;
 	private TextView[] tvLables = new TextView[3];
-	private String[] lables = { "90后", "工作", "旅游" };
+	private String[] lables = { "新闻", "学习", "购物" };
 	private int[] idLables = { R.id.tv_search_label1, R.id.tv_search_label2,
 			R.id.tv_search_label3 };
 	private List<String> history;

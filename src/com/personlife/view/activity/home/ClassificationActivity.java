@@ -29,6 +29,7 @@ import com.loopj.android.http.RequestParams;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ComplexPreferences;
+import com.personlife.utils.Utils;
 
 public class ClassificationActivity extends Activity implements OnClickListener {
 	private Map<String, ArrayList<String>> classmap = new HashMap<String, ArrayList<String>>();
@@ -49,6 +50,9 @@ public class ClassificationActivity extends Activity implements OnClickListener 
 		mBack.setOnClickListener(this);
 		mTitle.setText("全部分类");
 		listview = (ListView) findViewById(R.id.listview);
+		selectedtags = ComplexPreferences.getObject(getApplicationContext(),
+				"tags", new TypeReference<ArrayList<String>>() {
+				});
 		newselectedtags = new ArrayList<String>();
 		yellowColorStateList = getResources().getColorStateList(R.color.yellow);
 		RequestParams params = new RequestParams();
@@ -67,6 +71,10 @@ public class ClassificationActivity extends Activity implements OnClickListener 
 										resp.getString(key),
 										new TypeReference<ArrayList<String>>() {
 										});
+								for (int i = 0; i < selectedtags.size(); i++) {
+									if (value.contains(selectedtags.get(i)))
+										newselectedtags.add(selectedtags.get(i));
+								}
 							} catch (Exception e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -84,9 +92,6 @@ public class ClassificationActivity extends Activity implements OnClickListener 
 	}
 
 	private void initData() {
-		selectedtags = ComplexPreferences.getObject(getApplicationContext(),
-				"tags", new TypeReference<ArrayList<String>>() {
-				});
 		listview.setAdapter(new ClassificationAdapter(getApplicationContext()));
 	}
 
@@ -169,9 +174,8 @@ public class ClassificationActivity extends Activity implements OnClickListener 
 				btn.setTextColor(yellowColorStateList);
 			} else {
 				btn.setText(tags.get(position - 1));
-				if (selectedtags.contains(tags.get(position - 1))) {
+				if (newselectedtags.contains(tags.get(position - 1))) {
 					btn.setBackgroundResource(R.drawable.fenleixuanze);
-					newselectedtags.add(tags.get(position - 1));
 				}
 			}
 			if (allselected) {
@@ -214,6 +218,10 @@ public class ClassificationActivity extends Activity implements OnClickListener 
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.txt_left:
+			if (newselectedtags.size() == 0) {
+				Utils.showShortToast(getApplicationContext(), "请至少选择一个标签！");
+				return;
+			}
 			ComplexPreferences.putObject(getApplicationContext(), "tags",
 					newselectedtags);
 			setResult(1);

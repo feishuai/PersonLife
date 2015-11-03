@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -74,9 +75,20 @@ public class LoginActivity extends Activity implements OnClickListener {
 		case R.id.tv_login_login:
 			// Utils.start_Activity(LoginActivity.this, MainActivity.class,
 			// null);
+			String name = username.getText().toString();
+			String pwd = password.getText().toString();
+			if (name.equals("") || pwd.equals("")) {
+				Utils.showShortToast(getApplicationContext(), "用户名或密码不能为空！");
+				return ;
+			}
+			final ProgressDialog pd = new ProgressDialog(LoginActivity.this);
+			pd.setCanceledOnTouchOutside(false);
+			pd.setMessage("正在加载");
+			pd.show();
+
 			RequestParams params = new RequestParams();
-			params.put("phone", username.getText().toString());
-			params.put("pwd", password.getText().toString());
+			params.put("phone", name);
+			params.put("pwd", pwd);
 			BaseAsyncHttp.postReq(getApplicationContext(), "/users/login",
 					params, new JSONObjectHttpResponseHandler() {
 
@@ -99,8 +111,10 @@ public class LoginActivity extends Activity implements OnClickListener {
 									intent.putExtra("telphone", username
 											.getText().toString());
 									startActivity(intent);
+									pd.dismiss();
 									finish();
 								} else {
+									pd.dismiss();
 									Toast.makeText(LoginActivity.this,
 											"密码错误或者用户名错误", Toast.LENGTH_LONG)
 											.show();

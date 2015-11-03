@@ -282,7 +282,7 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 		case R.id.qq:
 			ShareParams sp = new ShareParams();
 			sp.setTitle("请下载我的App");
-			sp.setTitleUrl("http://fir.im/p352"); // 标题的超链接
+			sp.setTitleUrl(Constants.AppDownloadUrl); // 标题的超链接
 			sp.setText("我们这里有最精彩的应用，快快来加入我们吧！");
 			sp.setImageUrl(Constants.AppIconUrl);
 			Platform qzone = ShareSDK.getPlatform(QZone.NAME);

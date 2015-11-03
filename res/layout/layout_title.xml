@@ -129,7 +129,7 @@
             android:layout_toLeftOf="@+id/imgbtn_share"
             android:layout_marginRight="10dp"
             android:visibility="gone"
-            android:src="@drawable/shoucang1" />
+            android:src="@drawable/shoucang" />
 
     </RelativeLayout>
 

@@ -99,7 +99,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 				new HashMap<String, List<App>>());
 		mLvApps.setAdapter(kindsAdapter);
 		if (userapps.size() == 0)
-			userapps = SystemUtils.getUserApps(getActivity());
+			userapps = SystemUtils.getAppsNoSystom(getActivity());
 
 		if (ComplexPreferences.getObject(getActivity(), "tags",
 				new TypeReference<ArrayList<String>>() {
@@ -334,7 +334,8 @@ public class HomeFragment extends Fragment implements OnClickListener {
 			apps = maps.get(tags.get(position));
 			if (position == 0)
 				allapps.clear();
-			allapps.addAll(apps);
+			if (apps != null)
+				allapps.addAll(apps);
 			if (position == (tags.size() - 1))
 				ComplexPreferences.putObject(getActivity(),
 						Constants.HomeAllDownloadApps, allapps);

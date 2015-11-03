@@ -46,15 +46,15 @@ public class AppsAdapter extends BaseAdapter {
 			.getExternalStorageDirectory().toString() + "/";
 
 	public AppsAdapter(Context context, List<App> mlist) {
-		this.mlist = new ArrayList<App>();
 		this.context = context;
-
-		this.mlist.addAll(mlist);
+		this.mlist = mlist;
 	}
 
 	@Override
 	public int getCount() {
-		return mlist.size();
+		if(mlist != null)
+			return mlist.size();
+		return 0;
 	}
 
 	@Override

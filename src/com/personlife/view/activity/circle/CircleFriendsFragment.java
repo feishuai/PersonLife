@@ -408,6 +408,17 @@ public class CircleFriendsFragment extends Fragment {
 
 				}
 			});
+
+			if (DownloadTaskManager.getDownloadTaskManager(context)
+					.isHasDownloaded(app)) {
+				holder.isDownloaded = true;
+			}
+
+			if (holder.isDownloaded)
+				holder.download.setImageResource(R.drawable.download1);
+			else
+				holder.download.setImageResource(R.drawable.download);
+
 			holder.download.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -440,8 +451,11 @@ public class CircleFriendsFragment extends Fragment {
 												super.onProgressUpdate(values);
 											}
 										});
-					}
-					Utils.showShortToast(context, "正在下载中");
+						Utils.showLongToast(context, "该应用正在下载中！");
+						holder.download.setImageResource(R.drawable.download1);
+						holder.isDownloaded = true;
+					} else
+						Utils.showLongToast(context, "该应用已在下载！");
 				}
 			});
 			return convertView;
@@ -462,6 +476,7 @@ public class CircleFriendsFragment extends Fragment {
 			MyListView comments;
 			ClearEditText pinlun;
 			Boolean isPraised = false;
+			Boolean isDownloaded = false;
 		}
 	}
 

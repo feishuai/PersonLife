@@ -53,7 +53,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 	TextView mTitle, mName, mSizeAndCounts, mIntro, mLog, mMore, mTime,
 			mNumbers;
 	RelativeLayout mComments;
-//	RatingBar mStars;
+	// RatingBar mStars;
 	App app;
 	List<String> urlsapp;
 	List<App> likesapp;
@@ -80,7 +80,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 		mIcon = (ImageView) findViewById(R.id.iv_app_icon);
 		mName = (TextView) findViewById(R.id.tv_app_appname);
 		mComments = (RelativeLayout) findViewById(R.id.rl_detail_comments);
-//		mStars = (RatingBar) findViewById(R.id.rb_app_rating);
+		// mStars = (RatingBar) findViewById(R.id.rb_app_rating);
 		mSizeAndCounts = (TextView) findViewById(R.id.tv_app_sizeanddownloadcounts);
 		mDownload = (Button) findViewById(R.id.btn_app_download);
 		mIntro = (TextView) findViewById(R.id.tv_detail_intro);
@@ -106,7 +106,6 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 	private void initData() {
 
 		appid = getIntent().getIntExtra("appid", 0);
-		Log.i("appdetail appid", String.valueOf(appid));
 		app = new App();
 		urlsapp = new ArrayList<String>();
 		likesapp = new ArrayList<App>();
@@ -116,7 +115,6 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		RequestParams params = new RequestParams();
 		params.add("appid", String.valueOf(appid));
-		Log.i("get app detail info", String.valueOf(appid));
 		BaseAsyncHttp.postReq(getApplicationContext(), "/app/getapp", params,
 				new JSONObjectHttpResponseHandler() {
 
@@ -139,7 +137,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 							app.setUpdateLog(jsonapp.getString("updated_log"));
 							app.setUpdateDate(jsonapp.getLong("updated_at"));
 							app.setProfile(jsonapp.getString("profile"));
-							app.setStars((float)jsonapp.optDouble("stars"));
+							app.setStars((float) jsonapp.optDouble("stars"));
 							urlsapp.clear();
 							for (int i = 0; i < jsonurls.length(); i++) {
 								urlsapp.add(jsonurls.getJSONObject(i)
@@ -191,7 +189,6 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 
 	protected void getLikesapp() {
 		// TODO Auto-generated method stub
-		Log.i("get app coments list", String.valueOf(appid));
 		RequestParams params = new RequestParams();
 		params.add("appid", String.valueOf(appid));
 		BaseAsyncHttp.postReq(getApplicationContext(), "/myapp/like", params,
@@ -235,7 +232,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 		mNumbers.setText("有" + app.getComments().size() + "人评分");
 		mSizeAndCounts.setText("");
 		mTime.setText(Utils.TimeStamp2DateChinese(app.getUpdateDate()));
-//		mStars.setRating(app.getStars());
+		// mStars.setRating(app.getStars());
 		mLog.setText(app.getUpdateLog());
 
 		ComplexPreferences complexPreferences = ComplexPreferences
@@ -246,11 +243,11 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 
 		int downloadcounts = app.getDowloadcount();
 		if (downloadcounts > 10000)
-			mSizeAndCounts.setText(app.getStars() + "分," + downloadcounts / 10000
-					+ "万人下载");
+			mSizeAndCounts.setText(app.getStars() + "分," + downloadcounts
+					/ 10000 + "万人下载");
 		else
-			mSizeAndCounts
-					.setText(app.getStars() + "分," + downloadcounts + "人下载");
+			mSizeAndCounts.setText(app.getStars() + "分," + downloadcounts
+					+ "人下载");
 
 		int numbersOfDisplay = 20;
 		if (app.getIntrodution().length() < numbersOfDisplay) {
@@ -563,32 +560,50 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 			params.add("phone",
 					PersonInfoLocal.getPhone(getApplicationContext()));
 			if (isCollected) {
-				Utils.showShortToast(getApplicationContext(), "已收藏");
-				return;
+				BaseAsyncHttp.postReq(getApplicationContext(),
+						"/collect/cancel-app", params,
+						new JSONObjectHttpResponseHandler() {
+							@Override
+							public void jsonSuccess(JSONObject resp) {
+								// TODO Auto-generated method stub
+								shoucang.setImageResource(R.drawable.shoucang1);
+								Utils.showShortToast(getApplicationContext(),
+										"取消收藏");
+								isCollected = false;
+							}
+
+							@Override
+							public void jsonFail(JSONObject resp) {
+								// TODO Auto-generated method stub
+
+							}
+						});
+			} else {
+				BaseAsyncHttp.postReq(getApplicationContext(),
+						"/collect/set-app", params,
+						new JSONObjectHttpResponseHandler() {
+
+							@Override
+							public void jsonSuccess(JSONObject resp) {
+								// TODO Auto-generated method stub
+								int flag = resp.optInt("flag");
+								if (flag == 1)
+									Utils.showShortToast(
+											getApplicationContext(), "收藏成功");
+								else
+									Utils.showShortToast(
+											getApplicationContext(), "已收藏");
+								shoucang.setImageResource(R.drawable.shoucang);
+								isCollected = true;
+							}
+
+							@Override
+							public void jsonFail(JSONObject resp) {
+								// TODO Auto-generated method stub
+
+							}
+						});
 			}
-
-			BaseAsyncHttp.postReq(getApplicationContext(), "/collect/set-app",
-					params, new JSONObjectHttpResponseHandler() {
-
-						@Override
-						public void jsonSuccess(JSONObject resp) {
-							// TODO Auto-generated method stub
-							int flag = resp.optInt("flag");
-							if (flag == 1)
-								Utils.showShortToast(getApplicationContext(),
-										"收藏成功");
-							else
-								Utils.showShortToast(getApplicationContext(),
-										"已收藏");
-							isCollected = true;
-						}
-
-						@Override
-						public void jsonFail(JSONObject resp) {
-							// TODO Auto-generated method stub
-
-						}
-					});
 			break;
 		}
 	}
