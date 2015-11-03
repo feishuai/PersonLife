@@ -173,7 +173,7 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 			Intent intent = new Intent(getActivity(),
 					NewFriendsListActivity.class);
 			intent.putExtra("telphone", telphone);
-			startActivity(intent);
+			startActivityForResult(intent, 1);
 			break;
 		case R.id.layout_phonecontact:
 			Intent intent1 = new Intent(getActivity(), LocalPhoneContact.class);
@@ -182,6 +182,15 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 			break;
 		default:
 			break;
+		}
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		if (resultCode == 1) {
+			FriendsUtils.userFriends.clear();
+			initData();
 		}
 	}
 

@@ -1,6 +1,7 @@
 package com.personlife.view.activity.personcenter;
 
 import com.example.personlifep.R;
+import com.github.snowdream.android.util.Log;
 import com.personlife.utils.ActivityCollector;
 import com.personlife.utils.Utils;
 

@@ -10,6 +10,7 @@ import com.example.personlifep.R;
 import com.github.snowdream.android.util.Log;
 import com.loopj.android.http.RequestParams;
 import com.personlife.bean.UserFriend;
+import com.personlife.common.Utils;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONArrayHttpResponseHandler;
 import com.personlife.utils.ImageLoaderUtils;
@@ -75,6 +76,10 @@ public class NewFriendsAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				if(holder.isAccepted){
+					return ;
+				}
+				
 				RequestParams request = new RequestParams();
 				request.put("myphone", mytelphone);
 				request.put("fphone", mList.get(position).getPhone());
@@ -87,6 +92,8 @@ public class NewFriendsAdapter extends BaseAdapter {
 							public void jsonSuccess(JSONArray resp) {
 								// TODO Auto-generated method stub
 								holder.accept.setText("已添加");
+								Utils.showShortToast(context, "已同意添加该好友！");
+								holder.isAccepted = true;
 							}
 
 							@Override
@@ -104,5 +111,6 @@ public class NewFriendsAdapter extends BaseAdapter {
 		ImageView photo;
 		TextView nickname;
 		Button accept;
+		Boolean isAccepted = false;
 	}
 }

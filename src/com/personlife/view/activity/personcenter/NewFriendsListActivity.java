@@ -55,6 +55,7 @@ public class NewFriendsListActivity extends Activity implements OnClickListener 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				setResult(1);
 				onBackPressed();
 				finish();
 			}
