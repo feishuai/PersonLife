@@ -2,8 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/act_solution_1_sv"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" 
-    android:background="@color/white">
+    android:layout_height="fill_parent"
+    android:background="@color/white" >
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -52,12 +52,44 @@
                 android:text="选择分类  "
                 android:textSize="16dp" />
         </RelativeLayout>
-         <com.personlife.widget.MyListView
-                android:id="@+id/lv_home_kinds"
-                android:layout_width="match_parent"
+
+        <com.personlife.widget.MyListView
+            android:id="@+id/lv_home_kinds"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" >
+        </com.personlife.widget.MyListView>
+        
+        <LinearLayout 
+            android:id="@+id/ll_load"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginTop="160dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true" >
-            </com.personlife.widget.MyListView>
+                android:text="网络不太好哦，请查看设置"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+            <Button
+                android:layout_marginTop="16dp" 
+                android:id="@+id/btn_load"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="重新加载"
+                android:padding="6dp"
+                android:textSize="16dp"
+                android:background="@drawable/btn_bg_green"
+                />
+        </LinearLayout>
+        
+        
     </LinearLayout>
+
 </ScrollView>

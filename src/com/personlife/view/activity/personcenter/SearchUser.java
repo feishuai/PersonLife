@@ -167,7 +167,6 @@ public class SearchUser extends Activity implements OnClickListener {
 					intent.putExtra("isFriend", isFriend);
 					intent.putExtra("fromwhere", "search");
 					startActivity(intent);
-
 				}
 			}
 		});

@@ -31,7 +31,6 @@ public class RecommendActivity extends Activity implements OnClickListener {
 	MyListView lvApps;
 	Button mBack;
 	TextView mTitle;
-	ClearEditText search;
 	String kind;
 	List<App> apps;
 	AppsAdapter appsadapter;
@@ -41,20 +40,16 @@ public class RecommendActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_recommend);
 		lvApps = (MyListView) findViewById(R.id.lv_tuijian_apps);
-		search = (ClearEditText) findViewById(R.id.et_tuijian_search);
 		mBack = (Button) findViewById(R.id.txt_left);
 		mTitle = (TextView) findViewById(R.id.txt_title);
 		mTitle.setText("推荐列表");
 		mBack.setVisibility(View.VISIBLE);
 		mBack.setOnClickListener(this);
-		search.setOnClickListener(this);
 		initData();
 	}
 
 	private void initData() {
 		apps = new ArrayList<App>();
-		appsadapter = new AppsAdapter(getApplicationContext(), apps);
-		lvApps.setAdapter(appsadapter);
 		kind = getIntent().getStringExtra("kind");
 
 		RequestParams params = new RequestParams();
@@ -83,6 +78,7 @@ public class RecommendActivity extends Activity implements OnClickListener {
 								app.setDownloadPath(Constants.DownloadPath
 										+ app.getName() + ".apk");
 								app.setStars((float)jsonapp.optDouble("stars"));
+								app.setPackageName(jsonapp.optString("package"));
 								apps.add(app);
 							}
 							updateView();
@@ -104,8 +100,8 @@ public class RecommendActivity extends Activity implements OnClickListener {
 		Log.i("recommend kind",
 				"apps size is " + apps.size() + " :"
 						+ String.valueOf(apps.toString()));
-		appsadapter.setData(apps);
-		appsadapter.notifyDataSetChanged();
+		appsadapter = new AppsAdapter(getApplicationContext(), apps);
+		lvApps.setAdapter(appsadapter);
 	}
 
 	@Override
@@ -114,11 +110,6 @@ public class RecommendActivity extends Activity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.txt_left:
 			finish();
-			break;
-		case R.id.et_tuijian_search:
-			Intent intent = new Intent(RecommendActivity.this,
-					AppSearchActivity.class);
-			startActivity(intent);
 			break;
 		}
 	}

@@ -76,17 +76,19 @@ public class NewCircleFragment extends Fragment {
 		star = new Star();
 		star.setPhone(PersonInfoLocal.getPhone(getActivity()));
 		RequestParams request = new RequestParams();
-		request.add("phone", star.getPhone());
+		request.add("starphone", star.getPhone());
+		request.put("myphone", star.getPhone());
 		BaseAsyncHttp.postReq(getActivity(), "/users/getinfo", request,
 				new JSONObjectHttpResponseHandler() {
 
 					@Override
 					public void jsonSuccess(JSONObject resp) {
 						// TODO Auto-generated method stub
-						star.setPhone(resp.optString("phone"));
-						star.setNickname(resp.optString("nickname"));
-						star.setThumb(resp.optString("thumb"));
-						star.setFollower(resp.optString("follower"));
+						JSONObject userjson = resp.optJSONObject("user");
+						star.setPhone(userjson.optString("phone"));
+						star.setNickname(userjson.optString("nickname"));
+						star.setThumb(userjson.optString("thumb"));
+						star.setFollower(userjson.optString("follower"));
 						initData();
 					}
 

@@ -203,4 +203,16 @@ public class App {
 	public void setPackageName(String packageName) {
 		this.packageName = packageName;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o == null)
+			return false;
+		if(o instanceof App){
+			App app = (App) o;
+			if(this.packageName.equals(app.getPackageName()))
+					return true;
+		}
+		return false;
+	}
 }

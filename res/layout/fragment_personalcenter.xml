@@ -243,10 +243,19 @@
                     android:src="@drawable/wxchat1" />
 
                 <ImageView
-                    android:id="@+id/qq"
+                    android:id="@+id/wechat"
                     android:layout_width="26dp"
                     android:layout_height="26dp"
                     android:layout_toLeftOf="@+id/wxchat"
+                    android:layout_marginRight="16dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/wechatcomment1" />
+                
+                 <ImageView
+                    android:id="@+id/qq"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_toLeftOf="@+id/wechat"
                     android:layout_marginRight="16dp"
                     android:layout_centerVertical="true"
                     android:src="@drawable/qq1" />

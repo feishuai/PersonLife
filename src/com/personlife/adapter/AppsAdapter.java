@@ -107,21 +107,41 @@ public class AppsAdapter extends BaseAdapter {
 			if (size > 0) {
 				int progress = DownloadTaskManager.getDownloadTaskManager(
 						context).getDownloadProgress(mlist.get(position));
-				if (progress == 100)
-					holder.download.setText("已下载");
-				else
+				if (progress == 100){
+					holder.download.setText("安装");
+					holder.bar.setVisibility(View.GONE);
+				}
+				else{
 					holder.download.setText("继续");
-				holder.bar.setVisibility(View.VISIBLE);
-				holder.bar.setProgress(progress);
+					holder.bar.setVisibility(View.VISIBLE);
+					holder.bar.setProgress(progress);
+				}
 			}
+		}
+		
+		if (SystemUtils.getUserApps(context).contains(mlist.get(position))){
+			holder.download.setText("打开");
+			holder.bar.setVisibility(View.GONE);
 		}
 
 		holder.download.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if (holder.download.getText().toString().equals("已下载")) {
-					Utils.showShortToast(context, "该应用已下载，请到下载任务中管理");
+				if (holder.download.getText().toString().equals("打开")) {
+					SystemUtils.startApp(context, mlist.get(position)
+							.getPackageName());
+					return;
+				}
+				if (holder.download.getText().toString().equals("安装")) {
+					if (SystemUtils.getUserApps(context).contains(mlist.get(position))){
+						Utils.showShortToast(context, "该应用已安装");
+						holder.bar.setVisibility(View.GONE);
+						holder.download.setText("打开");
+						return ;
+					}
+					SystemUtils.openAppFronUri(context,
+							mlist.get(position).getDownloadPath());
 					return;
 				}
 				if (holder.download.getText().toString().equals("下载")) {
@@ -159,7 +179,8 @@ public class AppsAdapter extends BaseAdapter {
 											super.onProgressUpdate(values);
 											holder.bar.setProgress(values[0]);
 											if (values[0] == 100) {
-												holder.download.setText("已下载");
+												holder.download.setText("安装");
+												holder.bar.setVisibility(View.GONE);
 											}
 											Log.i("update progress",
 													String.valueOf(values[0]));
@@ -190,7 +211,8 @@ public class AppsAdapter extends BaseAdapter {
 											super.onProgressUpdate(values);
 											holder.bar.setProgress(values[0]);
 											if (values[0] == 100) {
-												holder.download.setText("已下载");
+												holder.bar.setVisibility(View.GONE);
+												holder.download.setText("安装");
 												SystemUtils
 														.openAppFronUri(
 																context,

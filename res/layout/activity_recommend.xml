@@ -7,18 +7,6 @@
 
     <include layout="@layout/layout_title" />
 
-    <com.personlife.widget.ClearEditText
-        android:id="@+id/et_tuijian_search"
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:layout_margin="5dp"
-        android:background="@drawable/sousuokuang"
-        android:drawableLeft="@drawable/sousuoyemian"
-        android:focusable="false"
-        android:hint="搜索"
-        android:paddingLeft="10dp"
-        android:singleLine="true"
-        android:textSize="15.0dp" />
     <View
         android:layout_width="fill_parent"
         android:layout_height="2dp"

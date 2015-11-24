@@ -2,6 +2,8 @@ package com.personlife.utils;
 
 import java.util.Set;
 
+import com.github.snowdream.android.util.Log;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -27,7 +29,7 @@ public class PersonInfoLocal {
 	public static void storeRegisterTel(Context ctx, String phone) {
 		SharedPreferences.Editor editor = ctx.getSharedPreferences(phone,
 				ctx.MODE_PRIVATE).edit();
-		editor.putString("telephone", phone);
+		editor.putString("telphone", phone);
 		editor.putString("password", "");
 		editor.commit();
 	}
@@ -59,9 +61,12 @@ public class PersonInfoLocal {
 			String password) {
 		SharedPreferences.Editor editor = ctx.getSharedPreferences(phone,
 				ctx.MODE_PRIVATE).edit();
-		editor.putString("telephone", phone);
+		editor.putString("telphone", phone);
 		editor.putString("password", password);
 		editor.commit();
+		SharedPreferences.Editor editordefault = PreferenceManager.getDefaultSharedPreferences(ctx).edit();
+		editordefault.putString("telphone", phone);
+		editordefault.commit();
 	}
 
 	public static void storeMainPersonInfo(Context ctx, String phone,

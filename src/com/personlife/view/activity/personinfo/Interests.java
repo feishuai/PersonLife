@@ -81,7 +81,7 @@ public class Interests extends Activity {
 				// TODO Auto-generated method stub
 				Set<String> temp = new HashSet<String>();
 				temp.add("");
-				for (int i = 0; i < 12; i++) {
+				for (int i = 0; i < got.size(); i++) {
 					if (flag[i] == true) {
 						temp.add(got.get(i));
 					}
@@ -100,14 +100,14 @@ public class Interests extends Activity {
 		backselected.add(R.drawable.register_intest_selected2);
 		backselected.add(R.drawable.register_intest_selected3);
 		RequestParams request = new RequestParams();
-		BaseAsyncHttp.postReq(this, "/app/allkind", request,
+		BaseAsyncHttp.postReq(this, "/users/hobby", request,
 				new JSONArrayHttpResponseHandler() {
 
 					@Override
 					public void jsonSuccess(JSONArray resp) {
 						// TODO Auto-generated method stub
 						for (int i = 0; i < resp.length(); i++) {
-							got.add(resp.optJSONObject(i).optString("second"));
+							got.add(resp.optJSONObject(i).optString("hobby"));
 						}
 						flag = new boolean[resp.length()];
 						for (int i = 0; i < resp.length(); i++) {
@@ -124,7 +124,7 @@ public class Interests extends Activity {
 							}
 						}
 						// sb里有兴趣爱好
-						String temp = sb.toString();
+						String temp = sb.toString().trim();
 						IntestAdapter dapter = new IntestAdapter(
 								getApplicationContext(), got, temp);
 						gridView.setAdapter(dapter);

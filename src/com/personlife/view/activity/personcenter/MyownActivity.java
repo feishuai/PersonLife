@@ -134,7 +134,7 @@ public class MyownActivity extends Activity implements
 			}
 
 		}
-		request.put("hobby", sb.toString());
+		request.put("hobby", sb.toString().trim());
 		request.put("signature",
 				PersonInfoLocal.getSignature(MyownActivity.this, telphone));
 		BaseAsyncHttp.postReq(getApplicationContext(), "/users/modify",

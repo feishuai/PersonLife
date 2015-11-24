@@ -31,7 +31,7 @@
 
         <com.personlife.widget.HorizontialListView
             android:id="@+id/hlv_detail_urls"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="266dp"
             android:padding="2dp" >
         </com.personlife.widget.HorizontialListView>
@@ -59,8 +59,7 @@
                     android:id="@+id/tv_detail_intro"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15dp" 
-                    android:text="爱你一万年" />
+                    android:textSize="15dp"  />
 
                 <TextView
                     android:id="@+id/tv_detail_more"
@@ -90,8 +89,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="10dp"
-                    android:textSize="15dp" 
-                    android:text="2015年7月10日" />
+                    android:textSize="15dp"  />
          <TextView
                     android:id="@+id/tv_detail_log"
                     android:layout_width="wrap_content"
@@ -99,8 +97,7 @@
                     android:paddingLeft="10dp"
                     android:paddingRight
                     ="10dp"
-                    android:textSize="15dp" 
-                    android:text="日志信息" />
+                    android:textSize="15dp"  />
          <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
@@ -121,8 +118,7 @@
 			    android:textColor="@color/black" 
 			    android:layout_alignParentLeft="true"
 			    android:paddingLeft="10dp"
-			    android:textSize="15dp" 
-			    android:text="有23421人评分" />
+			    android:textSize="15dp"  />
 
 			<ImageView
 			    android:id="@+id/imageView1"

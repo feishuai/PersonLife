@@ -48,6 +48,7 @@ import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.Utils;
 import com.personlife.view.activity.home.AllDownloadActivity;
+import com.personlife.view.activity.personinfo.UserDetail;
 import com.personlife.widget.PagerSlidingTabStrip;
 
 public class CircleActivity extends FragmentActivity implements OnClickListener {
@@ -67,7 +68,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 	String phone;
 	Star star;
 	Boolean isPraised = false;
-	Boolean isAdded = false;
+	int isAdded = 0;
 	CircleFriendsFragment friendsfragment;
 	CircleOtherAppsFragment appsfragment;
 	private Button downloadButton;// 一键下载 按钮
@@ -104,9 +105,9 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 		addfriend.setOnClickListener(this);
 		praise = (ImageView) findViewById(R.id.iv_circle_dianzan);
 		praise.setOnClickListener(this);
-		btnShare = (ImageButton) findViewById(R.id.imgbtn_share);
-		btnShare.setVisibility(View.VISIBLE);
-		btnShare.setOnClickListener(this);
+//		btnShare = (ImageButton) findViewById(R.id.imgbtn_share);
+//		btnShare.setVisibility(View.VISIBLE);
+//		btnShare.setOnClickListener(this);
 		downloadButton = (Button) findViewById(R.id.txt_download);
 		downloadButton.setVisibility(View.VISIBLE);// 主页的一键下载按钮显示
 		downloadButton.setOnClickListener(this);
@@ -120,30 +121,34 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 
 		star = new Star();
 		star.setPhone(phone);
+		Log.d(UserDetail.class.getName(),phone);
 		final List<Shuoshuo> shuoshuos = new ArrayList<Shuoshuo>();
 		friendsfragment = new CircleFriendsFragment(shuoshuos,
 				(Star) ComplexPreferences.getObject(getApplicationContext(),
 						"user", new TypeReference<Star>() {
 						}));
 		RequestParams request = new RequestParams();
-		request.add("phone", star.getPhone());
+		request.add("starphone", star.getPhone());
+		request.add("myphone", PersonInfoLocal.getPhone(getApplicationContext()));
 		BaseAsyncHttp.postReq(getApplicationContext(), "/users/getinfo",
 				request, new JSONObjectHttpResponseHandler() {
 
 					@Override
 					public void jsonSuccess(JSONObject resp) {
 						// TODO Auto-generated method stub
-						star.setPhone(resp.optString("phone"));
-						star.setNickname(resp.optString("nickname"));
-						star.setThumb(resp.optString("thumb"));
-						star.setFollower(resp.optString("follower"));
-						star.setShared(resp.optString("shared"));
-						star.setFamous(resp.optInt("famous"));
-						star.setSignature(resp.optString("signature"));
-						star.setFavour(resp.optInt("favour"));
-						star.setFamous(resp.optInt("famous"));
+						JSONObject userjson = resp.optJSONObject("user");
+						star.setPhone(userjson.optString("phone"));
+						star.setNickname(userjson.optString("nickname"));
+						star.setThumb(userjson.optString("thumb"));
+						star.setFollower(userjson.optString("follower"));
+						star.setShared(userjson.optString("shared"));
+						star.setFamous(userjson.optInt("famous"));
+						star.setSignature(userjson.optString("signature"));
+						star.setFavour(userjson.optInt("favour"));
+						star.setFamous(userjson.optInt("famous"));
 						ComplexPreferences.putObject(getApplicationContext(),
 								"star", star);
+						isAdded = resp.optInt("follow");
 						updateFriendsCircle();
 						updateProfile();
 					}
@@ -158,12 +163,15 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 		final List<App> apps = new ArrayList<App>();
 		appsfragment = new CircleOtherAppsFragment(apps);
 		star.setApps(apps);
-		BaseAsyncHttp.postReq(getApplicationContext(), "/myapp/get", request,
+		RequestParams requestapp = new RequestParams();
+		requestapp.add("phone", star.getPhone());
+		BaseAsyncHttp.postReq(getApplicationContext(), "/myapp/get", requestapp,
 				new JSONArrayHttpResponseHandler() {
 
 					@Override
 					public void jsonSuccess(JSONArray resp) {
 						// TODO Auto-generated method stub
+						Log.d("apps", resp.toString());
 						for (int i = 0; i < resp.length(); i++) {
 							App appInfo = new App();
 							appInfo.setId(resp.optJSONObject(i).optInt("id"));
@@ -191,6 +199,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 									"profile"));
 							appInfo.setDownloadPath(Constants.DownloadPath
 									+ appInfo.getName() + ".apk");
+							apps.add(appInfo);
 						}
 						appsfragment.setData(apps);
 					}
@@ -227,9 +236,9 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 				try {
 					Log.i("listview getview", "activity update thread");
 					while (!friendsfragment.getIsLoaded()) {
-						Thread.sleep(400);
+						Thread.sleep(600);
 					}
-					Thread.sleep(500);
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -395,8 +404,17 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 		starname.setText(star.getNickname());
 		follows.setText("(" + star.getFavour() + ")");
 		signature.setText(star.getSignature());
-		if (star.getFamous() == 0)
-			addfriend.setText("添加好友");
+		if (star.getFamous() == 0){
+			if(isAdded == 1)
+				addfriend.setText("已是好友");
+			else
+				addfriend.setText("添加好友");
+		}else{
+			if(isAdded == 1){
+				addfriend.setText("已关注");
+				addfriend.setGravity(Gravity.CENTER);				
+			}
+		}
 	}
 
 	@Override
@@ -487,7 +505,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 					PersonInfoLocal.getPhone(getApplicationContext()));
 			request.add("fphone", star.getPhone());
 			if (star.getFamous() == 1)
-				if (!isAdded)
+				if (isAdded == 0)
 					BaseAsyncHttp.postReq(this, "/follow/set", request,
 							new JSONObjectHttpResponseHandler() {
 								@Override
@@ -500,9 +518,9 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 									else
 										Utils.showShortToast(
 												getApplicationContext(), "已关注");
-									addfriend.setText("已关注");
 									addfriend.setGravity(Gravity.CENTER);
-									isAdded = true;
+									addfriend.setText("已关注");
+									isAdded = 1;
 								}
 
 								@Override
@@ -520,7 +538,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 									Utils.showShortToast(
 											getApplicationContext(), "取消关注");
 									addfriend.setText("添加关注");
-									isAdded = false;
+									isAdded = 1;
 								}
 
 								@Override
@@ -534,7 +552,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 					PersonInfoLocal.getPhone(getApplicationContext()));
 			addrequest.add("friendid", star.getPhone());
 			if (star.getFamous() == 0)
-				if (!isAdded)
+				if (isAdded == 0)
 					BaseAsyncHttp.postReq(this, "/friend/requestadd", request,
 							new JSONObjectHttpResponseHandler() {
 								@Override
@@ -550,7 +568,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 												getApplicationContext(), "已是好友");
 									addfriend.setText("已请求");
 									addfriend.setGravity(Gravity.CENTER);
-									isAdded = true;
+									isAdded = 1;
 								}
 
 								@Override

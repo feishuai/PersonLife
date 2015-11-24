@@ -34,6 +34,7 @@ import android.widget.Toast;
 import com.example.personlifep.R;
 import com.loopj.android.http.RequestParams;
 import com.personlife.adapter.ContactAdapter;
+import com.personlife.bean.User;
 import com.personlife.bean.UserFriend;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.JSONObjectHttpResponseHandler;
@@ -138,6 +139,11 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 									.optString("phone"));
 							userFriend.setNickname(jsons.optJSONObject(i)
 									.optString("nickname"));
+							if(userFriend.getNickname().equals("")){
+								userFriend.setNickname(jsons.optJSONObject(i)
+										.optString("phone"));
+								
+							}
 							userFriend.setThumb(jsons.optJSONObject(i)
 									.optString("thumb"));
 							FriendsUtils.userFriends.add(userFriend);
@@ -202,8 +208,6 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 			intent.putExtra("fromwhere", "friend");
 			intent.putExtra("phone", user.getPhone());
 			getActivity().startActivity(intent);
-			// getActivity().overridePendingTransition(R.anim.push_left_in,
-			// R.anim.push_left_out);
 		}
 
 	}

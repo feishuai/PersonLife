@@ -168,6 +168,11 @@ public class CollectionAppsFragment extends Fragment {
 			else
 				holder.status.setText(counts + "人下载 "
 						+ mList.get(position).getSize());
+//			if (counts > 10000)
+//				holder.status.setText(counts / 10000 + "万人下载  ");
+//			else
+//				holder.status.setText(counts + "人下载 ");
+//			holder.status.append(mList.get(position).getStars()+"分");
 			holder.intro.setText(mList.get(position).getProfile());
 			holder.download.setVisibility(View.GONE);
 			if (isDelete)

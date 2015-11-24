@@ -36,6 +36,8 @@ import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.Utils;
 import com.personlife.view.activity.circle.SharePlusActivity;
+import com.personlife.view.activity.discovery.StarRecommendActivity;
+import com.personlife.view.activity.discovery.StarSearchActivity;
 import com.personlife.view.activity.home.AllDownloadActivity;
 import com.personlife.view.activity.home.AppSearchActivity;
 import com.personlife.view.fragment.DiscoveryFragment;
@@ -79,9 +81,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		} else {
 			initdataWithNoPassword();
 		}
-
 		init();
-
 	}
 
 	public void onResume() {
@@ -93,7 +93,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		super.onPause();
 		MobclickAgent.onPause(this);
 	}
-
+	
 	public void initdataWithPassword() {
 
 		RequestParams request = new RequestParams();
@@ -260,7 +260,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 					null);
 			break;
 		case R.id.img_right:
-			Utils.start_Activity(MainActivity.this, AppSearchActivity.class,
+			Utils.start_Activity(MainActivity.this, StarSearchActivity.class,
 					null);
 			break;
 		}

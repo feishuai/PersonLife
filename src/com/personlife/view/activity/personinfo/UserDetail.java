@@ -16,6 +16,7 @@ import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ActivityCollector;
 import com.personlife.utils.FriendsUtils;
 import com.personlife.utils.ImageLoaderUtils;
+import com.personlife.utils.PersonInfoLocal;
 import com.personlife.view.activity.circle.CircleActivity;
 import com.personlife.view.activity.personcenter.SearchUser;
 
@@ -117,8 +118,8 @@ public class UserDetail extends Activity implements OnClickListener {
 	protected void initData() {
 
 		RequestParams request = new RequestParams();
-		request.put("phone", phone);
-
+		request.add("starphone", phone);
+		request.add("myphone", PersonInfoLocal.getPhone(getApplicationContext()));
 		BaseAsyncHttp.postReq(getApplicationContext(), "/users/getinfo",
 				request, new JSONObjectHttpResponseHandler() {
 
@@ -126,19 +127,21 @@ public class UserDetail extends Activity implements OnClickListener {
 					public void jsonSuccess(JSONObject resp) {
 						// TODO Auto-generated method stub
 						try {
-
-							tv_name.setText(resp.getString("nickname")
+							
+							JSONObject userjson = resp.optJSONObject("user");
+							
+							tv_name.setText(userjson.getString("nickname")
 									.toString());
-							if (resp.get("gender").toString().equals("男"))
+							if (userjson.get("gender").toString().equals("男"))
 								sex.setImageResource(R.drawable.ic_sex_male);
 							else
 								sex.setImageResource(R.drawable.ic_sex_female);
 							tv_region
-									.setText(resp.getString("area").toString());
-							tv_sign.setText(resp.getString("signature")
+									.setText(userjson.getString("area").toString());
+							tv_sign.setText(userjson.getString("signature")
 									.toString());
 							ImageLoaderUtils.displayAppIcon(
-									resp.getString("thumb"), head);
+									userjson.getString("thumb"), head);
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -169,6 +172,7 @@ public class UserDetail extends Activity implements OnClickListener {
 			break;
 		case R.id.btn_circle:
 			Intent intent = new Intent(UserDetail.this, CircleActivity.class);
+			Log.d(UserDetail.class.getName(),phone);
 			intent.putExtra("starphone", phone);
 			UserDetail.this.startActivity(intent);
 			break;

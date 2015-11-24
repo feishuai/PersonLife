@@ -3,6 +3,8 @@ package com.personlife.view.fragment;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -15,6 +17,7 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qzone.QZone;
 import cn.sharesdk.wechat.friends.Wechat;
+import cn.sharesdk.wechat.moments.WechatMoments;
 
 import com.example.personlifep.R;
 import com.loopj.android.http.RequestParams;
@@ -36,6 +39,11 @@ import com.personlife.view.activity.personcenter.SecureActivity;
 import com.personlife.view.activity.personcenter.SettingActivity;
 import com.personlife.view.activity.personcenter.TaskList;
 import com.personlife.view.activity.personcenter.TongzhiActivity;
+import com.personlife.view.activity.personinfo.AreaSetting;
+import com.personlife.view.activity.personinfo.Interests;
+import com.personlife.view.activity.personinfo.NickName;
+import com.personlife.view.activity.personinfo.PersonalSign;
+import com.personlife.view.activity.personinfo.Profession;
 import com.personlife.view.collection.CollectionActivity;
 import com.personlife.widget.CircleImageView;
 
@@ -72,10 +80,12 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 	private Uri imageUri;
 	private Bitmap bitmap;
 	private String telphone, headuri;
-
+	
+	//若Fragement定义有带参构造函数，则一定要定义public的默认的构造函数
+	public PersonalCenter(){
+	}
 	public PersonalCenter(String tel) {
 		// TODO Auto-generated constructor stub
-		super();
 		telphone = tel;
 	}
 
@@ -83,7 +93,7 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		if (layout == null) {
-			ctx = this.getActivity();
+			ctx = getActivity();
 			layout = ctx.getLayoutInflater().inflate(
 					R.layout.fragment_personalcenter, null);
 			ShareSDK.initSDK(getActivity());
@@ -136,7 +146,8 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 
 		} else {
 			RequestParams request = new RequestParams();
-			request.put("phone", telphone);
+			request.add("starphone", telphone);
+			request.put("myphone", telphone);
 			BaseAsyncHttp.postReq(getActivity().getApplicationContext(),
 					"/users/getinfo", request,
 					new JSONObjectHttpResponseHandler() {
@@ -144,17 +155,34 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 						@Override
 						public void jsonSuccess(JSONObject resp) {
 							try {
-								username.setText(resp.get("nickname")
+								JSONObject userjson = resp.optJSONObject("user");
+								username.setText(userjson.get("nickname")
 										.toString());
-								personsign.setText(resp.get("signature")
+								personsign.setText(userjson.get("signature")
 										.toString());
-								if (resp.get("gender").toString().equals("男"))
+								if (userjson.get("gender").toString().equals("男"))
 									sex.setImageResource(R.drawable.ic_sex_male);
 								else
 									sex.setImageResource(R.drawable.ic_sex_female);
 								ImageLoaderUtils.displayImageView(
 										PersonInfoLocal.getHeadKey(ctx,
 												telphone), head);
+								PersonInfoLocal.storeNickname(getActivity(), telphone, userjson.get("nickname")
+										.toString());
+								PersonInfoLocal.storeSex(getActivity(), telphone, userjson.get("gender").toString());
+								PersonInfoLocal.storeLocation(getActivity(), telphone,
+										userjson.get("area").toString());
+								PersonInfoLocal.storeJob(getActivity(), telphone, userjson.get("job").toString());
+								String buffer=userjson.get("hobby").toString();
+								String buf[]=buffer.split(" ");
+								Set<String> set=new HashSet<String>();
+								for(int i=0;i<buf.length;i++){
+									set.add(buf[i]);
+								}
+								PersonInfoLocal.storeRegisterHobbys(getActivity(),telphone,set);
+								PersonInfoLocal.storeSignature(getActivity(), telphone,
+										userjson.get("signature").toString());
+
 								// Bitmap photo;
 								// try {
 								// photo = BitmapFactory
@@ -195,6 +223,7 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 		layout.findViewById(R.id.txt_message).setOnClickListener(this);
 		layout.findViewById(R.id.sina).setOnClickListener(this);
 		layout.findViewById(R.id.wxchat).setOnClickListener(this);
+		layout.findViewById(R.id.wechat).setOnClickListener(this);
 		layout.findViewById(R.id.qq).setOnClickListener(this);
 	}
 
@@ -269,15 +298,25 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 		// oks.show(ctx);
 		//
 		// break;
-		case R.id.wxchat:
+		case R.id.wechat:
 			ShareParams weixin = new ShareParams();
 			weixin.setTitle("请下载我的App");
 			weixin.setText("我们这里有最精彩的应用，快快来加入我们吧！");
 			weixin.setUrl(Constants.AppDownloadUrl);
 			weixin.setImageUrl(Constants.AppIconUrl);
 			weixin.setShareType(Platform.SHARE_WEBPAGE);
+			Platform weicomment = ShareSDK.getPlatform(WechatMoments.NAME);
+			weicomment.share(weixin);
+			break;
+		case R.id.wxchat:
+			ShareParams wechat = new ShareParams();
+			wechat.setTitle("请下载我的App");
+			wechat.setText("我们这里有最精彩的应用，快快来加入我们吧！");
+			wechat.setUrl(Constants.AppDownloadUrl);
+			wechat.setImageUrl(Constants.AppIconUrl);
+			wechat.setShareType(Platform.SHARE_WEBPAGE);
 			Platform wei = ShareSDK.getPlatform(Wechat.NAME);
-			wei.share(weixin);
+			wei.share(wechat);
 			break;
 		case R.id.qq:
 			ShareParams sp = new ShareParams();
@@ -290,7 +329,7 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 			break;
 		case R.id.sina:
 			ShareParams sinasp = new ShareParams();
-			sinasp.setText("请下载我的App");
+			sinasp.setText("请下载我的App! " + Constants.AppDownloadUrl);
 			sinasp.setImageUrl(Constants.AppIconUrl);
 			Platform sina = ShareSDK.getPlatform(SinaWeibo.NAME);
 			sina.share(sinasp);

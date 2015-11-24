@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -65,9 +66,9 @@ public class GuessActivity extends Activity implements OnClickListener {
 		mBack.setVisibility(View.VISIBLE);
 		mBack.setOnClickListener(this);
 		mTitle = (TextView) findViewById(R.id.txt_title);
-		btnShare = (ImageButton) findViewById(R.id.imgbtn_share);
-		btnShare.setVisibility(View.VISIBLE);
-		btnShare.setOnClickListener(this);
+//		btnShare = (ImageButton) findViewById(R.id.imgbtn_share);
+//		btnShare.setVisibility(View.VISIBLE);
+//		btnShare.setOnClickListener(this);
 		downloadButton = (Button) findViewById(R.id.txt_download);
 		downloadButton.setVisibility(View.VISIBLE);// 主页的一键下载按钮显示
 		downloadButton.setOnClickListener(this);
@@ -150,26 +151,25 @@ public class GuessActivity extends Activity implements OnClickListener {
 	public List<App> getApps(JSONArray resp) {
 		List<App> apps = new ArrayList<App>();
 		for (int i = 0; i < resp.length(); i++) {
-			App appInfo = new App();
-			appInfo.setId(resp.optJSONObject(i).optInt("id"));
-			appInfo.setName(resp.optJSONObject(i).optString("name"));
-			appInfo.setVersion(resp.optJSONObject(i).optString("version"));
-			appInfo.setDownloadUrl(resp.optJSONObject(i).optString(
-					"android_url"));
-			appInfo.setStars(resp.optJSONObject(i).optInt("stars"));
-			appInfo.setDowloadcount(resp.optJSONObject(i).optInt(
-					"downloadcount"));
-			appInfo.setIntrodution(resp.optJSONObject(i).optString(
-					"introduction"));
-			appInfo.setUpdateDate(resp.optJSONObject(i).optLong("updated_at"));
-			appInfo.setSize(resp.optJSONObject(i).optString("size"));
-			appInfo.setIcon(resp.optJSONObject(i).optString("icon"));
-			appInfo.setUpdateLog(resp.optJSONObject(i).optString("updated_log"));
-			appInfo.setProfile(resp.optJSONObject(i).optString("profile"));
-			appInfo.setDownloadPath(Constants.DownloadPath + appInfo.getName()
-					+ ".apk");
-			apps.add(appInfo);
+			App app = new App();
+			JSONObject jsonapp = resp.optJSONObject(i);
+			app.setIcon(jsonapp.optString("icon"));
+			app.setSize(jsonapp.optString("size"));
+			app.setDowloadcount(jsonapp
+					.optInt("downloadcount"));
+			app.setIntrodution(jsonapp
+					.optString("introduction"));
+			app.setName(jsonapp.optString("name"));
+			app.setId(jsonapp.optInt("id"));
+			app.setDownloadUrl(jsonapp
+					.optString("android_url"));
+			app.setProfile(jsonapp.optString("profile"));
+			app.setDownloadPath(Constants.DownloadPath
+					+ app.getName() + ".apk");
+			app.setStars((float) jsonapp.optDouble("stars"));
+			apps.add(app);
 		}
+		mList = apps;
 		return apps;
 	}
 

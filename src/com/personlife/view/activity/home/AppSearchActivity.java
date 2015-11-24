@@ -204,6 +204,7 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 										.getString("android_url"));
 								app.setDownloadPath(Constants.DownloadPath
 										+ app.getName() + ".apk");
+								app.setPackageName(jsonapp.optString("package"));
 								applist.add(app);
 							}
 							// resultAdapter.setData(applist);

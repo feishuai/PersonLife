@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.personlifep.R;
@@ -37,6 +38,7 @@ import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ComplexPreferences;
 import com.personlife.utils.Constants;
 import com.personlife.utils.DrawableStringUtils;
+import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.SystemUtils;
 import com.personlife.utils.Utils;
 import com.personlife.view.activity.home.AppSearchActivity;
@@ -59,6 +61,8 @@ public class HomeFragment extends Fragment implements OnClickListener {
 	List<App> allapps, systemApps;
 	List<App> localApps;
 	Map<String, ArrayList<App>> tag2Apps;
+	LinearLayout llLoad;
+	Button btnLoad;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,11 +87,14 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		search = (ClearEditText) layout.findViewById(R.id.et_home_search);
 		kind = (Button) layout.findViewById(R.id.btn_home_class);
 		mLvApps = (MyListView) layout.findViewById(R.id.lv_home_kinds);
+		llLoad = (LinearLayout) layout.findViewById(R.id.ll_load);
+		btnLoad = (Button) layout.findViewById(R.id.btn_load);
 	}
 
 	public void setOnListener() {
 		search.setOnClickListener(this);
 		kind.setOnClickListener(this);
+		btnLoad.setOnClickListener(this);
 	}
 
 	public void initData() {
@@ -98,9 +105,13 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		kindsAdapter = new KindsAdapter(getActivity(), taglist,
 				new HashMap<String, List<App>>());
 		mLvApps.setAdapter(kindsAdapter);
+		if (!Utils.isNetworkAvailable(getActivity())){
+			llLoad.setVisibility(View.VISIBLE);
+			mLvApps.setVisibility(View.GONE);
+		}
 		if (userapps.size() == 0)
 			userapps = SystemUtils.getAppsNoSystom(getActivity());
-
+		uploadAppToServer();
 		if (ComplexPreferences.getObject(getActivity(), "tags",
 				new TypeReference<ArrayList<String>>() {
 				}) == null) {
@@ -123,10 +134,12 @@ public class HomeFragment extends Fragment implements OnClickListener {
 								e.printStackTrace();
 							}
 						}
-
+						
 						@Override
 						public void jsonFail(JSONArray resp) {
 							// TODO Auto-generated method stub
+							llLoad.setVisibility(View.VISIBLE);
+							mLvApps.setVisibility(View.GONE);
 						}
 					});
 
@@ -138,7 +151,29 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		}
 
 	}
+	
+	public void uploadAppToServer(){
+		RequestParams request = new RequestParams();
+		request.put("phone", PersonInfoLocal.getPhone(getActivity()));
+		request.put("platform", "android");
+		for (int i = 0; i < userapps.size(); i++) {
+			request.add("apps[" + i + "]", userapps.get(i).getPackageName());
+		}
+		BaseAsyncHttp.postReq(getActivity(), "/myapp/upload",
+				request, new JSONObjectHttpResponseHandler() {
 
+					@Override
+					public void jsonSuccess(JSONObject resp) {
+					}
+
+					@Override
+					public void jsonFail(JSONObject resp) {
+						llLoad.setVisibility(View.VISIBLE);
+						mLvApps.setVisibility(View.GONE);
+					}
+				});
+	}
+	
 	public void updateLocalApp() {
 		systemApps = SystemUtils.getUserApps(getActivity());
 		localApps = new ArrayList<App>();
@@ -183,6 +218,8 @@ public class HomeFragment extends Fragment implements OnClickListener {
 					public void jsonFail(JSONObject resp) {
 						// TODO Auto-generated method stub
 						Utils.showShortToast(getActivity(), "网络故障");
+						llLoad.setVisibility(View.VISIBLE);
+						mLvApps.setVisibility(View.GONE);
 					}
 				});
 	}
@@ -226,6 +263,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 								app.setDownloadPath(Constants.DownloadPath
 										+ app.getName() + ".apk");
 								app.setStars((float) jsonapp.optDouble("stars"));
+								app.setPackageName(jsonapp.optString("package"));
 								apps.add(app);
 							}
 							maps.put(tag, apps);
@@ -240,6 +278,8 @@ public class HomeFragment extends Fragment implements OnClickListener {
 						// TODO Auto-generated method stub
 						pd.dismiss();
 						Utils.showShortToast(getActivity(), "获取数据出错");
+						llLoad.setVisibility(View.VISIBLE);
+						mLvApps.setVisibility(View.GONE);
 					}
 				});
 	}
@@ -274,6 +314,10 @@ public class HomeFragment extends Fragment implements OnClickListener {
 					ClassificationActivity.class);
 			startActivityForResult(intentclass, 1);
 			break;
+		case R.id.btn_load:
+			llLoad.setVisibility(View.GONE);
+			mLvApps.setVisibility(View.VISIBLE);
+			initData();
 		default:
 			break;
 		}

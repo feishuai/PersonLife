@@ -32,7 +32,6 @@ public class ComplexPreferences {
 			complexPreferences = new ComplexPreferences(context,
 					namePreferences, context.MODE_PRIVATE);
 		}
-
 		return complexPreferences;
 	}
 
@@ -61,7 +60,7 @@ public class ComplexPreferences {
 
 	public static void putObject(Context context, String key, Object object) {
 		ComplexPreferences pre = getComplexPreferences(context,
-				Constants.SharePrefrencesName);
+				PersonInfoLocal.getPhone(context));
 		pre.putObject(key, object);
 		pre.commit();
 	}
@@ -86,7 +85,8 @@ public class ComplexPreferences {
 	public static <T> T getObject(Context context, String key,
 			TypeReference valueTypeRef) {
 		ComplexPreferences pre = getComplexPreferences(context,
-				Constants.SharePrefrencesName);
+				PersonInfoLocal.getPhone(context));
+		Log.i("namePreferences", PersonInfoLocal.getPhone(context));
 		return pre.getObject(key, valueTypeRef);
 	}
 

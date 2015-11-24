@@ -38,10 +38,13 @@ import cn.sharesdk.wechat.moments.WechatMoments;
 import com.alibaba.fastjson.serializer.AppendableSerializer;
 import com.example.personlifep.R;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.github.snowdream.android.app.DownloadListener;
+import com.github.snowdream.android.app.DownloadTask;
 import com.loopj.android.http.RequestParams;
 import com.personlife.bean.App;
 import com.personlife.bean.Comment;
 import com.personlife.net.BaseAsyncHttp;
+import com.personlife.net.DownloadTaskManager;
 import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ComplexPreferences;
 import com.personlife.utils.Constants;
@@ -63,7 +66,7 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 	List<App> systemApps;
 	ImageView appicon;
 	List<String> selectedLabels;
-	List<String> appLabels;
+	List<String> appLabels = new ArrayList<String>();
 	RatingBar stars;
 	LabelAdapter labelAdapter;
 	ImageView qq, wechat, sina;
@@ -131,6 +134,7 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 									.optJSONObject(packagename);
 							if (appjson.optInt("exist") == 1) {
 								app.setId(appjson.optInt("appid"));
+								app.setIcon(appjson.optString("icon"));
 								existedApps.add(app);
 							}
 						}
@@ -163,18 +167,18 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 				Utils.showShortToast(getApplication(), "请给出评分");
 				return;
 			}
-			if (appLabels.size() > 0 && selectedLabels.size() == 0) {
-				Utils.showShortToast(getApplicationContext(), "请至少选择一个标签");
-				return;
-			}
+//			if (appLabels.size() > 0 && selectedLabels.size() == 0) {
+//				Utils.showShortToast(getApplicationContext(), "请至少选择一个标签");
+//				return;
+//			}
 			RequestParams params = new RequestParams();
 			params.add("phone",
 					PersonInfoLocal.getPhone(getApplicationContext()));
 			params.add("content", content);
 			params.add("appstars", String.valueOf(counts));
-			for (int i = 0; i < selectedLabels.size(); i++) {
-				params.add("appkinds[" + i + "]", selectedLabels.get(i));
-			}
+//			for (int i = 0; i < selectedLabels.size(); i++) {
+//				params.add("appkinds[" + i + "]", selectedLabels.get(i));
+//			}
 			params.add("apps[0][id]", String.valueOf(selectedApp.getId()));
 			Log.d("params", params.toString());
 			BaseAsyncHttp.postReq(getApplicationContext(), "/message/send",
@@ -196,12 +200,13 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 						}
 					});
 			
+			String sharedUrl = Constants.PrefixShareUrl+String.valueOf(selectedApp.getId());
 			if (isSelected[0]) {
 				ShareParams sp = new ShareParams();
 				sp.setTitle("请下载我的App");
-				sp.setTitleUrl(Constants.PrefixShareUrl+String.valueOf(selectedApp.getId())); // 标题的超链接
+				sp.setTitleUrl(sharedUrl); // 标题的超链接
 				sp.setText("我们这里有最精彩的应用，快快来加入我们吧！");
-				sp.setImageUrl(Constants.AppIconUrl);
+				sp.setImageUrl(selectedApp.getIcon());
 //				sp.setImageData(DrawableStringUtils.stringtoBitmap(selectedApp.getDrawableString()));
 				Platform qzone = ShareSDK.getPlatform(QZone.NAME);
 				qzone.share(sp);
@@ -210,7 +215,7 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 				ShareParams weixin = new ShareParams();
 				weixin.setTitle("请下载我的App");
 				weixin.setText("我们这里有最精彩的应用，快快来加入我们吧！");
-				weixin.setUrl(Constants.PrefixShareUrl+String.valueOf(selectedApp.getId()));
+				weixin.setUrl(sharedUrl);
 				weixin.setImageData(DrawableStringUtils.stringtoBitmap(selectedApp.getDrawableString()));
 				weixin.setShareType(Platform.SHARE_WEBPAGE);
 				Platform wei = ShareSDK.getPlatform(WechatMoments.NAME);
@@ -218,8 +223,8 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 			}
 			if (isSelected[2]) {
 				ShareParams sinasp = new ShareParams();
-				sinasp.setText("请下载我的App");
-				sinasp.setImageUrl(Constants.AppIconUrl);
+				sinasp.setText("请下载我的App。  " + sharedUrl);
+				sinasp.setImageUrl(selectedApp.getIcon());
 //				sinasp.setImageData(DrawableStringUtils.stringtoBitmap(selectedApp.getDrawableString()));
 				Platform sina = ShareSDK.getPlatform(SinaWeibo.NAME);
 				sina.share(sinasp);
@@ -265,37 +270,38 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 					});
 			appicon.setBackground(DrawableStringUtils
 					.stringToDrawable(selectedApp.getDrawableString()));
-			RequestParams params = new RequestParams();
-			params.add("appid", String.valueOf(selectedApp.getId()));
-			BaseAsyncHttp.postReq(getApplicationContext(), "/app/getapp",
-					params, new JSONObjectHttpResponseHandler() {
-
-						@Override
-						public void jsonSuccess(JSONObject resp) {
-							// TODO Auto-generated method stub
-							JSONObject jsonapp = resp.optJSONObject("basic");
-							String label = jsonapp.optString("kind");
-							Log.d("labels", label);
-							if (!label.equals("")) {
-								selectedLabels.clear();
-								gvLabels.setVisibility(View.VISIBLE);
-								hasLabel.setVisibility(View.VISIBLE);
-								appLabels = Arrays.asList(label.trim().split(
-										" "));
-								labelAdapter.setData(appLabels);
-								labelAdapter.notifyDataSetChanged();
-							} else {
-								gvLabels.setVisibility(View.GONE);
-								hasLabel.setVisibility(View.GONE);
-							}
-						}
-
-						@Override
-						public void jsonFail(JSONObject resp) {
-							// TODO Auto-generated method stub
-
-						}
-					});
+//			RequestParams params = new RequestParams();
+//			params.add("appid", String.valueOf(selectedApp.getId()));
+//			params.add("phone", PersonInfoLocal.getPhone(getApplicationContext()));
+//			BaseAsyncHttp.postReq(getApplicationContext(), "/app/getapp",
+//					params, new JSONObjectHttpResponseHandler() {
+//
+//						@Override
+//						public void jsonSuccess(JSONObject resp) {
+//							// TODO Auto-generated method stub
+//							JSONObject jsonapp = resp.optJSONObject("basic");
+//							String label = jsonapp.optString("kind");
+//							Log.d("labels", label);
+//							if (!label.equals("")) {
+//								selectedLabels.clear();
+//								gvLabels.setVisibility(View.VISIBLE);
+//								hasLabel.setVisibility(View.VISIBLE);
+//								appLabels = Arrays.asList(label.trim().split(
+//										" "));
+//								labelAdapter.setData(appLabels);
+//								labelAdapter.notifyDataSetChanged();
+//							} else {
+//								gvLabels.setVisibility(View.GONE);
+//								hasLabel.setVisibility(View.GONE);
+//							}
+//						}
+//
+//						@Override
+//						public void jsonFail(JSONObject resp) {
+//							// TODO Auto-generated method stub
+//
+//						}
+//					});
 			break;
 		}
 	}

@@ -42,6 +42,7 @@ import com.personlife.utils.ComplexPreferences;
 import com.personlife.utils.Constants;
 import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.utils.PersonInfoLocal;
+import com.personlife.utils.SystemUtils;
 import com.personlife.utils.Utils;
 import com.personlife.widget.HorizontialListView;
 
@@ -61,7 +62,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 	UrlsAppAdapter urlsadapter;
 	ProgressBar bar;
 	int appid;
-	Boolean isCollected = false; // 判断是否已在收藏列表
+	int isCollected; // 判断是否已在收藏列表
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +95,6 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 		shoucang.setImageResource(R.drawable.shoucang1);
 		shoucang.setOnClickListener(this);
 		mBack.setVisibility(View.VISIBLE);
-		mTitle.setText("网易云音乐");
 		mBack.setOnClickListener(this);
 		mMore.setOnClickListener(this);
 		mComments.setOnClickListener(this);
@@ -115,6 +115,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		RequestParams params = new RequestParams();
 		params.add("appid", String.valueOf(appid));
+		params.add("phone", PersonInfoLocal.getPhone(getApplicationContext()));
 		BaseAsyncHttp.postReq(getApplicationContext(), "/app/getapp", params,
 				new JSONObjectHttpResponseHandler() {
 
@@ -138,6 +139,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 							app.setUpdateDate(jsonapp.getLong("updated_at"));
 							app.setProfile(jsonapp.getString("profile"));
 							app.setStars((float) jsonapp.optDouble("stars"));
+							app.setPackageName(jsonapp.optString("package"));
 							urlsapp.clear();
 							for (int i = 0; i < jsonurls.length(); i++) {
 								urlsapp.add(jsonurls.getJSONObject(i)
@@ -162,6 +164,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 										.getLong("created_at"));
 								comments.add(comment);
 							}
+							isCollected = resp.optInt("collect");
 							app.setComments(comments);
 							app.setDownloadPath(Constants.DownloadPath
 									+ app.getName() + ".apk");
@@ -256,6 +259,8 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 		} else
 			mIntro.setText(app.getIntrodution().substring(0, numbersOfDisplay));
 
+		if (isCollected == 1)
+			shoucang.setImageResource(R.drawable.shoucang);
 		updateUrls();
 	}
 
@@ -270,13 +275,20 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 			if (size > 0) {
 				int progress = DownloadTaskManager.getDownloadTaskManager(
 						getApplicationContext()).getDownloadProgress(app);
-				if (progress == 100)
-					mDownload.setText("已下载");
-				else
+				if (progress == 100) {
+					mDownload.setText("安装");
+					bar.setVisibility(View.GONE);
+				} else {
 					mDownload.setText("继续");
-				bar.setVisibility(View.VISIBLE);
-				bar.setProgress(progress);
+					bar.setVisibility(View.VISIBLE);
+					bar.setProgress(progress);
+				}
 			}
+		}
+
+		if (SystemUtils.getUserApps(getApplicationContext()).contains(app)) {
+			mDownload.setText("打开");
+			bar.setVisibility(View.GONE);
 		}
 
 		mDownload.setOnClickListener(new OnClickListener() {
@@ -284,9 +296,19 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if (mDownload.getText().toString().equals("已下载")) {
-					Utils.showShortToast(getApplicationContext(),
-							"该应用已下载，请到下载任务中管理");
+				if (mDownload.getText().toString().equals("打开")) {
+					SystemUtils.startApp(getApplicationContext(),
+							app.getPackageName());
+					return;
+				}
+				if (mDownload.getText().toString().equals("安装")) {
+					if (SystemUtils.getUserApps(getApplicationContext()).contains(app)){
+						Utils.showShortToast(getApplicationContext(), "该应用已安装");
+						bar.setVisibility(View.GONE);
+						mDownload.setText("打开");
+						return ;
+					}
+					SystemUtils.openAppFronUri(getApplicationContext(),app.getDownloadPath());
 					return;
 				}
 				if (mDownload.getText().toString().equals("下载")) {
@@ -322,7 +344,8 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 									super.onProgressUpdate(values);
 									bar.setProgress(values[0]);
 									if (values[0] == 100) {
-										mDownload.setText("已下载");
+										mDownload.setText("安装");
+										bar.setVisibility(View.GONE);
 									}
 									Log.i("update progress",
 											String.valueOf(values[0]));
@@ -352,7 +375,8 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 									super.onProgressUpdate(values);
 									bar.setProgress(values[0]);
 									if (values[0] == 100) {
-										mDownload.setText("已下载");
+										mDownload.setText("安装");
+										bar.setVisibility(View.GONE);
 									}
 									Log.i("update progress",
 											String.valueOf(values[0]));
@@ -480,6 +504,8 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 		if (requestCode == 1) {
 			RequestParams params = new RequestParams();
 			params.add("appid", String.valueOf(appid));
+			params.add("phone",
+					PersonInfoLocal.getPhone(getApplicationContext()));
 			BaseAsyncHttp.postReq(getApplicationContext(), "/app/getapp",
 					params, new JSONObjectHttpResponseHandler() {
 						@Override
@@ -559,7 +585,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 			params.add("app", String.valueOf(appid));
 			params.add("phone",
 					PersonInfoLocal.getPhone(getApplicationContext()));
-			if (isCollected) {
+			if (isCollected == 1) {
 				BaseAsyncHttp.postReq(getApplicationContext(),
 						"/collect/cancel-app", params,
 						new JSONObjectHttpResponseHandler() {
@@ -569,7 +595,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 								shoucang.setImageResource(R.drawable.shoucang1);
 								Utils.showShortToast(getApplicationContext(),
 										"取消收藏");
-								isCollected = false;
+								isCollected = 0;
 							}
 
 							@Override
@@ -594,7 +620,7 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 									Utils.showShortToast(
 											getApplicationContext(), "已收藏");
 								shoucang.setImageResource(R.drawable.shoucang);
-								isCollected = true;
+								isCollected = 1;
 							}
 
 							@Override

@@ -67,6 +67,7 @@ public class AllDownloadActivity extends Activity implements OnClickListener {
 				.getObject(getIntent().getStringExtra("key"),
 						new TypeReference<ArrayList<App>>() {
 						});
+		Log.d("app size", apps.size() + "");
 		// RequestParams params = new RequestParams();
 		// params.add("kind", "娱乐");
 		// BaseAsyncHttp.postReq(getApplicationContext(), "/app/kind", params,

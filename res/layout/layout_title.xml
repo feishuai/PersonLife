@@ -30,6 +30,8 @@
             android:drawableLeft="@drawable/icon_back"
             android:text="@string/back"
             android:textSize="18sp"
+           	android:paddingLeft="4dp"
+           	android:paddingRight="4dp"
             android:visibility="gone" />
 
         <ImageButton
