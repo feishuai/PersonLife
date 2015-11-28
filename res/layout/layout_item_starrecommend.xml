@@ -10,7 +10,7 @@
         android:layout_height="80dp"
         android:layout_margin="10dp"
         android:layout_toRightOf="@+id/cb_star_state"
-        android:src="@drawable/star1" />
+         />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -25,7 +25,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLength="20"
-            android:text="杨鹏飞"
             android:textColor="@color/black"
             android:textSize="16dp" />
 
@@ -35,7 +34,6 @@
             android:layout_height="wrap_content"
             android:maxLength="20"
             android:textColor="@color/bg"
-            android:text="12万粉丝"
             android:drawableLeft="@drawable/fensi"
             android:textSize="12dp" />
 
@@ -44,7 +42,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLength="20"
-            android:text="最近更新2015-8-10"
             android:textSize="14dp" />
     </LinearLayout>
 

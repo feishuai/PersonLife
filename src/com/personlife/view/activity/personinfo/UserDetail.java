@@ -41,6 +41,7 @@ public class UserDetail extends Activity implements OnClickListener {
 	private String phone;
 	private String mytelphone;
 	private String where;
+	private int flag = 0;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,7 @@ public class UserDetail extends Activity implements OnClickListener {
 			initviewfr();
 			setListener();
 			initData();
+			flag = 1;
 		}
 
 	}
@@ -86,7 +88,7 @@ public class UserDetail extends Activity implements OnClickListener {
 		btn_sendmsg = (Button) findViewById(R.id.btn_sendmsg);
 		btn_sendmsg.setTag("1");
 		if (getIntent().getIntExtra("isFriend", 0) == 1) {
-			btn_sendmsg.setText("查看Ta的主页");
+			btn_sendmsg.setText("删除好友");
 		} else
 			btn_sendmsg.setText("添加好友");
 		tv_name = (TextView) findViewById(R.id.tv_name);
@@ -109,8 +111,7 @@ public class UserDetail extends Activity implements OnClickListener {
 
 		btn_sendmsg = (Button) findViewById(R.id.btn_sendmsg);
 		btn_sendmsg.setTag("1");
-		btn_sendmsg.setText("查看主页");
-		btn_sendmsg.setVisibility(View.GONE);
+		btn_sendmsg.setText("删除好友");
 		tv_name = (TextView) findViewById(R.id.tv_name);
 
 	}
@@ -119,7 +120,8 @@ public class UserDetail extends Activity implements OnClickListener {
 
 		RequestParams request = new RequestParams();
 		request.add("starphone", phone);
-		request.add("myphone", PersonInfoLocal.getPhone(getApplicationContext()));
+		request.add("myphone",
+				PersonInfoLocal.getPhone(getApplicationContext()));
 		BaseAsyncHttp.postReq(getApplicationContext(), "/users/getinfo",
 				request, new JSONObjectHttpResponseHandler() {
 
@@ -127,17 +129,17 @@ public class UserDetail extends Activity implements OnClickListener {
 					public void jsonSuccess(JSONObject resp) {
 						// TODO Auto-generated method stub
 						try {
-							
+
 							JSONObject userjson = resp.optJSONObject("user");
-							
+
 							tv_name.setText(userjson.getString("nickname")
 									.toString());
 							if (userjson.get("gender").toString().equals("男"))
 								sex.setImageResource(R.drawable.ic_sex_male);
 							else
 								sex.setImageResource(R.drawable.ic_sex_female);
-							tv_region
-									.setText(userjson.getString("area").toString());
+							tv_region.setText(userjson.getString("area")
+									.toString());
 							tv_sign.setText(userjson.getString("signature")
 									.toString());
 							ImageLoaderUtils.displayAppIcon(
@@ -168,11 +170,12 @@ public class UserDetail extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.txt_left:
+			setResult(1);
 			finish();
 			break;
 		case R.id.btn_circle:
 			Intent intent = new Intent(UserDetail.this, CircleActivity.class);
-			Log.d(UserDetail.class.getName(),phone);
+			Log.d(UserDetail.class.getName(), phone);
 			intent.putExtra("starphone", phone);
 			UserDetail.this.startActivity(intent);
 			break;
@@ -180,24 +183,50 @@ public class UserDetail extends Activity implements OnClickListener {
 			RequestParams request = new RequestParams();
 			request.put("myphone", mytelphone);
 			request.put("fphone", phone);
-			BaseAsyncHttp.postReq(getApplicationContext(),
-					"/friend/requestadd", request,
-					new JSONObjectHttpResponseHandler() {
+			if (mytelphone.equals(phone))
+				return;
+			if (flag == 1) {
+				BaseAsyncHttp.postReq(getApplicationContext(),
+						"/friend/delete", request,
+						new JSONObjectHttpResponseHandler() {
 
-						@Override
-						public void jsonSuccess(JSONObject resp) {
-							// TODO Auto-generated method stub
-							Toast.makeText(UserDetail.this, "发送好友请求成功",
-									Toast.LENGTH_SHORT).show();
+							@Override
+							public void jsonSuccess(JSONObject resp) {
+								// TODO Auto-generated method stub
+								if (resp.optInt("flag") == 1)
+									Toast.makeText(UserDetail.this, "删除好友成功",
+										Toast.LENGTH_SHORT).show();
+								if (resp.optInt("flag") == 0)
+									Toast.makeText(UserDetail.this, "已删除好友",
+											Toast.LENGTH_SHORT).show();
+							}
 
-						}
+							@Override
+							public void jsonFail(JSONObject resp) {
+								// TODO Auto-generated method stub
 
-						@Override
-						public void jsonFail(JSONObject resp) {
-							// TODO Auto-generated method stub
+							}
+						});
+			} else {
+				BaseAsyncHttp.postReq(getApplicationContext(),
+						"/friend/requestadd", request,
+						new JSONObjectHttpResponseHandler() {
 
-						}
-					});
+							@Override
+							public void jsonSuccess(JSONObject resp) {
+								// TODO Auto-generated method stub
+								Toast.makeText(UserDetail.this, "发送好友请求成功",
+										Toast.LENGTH_SHORT).show();
+
+							}
+
+							@Override
+							public void jsonFail(JSONObject resp) {
+								// TODO Auto-generated method stub
+
+							}
+						});
+			}
 
 			break;
 		}

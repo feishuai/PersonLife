@@ -11,8 +11,7 @@
         android:layout_height="100dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
-        android:src="@drawable/star5" />
+        android:layout_marginLeft="10dp" />
 
     <TextView
         android:id="@+id/tv_circle_starname"
@@ -24,7 +23,6 @@
         android:layout_toRightOf="@+id/iv_circle_staricon"
         android:maxLength="10"
         android:singleLine="true"
-        android:text="李宇春"
         android:textSize="18dp" />
 
     <TextView
@@ -35,7 +33,6 @@
         android:layout_below="@+id/tv_circle_starname"
         android:drawableLeft="@drawable/signature2"
         android:singleLine="true"
-        android:text="我更新了我的APP列表"
         android:textSize="14dp" />
 
     <Button

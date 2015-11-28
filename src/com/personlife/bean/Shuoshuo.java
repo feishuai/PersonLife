@@ -19,7 +19,7 @@ public class Shuoshuo {
 
 	public Shuoshuo() {
 	}
-	
+
 	public String getLabels() {
 		return labels;
 	}

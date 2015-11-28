@@ -17,16 +17,17 @@ public class Star {
 	private int famous;
 	private int favour;
 	private int sharecounts;
+	private long created;
 	private List<Shuoshuo> shuoshuos;
 	private List<App> apps;
 
 	public Star() {
 	}
-	
-	public Star(String phone){
+
+	public Star(String phone) {
 		this.phone = phone;
 	}
-	
+
 	public int getFamous() {
 		return famous;
 	}
@@ -114,6 +115,14 @@ public class Star {
 	public void setShared(String shared) {
 		this.shared = shared;
 	}
+	
+	public long getCreated() {
+		return created;
+	}
+
+	public void setCreated(long created) {
+		this.created = created;
+	}
 
 	@Override
 	public boolean equals(Object o) {
@@ -122,6 +131,8 @@ public class Star {
 			return false;
 		if (o instanceof Star) {
 			Star newStar = (Star) o;
+			if ( newStar.getPhone() == null)
+				return false;
 			if (this.phone.equals(newStar.getPhone()))
 				return true;
 		}

@@ -78,7 +78,7 @@ public class AppListAdapter extends BaseAdapter {
 		holder.appname.setText(mlist.get(position).getName());
 		holder.status.setText("未安装");
 		holder.download.setText("下载");
-
+		
 		if (DownloadTaskManager.getDownloadTaskManager(context)
 				.isHasDownloaded(mlist.get(position))) {
 			long size = DownloadTaskManager.getDownloadTaskManager(context)
@@ -105,12 +105,23 @@ public class AppListAdapter extends BaseAdapter {
 				}
 			}
 		}
-
+		
+		if (SystemUtils.getUserApps(context).contains(mlist.get(position))) {
+			holder.download.setText("打开");
+			holder.status.setText("已安装");
+			holder.bar.setVisibility(View.GONE);
+		}
+		
 		holder.download.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				if (holder.download.getText().toString().equals("打开")) {
+					SystemUtils.startApp(context, mlist.get(position)
+							.getPackageName());
+					return;
+				}
 				if (holder.download.getText().toString().equals("下载")) {
 					if (DownloadTaskManager.getDownloadTaskManager(context)
 							.isHasDownloaded(mlist.get(position))) {

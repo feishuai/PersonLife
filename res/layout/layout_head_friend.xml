@@ -27,6 +27,14 @@
             android:singleLine="true"
             android:text="新的朋友"
             android:textColor="@color/black" />
+		<ImageView 
+		    android:id="@+id/redHot"
+		    android:layout_width="12dp"
+		    android:layout_height="12dp"
+		    android:layout_marginLeft="2dp"
+		    android:src="@drawable/red_hot"
+		    android:visibility="gone"/>        
+        
     </LinearLayout>
 
     <View

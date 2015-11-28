@@ -79,7 +79,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 			String pwd = password.getText().toString();
 			if (name.equals("") || pwd.equals("")) {
 				Utils.showShortToast(getApplicationContext(), "用户名或密码不能为空！");
-				return ;
+				return;
 			}
 			final ProgressDialog pd = new ProgressDialog(LoginActivity.this);
 			pd.setCanceledOnTouchOutside(false);

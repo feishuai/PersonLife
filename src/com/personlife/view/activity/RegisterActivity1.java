@@ -108,57 +108,57 @@ public class RegisterActivity1 extends Activity implements OnClickListener {
 			// finish();
 
 			String telphone = et_usertel.getText().toString();
-			String code = et_code.getText().toString();
-			if (title.equals("注册")) {
-				RequestParams request = new RequestParams();
-				request.put("phone", telphone);
-				request.put("num", code);
-				BaseAsyncHttp.postReq(getApplicationContext(), "/users/verify",
-						request, new JSONObjectHttpResponseHandler() {
+			String code = et_code.getText().toString().trim();
+			RequestParams request = new RequestParams();
+			request.put("phone", telphone);
+			request.put("num", code);
+			BaseAsyncHttp.postReq(getApplicationContext(), "/users/verify",
+					request, new JSONObjectHttpResponseHandler() {
 
-							@Override
-							public void jsonSuccess(JSONObject resp) {
-								try {
-									if (resp.getString("flag").equals("1")) {
-										PersonInfoLocal
-												.storeRegisterTel(
-														RegisterActivity1.this,
-														et_usertel.getText()
-																.toString());
-										Intent intent = new Intent(
-												RegisterActivity1.this,
-												RegisterActivity2.class);
-										intent.putExtra("telphone", et_usertel
-												.getText().toString());
-										startActivity(intent);
+						@Override
+						public void jsonSuccess(JSONObject resp) {
+							try {
+								if (resp.getString("flag").equals("1")) {
+									PersonInfoLocal.storeRegisterTel(
+											RegisterActivity1.this, et_usertel
+													.getText().toString());
+									skipToNext();
 
-									} else {
-										Toast.makeText(RegisterActivity1.this,
-												"验证码错误", Toast.LENGTH_SHORT)
-												.show();
-									}
-								} catch (JSONException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
+								} else {
+									Toast.makeText(RegisterActivity1.this,
+											"验证码错误", Toast.LENGTH_SHORT).show();
 								}
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
 							}
+						}
 
-							@Override
-							public void jsonFail(JSONObject resp) {
-								// TODO Auto-generated method stub
-							}
-						});
-			}
-			if (title.equals("找回密码")) {
-				Intent intent = new Intent(RegisterActivity1.this,
-						FindCodeActivity.class);
-				intent.putExtra("telphone", et_usertel.getText().toString());
-				startActivity(intent);
-			}
+						@Override
+						public void jsonFail(JSONObject resp) {
+							// TODO Auto-generated method stub
+							Toast.makeText(RegisterActivity1.this, "网络问题",
+									Toast.LENGTH_SHORT).show();
+						}
+					});
 
 			break;
 		default:
 			break;
+		}
+	}
+
+	private void skipToNext() {
+		if (title.equals("找回密码")) {
+			Intent intent = new Intent(RegisterActivity1.this,
+					FindCodeActivity.class);
+			intent.putExtra("telphone", et_usertel.getText().toString());
+			startActivity(intent);
+		} else {
+			Intent intent = new Intent(RegisterActivity1.this,
+					RegisterActivity2.class);
+			intent.putExtra("telphone", et_usertel.getText().toString());
+			startActivity(intent);
 		}
 	}
 

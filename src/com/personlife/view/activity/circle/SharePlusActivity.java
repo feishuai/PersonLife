@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,14 +101,14 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 		qq.setOnClickListener(this);
 		wechat.setOnClickListener(this);
 		sina.setOnClickListener(this);
-		
+
 		isSelected = new Boolean[3];
 		for (int i = 0; i < isSelected.length; i++) {
 			isSelected[i] = false;
 		}
 
 		ShareSDK.initSDK(getApplicationContext());
-		
+
 		selectedApp = new App();
 		selectedLabels = new ArrayList<String>();
 		labelAdapter = new LabelAdapter(getApplicationContext(),
@@ -162,23 +163,20 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 				Utils.showShortToast(getApplicationContext(), "请至少输入5个字");
 				return;
 			}
+			if (TextUtils.isEmpty(selectedApp.getPackageName())) {
+				Utils.showShortToast(getApplication(), "请选择一个应用");
+				return;
+			}
 			int counts = (int) stars.getRating();
 			if (counts == 0) {
 				Utils.showShortToast(getApplication(), "请给出评分");
 				return;
 			}
-//			if (appLabels.size() > 0 && selectedLabels.size() == 0) {
-//				Utils.showShortToast(getApplicationContext(), "请至少选择一个标签");
-//				return;
-//			}
 			RequestParams params = new RequestParams();
 			params.add("phone",
 					PersonInfoLocal.getPhone(getApplicationContext()));
 			params.add("content", content);
 			params.add("appstars", String.valueOf(counts));
-//			for (int i = 0; i < selectedLabels.size(); i++) {
-//				params.add("appkinds[" + i + "]", selectedLabels.get(i));
-//			}
 			params.add("apps[0][id]", String.valueOf(selectedApp.getId()));
 			Log.d("params", params.toString());
 			BaseAsyncHttp.postReq(getApplicationContext(), "/message/send",
@@ -189,6 +187,7 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 							// TODO Auto-generated method stub
 							Utils.showShortToast(getApplicationContext(),
 									"发表分享成功");
+							setResult(1);
 							finish();
 						}
 
@@ -199,15 +198,16 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 									"网络故障，发表分享失败");
 						}
 					});
-			
-			String sharedUrl = Constants.PrefixShareUrl+String.valueOf(selectedApp.getId());
+
+			String sharedUrl = Constants.PrefixShareUrl
+					+ String.valueOf(selectedApp.getId());
 			if (isSelected[0]) {
 				ShareParams sp = new ShareParams();
 				sp.setTitle("请下载我的App");
 				sp.setTitleUrl(sharedUrl); // 标题的超链接
 				sp.setText("我们这里有最精彩的应用，快快来加入我们吧！");
 				sp.setImageUrl(selectedApp.getIcon());
-//				sp.setImageData(DrawableStringUtils.stringtoBitmap(selectedApp.getDrawableString()));
+				// sp.setImageData(DrawableStringUtils.stringtoBitmap(selectedApp.getDrawableString()));
 				Platform qzone = ShareSDK.getPlatform(QZone.NAME);
 				qzone.share(sp);
 			}
@@ -216,7 +216,8 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 				weixin.setTitle("请下载我的App");
 				weixin.setText("我们这里有最精彩的应用，快快来加入我们吧！");
 				weixin.setUrl(sharedUrl);
-				weixin.setImageData(DrawableStringUtils.stringtoBitmap(selectedApp.getDrawableString()));
+				weixin.setImageData(DrawableStringUtils
+						.stringtoBitmap(selectedApp.getDrawableString()));
 				weixin.setShareType(Platform.SHARE_WEBPAGE);
 				Platform wei = ShareSDK.getPlatform(WechatMoments.NAME);
 				wei.share(weixin);
@@ -225,7 +226,7 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 				ShareParams sinasp = new ShareParams();
 				sinasp.setText("请下载我的App。  " + sharedUrl);
 				sinasp.setImageUrl(selectedApp.getIcon());
-//				sinasp.setImageData(DrawableStringUtils.stringtoBitmap(selectedApp.getDrawableString()));
+				// sinasp.setImageData(DrawableStringUtils.stringtoBitmap(selectedApp.getDrawableString()));
 				Platform sina = ShareSDK.getPlatform(SinaWeibo.NAME);
 				sina.share(sinasp);
 			}
@@ -270,38 +271,6 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 					});
 			appicon.setBackground(DrawableStringUtils
 					.stringToDrawable(selectedApp.getDrawableString()));
-//			RequestParams params = new RequestParams();
-//			params.add("appid", String.valueOf(selectedApp.getId()));
-//			params.add("phone", PersonInfoLocal.getPhone(getApplicationContext()));
-//			BaseAsyncHttp.postReq(getApplicationContext(), "/app/getapp",
-//					params, new JSONObjectHttpResponseHandler() {
-//
-//						@Override
-//						public void jsonSuccess(JSONObject resp) {
-//							// TODO Auto-generated method stub
-//							JSONObject jsonapp = resp.optJSONObject("basic");
-//							String label = jsonapp.optString("kind");
-//							Log.d("labels", label);
-//							if (!label.equals("")) {
-//								selectedLabels.clear();
-//								gvLabels.setVisibility(View.VISIBLE);
-//								hasLabel.setVisibility(View.VISIBLE);
-//								appLabels = Arrays.asList(label.trim().split(
-//										" "));
-//								labelAdapter.setData(appLabels);
-//								labelAdapter.notifyDataSetChanged();
-//							} else {
-//								gvLabels.setVisibility(View.GONE);
-//								hasLabel.setVisibility(View.GONE);
-//							}
-//						}
-//
-//						@Override
-//						public void jsonFail(JSONObject resp) {
-//							// TODO Auto-generated method stub
-//
-//						}
-//					});
 			break;
 		}
 	}

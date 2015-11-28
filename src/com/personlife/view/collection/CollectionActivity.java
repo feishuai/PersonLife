@@ -50,11 +50,11 @@ public class CollectionActivity extends FragmentActivity implements
 	ViewPagerTabAdapter adapter;
 	PagerSlidingTabStrip tabs;
 	LinearLayout view;
-//	CharSequence Titles[] = { "分享收藏", "APP收藏", "关注明星" };
-	CharSequence Titles[] = {  "APP收藏", "关注明星" };
+	// CharSequence Titles[] = { "分享收藏", "APP收藏", "关注明星" };
+	CharSequence Titles[] = { "APP收藏", "关注明星" };
 	ColorStateList colors[];
 	Fragment fragments[];
-//	CollectionSharesFragment sharesfragment;
+	// CollectionSharesFragment sharesfragment;
 	CollectionAppsFragment appsfragment;
 	CollectionStarsFragment starsfragment;
 	int lastTab = 0;
@@ -83,73 +83,73 @@ public class CollectionActivity extends FragmentActivity implements
 		mDelete.setOnClickListener(this);
 
 		mShuoshuos = new ArrayList<Shuoshuo>();
-//		sharesfragment = new CollectionSharesFragment(mShuoshuos);
+		// sharesfragment = new CollectionSharesFragment(mShuoshuos);
 
-//		RequestParams requestShuoshuo = new RequestParams();
-//		requestShuoshuo.add("phone",
-//				PersonInfoLocal.getPhone(getApplicationContext()));
-//		BaseAsyncHttp.postReq(this, "/collect/get-msg", requestShuoshuo,
-//				new JSONObjectHttpResponseHandler() {
-//
-//					@Override
-//					public void jsonSuccess(JSONObject resp) {
-//						// TODO Auto-generated method stub
-//						try {
-//							JSONArray jsonshuoshuos = resp.getJSONArray("item");
-//							for (int i = 0; i < jsonshuoshuos.length(); i++) {
-//								Shuoshuo shuoshuo = new Shuoshuo();
-//								JSONObject jsonshuoshuo = jsonshuoshuos
-//										.getJSONObject(i);
-//								shuoshuo.setThumb(jsonshuoshuo
-//										.getString("thumb"));
-//								shuoshuo.setNickname(jsonshuoshuo
-//										.getString("nickname"));
-//								shuoshuo.setContent(jsonshuoshuo
-//										.getString("content"));
-//								shuoshuo.setCollecttime(jsonshuoshuo
-//										.getInt("created_at"));
-//								shuoshuo.setMsgid(jsonshuoshuo.getInt("msg"));
-//								shuoshuo.setPhone(jsonshuoshuo
-//										.getString("phone"));
-//								JSONArray jsonapps = jsonshuoshuo
-//										.getJSONArray("apps");
-//								List<App> shuoshuoapps = new ArrayList<App>();
-//								for (int j = 0; j < jsonapps.length(); j++) {
-//									App app = new App();
-//									JSONObject jsonapp = jsonapps
-//											.getJSONObject(j);
-//									app.setIcon(jsonapp.getString("icon"));
-//									app.setSize(jsonapp.getString("size"));
-//									app.setDowloadcount(jsonapp
-//											.getInt("downloadcount"));
-//									app.setIntrodution(jsonapp
-//											.getString("introduction"));
-//									app.setName(jsonapp.getString("name"));
-//									app.setId(jsonapp.getInt("id"));
-//									app.setDownloadUrl(jsonapp
-//											.getString("android_url"));
-//									app.setProfile(jsonapp.getString("profile"));
-//									app.setDownloadPath(Constants.DownloadPath
-//											+ app.getName() + ".apk");
-//									app.setStars((float) jsonapp.optDouble("stars"));
-//									shuoshuoapps.add(app);
-//								}
-//								shuoshuo.setApps(shuoshuoapps);
-//								mShuoshuos.add(shuoshuo);
-//							}
-//							sharesfragment.setShuoshuosList(mShuoshuos);
-//						} catch (JSONException e) {
-//							// TODO Auto-generated catch block
-//							e.printStackTrace();
-//						}
-//					}
-//
-//					@Override
-//					public void jsonFail(JSONObject resp) {
-//						// TODO Auto-generated method stub
-//
-//					}
-//				});
+		// RequestParams requestShuoshuo = new RequestParams();
+		// requestShuoshuo.add("phone",
+		// PersonInfoLocal.getPhone(getApplicationContext()));
+		// BaseAsyncHttp.postReq(this, "/collect/get-msg", requestShuoshuo,
+		// new JSONObjectHttpResponseHandler() {
+		//
+		// @Override
+		// public void jsonSuccess(JSONObject resp) {
+		// // TODO Auto-generated method stub
+		// try {
+		// JSONArray jsonshuoshuos = resp.getJSONArray("item");
+		// for (int i = 0; i < jsonshuoshuos.length(); i++) {
+		// Shuoshuo shuoshuo = new Shuoshuo();
+		// JSONObject jsonshuoshuo = jsonshuoshuos
+		// .getJSONObject(i);
+		// shuoshuo.setThumb(jsonshuoshuo
+		// .getString("thumb"));
+		// shuoshuo.setNickname(jsonshuoshuo
+		// .getString("nickname"));
+		// shuoshuo.setContent(jsonshuoshuo
+		// .getString("content"));
+		// shuoshuo.setCollecttime(jsonshuoshuo
+		// .getInt("created_at"));
+		// shuoshuo.setMsgid(jsonshuoshuo.getInt("msg"));
+		// shuoshuo.setPhone(jsonshuoshuo
+		// .getString("phone"));
+		// JSONArray jsonapps = jsonshuoshuo
+		// .getJSONArray("apps");
+		// List<App> shuoshuoapps = new ArrayList<App>();
+		// for (int j = 0; j < jsonapps.length(); j++) {
+		// App app = new App();
+		// JSONObject jsonapp = jsonapps
+		// .getJSONObject(j);
+		// app.setIcon(jsonapp.getString("icon"));
+		// app.setSize(jsonapp.getString("size"));
+		// app.setDowloadcount(jsonapp
+		// .getInt("downloadcount"));
+		// app.setIntrodution(jsonapp
+		// .getString("introduction"));
+		// app.setName(jsonapp.getString("name"));
+		// app.setId(jsonapp.getInt("id"));
+		// app.setDownloadUrl(jsonapp
+		// .getString("android_url"));
+		// app.setProfile(jsonapp.getString("profile"));
+		// app.setDownloadPath(Constants.DownloadPath
+		// + app.getName() + ".apk");
+		// app.setStars((float) jsonapp.optDouble("stars"));
+		// shuoshuoapps.add(app);
+		// }
+		// shuoshuo.setApps(shuoshuoapps);
+		// mShuoshuos.add(shuoshuo);
+		// }
+		// sharesfragment.setShuoshuosList(mShuoshuos);
+		// } catch (JSONException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// }
+		//
+		// @Override
+		// public void jsonFail(JSONObject resp) {
+		// // TODO Auto-generated method stub
+		//
+		// }
+		// });
 
 		mApps = new ArrayList<App>();
 		appsfragment = new CollectionAppsFragment(mApps);
@@ -176,6 +176,8 @@ public class CollectionActivity extends FragmentActivity implements
 								app.setName(jsonapp.getString("name"));
 								app.setId(jsonapp.getInt("id"));
 								app.setProfile(jsonapp.getString("profile"));
+								app.setStars((float) jsonapp.optDouble("stars"));
+								app.setPackageName(jsonapp.optString("package"));
 								mApps.add(app);
 							}
 							appsfragment.setAppsList(mApps);
@@ -226,10 +228,9 @@ public class CollectionActivity extends FragmentActivity implements
 					}
 				});
 
-//		fragments = new Fragment[] { sharesfragment, appsfragment,
-//				starsfragment };
-		fragments = new Fragment[] {  appsfragment,
-				starsfragment };
+		// fragments = new Fragment[] { sharesfragment, appsfragment,
+		// starsfragment };
+		fragments = new Fragment[] { appsfragment, starsfragment };
 		// Creating The ViewPagerAdapter and Passing Fragment Manager, Titles
 		// fot the Tabs and Number Of Tabs.
 		adapter = new ViewPagerTabAdapter(getSupportFragmentManager(), Titles,
@@ -254,19 +255,19 @@ public class CollectionActivity extends FragmentActivity implements
 				switch (arg0) {
 				case 0:
 					tabviews[arg0].setTextColor(colors[0]);
-//					tabviews[2 - arg0].setTextColor(colors[1]);
+					// tabviews[2 - arg0].setTextColor(colors[1]);
 					tabviews[1 - arg0].setTextColor(colors[1]);
 					break;
 				case 1:
 					tabviews[arg0].setTextColor(colors[0]);
 					tabviews[arg0 - 1].setTextColor(colors[1]);
-//					tabviews[arg0 + 1].setTextColor(colors[1]);
+					// tabviews[arg0 + 1].setTextColor(colors[1]);
 					break;
-//				case 2:
-//					tabviews[arg0].setTextColor(colors[0]);
-//					tabviews[arg0 - 1].setTextColor(colors[1]);
-//					tabviews[arg0 - 2].setTextColor(colors[1]);
-//					break;
+				// case 2:
+				// tabviews[arg0].setTextColor(colors[0]);
+				// tabviews[arg0 - 1].setTextColor(colors[1]);
+				// tabviews[arg0 - 2].setTextColor(colors[1]);
+				// break;
 				}
 			}
 
@@ -297,8 +298,8 @@ public class CollectionActivity extends FragmentActivity implements
 		tabviews[0].setTextColor(colors[0]);
 		tabviews[1] = (TextView) view.getChildAt(1);
 		tabviews[1].setTextColor(colors[1]);
-//		tabviews[2] = (TextView) view.getChildAt(2);
-//		tabviews[2].setTextColor(colors[1]);
+		// tabviews[2] = (TextView) view.getChildAt(2);
+		// tabviews[2].setTextColor(colors[1]);
 	}
 
 	@Override
@@ -312,9 +313,9 @@ public class CollectionActivity extends FragmentActivity implements
 			lastTab = currentTab;
 			layout_bottom.setVisibility(View.VISIBLE);
 			mEdit.setVisibility(View.GONE);
-//			if (currentTab == 0) {
-//				sharesfragment.setDeleteMode();
-//			}
+			// if (currentTab == 0) {
+			// sharesfragment.setDeleteMode();
+			// }
 
 			if (currentTab == 0) {
 				appsfragment.setDeleteMode();
@@ -327,9 +328,9 @@ public class CollectionActivity extends FragmentActivity implements
 		case R.id.iv_collection_delete:
 			layout_bottom.setVisibility(View.GONE);
 			mEdit.setVisibility(View.VISIBLE);
-//			if (lastTab == 0) {
-//				sharesfragment.setNormalMode();
-//			}
+			// if (lastTab == 0) {
+			// sharesfragment.setNormalMode();
+			// }
 
 			if (lastTab == 0) {
 				appsfragment.setNormalMode();

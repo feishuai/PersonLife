@@ -302,13 +302,15 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 					return;
 				}
 				if (mDownload.getText().toString().equals("安装")) {
-					if (SystemUtils.getUserApps(getApplicationContext()).contains(app)){
+					if (SystemUtils.getUserApps(getApplicationContext())
+							.contains(app)) {
 						Utils.showShortToast(getApplicationContext(), "该应用已安装");
 						bar.setVisibility(View.GONE);
 						mDownload.setText("打开");
-						return ;
+						return;
 					}
-					SystemUtils.openAppFronUri(getApplicationContext(),app.getDownloadPath());
+					SystemUtils.openAppFronUri(getApplicationContext(),
+							app.getDownloadPath());
 					return;
 				}
 				if (mDownload.getText().toString().equals("下载")) {

@@ -1,6 +1,7 @@
 package com.personlife.view.activity.personcenter;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -23,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +37,7 @@ import com.personlife.net.JSONArrayHttpResponseHandler;
 import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.FriendsUtils;
 import com.personlife.utils.GetContactsInfo;
+import com.personlife.utils.PersonInfoLocal;
 
 /**
  * 
@@ -48,6 +51,7 @@ public class LocalPhoneContact extends Activity implements OnClickListener {
 	private ListView mlistview, mNolistview;
 	private String telphone;
 	private List<UserFriend> mList, mNoList;
+	private LinearLayout ll;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +108,7 @@ public class LocalPhoneContact extends Activity implements OnClickListener {
 		});
 		mlistview = (ListView) findViewById(R.id.localcontactlist);
 		mNolistview = (ListView) findViewById(R.id.no_localcontactlist);
+		ll = (LinearLayout) findViewById(R.id.ll);
 		mList = new ArrayList<UserFriend>();
 		mNoList = new ArrayList<UserFriend>();
 		mNoList.addAll(new GetContactsInfo(this).getLocalUserFriends());
@@ -112,26 +117,29 @@ public class LocalPhoneContact extends Activity implements OnClickListener {
 		mNoList.removeAll(FriendsUtils.userFriends);
 		RequestParams request = new RequestParams();
 		for (int i = 0; i < mNoList.size(); i++) {
-			request.put("phone[" + i + "]", mNoList.get(i).getPhone());
+			request.put("phone[" + i + "]", mNoList.get(i).getPhone().trim().replace(" ", ""));
 		}
+		request.put("myphone", telphone);
 		BaseAsyncHttp.postReq(this, "/friend/exist", request,
 				new JSONArrayHttpResponseHandler() {
 
 					@Override
 					public void jsonSuccess(JSONArray resp) {
 						// TODO Auto-generated method stub
-						for (int i = 0; i < mNoList.size(); i++) {
-							try {
-								mNoList.get(i).setIsRegister(0);
-								if (resp.getInt(i) == 1) {
-									mNoList.get(i).setIsRegister(1);
-									mList.add(mNoList.get(i));
-
-								}
-							} catch (JSONException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
+						int i = 0;
+						for (Iterator iterator = mNoList.iterator(); iterator
+								.hasNext();) {
+							UserFriend userFriend = (UserFriend) iterator
+									.next();
+							userFriend.setIsRegister(0);
+							if (resp.optInt(i) == 1) {
+								userFriend.setIsRegister(1);
+								mList.add(userFriend);
 							}
+							if (resp.optInt(i) == 2) {
+								iterator.remove();
+							}
+							i++;
 						}
 						mNoList.removeAll(mList);
 						if (mNoList.size() == 0) {
@@ -140,6 +148,7 @@ public class LocalPhoneContact extends Activity implements OnClickListener {
 						if (mList.size() == 0) {
 							tv1.setVisibility(View.GONE);
 						}
+						ll.setVisibility(View.VISIBLE);
 						mlistview.setAdapter(new LocalContactAdapter(
 								getApplicationContext(), mList, telphone));
 						mNolistview.setAdapter(new LocalContactAdapter(

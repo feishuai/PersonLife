@@ -247,21 +247,24 @@ public class NewCircleFragment extends Fragment {
 		mlist = new ArrayList<Shuoshuo>();
 		lv.setAdapter(mAdapter);
 		RequestParams request = new RequestParams();
-		request.add("phone", star.getPhone());
+		request.add("starphone", star.getPhone());
+		request.add("myphone", star.getPhone());
 		BaseAsyncHttp.postReq(getActivity(), "/users/getinfo", request,
 				new JSONObjectHttpResponseHandler() {
 
 					@Override
 					public void jsonSuccess(JSONObject resp) {
 						// TODO Auto-generated method stub
-						star.setPhone(resp.optString("phone"));
-						star.setNickname(resp.optString("nickname"));
-						star.setThumb(resp.optString("thumb"));
-						star.setFollower(resp.optString("follower"));
-						star.setShared(resp.optString("shared"));
-						star.setFamous(resp.optInt("famous"));
-						star.setSignature(resp.optString("signature"));
-						star.setFavour(resp.optInt("favour"));
+						JSONObject userjson = resp.optJSONObject("user");
+						star.setPhone(userjson.optString("phone"));
+						star.setNickname(userjson.optString("nickname"));
+						star.setThumb(userjson.optString("thumb"));
+						star.setFollower(userjson.optString("follower"));
+						star.setShared(userjson.optString("shared"));
+						star.setFamous(userjson.optInt("famous"));
+						star.setSignature(userjson.optString("signature"));
+						star.setFavour(userjson.optInt("favour"));
+						star.setFamous(userjson.optInt("famous"));
 						ComplexPreferences.putObject(getActivity(), "user",
 								star);
 					}
@@ -483,11 +486,12 @@ public class NewCircleFragment extends Fragment {
 			commentsAdapter.setAdapter(commentsAdapter);
 			holder.comments.setAdapter(commentsAdapter);
 			holder.staricon.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					Intent intent = new Intent(getActivity(), CircleActivity.class);
+					Intent intent = new Intent(getActivity(),
+							CircleActivity.class);
 					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					intent.putExtra("starphone", mlist.get(position).getPhone());
 					startActivity(intent);
@@ -592,7 +596,7 @@ public class NewCircleFragment extends Fragment {
 
 				}
 			});
-			
+
 			if (DownloadTaskManager.getDownloadTaskManager(context)
 					.isHasDownloaded(app)) {
 				holder.isDownloaded = true;
@@ -602,7 +606,7 @@ public class NewCircleFragment extends Fragment {
 				holder.download.setImageResource(R.drawable.download1);
 			else
 				holder.download.setImageResource(R.drawable.download);
-			
+
 			holder.download.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -637,7 +641,7 @@ public class NewCircleFragment extends Fragment {
 						Utils.showLongToast(context, "该应用正在下载中！");
 						holder.download.setImageResource(R.drawable.download1);
 						holder.isDownloaded = true;
-					}else
+					} else
 						Utils.showLongToast(context, "该应用已在下载！");
 				}
 			});

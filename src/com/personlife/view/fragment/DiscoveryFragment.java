@@ -78,9 +78,10 @@ public class DiscoveryFragment extends Fragment implements OnClickListener {
 	/** 图片自动切换时间 */
 	private static final int PHOTO_CHANGE_TIME = 3000;
 	private String telphone;
-	
-	public DiscoveryFragment(){
+
+	public DiscoveryFragment() {
 	}
+
 	public DiscoveryFragment(String tel) {
 		super();
 		this.telphone = tel;

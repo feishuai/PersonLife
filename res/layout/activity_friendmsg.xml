@@ -38,7 +38,6 @@
                     android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="用户名"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
@@ -75,7 +74,6 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/tv_region_temp"
-                android:text="地区名"
                 android:textColor="#AAAAAA"
                 android:textSize="14sp" />
 
@@ -111,7 +109,6 @@
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/tv_sign_temp"
                 android:singleLine="true"
-                android:text="个性签名"
                 android:textColor="#AAAAAA"
                 android:textSize="14sp" />
 

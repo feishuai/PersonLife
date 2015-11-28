@@ -98,6 +98,8 @@ public class StarRecommendActivity extends FragmentActivity implements
 									"follower"));
 							star.setShared(resp.optJSONObject(i).optString(
 									"shared"));
+							star.setCreated(resp.optJSONObject(i).optLong(
+									"created_at"));
 							list_all.add(star);
 
 						}
@@ -129,6 +131,8 @@ public class StarRecommendActivity extends FragmentActivity implements
 									"follower"));
 							star.setShared(resp.optJSONObject(i).optString(
 									"shared"));
+							star.setCreated(resp.optJSONObject(i).optLong(
+									"created_at"));
 							list_new.add(star);
 
 						}
@@ -160,6 +164,8 @@ public class StarRecommendActivity extends FragmentActivity implements
 									"follower"));
 							star.setShared(resp.optJSONObject(i).optString(
 									"shared"));
+							star.setCreated(resp.optJSONObject(i).optLong(
+									"created_at"));
 							list_hot.add(star);
 
 						}

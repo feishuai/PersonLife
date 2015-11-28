@@ -2,6 +2,7 @@ package com.personlife.widget;
 
 import java.util.LinkedList;
 import java.util.Queue;
+
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Rect;
@@ -410,5 +411,39 @@ public class HorizontialListView extends AdapterView<ListAdapter> {
 		}
 
 	};
+	
+	@Override
+	public boolean onInterceptTouchEvent(MotionEvent ev) {
+		// TODO Auto-generated method stub
+		boolean result = false;
+		float lastX = 0, lastY = 0;
+		switch (ev.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+			lastX = ev.getX();
+			lastY = ev.getY();
+			break;
+		case MotionEvent.ACTION_MOVE:
+			int distanceX = (int) Math.abs(ev.getX() - lastX);
+			int distanceY = (int) Math.abs(ev.getY() - lastY);
+
+//			if (distanceX > distanceY && distanceX > 10) {
+//				result = true;
+//			} else {
+//				result = false;
+//			}
+			
+			if (distanceX > 0) {
+				result = true;
+			} else {
+				result = false;
+			}
+			break;
+
+		default:
+			break;
+		}
+
+		return result;
+	}
 
 }

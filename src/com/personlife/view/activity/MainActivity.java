@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -25,13 +26,17 @@ import android.widget.TextView;
 import com.baidu.android.pushservice.PushConstants;
 import com.baidu.android.pushservice.PushManager;
 import com.example.personlifep.R;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.loopj.android.http.RequestParams;
+import com.personlife.bean.App;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.DownloadTaskManager;
 import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.ActivityCollector;
+import com.personlife.utils.ComplexPreferences;
 import com.personlife.utils.Constants;
 import com.personlife.utils.DownloadHeadImg;
+import com.personlife.utils.DrawableStringUtils;
 import com.personlife.utils.ImageLoaderUtils;
 import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.Utils;
@@ -93,7 +98,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		super.onPause();
 		MobclickAgent.onPause(this);
 	}
-	
+
 	public void initdataWithPassword() {
 
 		RequestParams request = new RequestParams();
@@ -256,12 +261,22 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 					new BasicNameValuePair("key", Constants.HomeAllDownloadApps));
 			break;
 		case R.id.imgbtn_plus:
-			Utils.start_Activity(MainActivity.this, SharePlusActivity.class,
-					null);
+			startActivityForResult(new Intent(MainActivity.this,
+					SharePlusActivity.class), 1);
 			break;
 		case R.id.img_right:
 			Utils.start_Activity(MainActivity.this, StarSearchActivity.class,
 					null);
+			break;
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		switch (resultCode) {
+		case 1:
+			circlefragment.initData();
 			break;
 		}
 	}

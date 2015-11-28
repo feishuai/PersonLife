@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -34,12 +35,15 @@ import android.widget.Toast;
 import com.example.personlifep.R;
 import com.loopj.android.http.RequestParams;
 import com.personlife.adapter.ContactAdapter;
+import com.personlife.adapter.NewFriendsAdapter;
 import com.personlife.bean.User;
 import com.personlife.bean.UserFriend;
 import com.personlife.net.BaseAsyncHttp;
+import com.personlife.net.JSONArrayHttpResponseHandler;
 import com.personlife.net.JSONObjectHttpResponseHandler;
 import com.personlife.utils.FriendsUtils;
 import com.personlife.utils.GetContactsInfo;
+import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.SideBar;
 import com.personlife.utils.Utils;
 import com.personlife.view.activity.personinfo.UserDetail;
@@ -54,12 +58,17 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 	private SideBar indexBar;
 	private TextView mDialogText;
 	private WindowManager mWindowManager;
+	private ImageView redhot;
 	private String telphone;
 
 	public Fragment_Friends(String tel) {
 		// TODO Auto-generated constructor stub
 		super();
 		telphone = tel;
+	}
+
+	public Fragment_Friends() {
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -72,6 +81,7 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 			mWindowManager = (WindowManager) ctx
 					.getSystemService(Context.WINDOW_SERVICE);
 			initViews();
+			initRedHot();
 			initData();
 			setOnListener();
 		} else {
@@ -87,7 +97,6 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 
 		FriendsUtils.userFriends = new ArrayList<UserFriend>();
 		lvContact = (ListView) layout.findViewById(R.id.lvContact);
-
 		mDialogText = (TextView) LayoutInflater.from(getActivity()).inflate(
 				R.layout.list_position, null);
 		mDialogText.setVisibility(View.INVISIBLE);
@@ -103,11 +112,35 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 		indexBar.setTextView(mDialogText);
 		layout_head = ctx.getLayoutInflater().inflate(
 				R.layout.layout_head_friend, null);
+		redhot = (ImageView) layout_head.findViewById(R.id.redHot);
 		lvContact.addHeaderView(layout_head);
 		lvContact.setAdapter(new ContactAdapter(getActivity(),
 				FriendsUtils.userFriends));
 	}
+	
+	public void initRedHot(){
+		RequestParams request = new RequestParams();
+		request.put("phone", PersonInfoLocal.getPhone(getActivity()));
+		BaseAsyncHttp.postReq(getActivity(), "/friend/listenadd", request,
+				new JSONArrayHttpResponseHandler() {
 
+					@Override
+					public void jsonSuccess(JSONArray resp) {
+						// TODO Auto-generated method stub
+						if (resp.length() > 0)
+							redhot.setVisibility(View.VISIBLE);
+						else
+							redhot.setVisibility(View.GONE);
+					}
+
+					@Override
+					public void jsonFail(JSONArray resp) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+	}
+	
 	@Override
 	public void onDestroy() {
 		mWindowManager.removeView(mDialogText);
@@ -119,6 +152,7 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 	 */
 	public void refresh() {
 		initData();
+		initRedHot();
 	}
 
 	private void initData() {
@@ -139,10 +173,10 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 									.optString("phone"));
 							userFriend.setNickname(jsons.optJSONObject(i)
 									.optString("nickname"));
-							if(userFriend.getNickname().equals("")){
+							if (userFriend.getNickname().equals("")) {
 								userFriend.setNickname(jsons.optJSONObject(i)
 										.optString("phone"));
-								
+
 							}
 							userFriend.setThumb(jsons.optJSONObject(i)
 									.optString("thumb"));
@@ -175,7 +209,7 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 		case R.id.layout_search:// 搜索好友
 			Utils.start_Activity(getActivity(), SearchFriendActivity.class);
 			break;
-		case R.id.layout_addfriend:// 添加好友
+		case R.id.layout_addfriend:// 好友申请
 			Intent intent = new Intent(getActivity(),
 					NewFriendsListActivity.class);
 			intent.putExtra("telphone", telphone);
@@ -194,10 +228,8 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
-		if (resultCode == 1) {
-			FriendsUtils.userFriends.clear();
-			initData();
-		}
+		FriendsUtils.userFriends.clear();
+		refresh();
 	}
 
 	@Override
@@ -207,8 +239,9 @@ public class Fragment_Friends extends Fragment implements OnClickListener,
 			Intent intent = new Intent(getActivity(), UserDetail.class);
 			intent.putExtra("fromwhere", "friend");
 			intent.putExtra("phone", user.getPhone());
-			getActivity().startActivity(intent);
+			intent.putExtra("mytelphone",
+					PersonInfoLocal.getPhone(getActivity()));
+			startActivityForResult(intent, 2);
 		}
-
 	}
 }

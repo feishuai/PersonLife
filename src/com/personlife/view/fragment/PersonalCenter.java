@@ -15,6 +15,7 @@ import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.framework.Platform.ShareParams;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 import cn.sharesdk.sina.weibo.SinaWeibo;
+import cn.sharesdk.tencent.qq.QQ;
 import cn.sharesdk.tencent.qzone.QZone;
 import cn.sharesdk.wechat.friends.Wechat;
 import cn.sharesdk.wechat.moments.WechatMoments;
@@ -80,10 +81,11 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 	private Uri imageUri;
 	private Bitmap bitmap;
 	private String telphone, headuri;
-	
-	//若Fragement定义有带参构造函数，则一定要定义public的默认的构造函数
-	public PersonalCenter(){
+
+	// 若Fragement定义有带参构造函数，则一定要定义public的默认的构造函数
+	public PersonalCenter() {
 	}
+
 	public PersonalCenter(String tel) {
 		// TODO Auto-generated constructor stub
 		telphone = tel;
@@ -155,33 +157,44 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 						@Override
 						public void jsonSuccess(JSONObject resp) {
 							try {
-								JSONObject userjson = resp.optJSONObject("user");
+								JSONObject userjson = resp
+										.optJSONObject("user");
 								username.setText(userjson.get("nickname")
 										.toString());
 								personsign.setText(userjson.get("signature")
 										.toString());
-								if (userjson.get("gender").toString().equals("男"))
+								if (userjson.get("gender").toString()
+										.equals("男"))
 									sex.setImageResource(R.drawable.ic_sex_male);
 								else
 									sex.setImageResource(R.drawable.ic_sex_female);
 								ImageLoaderUtils.displayImageView(
 										PersonInfoLocal.getHeadKey(ctx,
 												telphone), head);
-								PersonInfoLocal.storeNickname(getActivity(), telphone, userjson.get("nickname")
-										.toString());
-								PersonInfoLocal.storeSex(getActivity(), telphone, userjson.get("gender").toString());
-								PersonInfoLocal.storeLocation(getActivity(), telphone,
-										userjson.get("area").toString());
-								PersonInfoLocal.storeJob(getActivity(), telphone, userjson.get("job").toString());
-								String buffer=userjson.get("hobby").toString();
-								String buf[]=buffer.split(" ");
-								Set<String> set=new HashSet<String>();
-								for(int i=0;i<buf.length;i++){
+								PersonInfoLocal.storeNickname(getActivity(),
+										telphone, userjson.get("nickname")
+												.toString());
+								PersonInfoLocal.storeSex(getActivity(),
+										telphone, userjson.get("gender")
+												.toString());
+								PersonInfoLocal.storeLocation(getActivity(),
+										telphone, userjson.get("area")
+												.toString());
+								PersonInfoLocal.storeJob(getActivity(),
+										telphone, userjson.get("job")
+												.toString());
+								String buffer = userjson.get("hobby")
+										.toString();
+								String buf[] = buffer.split(" ");
+								Set<String> set = new HashSet<String>();
+								for (int i = 0; i < buf.length; i++) {
 									set.add(buf[i]);
 								}
-								PersonInfoLocal.storeRegisterHobbys(getActivity(),telphone,set);
-								PersonInfoLocal.storeSignature(getActivity(), telphone,
-										userjson.get("signature").toString());
+								PersonInfoLocal.storeRegisterHobbys(
+										getActivity(), telphone, set);
+								PersonInfoLocal.storeSignature(getActivity(),
+										telphone, userjson.get("signature")
+												.toString());
 
 								// Bitmap photo;
 								// try {
@@ -324,8 +337,8 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 			sp.setTitleUrl(Constants.AppDownloadUrl); // 标题的超链接
 			sp.setText("我们这里有最精彩的应用，快快来加入我们吧！");
 			sp.setImageUrl(Constants.AppIconUrl);
-			Platform qzone = ShareSDK.getPlatform(QZone.NAME);
-			qzone.share(sp);
+			Platform qq = ShareSDK.getPlatform(QQ.NAME);
+			qq.share(sp);
 			break;
 		case R.id.sina:
 			ShareParams sinasp = new ShareParams();

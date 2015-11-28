@@ -68,6 +68,8 @@ public class AppListActivity extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.txt_left:
+			finish();
+			break;
 		case R.id.txt_save:
 			if (appsAdapter.getSelectedIndex() < 0) {
 				Utils.showShortToast(getApplicationContext(), "请选择一个应用");

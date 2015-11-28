@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 
 public class App {
 	private int id;
@@ -203,15 +204,17 @@ public class App {
 	public void setPackageName(String packageName) {
 		this.packageName = packageName;
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
-		if(o == null)
+		if (o == null)
 			return false;
-		if(o instanceof App){
+		if (o instanceof App) {
 			App app = (App) o;
-			if(this.packageName.equals(app.getPackageName()))
-					return true;
+			if (TextUtils.isEmpty(app.getPackageName()) || TextUtils.isEmpty(this.packageName))
+				return false;
+			if (this.packageName.equals(app.getPackageName()))
+				return true;
 		}
 		return false;
 	}

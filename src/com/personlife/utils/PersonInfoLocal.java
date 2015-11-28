@@ -64,7 +64,8 @@ public class PersonInfoLocal {
 		editor.putString("telphone", phone);
 		editor.putString("password", password);
 		editor.commit();
-		SharedPreferences.Editor editordefault = PreferenceManager.getDefaultSharedPreferences(ctx).edit();
+		SharedPreferences.Editor editordefault = PreferenceManager
+				.getDefaultSharedPreferences(ctx).edit();
 		editordefault.putString("telphone", phone);
 		editordefault.commit();
 	}

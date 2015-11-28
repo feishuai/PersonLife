@@ -66,9 +66,9 @@ public class GuessActivity extends Activity implements OnClickListener {
 		mBack.setVisibility(View.VISIBLE);
 		mBack.setOnClickListener(this);
 		mTitle = (TextView) findViewById(R.id.txt_title);
-//		btnShare = (ImageButton) findViewById(R.id.imgbtn_share);
-//		btnShare.setVisibility(View.VISIBLE);
-//		btnShare.setOnClickListener(this);
+		// btnShare = (ImageButton) findViewById(R.id.imgbtn_share);
+		// btnShare.setVisibility(View.VISIBLE);
+		// btnShare.setOnClickListener(this);
 		downloadButton = (Button) findViewById(R.id.txt_download);
 		downloadButton.setVisibility(View.VISIBLE);// 主页的一键下载按钮显示
 		downloadButton.setOnClickListener(this);
@@ -155,17 +155,13 @@ public class GuessActivity extends Activity implements OnClickListener {
 			JSONObject jsonapp = resp.optJSONObject(i);
 			app.setIcon(jsonapp.optString("icon"));
 			app.setSize(jsonapp.optString("size"));
-			app.setDowloadcount(jsonapp
-					.optInt("downloadcount"));
-			app.setIntrodution(jsonapp
-					.optString("introduction"));
+			app.setDowloadcount(jsonapp.optInt("downloadcount"));
+			app.setIntrodution(jsonapp.optString("introduction"));
 			app.setName(jsonapp.optString("name"));
 			app.setId(jsonapp.optInt("id"));
-			app.setDownloadUrl(jsonapp
-					.optString("android_url"));
+			app.setDownloadUrl(jsonapp.optString("android_url"));
 			app.setProfile(jsonapp.optString("profile"));
-			app.setDownloadPath(Constants.DownloadPath
-					+ app.getName() + ".apk");
+			app.setDownloadPath(Constants.DownloadPath + app.getName() + ".apk");
 			app.setStars((float) jsonapp.optDouble("stars"));
 			apps.add(app);
 		}

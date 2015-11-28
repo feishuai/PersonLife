@@ -52,7 +52,7 @@ public class AppsAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		if(mlist != null)
+		if (mlist != null)
 			return mlist.size();
 		return 0;
 	}
@@ -98,7 +98,7 @@ public class AppsAdapter extends BaseAdapter {
 			holder.status.setText(counts / 10000 + "万人下载  ");
 		else
 			holder.status.setText(counts + "人下载 ");
-		holder.status.append(mlist.get(position).getStars()+"分");
+		holder.status.append(mlist.get(position).getStars() + "分");
 		holder.intro.setText(mlist.get(position).getProfile());
 		if (DownloadTaskManager.getDownloadTaskManager(context)
 				.isHasDownloaded(mlist.get(position))) {
@@ -107,19 +107,20 @@ public class AppsAdapter extends BaseAdapter {
 			if (size > 0) {
 				int progress = DownloadTaskManager.getDownloadTaskManager(
 						context).getDownloadProgress(mlist.get(position));
-				if (progress == 100){
+				if (progress == 100) {
 					holder.download.setText("安装");
 					holder.bar.setVisibility(View.GONE);
-				}
-				else{
+				} else {
 					holder.download.setText("继续");
 					holder.bar.setVisibility(View.VISIBLE);
 					holder.bar.setProgress(progress);
 				}
 			}
+		}else{
+			holder.download.setText("下载");
 		}
-		
-		if (SystemUtils.getUserApps(context).contains(mlist.get(position))){
+
+		if (SystemUtils.getUserApps(context).contains(mlist.get(position))) {
 			holder.download.setText("打开");
 			holder.bar.setVisibility(View.GONE);
 		}
@@ -134,20 +135,22 @@ public class AppsAdapter extends BaseAdapter {
 					return;
 				}
 				if (holder.download.getText().toString().equals("安装")) {
-					if (SystemUtils.getUserApps(context).contains(mlist.get(position))){
+					if (SystemUtils.getUserApps(context).contains(
+							mlist.get(position))) {
 						Utils.showShortToast(context, "该应用已安装");
 						holder.bar.setVisibility(View.GONE);
 						holder.download.setText("打开");
-						return ;
+						return;
 					}
-					SystemUtils.openAppFronUri(context,
-							mlist.get(position).getDownloadPath());
+					SystemUtils.openAppFronUri(context, mlist.get(position)
+							.getDownloadPath());
 					return;
 				}
 				if (holder.download.getText().toString().equals("下载")) {
-					
+
 					RequestParams request = new RequestParams();
-					request.add("appid", String.valueOf(mlist.get(position).getId()));
+					request.add("appid",
+							String.valueOf(mlist.get(position).getId()));
 					BaseAsyncHttp.postReq(context.getApplicationContext(),
 							"/myapp/download", request,
 							new JSONObjectHttpResponseHandler() {
@@ -180,7 +183,8 @@ public class AppsAdapter extends BaseAdapter {
 											holder.bar.setProgress(values[0]);
 											if (values[0] == 100) {
 												holder.download.setText("安装");
-												holder.bar.setVisibility(View.GONE);
+												holder.bar
+														.setVisibility(View.GONE);
 											}
 											Log.i("update progress",
 													String.valueOf(values[0]));
@@ -211,7 +215,8 @@ public class AppsAdapter extends BaseAdapter {
 											super.onProgressUpdate(values);
 											holder.bar.setProgress(values[0]);
 											if (values[0] == 100) {
-												holder.bar.setVisibility(View.GONE);
+												holder.bar
+														.setVisibility(View.GONE);
 												holder.download.setText("安装");
 												SystemUtils
 														.openAppFronUri(

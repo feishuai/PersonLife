@@ -1,23 +1,10 @@
 package com.personlife.adapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-
-import com.easemob.util.ImageUtils;
-import com.example.personlifep.R;
-import com.github.snowdream.android.util.Log;
-import com.loopj.android.http.RequestParams;
-import com.personlife.bean.UserFriend;
-import com.personlife.common.Utils;
-import com.personlife.net.BaseAsyncHttp;
-import com.personlife.net.JSONArrayHttpResponseHandler;
-import com.personlife.utils.ImageLoaderUtils;
-import com.personlife.view.activity.personcenter.NewFriendsListActivity;
+import org.json.JSONObject;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,6 +13,15 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.personlifep.R;
+import com.github.snowdream.android.util.Log;
+import com.loopj.android.http.RequestParams;
+import com.personlife.bean.UserFriend;
+import com.personlife.common.Utils;
+import com.personlife.net.BaseAsyncHttp;
+import com.personlife.net.JSONObjectHttpResponseHandler;
+import com.personlife.utils.ImageLoaderUtils;
 
 public class NewFriendsAdapter extends BaseAdapter {
 	private Context context;
@@ -76,30 +72,31 @@ public class NewFriendsAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if(holder.isAccepted){
-					return ;
+				if (holder.isAccepted) {
+					return;
 				}
-				
+
 				RequestParams request = new RequestParams();
 				request.put("myphone", mytelphone);
 				request.put("fphone", mList.get(position).getPhone());
 				request.put("agree", 1);
-				Log.i("gfdshdgfhe", mytelphone + mList.get(position).getPhone());
+				Log.d("accepted", "" + holder.isAccepted);
 				BaseAsyncHttp.postReq(context, "/friend/acceptadd", request,
-						new JSONArrayHttpResponseHandler() {
+						new JSONObjectHttpResponseHandler() {
 
 							@Override
-							public void jsonSuccess(JSONArray resp) {
+							public void jsonSuccess(JSONObject resp) {
 								// TODO Auto-generated method stub
 								holder.accept.setText("已添加");
+								Log.d("accepted", "success " + holder.isAccepted);
 								Utils.showShortToast(context, "已同意添加该好友！");
 								holder.isAccepted = true;
 							}
 
 							@Override
-							public void jsonFail(JSONArray resp) {
+							public void jsonFail(JSONObject resp) {
 								// TODO Auto-generated method stub
-
+								Log.d("accepted", "fail " + holder.isAccepted);
 							}
 						});
 			}

@@ -38,6 +38,7 @@ public class AllDownloadActivity extends Activity implements OnClickListener {
 	AppsAdapter appsAdapter;
 	List<App> apps;
 	List<App> mDownloadList;
+	boolean isSelected = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,48 +69,8 @@ public class AllDownloadActivity extends Activity implements OnClickListener {
 						new TypeReference<ArrayList<App>>() {
 						});
 		Log.d("app size", apps.size() + "");
-		// RequestParams params = new RequestParams();
-		// params.add("kind", "娱乐");
-		// BaseAsyncHttp.postReq(getApplicationContext(), "/app/kind", params,
-		// new JSONObjectHttpResponseHandler() {
-		//
-		// @Override
-		// public void jsonSuccess(JSONObject resp) {
-		// // TODO Auto-generated method stub
-		// try {
-		// JSONArray jsonapps = resp.getJSONArray("item");
-		// for (int i = 0; i < jsonapps.length(); i++) {
-		// App app = new App();
-		// JSONObject jsonapp = jsonapps.getJSONObject(i);
-		// app.setIcon(jsonapp.getString("icon"));
-		// app.setSize(jsonapp.getString("size"));
-		// app.setDowloadcount(jsonapp
-		// .getInt("downloadcount"));
-		// app.setIntrodution(jsonapp
-		// .getString("introduction"));
-		// app.setName(jsonapp.getString("name"));
-		// app.setId(jsonapp.getInt("id"));
-		// app.setDownloadUrl(jsonapp
-		// .getString("android_url"));
-		// app.setProfile(jsonapp.getString("profile"));
-		// app.setDownloadPath(Constants.DownloadPath
-		// + app.getName() + ".apk");
-		// apps.add(app);
-		// }
 		appsAdapter = new AppsAdapter(getApplicationContext(), apps);
 		lvApps.setAdapter(appsAdapter);
-		// } catch (JSONException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// }
-		//
-		// @Override
-		// public void jsonFail(JSONObject resp) {
-		// // TODO Auto-generated method stub
-		//
-		// }
-		// });
 	}
 
 	@Override
@@ -120,8 +81,13 @@ public class AllDownloadActivity extends Activity implements OnClickListener {
 			finish();
 			break;
 		case R.id.btn_title_right:
-			appsAdapter.setAll();
+			if (isSelected)
+				mAll.setText("取消");
+			else
+				mAll.setText("全选");
+			appsAdapter.setAll(isSelected);
 			appsAdapter.notifyDataSetChanged();
+			isSelected = !isSelected;
 			break;
 		case R.id.btn_alldownload_download:
 			for (int i = 0; i < mDownloadList.size(); i++) {
@@ -220,12 +186,14 @@ public class AllDownloadActivity extends Activity implements OnClickListener {
 					String.valueOf(holder.check.isChecked()));
 			if (isAll)
 				holder.check.setChecked(true);
+			else
+				holder.check.setChecked(false);
 
 			return convertView;
 		}
 
-		public void setAll() {
-			this.isAll = true;
+		public void setAll(boolean isAll) {
+			this.isAll = isAll;
 		}
 
 		class ViewHolder {

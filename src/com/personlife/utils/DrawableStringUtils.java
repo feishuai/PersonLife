@@ -52,8 +52,8 @@ public class DrawableStringUtils {
 		BitmapDrawable bd = (BitmapDrawable) drawable;
 		return bd.getBitmap();
 	}
-	
-	public static Bitmap stringtoBitmap(String icon){
+
+	public static Bitmap stringtoBitmap(String icon) {
 		return drawableToBitamp(stringToDrawable(icon));
 	}
 }

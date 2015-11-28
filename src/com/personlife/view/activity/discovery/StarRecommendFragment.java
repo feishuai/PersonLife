@@ -20,6 +20,7 @@ import com.example.personlifep.R;
 import com.personlife.bean.Star;
 import com.personlife.bean.User;
 import com.personlife.utils.ImageLoaderUtils;
+import com.personlife.utils.Utils;
 import com.personlife.view.activity.circle.CircleActivity;
 import com.personlife.widget.MyListView;
 
@@ -112,6 +113,8 @@ public class StarRecommendFragment extends Fragment {
 			holder.name.setText(mList.get(position).getNickname());
 			holder.fanscounts.setText(mList.get(position).getFollower());
 			holder.downloadcounts.setText(mList.get(position).getShared());
+			if (mList.get(position).getCreated() > 0)
+				holder.lastesttime.setText("最新更新" + Utils.TimeStamp2Date(mList.get(position).getCreated()));
 			holder.home.setOnClickListener(new OnClickListener() {
 
 				@Override

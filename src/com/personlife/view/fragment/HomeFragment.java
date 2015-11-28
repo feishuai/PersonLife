@@ -105,7 +105,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		kindsAdapter = new KindsAdapter(getActivity(), taglist,
 				new HashMap<String, List<App>>());
 		mLvApps.setAdapter(kindsAdapter);
-		if (!Utils.isNetworkAvailable(getActivity())){
+		if (!Utils.isNetworkAvailable(getActivity())) {
 			llLoad.setVisibility(View.VISIBLE);
 			mLvApps.setVisibility(View.GONE);
 		}
@@ -134,7 +134,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 								e.printStackTrace();
 							}
 						}
-						
+
 						@Override
 						public void jsonFail(JSONArray resp) {
 							// TODO Auto-generated method stub
@@ -151,16 +151,16 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		}
 
 	}
-	
-	public void uploadAppToServer(){
+
+	public void uploadAppToServer() {
 		RequestParams request = new RequestParams();
 		request.put("phone", PersonInfoLocal.getPhone(getActivity()));
 		request.put("platform", "android");
 		for (int i = 0; i < userapps.size(); i++) {
 			request.add("apps[" + i + "]", userapps.get(i).getPackageName());
 		}
-		BaseAsyncHttp.postReq(getActivity(), "/myapp/upload",
-				request, new JSONObjectHttpResponseHandler() {
+		BaseAsyncHttp.postReq(getActivity(), "/myapp/upload", request,
+				new JSONObjectHttpResponseHandler() {
 
 					@Override
 					public void jsonSuccess(JSONObject resp) {
@@ -173,7 +173,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 					}
 				});
 	}
-	
+
 	public void updateLocalApp() {
 		systemApps = SystemUtils.getUserApps(getActivity());
 		localApps = new ArrayList<App>();
