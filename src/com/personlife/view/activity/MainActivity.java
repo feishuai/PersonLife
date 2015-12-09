@@ -331,6 +331,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 		case 2:
 			homefragment.updateTag();
 			break;
+		case 3:
+			personalCenter.initViews();
+			break;
 		}
 	}
 	

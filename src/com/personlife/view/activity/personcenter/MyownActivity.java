@@ -178,7 +178,7 @@ public class MyownActivity extends Activity implements
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				setResult(1);
+				setResult(3);
 				onBackPressed();
 			}
 		});

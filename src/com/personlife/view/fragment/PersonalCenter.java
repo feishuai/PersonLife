@@ -99,6 +99,11 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 			layout = ctx.getLayoutInflater().inflate(
 					R.layout.fragment_personalcenter, null);
 			ShareSDK.initSDK(getActivity());
+			username = (TextView) layout.findViewById(R.id.tvname);
+			personsign = (TextView) layout.findViewById(R.id.tvpersonsign);
+			head = (ImageView) layout.findViewById(R.id.head);
+			sex = (ImageView) layout.findViewById(R.id.iv_sex);
+			// 联网获取用户信息
 			initViews();
 			setOnListener();
 		} else {
@@ -110,12 +115,7 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 		return layout;
 	}
 
-	private void initViews() {
-		username = (TextView) layout.findViewById(R.id.tvname);
-		personsign = (TextView) layout.findViewById(R.id.tvpersonsign);
-		head = (ImageView) layout.findViewById(R.id.head);
-		sex = (ImageView) layout.findViewById(R.id.iv_sex);
-		// 联网获取用户信息
+	public void initViews() {
 
 		if (PersonInfoLocal.getNcikName(getActivity(), telphone).length() != 0) {
 			headuri = PersonInfoLocal.getHeadUri(getActivity(), telphone);
