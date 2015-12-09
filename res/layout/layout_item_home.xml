@@ -86,7 +86,9 @@
     <com.personlife.widget.MyListView
         android:id="@+id/lv_home_apps"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:divider="@color/black2"
+        android:dividerHeight="2dp" >
     </com.personlife.widget.MyListView>
 
 </LinearLayout>

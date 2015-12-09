@@ -39,12 +39,14 @@ import com.klinker.android.link_builder.Link;
 import com.klinker.android.link_builder.LinkBuilder;
 import com.loopj.android.http.RequestParams;
 import com.personlife.bean.App;
+import com.personlife.bean.MessageConcelBean;
 import com.personlife.bean.Reply;
 import com.personlife.bean.Shuoshuo;
 import com.personlife.bean.Star;
 import com.personlife.net.BaseAsyncHttp;
 import com.personlife.net.DownloadTaskManager;
 import com.personlife.net.JSONObjectHttpResponseHandler;
+import com.personlife.utils.BusProvider;
 import com.personlife.utils.ComplexPreferences;
 import com.personlife.utils.Constants;
 import com.personlife.utils.ImageLoaderUtils;
@@ -66,6 +68,20 @@ public class NewCircleFragment extends Fragment {
 	Boolean isLoaded = false;
 	String phone;
 	PullRefreshLayout prlayout;
+	
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		BusProvider.getInstance().register(this);
+	}
+	
+	@Override
+	public void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		BusProvider.getInstance().unregister(this);
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater,
@@ -114,12 +130,14 @@ public class NewCircleFragment extends Fragment {
 					}
 				}, 3000);
 				initData();
+				BusProvider.getInstance().post(new MessageConcelBean());
+//				bus.register(getActivity());
 			}
 		});
 
 		return layout;
 	}
-
+	
 	public void updateData(List<Shuoshuo> list) {
 		this.mlist = list;
 		if (mAdapter != null)
@@ -183,6 +201,7 @@ public class NewCircleFragment extends Fragment {
 									app.setId(jsonapp.getInt("id"));
 									app.setDownloadUrl(jsonapp
 											.getString("android_url"));
+									app.setStars((float) jsonapp.optDouble("stars"));
 									app.setProfile(jsonapp.getString("profile"));
 									app.setDownloadPath(Constants.DownloadPath
 											+ app.getName() + ".apk");
@@ -412,8 +431,8 @@ public class NewCircleFragment extends Fragment {
 						.findViewById(R.id.tv_shuoshuo_beforetime);
 				holder.score = (TextView) convertView
 						.findViewById(R.id.tv_shuoshuo_score);
-				holder.labels = (TextView) convertView
-						.findViewById(R.id.tv_shuoshuo_labels);
+				holder.intro = (TextView) convertView
+						.findViewById(R.id.tv_shuoshuo_intro);
 				holder.staricon = (ImageView) convertView
 						.findViewById(R.id.iv_shuoshuo_icon);
 				holder.appicon = (ImageView) convertView
@@ -432,6 +451,7 @@ public class NewCircleFragment extends Fragment {
 						.findViewById(R.id.et_shuoshuo_comment);
 				holder.download = (ImageView) convertView
 						.findViewById(R.id.iv_shuoshuo_download);
+				holder.appname = (TextView) convertView.findViewById(R.id.tv_shuoshuo_appname);
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
@@ -439,11 +459,12 @@ public class NewCircleFragment extends Fragment {
 			holder.content.setText("        "
 					+ mlist.get(position).getContent());
 			holder.name.setText(mlist.get(position).getNickname());
-			holder.score.setText(mlist.get(position).getScore() + "分");
-			holder.labels.setText(mlist.get(position).getLabels());
 			ImageLoaderUtils.displayImageView(mlist.get(position).getThumb(),
 					holder.staricon);
 			final App app = mlist.get(position).getApps().get(0);
+			holder.appname.setText(app.getName());
+			holder.score.setText(app.getStars() + "分");
+			holder.intro.setText(app.getProfile());
 			ImageLoaderUtils.displayImageView(app.getIcon(), holder.appicon);
 			holder.beforetime.setText(Utils.TimeStamp2Date(mlist.get(position)
 					.getCreatedtime()));
@@ -656,7 +677,7 @@ public class NewCircleFragment extends Fragment {
 			ImageView staricon, appicon;
 			TextView name, person;
 			TextView beforetime;
-			TextView score, labels;
+			TextView score, intro,appname;
 			TextView content;
 			ImageView comment, praise, download;
 			MyListView comments;

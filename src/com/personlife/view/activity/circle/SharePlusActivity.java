@@ -70,7 +70,7 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 	List<String> appLabels = new ArrayList<String>();
 	RatingBar stars;
 	LabelAdapter labelAdapter;
-	ImageView qq, wechat, sina;
+	ImageView wechatcomment, wechat, sina;
 	Boolean isSelected[];
 
 	@Override
@@ -85,7 +85,7 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 		appicon = (ImageView) findViewById(R.id.iv_shareplus_app);
 		stars = (RatingBar) findViewById(R.id.rb_shareplus_stars);
 		hasLabel = (TextView) findViewById(R.id.tv_shareplus_hasLabel);
-		qq = (ImageView) findViewById(R.id.qq);
+		wechatcomment = (ImageView) findViewById(R.id.wechatcomment);
 		wechat = (ImageView) findViewById(R.id.wechat);
 		sina = (ImageView) findViewById(R.id.sina);
 		mBack.setVisibility(View.VISIBLE);
@@ -98,7 +98,7 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 		mBack.setOnClickListener(this);
 		save.setOnClickListener(this);
 		appicon.setOnClickListener(this);
-		qq.setOnClickListener(this);
+		wechatcomment.setOnClickListener(this);
 		wechat.setOnClickListener(this);
 		sina.setOnClickListener(this);
 
@@ -202,25 +202,25 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 			String sharedUrl = Constants.PrefixShareUrl
 					+ String.valueOf(selectedApp.getId());
 			if (isSelected[0]) {
-				ShareParams sp = new ShareParams();
-				sp.setTitle("请下载我的App");
-				sp.setTitleUrl(sharedUrl); // 标题的超链接
-				sp.setText("我们这里有最精彩的应用，快快来加入我们吧！");
-				sp.setImageUrl(selectedApp.getIcon());
-				// sp.setImageData(DrawableStringUtils.stringtoBitmap(selectedApp.getDrawableString()));
-				Platform qzone = ShareSDK.getPlatform(QZone.NAME);
-				qzone.share(sp);
+				ShareParams wxcomment = new ShareParams();
+				wxcomment.setTitle("请下载我的App");
+				wxcomment.setText("我们这里有最精彩的应用，快快来加入我们吧！");
+				wxcomment.setUrl(sharedUrl);
+				wxcomment.setImageData(DrawableStringUtils
+						.stringtoBitmap(selectedApp.getDrawableString()));
+				wxcomment.setShareType(Platform.SHARE_WEBPAGE);
+				Platform wei = ShareSDK.getPlatform(WechatMoments.NAME);
+				wei.share(wxcomment);
 			}
 			if (isSelected[1]) {
-				ShareParams weixin = new ShareParams();
-				weixin.setTitle("请下载我的App");
-				weixin.setText("我们这里有最精彩的应用，快快来加入我们吧！");
-				weixin.setUrl(sharedUrl);
-				weixin.setImageData(DrawableStringUtils
-						.stringtoBitmap(selectedApp.getDrawableString()));
-				weixin.setShareType(Platform.SHARE_WEBPAGE);
-				Platform wei = ShareSDK.getPlatform(WechatMoments.NAME);
-				wei.share(weixin);
+				ShareParams wechat = new ShareParams();
+				wechat.setTitle("请下载我的App");
+				wechat.setText("我们这里有最精彩的应用，快快来加入我们吧！");
+				wechat.setUrl(sharedUrl);
+				wechat.setImageUrl(selectedApp.getIcon());
+				wechat.setShareType(Platform.SHARE_WEBPAGE);
+				Platform wei = ShareSDK.getPlatform(Wechat.NAME);
+				wei.share(wechat);
 			}
 			if (isSelected[2]) {
 				ShareParams sinasp = new ShareParams();
@@ -236,12 +236,12 @@ public class SharePlusActivity extends Activity implements OnClickListener {
 					AppListActivity.class);
 			startActivityForResult(intent, 1);
 			break;
-		case R.id.qq:
+		case R.id.wechatcomment:
 			isSelected[0] = !isSelected[0];
 			if (isSelected[0])
-				qq.setImageResource(R.drawable.qq1);
+				wechatcomment.setImageResource(R.drawable.wechatcomment1);
 			else
-				qq.setImageResource(R.drawable.qqlogin);
+				wechatcomment.setImageResource(R.drawable.wechatcomment);
 			break;
 		case R.id.wechat:
 			isSelected[1] = !isSelected[1];

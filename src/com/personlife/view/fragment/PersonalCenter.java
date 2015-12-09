@@ -110,13 +110,6 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 		return layout;
 	}
 
-	@Override
-	public void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		initViews();
-	}
-
 	private void initViews() {
 		username = (TextView) layout.findViewById(R.id.tvname);
 		personsign = (TextView) layout.findViewById(R.id.tvpersonsign);
@@ -241,12 +234,19 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 	}
 
 	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		if (requestCode == 1)
+			initViews();
+	}
+
+	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.view_user:
 			Intent intent = new Intent(getActivity(), MyownActivity.class);
 			intent.putExtra("telphone", telphone);
-			startActivity(intent);
+			startActivityForResult(intent, 1);
 
 			break;
 		case R.id.txt_downloadlist:

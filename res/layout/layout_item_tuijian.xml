@@ -1,91 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white" >
+    android:background="@color/white"
+    android:orientation="vertical" >
 
-    <ImageView
-        android:id="@+id/iv_tuijian_icon"
-        android:layout_width="74dp"
-        android:layout_height="74dp"
-        android:layout_toRightOf="@+id/cb_tuijian_state"
-        android:padding="10dp"
-        android:src="@drawable/default_app_icon" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/iv_tuijian_icon"
-        android:orientation="vertical"
-        android:paddingLeft="4dp" >
+        android:layout_marginTop="8dp" >
 
-        <TextView
-            android:id="@+id/tv_tuijian_name"
+        <ImageView
+            android:id="@+id/iv_tuijian_icon"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@+id/cb_tuijian_state"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_app_icon" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="怪物闹钟"
-            android:textColor="@color/black"
-            android:textSize="16dp" />
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/iv_tuijian_icon"
+            android:orientation="vertical"
+            android:paddingLeft="4dp" >
 
-        <TextView
-            android:id="@+id/tv_tuijian_status"
+            <TextView
+                android:id="@+id/tv_tuijian_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="怪物闹钟"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/tv_tuijian_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8分"
+                android:textSize="16dp" />
+
+            <ProgressBar
+                android:id="@+id/bar"
+                style="@style/ProgressBar_Mini"
+                android:layout_width="160dp"
+                android:layout_height="4dp"
+                android:layout_marginTop="4dp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_tuijian_tuijian"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/backgroud_download"
+            android:gravity="center"
+            android:text="下载"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+
+        <CheckBox
+            android:id="@+id/cb_tuijian_state"
+            style="@style/CustomCheckboxTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="17万下载  23.32M"
-            android:textSize="14dp" />
-
-        <TextView
-            android:id="@+id/tv_tuijian_intro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxLength="12"
-            android:text="网易云音乐来了网易云音乐来了"
-            android:maxLines="1"
-            android:textSize="14dp" />
-
-        <ProgressBar
-            android:id="@+id/bar"
-            style="@style/ProgressBar_Mini"
-            android:layout_width="160dp"
-            android:layout_height="4dp" 
-            android:visibility="gone"/>
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/btn_tuijian_tuijian"
-        android:layout_width="80dp"
-        android:layout_height="40dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/backgroud_download"
-        android:gravity="center"
-        android:text="下载"
-        android:textColor="@color/white"
-        android:textSize="20dp" />
-
-    <CheckBox
-        android:id="@+id/cb_tuijian_state"
-        style="@style/CustomCheckboxTheme"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
-        android:visibility="gone" />
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:visibility="gone" />
+    </RelativeLayout>
 
     <TextView
-        android:id="@+id/tv_tuijian_beforetime"
+        android:id="@+id/tv_tuijian_intro"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
+        android:layout_height="wrap_content"
+        android:text="网易云音乐来了网易云音乐来了"
+        android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:text="16天前"
-        android:textColor="@color/black"
-        android:visibility="gone" />
+        android:layout_marginBottom="10dp"
+        android:textSize="14dp" />
 
-</RelativeLayout>
+</LinearLayout>

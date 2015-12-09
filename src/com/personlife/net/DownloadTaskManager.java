@@ -92,11 +92,6 @@ public class DownloadTaskManager {
 
 	public static Boolean isHasDownloaded(App app) {
 		for (App downloadapp : apps) {
-			Log.i("download app url", downloadapp.getDownloadUrl());
-			Log.i("app url", app.getDownloadUrl());
-			Log.i("result",
-					String.valueOf(downloadapp.getDownloadUrl().equals(
-							downloadapp.getDownloadUrl())));
 			if (downloadapp.getDownloadUrl().equals(app.getDownloadUrl())) {
 				return true;
 			}

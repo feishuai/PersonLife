@@ -238,8 +238,8 @@ public class CircleFriendsFragment extends Fragment {
 						.findViewById(R.id.tv_shuoshuo_beforetime);
 				holder.score = (TextView) convertView
 						.findViewById(R.id.tv_shuoshuo_score);
-				holder.labels = (TextView) convertView
-						.findViewById(R.id.tv_shuoshuo_labels);
+				holder.intro = (TextView) convertView
+						.findViewById(R.id.tv_shuoshuo_intro);
 				holder.staricon = (ImageView) convertView
 						.findViewById(R.id.iv_shuoshuo_icon);
 				holder.appicon = (ImageView) convertView
@@ -258,6 +258,7 @@ public class CircleFriendsFragment extends Fragment {
 						.findViewById(R.id.et_shuoshuo_comment);
 				holder.download = (ImageView) convertView
 						.findViewById(R.id.iv_shuoshuo_download);
+				holder.appname = (TextView) convertView.findViewById(R.id.tv_shuoshuo_appname);
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
@@ -265,11 +266,12 @@ public class CircleFriendsFragment extends Fragment {
 			holder.content.setText("        "
 					+ mlist.get(position).getContent());
 			holder.name.setText(mlist.get(position).getNickname());
-			holder.score.setText(mlist.get(position).getScore() + "分");
-			holder.labels.setText(mlist.get(position).getLabels());
 			ImageLoaderUtils.displayImageView(mlist.get(position).getThumb(),
 					holder.staricon);
 			final App app = mlist.get(position).getApps().get(0);
+			holder.appname.setText(app.getName());
+			holder.score.setText(app.getStars() + "分");
+			holder.intro.setText(app.getProfile());
 			ImageLoaderUtils.displayImageView(app.getIcon(), holder.appicon);
 			holder.beforetime.setText(Utils.TimeStamp2Date(mlist.get(position)
 					.getCreatedtime()));
@@ -469,7 +471,7 @@ public class CircleFriendsFragment extends Fragment {
 			ImageView staricon, appicon;
 			TextView name, person;
 			TextView beforetime;
-			TextView score, labels;
+			TextView score, intro,appname;
 			TextView content;
 			// HorizontialListView apps;
 			ImageView comment, praise, download;

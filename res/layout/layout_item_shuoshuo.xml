@@ -62,34 +62,47 @@
 
         <ImageView
             android:id="@+id/iv_shuoshuo_appicon"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_below="@+id/tv_shuoshuo_content"
             android:layout_marginBottom="2dp"
             android:layout_marginTop="2dp"
             android:src="@drawable/default_app_icon" />
         
         <TextView
+            android:id="@+id/tv_shuoshuo_appname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/iv_shuoshuo_appicon"
+            android:layout_toRightOf="@+id/iv_shuoshuo_appicon"
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="10dp"
+            android:text="网易"
+            android:textColor="@color/red"
+            android:textSize="14dp" />
+        <TextView
             android:id="@+id/tv_shuoshuo_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/iv_shuoshuo_appicon"
+            android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/iv_shuoshuo_appicon"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginRight="10dp"
             android:text="4.5分"
-            android:textColor="@color/bg"
+            android:textColor="@color/red"
             android:textSize="14dp" />
         
         <TextView
-            android:id="@+id/tv_shuoshuo_labels"
+            android:id="@+id/tv_shuoshuo_intro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/tv_shuoshuo_score"
-            android:layout_below="@+id/tv_shuoshuo_score"
+            android:layout_alignLeft="@+id/tv_shuoshuo_appname"
+            android:layout_below="@+id/tv_shuoshuo_appname"
             android:text="标签"
-            android:textColor="@color/blue"
-            android:layout_marginTop="8dp"
+            android:textColor="@color/black"
+            android:layout_marginTop="6dp"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:textSize="14dp" />
 
         <ImageView
@@ -125,6 +138,7 @@
             android:layout_toLeftOf="@+id/iv_shuoshuo_dianzan"
             android:background="@drawable/bg_share_button"
             android:scaleType="center"
+            android:visibility="gone"
             android:src="@drawable/download" />
     </RelativeLayout>
 

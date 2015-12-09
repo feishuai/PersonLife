@@ -242,6 +242,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 					@Override
 					public void jsonSuccess(JSONObject resp) {
 						Map<String, List<App>> maps = new HashMap<String, List<App>>();
+						allapps.clear();
 						for (int i = 0; i < taglist.size(); i++) {
 							String tag = taglist.get(i);
 							JSONArray jsonapps = resp.optJSONArray(tag);
@@ -266,11 +267,14 @@ public class HomeFragment extends Fragment implements OnClickListener {
 								app.setPackageName(jsonapp.optString("package"));
 								apps.add(app);
 							}
+							allapps.addAll(apps);
 							maps.put(tag, apps);
-							pd.dismiss();
-							kindsAdapter.setData(taglist, maps);
-							kindsAdapter.notifyDataSetChanged();
 						}
+						kindsAdapter.setData(taglist, maps);
+						kindsAdapter.notifyDataSetChanged();
+						pd.dismiss();
+						ComplexPreferences.putObject(getActivity(),
+								Constants.HomeAllDownloadApps, allapps);
 					}
 
 					@Override
@@ -284,23 +288,13 @@ public class HomeFragment extends Fragment implements OnClickListener {
 				});
 	}
 
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
-		Log.i("resultCode", String.valueOf(resultCode));
-		switch (resultCode) {
-		case 1:
-			taglist = ComplexPreferences.getObject(getActivity(), "tags",
-					new TypeReference<ArrayList<String>>() {
-					});
-			updateView();
-			break;
-		case 2:
-		default:
-			break;
-		}
+	public void updateTag(){
+		taglist = ComplexPreferences.getObject(getActivity(), "tags",
+				new TypeReference<ArrayList<String>>() {
+				});
+		updateView();
 	}
-
+	
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -376,15 +370,8 @@ public class HomeFragment extends Fragment implements OnClickListener {
 			}
 			List<App> apps = new ArrayList<App>();
 			apps = maps.get(tags.get(position));
-			if (position == 0)
-				allapps.clear();
-			if (apps != null)
-				allapps.addAll(apps);
-			if (position == (tags.size() - 1))
-				ComplexPreferences.putObject(getActivity(),
-						Constants.HomeAllDownloadApps, allapps);
-			holder.tvkind.setText(tags.get(position));
 			ArrayList<App> myapps = tag2Apps.get(tags.get(position));
+			holder.tvkind.setText(tags.get(position));
 			int myappssize = 0;
 			if (myapps != null)
 				myappssize = myapps.size();

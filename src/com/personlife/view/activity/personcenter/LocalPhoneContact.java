@@ -221,15 +221,19 @@ public class LocalPhoneContact extends Activity implements OnClickListener {
 			} else {
 				holder.yaoqing.setText("邀请");
 			}
+			
+			
 			holder.yaoqing.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
+					if (holder.yaoqing.getText().toString().equals("已邀请"))
+						return;
 					if (mList.get(position).getIsRegister() == 1) {
 						RequestParams request = new RequestParams();
 						request.put("myphone", telphone);
-						request.put("fphone", mList.get(position).getPhone());
+						request.put("fphone", mList.get(position).getPhone().replace(" ", ""));
 						BaseAsyncHttp.postReq(getApplicationContext(),
 								"/friend/requestadd", request,
 								new JSONObjectHttpResponseHandler() {
@@ -237,6 +241,7 @@ public class LocalPhoneContact extends Activity implements OnClickListener {
 									@Override
 									public void jsonSuccess(JSONObject resp) {
 										// TODO Auto-generated method stub
+										holder.yaoqing.setText("已邀请");
 										Toast.makeText(getApplicationContext(),
 												"发送好友请求成功", Toast.LENGTH_SHORT)
 												.show();

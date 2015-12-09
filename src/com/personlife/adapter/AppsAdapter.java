@@ -93,12 +93,12 @@ public class AppsAdapter extends BaseAdapter {
 		ImageLoaderUtils.displayAppIcon(mlist.get(position).getIcon(),
 				holder.icon);
 		holder.appname.setText(mlist.get(position).getName());
-		int counts = mlist.get(position).getDowloadcount();
-		if (counts > 10000)
-			holder.status.setText(counts / 10000 + "万人下载  ");
-		else
-			holder.status.setText(counts + "人下载 ");
-		holder.status.append(mlist.get(position).getStars() + "分");
+//		int counts = mlist.get(position).getDowloadcount();
+//		if (counts > 10000)
+//			holder.status.setText(counts / 10000 + "万人下载  ");
+//		else
+//			holder.status.setText(counts + "人下载 ");
+		holder.status.setText(mlist.get(position).getStars() + "分");
 		holder.intro.setText(mlist.get(position).getProfile());
 		if (DownloadTaskManager.getDownloadTaskManager(context)
 				.isHasDownloaded(mlist.get(position))) {

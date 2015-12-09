@@ -101,7 +101,7 @@ public class Utils {
 
 	public static String TimeStamp2SystemNotificationDate(long timestamp) {
 		return new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(
-				timestamp));
+				timestamp * 1000));
 	}
 
 	public static String TimeStamp2DateChinese(long timestamp) {

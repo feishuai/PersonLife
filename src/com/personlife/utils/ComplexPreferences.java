@@ -86,7 +86,6 @@ public class ComplexPreferences {
 			TypeReference valueTypeRef) {
 		ComplexPreferences pre = getComplexPreferences(context,
 				PersonInfoLocal.getPhone(context));
-		Log.i("namePreferences", PersonInfoLocal.getPhone(context));
 		return pre.getObject(key, valueTypeRef);
 	}
 

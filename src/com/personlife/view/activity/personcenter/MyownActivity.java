@@ -5,50 +5,17 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.personlifep.R;
-import com.loopj.android.http.RequestParams;
-import com.personlife.net.BaseAsyncHttp;
-import com.personlife.net.JSONObjectHttpResponseHandler;
-import com.personlife.personinfo.carema.DialogPlus;
-import com.personlife.personinfo.carema.GridHolder;
-import com.personlife.personinfo.carema.Holder;
-import com.personlife.personinfo.carema.ListHolder;
-import com.personlife.personinfo.carema.OnBackPressListener;
-import com.personlife.personinfo.carema.OnCancelListener;
-import com.personlife.personinfo.carema.OnDismissListener;
-import com.personlife.personinfo.carema.OnItemClickListener;
-import com.personlife.personinfo.carema.SimpleAdapter;
-import com.personlife.personinfo.carema.ViewHolder;
-import com.personlife.utils.ActivityCollector;
-import com.personlife.utils.PersonInfoLocal;
-import com.personlife.utils.UpLoadHeadImage;
-import com.personlife.utils.Utils;
-import com.personlife.view.activity.LoginActivity;
-import com.personlife.view.activity.MainActivity;
-import com.personlife.view.activity.RegisterActivity2;
-import com.personlife.view.activity.personinfo.AreaSetting;
-import com.personlife.view.activity.personinfo.Interests;
-import com.personlife.view.activity.personinfo.NickName;
-import com.personlife.view.activity.personinfo.PersonalSign;
-import com.personlife.view.activity.personinfo.Profession;
-import com.personlife.view.activity.personinfo.SetPassword;
-import com.personlife.view.activity.personinfo.UserSex;
-import com.personlife.widget.CircleImageView;
-
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.ContentResolver;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -60,15 +27,39 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
-import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.personlifep.R;
+import com.loopj.android.http.RequestParams;
+import com.personlife.net.BaseAsyncHttp;
+import com.personlife.net.JSONObjectHttpResponseHandler;
+import com.personlife.personinfo.carema.DialogPlus;
+import com.personlife.personinfo.carema.Holder;
+import com.personlife.personinfo.carema.ListHolder;
+import com.personlife.personinfo.carema.OnCancelListener;
+import com.personlife.personinfo.carema.OnDismissListener;
+import com.personlife.personinfo.carema.OnItemClickListener;
+import com.personlife.personinfo.carema.SimpleAdapter;
+import com.personlife.utils.ActivityCollector;
+import com.personlife.utils.PersonInfoLocal;
+import com.personlife.utils.Utils;
+import com.personlife.view.activity.LoginActivity;
+import com.personlife.view.activity.personinfo.AreaSetting;
+import com.personlife.view.activity.personinfo.Interests;
+import com.personlife.view.activity.personinfo.NickName;
+import com.personlife.view.activity.personinfo.PersonalSign;
+import com.personlife.view.activity.personinfo.Profession;
+import com.personlife.view.activity.personinfo.SetPassword;
+import com.personlife.view.activity.personinfo.UserSex;
+import com.personlife.widget.CircleImageView;
+import com.qiniu.android.http.ResponseInfo;
+import com.qiniu.android.storage.UpCompletionHandler;
+import com.qiniu.android.storage.UploadManager;
+import com.qiniu.util.Auth;
 
 /**
  * 
@@ -87,9 +78,10 @@ public class MyownActivity extends Activity implements
 	public static final int CROP_PHOTO = 2;
 	public static final int CHOOSE_PHOTO = 3;
 	private Bitmap bitmap;
+	private boolean isChanged = false;
+	 DialogPlus dialog;
 
 	private String telphone;
-	private String returnPath = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -186,6 +178,7 @@ public class MyownActivity extends Activity implements
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				setResult(1);
 				onBackPressed();
 			}
 		});
@@ -304,15 +297,6 @@ public class MyownActivity extends Activity implements
 		Holder holder;
 		holder = new ListHolder();
 
-		OnClickListener clickListener = new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-
-			}
-		};
-
 		OnItemClickListener itemClickListener = new OnItemClickListener() {
 			@Override
 			public void onItemClick(DialogPlus dialog, Object item, View view,
@@ -322,15 +306,15 @@ public class MyownActivity extends Activity implements
 				case 0:
 					Intent intent1 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 					intent1.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-					startActivityForResult(intent1, TAKE_PHOTO);
 					dialog.dismiss();
+					startActivityForResult(intent1, TAKE_PHOTO);
 					break;
 				case 1:
 					Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
 					intent.addCategory(Intent.CATEGORY_OPENABLE);
 					intent.setType("image/*");
-					startActivityForResult(intent, CHOOSE_PHOTO);
 					dialog.dismiss();
+					startActivityForResult(intent, CHOOSE_PHOTO);
 					break;
 				case 2:
 					dialog.dismiss();
@@ -365,7 +349,7 @@ public class MyownActivity extends Activity implements
 	private void showOnlyContentDialog(Holder holder, BaseAdapter adapter,
 			OnItemClickListener itemClickListener,
 			OnDismissListener dismissListener, OnCancelListener cancelListener) {
-		final DialogPlus dialog = DialogPlus.newDialog(this)
+		 dialog = DialogPlus.newDialog(MyownActivity.this)
 				.setContentHolder(holder).setGravity(Gravity.BOTTOM)
 				.setAdapter(adapter).setOnItemClickListener(itemClickListener)
 				.setOnDismissListener(dismissListener)
@@ -398,7 +382,7 @@ public class MyownActivity extends Activity implements
 					savePhotoToSDCard(Environment.getExternalStorageDirectory()
 							.toString(), telphone + ".jpg", smallBitmap);
 					picture.setImageBitmap(smallBitmap);
-					returnPath = UpLoadHeadImage.uploadImg(this, telphone);
+					uploadImg(this, telphone);
 
 					// PersonInfoLocal.storeHeadkey(this, telphone,
 					// "http://7xkbeq.com1.z0.glb.clouddn.com/"+returnPath);
@@ -419,7 +403,7 @@ public class MyownActivity extends Activity implements
 					picture.setImageBitmap(smallBitmap);
 					savePhotoToSDCard(Environment.getExternalStorageDirectory()
 							.toString(), telphone + ".jpg", smallBitmap);
-					returnPath = UpLoadHeadImage.uploadImg(this, telphone);
+					uploadImg(this, telphone);
 
 					// PersonInfoLocal.storeHeadkey(this, telphone,
 					// "http://7xkbeq.com1.z0.glb.clouddn.com/"+returnPath);
@@ -432,7 +416,7 @@ public class MyownActivity extends Activity implements
 			break;
 		}
 	}
-
+	
 	public Bitmap zoomBitmap(Bitmap bitmap, int width, int height) {
 		int w = bitmap.getWidth();
 		int h = bitmap.getHeight();
@@ -477,5 +461,50 @@ public class MyownActivity extends Activity implements
 				}
 			}
 		}
+	}
+	
+	public void uploadImg(final Context ctx, final String telphone) {
+		if (dialog.isShowing())
+			dialog.dismiss();
+		final ProgressDialog pd = new ProgressDialog(MyownActivity.this);
+		pd.setCanceledOnTouchOutside(false);
+		pd.setMessage("正在上传");
+		pd.show();
+		
+		BaseAsyncHttp.postReq(ctx, "/users/token", new RequestParams(),
+				new JSONObjectHttpResponseHandler() {
+
+					@Override
+					public void jsonSuccess(JSONObject resp) {
+						String token = resp.optString("token");
+						UploadManager uploadManager = new UploadManager();
+						String url = Environment.getExternalStorageDirectory() + "/" +
+								telphone + ".jpg";
+						uploadManager.put(url, null, token, new UpCompletionHandler() {
+							
+							@Override
+							public void complete(String arg0, ResponseInfo arg1, JSONObject arg2) {
+								// TODO Auto-generated method stub
+								try {
+									String result = arg2.getString("key").toString();
+									Log.i("keyd zhiaagandghl", result);
+									PersonInfoLocal.storeHeadkey(ctx, telphone,
+											"http://7xkbeq.com1.z0.glb.clouddn.com/" + result);
+									update();
+									pd.dismiss();
+								} catch (JSONException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+						}, null);
+					}
+
+					@Override
+					public void jsonFail(JSONObject resp) {
+						pd.dismiss();
+						Utils.showShortToast(getApplicationContext(), "网络故障");
+					}
+				});
 	}
 }

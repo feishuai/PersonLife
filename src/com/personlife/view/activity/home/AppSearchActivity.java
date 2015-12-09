@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -137,14 +138,7 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 				case EditorInfo.IME_ACTION_NEXT:
 				case EditorInfo.IME_ACTION_DONE:
 					// 添加搜索
-					String key = search.getText().toString().trim();
 					showResult(search.getText().toString().trim());
-					history.add(key);
-					ComplexPreferences pre = ComplexPreferences
-							.getComplexPreferences(getApplicationContext(),
-									Constants.SharePrefrencesName);
-					pre.putObject("history", history);
-					pre.commit();
 					break;
 				}
 				return true;
@@ -170,11 +164,21 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 	}
 
 	public void showResult(String key) {
+		if (TextUtils.isEmpty(key)){
+			Utils.showShortToast(getApplicationContext(), "请输入搜索文字");
+			return;
+		}
 		llLabel.setVisibility(View.GONE);
 		slResult.setVisibility(View.VISIBLE);
 		slHistory.setVisibility(View.GONE);
 		// resultAdapter.clear();
 		appsAdapter.clear();
+		history.add(key);
+		ComplexPreferences pre = ComplexPreferences
+				.getComplexPreferences(getApplicationContext(),
+						Constants.SharePrefrencesName);
+		pre.putObject("history", history);
+		pre.commit();
 		RequestParams params = new RequestParams();
 		params.add("name", key.trim());
 		BaseAsyncHttp.postReq(getApplicationContext(), "/app/search", params,
@@ -284,11 +288,7 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 			finish();
 			break;
 		case R.id.btn_search_concel:
-			search.setText("");
-			search.clearFocus();
-			llLabel.setVisibility(View.VISIBLE);
-			slHistory.setVisibility(View.GONE);
-			slResult.setVisibility(View.GONE);
+			showResult(search.getText().toString().trim());
 			break;
 		case R.id.tv_search_label1:
 			showKindResult(lables[0]);
@@ -307,7 +307,7 @@ public class AppSearchActivity extends Activity implements OnClickListener {
 			pre.commit();
 			historyAdapter.setData(history);
 			historyAdapter.notifyDataSetChanged();
-
+			
 		default:
 			break;
 		}

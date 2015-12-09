@@ -1,18 +1,15 @@
 package com.personlife.utils;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
 import com.qiniu.android.http.ResponseInfo;
-import com.qiniu.android.storage.Configuration;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
 import com.qiniu.util.Auth;

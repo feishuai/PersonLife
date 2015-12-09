@@ -5,7 +5,7 @@
     android:orientation="vertical"
     >
 <include layout="@layout/layout_title" />
-<ScrollView 
+<com.personlife.widget.MyScrollView 
     android:id="@+id/act_solution_1_sv"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -173,6 +173,6 @@
 		</com.personlife.widget.HorizontialListView>
     </LinearLayout>
 
-</ScrollView>
+</com.personlife.widget.MyScrollView >
 
 </LinearLayout>

@@ -152,8 +152,6 @@ public class CollectionAppsFragment extends Fragment {
 						.findViewById(R.id.btn_tuijian_tuijian);
 				holder.state = (CheckBox) convertView
 						.findViewById(R.id.cb_tuijian_state);
-				holder.beforetime = (TextView) convertView
-						.findViewById(R.id.tv_tuijian_beforetime);
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
@@ -229,7 +227,6 @@ public class CollectionAppsFragment extends Fragment {
 			TextView appname;
 			TextView status;
 			TextView intro;
-			TextView beforetime;
 			Button download;
 			CheckBox state;
 		}

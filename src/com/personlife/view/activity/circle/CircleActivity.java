@@ -342,6 +342,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 									app.setId(jsonapp.getInt("id"));
 									app.setDownloadUrl(jsonapp
 											.getString("android_url"));
+									app.setStars((float) jsonapp.optDouble("stars"));
 									app.setProfile(jsonapp.getString("profile"));
 									app.setDownloadPath(Constants.DownloadPath
 											+ app.getName() + ".apk");
@@ -504,11 +505,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 			break;
 		case R.id.btn_circle_addattention:
 			if (isAdded == 1)
-				if (star.getFamous() == 1){
-					Utils.showShortToast(
-							getApplicationContext(), "已关注");
-					return ;
-				}else{
+				if (star.getFamous() == 0){
 					Utils.showShortToast(
 							getApplicationContext(), "已是好友");
 					return ;
@@ -552,7 +549,7 @@ public class CircleActivity extends FragmentActivity implements OnClickListener 
 									Utils.showShortToast(
 											getApplicationContext(), "取消关注");
 									addfriend.setText("添加关注");
-									isAdded = 1;
+									isAdded = 0;
 								}
 
 								@Override

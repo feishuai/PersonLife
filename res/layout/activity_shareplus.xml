@@ -85,12 +85,12 @@
         android:layout_marginLeft="20dp" >
 
     <ImageView
-        android:id="@+id/qq"
+        android:id="@+id/wechatcomment"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_centerVertical="true"
         android:layout_marginRight="16dp"
-        android:src="@drawable/qqlogin" />
+        android:src="@drawable/wechatcomment" />
 
     <ImageView
         android:id="@+id/wechat"

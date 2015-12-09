@@ -224,7 +224,7 @@ public class ClassificationActivity extends Activity implements OnClickListener 
 			}
 			ComplexPreferences.putObject(getApplicationContext(), "tags",
 					newselectedtags);
-			setResult(1);
+			setResult(2);
 			finish();
 			break;
 		default:
