@@ -156,12 +156,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 							JSONObject userjson = resp.optJSONObject("user");
 							
 							headkey = userjson.get("thumb").toString();
-							String[] temp = userjson.get("hobby").toString()
-									.split(" ");
-							Set<String> set = new HashSet<String>();
-							for (int i = 0; i < temp.length; i++) {
-								set.add(temp[i]);
-							}
 							PersonInfoLocal.storeMainPersonInfo(
 									MainActivity.this, telphone,
 									userjson.get("nickname").toString(),
@@ -169,7 +163,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 									userjson.get("signature").toString(),
 									userjson.get("gender").toString(),
 									userjson.get("area").toString(), userjson
-											.get("job").toString(), set);
+											.get("job").toString(), userjson.get("hobby").toString());
 							try {
 								DownloadHeadImg.downloadFile(headkey, telphone);
 								PersonInfoLocal.storeMainHeadUri(

@@ -163,6 +163,7 @@ public class GuessActivity extends Activity implements OnClickListener {
 			app.setProfile(jsonapp.optString("profile"));
 			app.setDownloadPath(Constants.DownloadPath + app.getName() + ".apk");
 			app.setStars((float) jsonapp.optDouble("stars"));
+			app.setPackageName(jsonapp.optString("package"));
 			apps.add(app);
 		}
 		mList = apps;

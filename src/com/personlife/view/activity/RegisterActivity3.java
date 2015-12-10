@@ -129,7 +129,7 @@ public class RegisterActivity3 extends Activity implements OnClickListener {
 				Toast.makeText(RegisterActivity3.this, "请选择爱好",
 						Toast.LENGTH_SHORT).show();
 			} else {
-				PersonInfoLocal.storeRegisterHobbys(this, telphone, set);
+				PersonInfoLocal.storeHobbys(this, telphone, set);
 				Intent intent = new Intent(this, RegisterActivity4.class);
 				intent.putExtra("telphone", telphone);
 				startActivity(intent);

@@ -176,30 +176,13 @@ public class PersonalCenter extends Fragment implements OnClickListener {
 								PersonInfoLocal.storeJob(getActivity(),
 										telphone, userjson.get("job")
 												.toString());
-								String buffer = userjson.get("hobby")
-										.toString();
-								String buf[] = buffer.split(" ");
-								Set<String> set = new HashSet<String>();
-								for (int i = 0; i < buf.length; i++) {
-									set.add(buf[i]);
-								}
-								PersonInfoLocal.storeRegisterHobbys(
-										getActivity(), telphone, set);
+								PersonInfoLocal.storeHobby(getActivity(),
+										telphone, userjson.get("hobby")
+												.toString());
 								PersonInfoLocal.storeSignature(getActivity(),
 										telphone, userjson.get("signature")
 												.toString());
 
-								// Bitmap photo;
-								// try {
-								// photo = BitmapFactory
-								// .decodeStream(getActivity().getContentResolver().openInputStream(Uri.parse(Environment.getExternalStorageDirectory()
-								// .getPath() + "/" + telphone + ".jpg")));
-								// head.setImageBitmap(photo);
-								// photo.recycle();
-								// } catch (FileNotFoundException e) {
-								// // TODO Auto-generated catch block
-								// e.printStackTrace();
-								// }
 							} catch (JSONException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();

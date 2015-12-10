@@ -47,6 +47,7 @@ public class Interests extends Activity {
 	private List<String> got = new ArrayList<String>();
 	private MyGridView gridView;
 	private boolean[] flag;
+	private int type;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,7 @@ public class Interests extends Activity {
 		ActivityCollector.addActivity(this);
 		Intent intent = getIntent();
 		telphone = intent.getStringExtra("telphone");
+		type = intent.getIntExtra("type", 0);
 		init();
 	}
 
@@ -63,7 +65,11 @@ public class Interests extends Activity {
 		title = (TextView) findViewById(R.id.txt_title);
 		back = (Button) findViewById(R.id.txt_left);
 		finish = (Button) findViewById(R.id.txt_save);
-		title.setText("兴趣爱好");
+		if (type == 1)
+			title.setText("兴趣爱好");
+		else
+			title.setText("职业");
+
 		back.setVisibility(View.VISIBLE);
 		back.setOnClickListener(new OnClickListener() {
 
@@ -86,8 +92,10 @@ public class Interests extends Activity {
 						temp.add(got.get(i));
 					}
 				}
-				PersonInfoLocal.storeRegisterHobbys(Interests.this, telphone,
-						temp);
+				if (type == 1)
+					PersonInfoLocal.storeHobbys(Interests.this, telphone, temp);
+				else
+					PersonInfoLocal.storeJobs(Interests.this, telphone, temp);
 
 				finish();
 			}
@@ -100,31 +108,36 @@ public class Interests extends Activity {
 		backselected.add(R.drawable.register_intest_selected2);
 		backselected.add(R.drawable.register_intest_selected3);
 		RequestParams request = new RequestParams();
-		BaseAsyncHttp.postReq(this, "/users/hobby", request,
+		String suffix = "";
+		if (type == 1)
+			suffix = "/users/hobby";
+		else
+			suffix = "/users/profession";
+		BaseAsyncHttp.postReq(this, suffix, request,
 				new JSONArrayHttpResponseHandler() {
 
 					@Override
 					public void jsonSuccess(JSONArray resp) {
 						// TODO Auto-generated method stub
 						for (int i = 0; i < resp.length(); i++) {
-							got.add(resp.optJSONObject(i).optString("hobby"));
+							if (type == 1)
+								got.add(resp.optJSONObject(i)
+										.optString("hobby"));
+							else
+								got.add(resp.optJSONObject(i).optString(
+										"profession"));
 						}
 						flag = new boolean[resp.length()];
 						for (int i = 0; i < resp.length(); i++) {
 							flag[i] = false;
 						}
-						StringBuffer sb = new StringBuffer();
-						sb.append("");
-						set = new HashSet<String>();
-						set = PersonInfoLocal.getHobbys(Interests.this,
-								telphone);
-						if (set != null) {
-							for (String str : set) {
-								sb.append(str + " ");
-							}
-						}
-						// sb里有兴趣爱好
-						String temp = sb.toString().trim();
+						String temp = "";
+						if (type == 1)
+							temp = PersonInfoLocal.getHobby(Interests.this,
+									telphone);
+						else
+							temp = PersonInfoLocal.getJob(Interests.this,
+									telphone);
 						IntestAdapter dapter = new IntestAdapter(
 								getApplicationContext(), got, temp);
 						gridView.setAdapter(dapter);

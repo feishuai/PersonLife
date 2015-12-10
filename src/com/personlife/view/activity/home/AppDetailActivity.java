@@ -3,14 +3,12 @@ package com.personlife.view.activity.home;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap.CompressFormat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,7 +20,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -30,7 +27,6 @@ import com.example.personlifep.R;
 import com.github.snowdream.android.app.DownloadListener;
 import com.github.snowdream.android.app.DownloadStatus;
 import com.github.snowdream.android.app.DownloadTask;
-import com.j256.ormlite.stmt.query.In;
 import com.loopj.android.http.RequestParams;
 import com.personlife.bean.App;
 import com.personlife.bean.Comment;
@@ -45,12 +41,13 @@ import com.personlife.utils.PersonInfoLocal;
 import com.personlife.utils.SystemUtils;
 import com.personlife.utils.Utils;
 import com.personlife.widget.HorizontialListView;
+import com.personlife.widget.ShareDialog;
 
 public class AppDetailActivity extends Activity implements OnClickListener {
 	HorizontialListView hlvUrls, hlvLikes;
 	Button mBack, mDownload;
 	ImageView mIcon;
-	ImageButton shoucang;
+	ImageButton shoucang,ibShare;
 	TextView mTitle, mName, mSizeAndCounts, mIntro, mLog, mMore, mTime,
 			mNumbers;
 	RelativeLayout mComments;
@@ -94,6 +91,11 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 		shoucang.setVisibility(View.VISIBLE);
 		shoucang.setImageResource(R.drawable.shoucang1);
 		shoucang.setOnClickListener(this);
+		
+		ibShare = (ImageButton) findViewById(R.id.imgbtn_share);
+		ibShare.setVisibility(View.VISIBLE);
+		ibShare.setOnClickListener(this);
+		
 		mBack.setVisibility(View.VISIBLE);
 		mBack.setOnClickListener(this);
 		mMore.setOnClickListener(this);
@@ -580,6 +582,10 @@ public class AppDetailActivity extends Activity implements OnClickListener {
 		case R.id.tv_detail_more:
 			mIntro.setText(app.getIntrodution());
 			mMore.setVisibility(View.GONE);
+			break;
+		case R.id.imgbtn_share:
+			 ShareDialog shareDialog=new ShareDialog(AppDetailActivity.this,app);
+             shareDialog.show();
 			break;
 		case R.id.img_right:
 			// TODO Auto-generated method stub

@@ -79,7 +79,7 @@ public class MyownActivity extends Activity implements
 	public static final int CHOOSE_PHOTO = 3;
 	private Bitmap bitmap;
 	private boolean isChanged = false;
-	 DialogPlus dialog;
+	DialogPlus dialog;
 
 	private String telphone;
 
@@ -114,19 +114,9 @@ public class MyownActivity extends Activity implements
 				PersonInfoLocal.getSex(MyownActivity.this, telphone));
 		request.put("area",
 				PersonInfoLocal.getLocation(MyownActivity.this, telphone));
+		request.put("hobby",
+				PersonInfoLocal.getHobby(MyownActivity.this, telphone));
 		request.put("job", PersonInfoLocal.getJob(MyownActivity.this, telphone));
-		StringBuffer sb = new StringBuffer();
-		sb.append("");
-		Set<String> set = new HashSet<String>();
-		set = PersonInfoLocal.getHobbys(MyownActivity.this, telphone);
-
-		if (set != null) {
-			for (String str : set) {
-				sb.append(str + " ");
-			}
-
-		}
-		request.put("hobby", sb.toString().trim());
 		request.put("signature",
 				PersonInfoLocal.getSignature(MyownActivity.this, telphone));
 		BaseAsyncHttp.postReq(getApplicationContext(), "/users/modify",
@@ -224,10 +214,6 @@ public class MyownActivity extends Activity implements
 			for (String str : set) {
 				sb.append(str + " ");
 			}
-			// while (it.hasNext()) {
-			// String str = (String) it.next();
-			// sb.append(str+" ");
-			// }
 		}
 		interests.setText(sb.toString());
 		sign.setText(PersonInfoLocal.getSignature(MyownActivity.this, telphone));
@@ -269,14 +255,16 @@ public class MyownActivity extends Activity implements
 			startActivity(intent3);
 			break;
 		case R.id.person_zhiye:
-			Intent intent4 = new Intent(this, Profession.class);
+			Intent intent4 = new Intent(this, Interests.class);
 			intent4.putExtra("telphone", telphone);
+			intent4.putExtra("type", 0);
 			startActivity(intent4);
 
 			break;
 		case R.id.person_interesting:
 			Intent intent5 = new Intent(this, Interests.class);
 			intent5.putExtra("telphone", telphone);
+			intent5.putExtra("type", 1);
 			startActivity(intent5);
 			break;
 		case R.id.person_sign:
@@ -349,7 +337,7 @@ public class MyownActivity extends Activity implements
 	private void showOnlyContentDialog(Holder holder, BaseAdapter adapter,
 			OnItemClickListener itemClickListener,
 			OnDismissListener dismissListener, OnCancelListener cancelListener) {
-		 dialog = DialogPlus.newDialog(MyownActivity.this)
+		dialog = DialogPlus.newDialog(MyownActivity.this)
 				.setContentHolder(holder).setGravity(Gravity.BOTTOM)
 				.setAdapter(adapter).setOnItemClickListener(itemClickListener)
 				.setOnDismissListener(dismissListener)
@@ -416,7 +404,7 @@ public class MyownActivity extends Activity implements
 			break;
 		}
 	}
-	
+
 	public Bitmap zoomBitmap(Bitmap bitmap, int width, int height) {
 		int w = bitmap.getWidth();
 		int h = bitmap.getHeight();
@@ -462,7 +450,7 @@ public class MyownActivity extends Activity implements
 			}
 		}
 	}
-	
+
 	public void uploadImg(final Context ctx, final String telphone) {
 		if (dialog.isShowing())
 			dialog.dismiss();
@@ -470,7 +458,7 @@ public class MyownActivity extends Activity implements
 		pd.setCanceledOnTouchOutside(false);
 		pd.setMessage("正在上传");
 		pd.show();
-		
+
 		BaseAsyncHttp.postReq(ctx, "/users/token", new RequestParams(),
 				new JSONObjectHttpResponseHandler() {
 
@@ -478,26 +466,31 @@ public class MyownActivity extends Activity implements
 					public void jsonSuccess(JSONObject resp) {
 						String token = resp.optString("token");
 						UploadManager uploadManager = new UploadManager();
-						String url = Environment.getExternalStorageDirectory() + "/" +
-								telphone + ".jpg";
-						uploadManager.put(url, null, token, new UpCompletionHandler() {
-							
-							@Override
-							public void complete(String arg0, ResponseInfo arg1, JSONObject arg2) {
-								// TODO Auto-generated method stub
-								try {
-									String result = arg2.getString("key").toString();
-									Log.i("keyd zhiaagandghl", result);
-									PersonInfoLocal.storeHeadkey(ctx, telphone,
-											"http://7xkbeq.com1.z0.glb.clouddn.com/" + result);
-									update();
-									pd.dismiss();
-								} catch (JSONException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-							}
-						}, null);
+						String url = Environment.getExternalStorageDirectory()
+								+ "/" + telphone + ".jpg";
+						uploadManager.put(url, null, token,
+								new UpCompletionHandler() {
+
+									@Override
+									public void complete(String arg0,
+											ResponseInfo arg1, JSONObject arg2) {
+										// TODO Auto-generated method stub
+										try {
+											String result = arg2.getString(
+													"key").toString();
+											Log.i("keyd zhiaagandghl", result);
+											PersonInfoLocal.storeHeadkey(ctx,
+													telphone,
+													"http://7xkbeq.com1.z0.glb.clouddn.com/"
+															+ result);
+											update();
+											pd.dismiss();
+										} catch (JSONException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+									}
+								}, null);
 					}
 
 					@Override

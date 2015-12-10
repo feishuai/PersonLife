@@ -1,8 +1,10 @@
 package com.personlife.utils;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import com.github.snowdream.android.util.Log;
+import com.personlife.view.activity.personcenter.MyownActivity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -43,14 +45,6 @@ public class PersonInfoLocal {
 		editor.commit();
 	}
 
-	public static void storeRegisterHobbys(Context ctx, String phone,
-			Set<String> hobby) {
-		SharedPreferences.Editor editor = ctx.getSharedPreferences(phone,
-				ctx.MODE_PRIVATE).edit();
-		editor.putStringSet("hobbys", hobby);
-		editor.commit();
-	}
-
 	public static String getPersonPassword(Context ctx, String phone) {
 		SharedPreferences pref = ctx.getSharedPreferences(phone,
 				ctx.MODE_PRIVATE);
@@ -72,7 +66,7 @@ public class PersonInfoLocal {
 
 	public static void storeMainPersonInfo(Context ctx, String phone,
 			String nickname, String headkey, String signature, String sex,
-			String location, String job, Set<String> hobbys) {
+			String location, String job, String hobby) {
 		SharedPreferences.Editor editor = ctx.getSharedPreferences(phone,
 				ctx.MODE_PRIVATE).edit();
 		editor.putString("nickname", nickname);
@@ -81,7 +75,7 @@ public class PersonInfoLocal {
 		editor.putString("sex", sex);
 		editor.putString("location", location);
 		editor.putString("job", job);
-		editor.putStringSet("hobbys", hobbys);
+		editor.putString("hobby", hobby);
 		editor.commit();
 	}
 
@@ -134,13 +128,34 @@ public class PersonInfoLocal {
 				ctx.MODE_PRIVATE);
 		return pref.getString("job", "");
 	}
-
+	
+	public static String getHobby(Context ctx, String phone) {
+		SharedPreferences pref = ctx.getSharedPreferences(phone,
+				ctx.MODE_PRIVATE);
+		return pref.getString("hobby", "");
+	}
 	public static Set<String> getHobbys(Context ctx, String phone) {
 		SharedPreferences pref = ctx.getSharedPreferences(phone,
 				ctx.MODE_PRIVATE);
-		return pref.getStringSet("hobbys", null);
+		String[] temp = pref.getString("hobby", null).split(" ");
+		Set<String> set = new HashSet<String>();
+		for (int i = 0; i < temp.length; i++) {
+			set.add(temp[i]);
+		}
+		return set;
 	}
-
+	
+	public static Set<String> getJobs(Context ctx, String phone) {
+		SharedPreferences pref = ctx.getSharedPreferences(phone,
+				ctx.MODE_PRIVATE);
+		String[] temp = pref.getString("job", null).split(" ");
+		Set<String> set = new HashSet<String>();
+		for (int i = 0; i < temp.length; i++) {
+			set.add(temp[i]);
+		}
+		return set;
+	}
+	
 	public static void storeHeadkey(Context ctx, String phone, String headkey) {
 		SharedPreferences.Editor editor = ctx.getSharedPreferences(phone,
 				ctx.MODE_PRIVATE).edit();
@@ -172,10 +187,44 @@ public class PersonInfoLocal {
 	public static void storeJob(Context ctx, String phone, String job) {
 		SharedPreferences.Editor editor = ctx.getSharedPreferences(phone,
 				ctx.MODE_PRIVATE).edit();
-		editor.putString("job", job);
+		editor.putString("job", job.trim());
 		editor.commit();
 	}
-
+	
+	public static void storeHobby(Context ctx, String phone, String hobby) {
+		SharedPreferences.Editor editor = ctx.getSharedPreferences(phone,
+				ctx.MODE_PRIVATE).edit();
+		editor.putString("hobby", hobby.trim());
+		editor.commit();
+	}
+	
+	public static void storeJobs(Context ctx, String phone,
+			Set<String> jobSet) {
+		SharedPreferences.Editor editor = ctx.getSharedPreferences(phone,
+				ctx.MODE_PRIVATE).edit();
+		StringBuffer jobsb = new StringBuffer();
+		jobsb.append("");
+		if (jobSet != null)
+			for (String job : jobSet) {
+				jobsb.append(job + " ");
+			}
+		editor.putString("job", jobsb.toString().trim());
+		editor.commit();
+	}
+	
+	public static void storeHobbys(Context ctx, String phone,
+			Set<String> hobbySet) {
+		SharedPreferences.Editor editor = ctx.getSharedPreferences(phone,
+				ctx.MODE_PRIVATE).edit();
+		StringBuffer hobbysb = new StringBuffer();
+		hobbysb.append("");
+		if (hobbySet != null)
+			for (String hobyy : hobbySet) {
+				hobbysb.append(hobyy + " ");
+			}
+		editor.putString("hobby", hobbysb.toString().trim());
+		editor.commit();
+	}
 	public static void storeSignature(Context ctx, String phone,
 			String signature) {
 		SharedPreferences.Editor editor = ctx.getSharedPreferences(phone,
